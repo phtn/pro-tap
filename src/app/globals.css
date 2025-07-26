@@ -37,6 +37,8 @@
     --color-popover-foreground: var(--popover-foreground);
     --color-popover: var(--popover);
     --color-card-foreground: var(--card-foreground);
+    --color-progress-start: oklch(0.834 0.212 135.94);
+    --color-progress-end: oklch(0.845 0.128 195.01);
     --color-card: var(--card);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -118,6 +120,9 @@
         @apply border-border outline-ring/50;
     }
     body {
+        ::-webkit-scrollbar {
+            display: none;
+        }
         @apply bg-background text-foreground;
     }
 }

@@ -1,7 +1,7 @@
 export const icons = {
   "re-up.ph": {
-    symbol: `<g clip-path="url(#clip0_2993_250)"><path d="M24 10.8095C24 11.467 23.467 12 22.8095 12H18V6H6V18H12V12H17.8125C17.9658 11.9993 18.0007 12.0312 18 12.1875V18H22.8095C23.467 18 24 18.533 24 19.1905V24H19.1905C18.533 24 18 23.467 18 22.8095V18H12V22.8095C12 23.467 11.467 24 10.8095 24H1.19048C0.532996 24 0 23.467 0 22.8095V1.19048C0 0.532996 0.532996 0 1.19048 0H22.8095C23.467 0 24 0.532996 24 1.19048V10.8095Z" fill="#41464D"/><path fill-rule="evenodd" clip-rule="evenodd" d="M24 0H0V24H10.8095C11.467 24 12 23.467 12 22.8095V18H18V22.8095C18 23.467 18.533 24 19.1905 24H24V19.1905C24 18.533 23.467 18 22.8095 18H18V12.1875C18.0007 12.0312 17.9658 11.9993 17.8125 12H12V18H6V6H18V12H22.8095C23.467 12 24 11.467 24 10.8095V0Z" fill="currentColor"/><defs><clipPath id="clip0_2993_250"><rect width="24" height="24" fill="white"/></clipPath></defs></g>`,
-    viewBox: `0 0 24 24`,
+    symbol: `<path d="M16 24H24V16.25C24.001 16.0416 23.9545 15.9991 23.75 16H16V24Z" fill="currentColor"/><path d="M24 24V30.4127C24 31.2894 24.7106 32 25.5873 32H32V25.5873C32 24.7106 31.2894 24 30.4127 24H24Z" fill="currentColor"/><path d="M32 14.4127V1.5873C32 0.710659 31.2894 0 30.4127 0H1.5873C0.710659 0 0 0.710659 0 1.5873V30.4127C0 31.2894 0.710659 32 1.5873 32H14.4127C15.2894 32 16 31.2894 16 30.4127V24H8V8H24V16H30.4127C31.2894 16 32 15.2894 32 14.4127Z" fill="currentColor"/>`,
+    viewBox: `0 0 32 32`,
     set: `re-up.ph`,
   },
   hydra: {
@@ -30,7 +30,7 @@ export const icons = {
     set: `lineicons`,
   },
   "voice-message": {
-    symbol: `<g fill="none"><path stroke="currentColoE" stroke-linejoin="round" stroke-width="2" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"></path><path fill="currentColor" d="M17 25.9a2 2 0 1 0 0-4a2 2 0 0 0 0 4"></path><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M21.95 28.85A6.98 6.98 0 0 0 24 23.9a6.98 6.98 0 0 0-2.05-4.95m4.95 14.849a13.96 13.96 0 0 0 4.1-9.9c0-3.866-1.567-7.366-4.1-9.899"></path></g>`,
+    symbol: `<g fill="none"><path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"></path><path fill="currentColor" d="M17 25.9a2 2 0 1 0 0-4a2 2 0 0 0 0 4"></path><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M21.95 28.85A6.98 6.98 0 0 0 24 23.9a6.98 6.98 0 0 0-2.05-4.95m4.95 14.849a13.96 13.96 0 0 0 4.1-9.9c0-3.866-1.567-7.366-4.1-9.899"></path></g>`,
     viewBox: `0 0 48 48`,
     set: `icon`,
   },
@@ -491,10 +491,65 @@ export const icons = {
     viewBox: `0 0 256 256`,
     set: `ph`,
   },
+  "fb-f": {
+    symbol: `<path fill="currentColor" d="m23.446 18l.889-5.791h-5.557V8.451c0-1.584.776-3.129 3.265-3.129h2.526V.392S22.277.001 20.085.001c-4.576 0-7.567 2.774-7.567 7.795v4.414H7.431v5.791h5.087v14h6.26v-14z"></path>`,
+    viewBox: `0 0 32 32`,
+    set: `cib`,
+  },
+  "x-twitter": {
+    symbol: `<path fill="currentColor" d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07l-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path>`,
+    viewBox: `0 0 16 16`,
+    set: `bi`,
+  },
+  linkedin: {
+    symbol: `<path fill="currentColor" d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248c-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586c.173-.431.568-.878 1.232-.878c.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252c-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>`,
+    viewBox: `0 0 16 16`,
+    set: `bi`,
+  },
+
+  instagram: {
+    symbol: `<path fill="currentColor" d="M8 0C5.829 0 5.556.01 4.703.048C3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7C.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297c.04.852.174 1.433.372 1.942c.205.526.478.972.923 1.417c.444.445.89.719 1.416.923c.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417c.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046c.78.035 1.204.166 1.486.275c.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485c.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598c-.28.11-.704.24-1.485.276c-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598a2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485c-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486c.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276c.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92a.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217a4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334a2.667 2.667 0 0 1 0-5.334"></path>`,
+    viewBox: `0 0 16 16`,
+    set: `bi`,
+  },
+  "px-pin": {
+    symbol: `<path fill="currentColor" d="M7 2h10v2H7zM5 6V4h2v2zm0 8H3V6h2zm2 2H5v-2h2zm2 2H7v-2h2zm2 2H9v-2h2zm2 0v2h-2v-2zm2-2v2h-2v-2zm2-2v2h-2v-2zm2-2v2h-2v-2zm0-8h2v8h-2zm0 0V4h-2v2zm-5 2h-4v4h4z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-download": {
+    symbol: `<path fill="currentColor" d="M13 17V3h-2v10H9v-2H7v2h2v2h2v2zm8 2v-4h-2v4H5v-4H3v6h18zm-8-6v2h2v-2h2v-2h-2v2z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-bucket": {
+    symbol: `<path fill="currentColor" d="M8 3h8v2H8zm0 2H6v4H4v12h16V9h-2V5h-2v4H8zm8 6h2v8H6v-8h2v6h2v-4h2v2h2v-2h2z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-bell": {
+    symbol: `<path fill="currentColor" d="M14 4V2h-4v2H5v2h14V4zm5 12H5v-4H3v6h5v4h2v-4h4v2h-4v2h6v-4h5v-6h-2V6h-2v8h2zM5 6v8h2V6z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-paint": {
+    symbol: `<path fill="currentColor" d="M9 2h2v2H9zm4 4V4h-2v2H9v2H7v2H5v2H3v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v6h2V12h-2v-2h-2V8h-2V6zm0 0v2h2v2h2v2h2v2H5v-2h2v-2h2V8h2V6z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-eye": {
+    symbol: `<path fill="currentColor" d="M8 6h8v2H8zm-4 4V8h4v2zm-2 2v-2h2v2zm0 2v-2H0v2zm2 2H2v-2h2zm4 2H4v-2h4zm8 0v2H8v-2zm4-2v2h-4v-2zm2-2v2h-2v-2zm0-2h2v2h-2zm-2-2h2v2h-2zm0 0V8h-4v2zm-10 1h4v4h-4z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
+  "px-eye-closed": {
+    symbol: `<path fill="currentColor" d="M0 7h2v2H0zm4 4H2V9h2zm4 2v-2H4v2H2v2h2v-2zm8 0H8v2H6v2h2v-2h8v2h2v-2h-2zm4-2h-4v2h4v2h2v-2h-2zm2-2v2h-2V9zm0 0V7h2v2z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `pixelarticons`,
+  },
 };
 
 /*
-
 
 
 
