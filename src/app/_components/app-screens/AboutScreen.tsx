@@ -94,6 +94,20 @@ export const AboutScreen = ({ onNext, onPrev }: AboutScreenProps) => {
             >
               Support
             </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="secondary"
+              className="w-full bg-teal-300 font-space hover:text-white hover:bg-gray-400/40"
+            >
+              <a
+                download
+                href="https://app.box.com/s/eww01hpay8absnpx2qxk58knv02a4whr"
+                className="font-sans text-sm tracking-tight"
+              >
+                Download Proposal
+              </a>
+            </Button>
           </motion.div>
         </motion.div>
       </div>

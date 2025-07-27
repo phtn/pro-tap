@@ -79,7 +79,7 @@ export const ProfileDetailScreen = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 bg-black text-white overflow-y-auto">
+      <div className="flex-1 bg-black text-white overflow-y-scroll">
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

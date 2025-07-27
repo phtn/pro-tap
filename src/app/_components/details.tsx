@@ -29,7 +29,7 @@ export const DesktopDetails = () => {
   };
 
   return (
-    <div className="bg-teal-50 border-2 border-slate-400 hidden lg:flex p-8 flex-1 size-full min-w-4xl rounded-3xl h-[600px] overflow-scroll">
+    <div className="bg-white border-2 border-slate-400 hidden lg:flex p-8 flex-1 size-full min-w-4xl rounded-3xl h-[600px] overflow-scroll">
       <motion.div
         key={currentScreen}
         initial={{ opacity: 0, x: 20 }}

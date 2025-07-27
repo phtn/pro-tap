@@ -9,51 +9,57 @@ interface TeamScreenProps {
 export const TeamScreen = (props: TeamScreenProps) => {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
+      name: "xpriori",
       role: "Project Manager",
-      avatar: "SJ",
+      avatar: "XX",
       status: "active",
-      workload: 85,
-      skills: ["Leadership", "Agile", "Strategy"],
+      workload: 100,
+      skills: [
+        "Core Development",
+        "Design",
+        "Leadership",
+        "Strategy",
+        "Deploy",
+      ],
     },
-    {
-      name: "Mike Chen",
-      role: "Lead Developer",
-      avatar: "MC",
-      status: "active",
-      workload: 92,
-      skills: ["React Native", "Node.js", "AWS"],
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "UI/UX Designer",
-      avatar: "ER",
-      status: "active",
-      workload: 78,
-      skills: ["Figma", "User Research", "Prototyping"],
-    },
-    {
-      name: "David Kim",
-      role: "Backend Developer",
-      avatar: "DK",
-      status: "active",
-      workload: 88,
-      skills: ["Python", "PostgreSQL", "API Design"],
-    },
-    {
-      name: "Lisa Wang",
-      role: "QA Engineer",
-      avatar: "LW",
-      status: "available",
-      workload: 45,
-      skills: ["Testing", "Automation", "Quality Assurance"],
-    },
+    // {
+    //   name: "Mike Chen",
+    //   role: "Lead Developer",
+    //   avatar: "MC",
+    //   status: "active",
+    //   workload: 92,
+    //   skills: ["React Native", "Node.js", "AWS"],
+    // },
+    // {
+    //   name: "Emily Rodriguez",
+    //   role: "UI/UX Designer",
+    //   avatar: "ER",
+    //   status: "active",
+    //   workload: 78,
+    //   skills: ["Figma", "User Research", "Prototyping"],
+    // },
+    // {
+    //   name: "David Kim",
+    //   role: "Backend Developer",
+    //   avatar: "DK",
+    //   status: "active",
+    //   workload: 88,
+    //   skills: ["Python", "PostgreSQL", "API Design"],
+    // },
+    // {
+    //   name: "Lisa Wang",
+    //   role: "QA Engineer",
+    //   avatar: "LW",
+    //   status: "available",
+    //   workload: 45,
+    //   skills: ["Testing", "Automation", "Quality Assurance"],
+    // },
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-500";
+        return "bg-teal-500";
       case "available":
         return "bg-blue-500";
       case "busy":
@@ -93,7 +99,7 @@ export const TeamScreen = (props: TeamScreenProps) => {
         className="flex-1 overflow-y-auto space-y-6"
       >
         {/* Team Overview */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg p-6 text-white">
           <h3 className="text-lg font-semibold mb-4">Team Overview</h3>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
@@ -128,7 +134,7 @@ export const TeamScreen = (props: TeamScreenProps) => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow"
+              className="bg-white rounded-lg p-4"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center space-x-3">
@@ -154,8 +160,8 @@ export const TeamScreen = (props: TeamScreenProps) => {
                 </div>
               </div>
 
-              <div className="mb-3">
-                <div className="flex justify-between text-sm mb-1">
+              <div className="mb-4">
+                <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-600">Workload</span>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${getWorkloadColor(member.workload)}`}
@@ -196,18 +202,18 @@ export const TeamScreen = (props: TeamScreenProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="bg-white rounded-lg p-6 shadow-sm border"
+          className=" bg-gradient-to-r from-slate-300 via-slate-300 to-slate-200 rounded-lg p-6"
         >
           <h3 className="text-lg font-semibold mb-4 text-gray-800">
             Team Performance
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">94%</div>
+            <div className="text-center p-4 bg-teal-50 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600">20%</div>
               <div className="text-sm text-gray-600">Task Completion</div>
             </div>
             <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600">4.8</div>
+              <div className="text-2xl font-bold text-slate-600">4.8</div>
               <div className="text-sm text-gray-600">Team Rating</div>
             </div>
           </div>

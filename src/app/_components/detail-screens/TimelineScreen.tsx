@@ -1,6 +1,7 @@
-import { motion } from "motion/react";
+import { motion, useAnimation } from "motion/react";
 import { Icon } from "@/lib/icons";
 import { DetailHeader } from "./sub-components";
+import { useEffect } from "react";
 
 interface TimelineScreenProps {
   onNext: () => void;
@@ -8,6 +9,16 @@ interface TimelineScreenProps {
 }
 
 export const TimelineScreen = (props: TimelineScreenProps) => {
+  const controls = useAnimation();
+  const progress = 3; // The progress percentage
+
+  useEffect(() => {
+    // Animate the width of the progress bar to the target percentage
+    controls.start(
+      { width: `${progress}%` },
+      { duration: 1.5, ease: "easeOut" },
+    );
+  }, [controls, progress]);
   const milestones = [
     {
       phase: "Discovery & Planning",
@@ -17,13 +28,13 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
     },
     {
       phase: "Design & Prototyping",
-      duration: "Week 3-4",
+      duration: "Week 2-3",
       status: "completed",
       tasks: ["UI/UX design", "Interactive prototypes", "Design system"],
     },
     {
       phase: "Core Development",
-      duration: "Week 5-6",
+      duration: "Week 3-4",
       status: "in-progress",
       tasks: [
         "Authentication system",
@@ -33,19 +44,19 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
     },
     {
       phase: "Feature Implementation",
-      duration: "Week 7-8",
+      duration: "Week 4-6",
       status: "pending",
       tasks: ["QR code sharing", "Analytics dashboard", "Team features"],
     },
     {
       phase: "Testing & Refinement",
-      duration: "Week 9",
+      duration: "Week 6-8",
       status: "pending",
       tasks: ["Quality assurance", "Performance optimization", "Bug fixes"],
     },
     {
       phase: "Deployment & Launch",
-      duration: "Week 10",
+      duration: "Week 7-8",
       status: "pending",
       tasks: [
         "App store submission",
@@ -58,9 +69,9 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return "px-checkbox";
+        return "px-check";
       case "in-progress":
-        return "px-zap";
+        return "px-code";
       case "pending":
         return "px-chevron-right";
       default:
@@ -71,7 +82,7 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "text-green-600 bg-green-100";
+        return "text-teal-700 bg-teal-50";
       case "in-progress":
         return "text-blue-600 bg-blue-100";
       case "pending":
@@ -104,7 +115,7 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
             >
               {/* Timeline line */}
               {index < milestones.length - 1 && (
-                <div className="absolute left-6 top-12 w-0.5 h-16 bg-gray-200"></div>
+                <div className="absolute left-6 top-16 w-1 rounded-full h-16 bg-gray-200"></div>
               )}
 
               <div className="flex items-start space-x-4">
@@ -117,7 +128,7 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
                   />
                 </div>
 
-                <div className="flex-1 bg-white rounded-lg p-4 shadow-sm border">
+                <div className="flex-1 bg-gradient-to-r from-slate-300 via-slate-300 to-slate-200 rounded-lg p-4 border">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-800">
                       {milestone.phase}
@@ -148,22 +159,32 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="mt-6 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-6 text-white"
+          className="mt-6 bg-gradient-to-r from-slate-700 via-slate-500 to-slate-600 rounded-lg p-6 text-white"
         >
           <h3 className="text-lg font-semibold mb-2">Project Timeline</h3>
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span>Current Week: 5 of 10</span>
-              <span>50% Complete</span>
+              <span>Current Week: 2 of 8</span>
+              <span>20% Complete</span>
             </div>
-            <div className="w-full bg-green-400 rounded-full h-2">
-              <div
-                className="bg-white h-2 rounded-full"
-                style={{ width: "50%" }}
-              ></div>
+            <div className="relative w-full h-3 rounded-full bg-gray-700">
+              {/* Glow layer - positioned behind the main bar */}
+              <motion.div
+                className="absolute w-full top-0 left-0 h-3 rounded-full bg-gradient-to-r from-green-300 to-progress-end z-0"
+                style={{ filter: "blur(10px)" }} // Apply blur directly for the glow effect
+                initial={{ width: 0 }}
+                animate={controls}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+              />
+              {/* Actual progress bar - on top of the glow */}
+              <motion.div
+                className="absolute w-full top-0 left-0 h-3 rounded-[18px] bg-gradient-to-r from-green-300 to-progress-end z-10"
+                initial={{ width: 0 }}
+                animate={controls}
+              />
             </div>
             <p className="text-green-100 text-sm">
-              Expected completion: 5 weeks remaining
+              Expected completion: 6 weeks remaining
             </p>
           </div>
         </motion.div>

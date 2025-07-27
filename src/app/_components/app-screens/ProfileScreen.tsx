@@ -77,7 +77,7 @@ export const ProfileScreen = ({
       </div>
 
       {/* Profile Image Section */}
-      <div className="relative flex-shrink-0 bg-gray-200 flex items-center justify-center overflow-hidden h-[68%]">
+      <div className="relative flex-shrink-0 bg-gray-200 flex items-center justify-center w-full overflow-hidden h-[68%]">
         <Image
           src={profile.imageUrl || "/placeholder.svg"}
           alt={profile.name}
