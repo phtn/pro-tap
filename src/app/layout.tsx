@@ -19,6 +19,7 @@ const space = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Project Proposal",
   description: "for ProTap",
+  icons: ["/re-up-icon.svg"],
 };
 
 export default function RootLayout({
