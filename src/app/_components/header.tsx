@@ -10,13 +10,8 @@ export const Header = () => {
         value={100}
       />
       <InfoCard doc="client" title="Protap" status="approved" value={100} />
-      <InfoCard
-        doc="application"
-        title="web app"
-        status="started"
-        value={100}
-      />
-      <InfoCard doc="tech" title="6 features" status="itemized" value={100} />
+      <InfoCard doc="application" title="web app" status="started" value={20} />
+      <InfoCard doc="tech" title="6 features" status="itemized" value={20} />
       <InfoCard
         doc="delivery"
         title="Completion"
