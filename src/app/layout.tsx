@@ -17,7 +17,7 @@ const space = Space_Grotesk({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "Project Proposal",
+  title: "ProTap Project",
   description: "for ProTap",
   icons: ["/re-up-icon.svg"],
 };
