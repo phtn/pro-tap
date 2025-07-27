@@ -109,7 +109,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
                     {formatCurrency(item.allocated)}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {item.percentage}% used
+                    {((item.spent / item.allocated) * 100).toFixed(2)}% used
                   </p>
                 </div>
               </div>
