@@ -6,8 +6,8 @@ export const Header = () => {
       <InfoCard
         doc="document"
         title="project proposal"
-        status="in-progress"
-        value={50}
+        status="complete"
+        value={100}
       />
       <InfoCard doc="client" title="Protap" status="approved" value={100} />
       <InfoCard
