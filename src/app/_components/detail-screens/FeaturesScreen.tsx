@@ -25,37 +25,37 @@ export const FeaturesScreen = (props: FeaturesScreenProps) => {
       title: "Add to Contacts on Card Tap",
       description: "Auto contact sharing via RFID card tap",
       status: "not-started",
-      icon: "px-paperclip",
+      icon: "paperclip",
     },
     {
       title: "Add to Contacts on QR Scan",
       description: "Quick contact sharing via QR codes",
       status: "in-progress",
-      icon: "px-chevrons-vertical",
+      icon: "chevron-down",
     },
     {
       title: "QR Code Sharing",
       description: "Quick contact sharing via QR codes",
       status: "in-progress",
-      icon: "px-checkbox",
+      icon: "checkmark-circle",
     },
     {
       title: "Chat Messaging",
       description: "Enable Secure Chat Messaging within connections",
       status: "not-started",
-      icon: "px-zap",
+      icon: "chat",
     },
     {
       title: "Merchant Registry",
       description: "Create Merchant account and product vouchers",
       status: "not-started",
-      icon: "px-chevron-right",
+      icon: "register",
     },
     {
       title: "Account Personalization",
       description: "Share contacts within team organizations",
       status: "in-progress",
-      icon: "px-arrow-up",
+      icon: "user-profile",
     },
   ] as FeatureItem[];
 

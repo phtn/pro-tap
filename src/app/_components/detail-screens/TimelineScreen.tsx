@@ -69,13 +69,13 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return "px-check";
+        return "checkmark-circle";
       case "in-progress":
-        return "px-code";
+        return "code";
       case "pending":
-        return "px-chevron-right";
+        return "chevron-right";
       default:
-        return "px-chevron-right";
+        return "chevron-right";
     }
   };
 
@@ -115,7 +115,7 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
             >
               {/* Timeline line */}
               {index < milestones.length - 1 && (
-                <div className="absolute left-6 top-16 w-1 rounded-full h-16 bg-gray-200"></div>
+                <div className="absolute left-6 top-16 w-1 rounded-full h-16 bg-gray-200" />
               )}
 
               <div className="flex items-start space-x-4">
@@ -144,7 +144,7 @@ export const TimelineScreen = (props: TimelineScreenProps) => {
                         key={taskIndex}
                         className="text-sm text-gray-600 flex items-center"
                       >
-                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2"></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2" />
                         {task}
                       </li>
                     ))}

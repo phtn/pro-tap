@@ -10,12 +10,12 @@ interface SettingsScreenProps {
 
 export const SettingsScreen = ({ onNext, onPrev }: SettingsScreenProps) => {
   const settings = [
-    { label: "Notifications", icon: "px-bell", enabled: true },
-    { label: "Dark Mode", icon: "px-paint", enabled: true },
-    { label: "Location", icon: "px-pin", enabled: true },
-    { label: "Hide Lastname", icon: "px-eye", enabled: true },
-    { label: "chat", icon: "px-chat", enabled: true },
-    { label: "privacy", icon: "px-paperclip", enabled: true },
+    { label: "Notifications", icon: "bell", enabled: true },
+    { label: "Dark Mode", icon: "dark-theme", enabled: true },
+    { label: "Location", icon: "pin-location", enabled: true },
+    { label: "Hide Lastname", icon: "lock", enabled: true },
+    { label: "chat", icon: "chat", enabled: true },
+    { label: "privacy", icon: "privacy", enabled: true },
   ] as LinkItem[];
 
   return (
@@ -29,7 +29,7 @@ export const SettingsScreen = ({ onNext, onPrev }: SettingsScreenProps) => {
           className="rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50"
         >
           <Icon
-            name="px-chevron-right"
+            name="chevron-right"
             className="size-6 aspect-square rotate-180"
           />
         </Button>
@@ -40,7 +40,7 @@ export const SettingsScreen = ({ onNext, onPrev }: SettingsScreenProps) => {
           onClick={onNext}
           className="rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50"
         >
-          <Icon name="px-chevron-right" className="size-6 aspect-square" />
+          <Icon name="chevron-right" className="size-6 aspect-square" />
         </Button>
       </div>
 

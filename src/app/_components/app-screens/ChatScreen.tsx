@@ -81,7 +81,7 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
             className="rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <Icon
-              name="px-chevron-right"
+              name="chevron-right"
               className="size-6 aspect-square rotate-180"
             />
           </Button>
@@ -95,7 +95,7 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
                 height={32}
                 className="rounded-full aspect-square size-8 object-cover"
               />
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border border-gray-900"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border border-gray-900" />
             </div>
             <div>
               <div className="text-white text-sm font-medium">
@@ -111,7 +111,7 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
             onClick={onNext}
             className="rounded-full bg-white/10 text-white hover:bg-white/20"
           >
-            <Icon name="px-chevron-right" className="size-6 aspect-square" />
+            <Icon name="chevron-right" className="size-6 aspect-square" />
           </Button>
         </div>
       </div>
@@ -186,7 +186,7 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
               variant="ghost"
               className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-gray-700"
             >
-              <Icon name="px-paperclip" className="w-4 h-4" />
+              <Icon name="paperclip" className="w-4 h-4" />
             </Button>
           </div>
 
@@ -196,7 +196,7 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
             disabled={!newMessage.trim()}
             className="rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-300"
           >
-            <Icon name="px-arrow-up" className="size-5 aspect-square" />
+            <Icon name="arrow-up" className="size-5 aspect-square" />
           </Button>
         </div>
       </motion.div>

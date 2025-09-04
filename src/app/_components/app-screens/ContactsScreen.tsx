@@ -26,7 +26,7 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
           className="rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50"
         >
           <Icon
-            name="px-chevron-right"
+            name="chevron-right"
             className="size-6 aspect-square rotate-180"
           />
         </Button>
@@ -37,7 +37,7 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
           onClick={onNext}
           className="rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50"
         >
-          <Icon name="px-chevron-right" className="size-6 aspect-square" />
+          <Icon name="chevron-right" className="size-6 aspect-square" />
         </Button>
       </div>
 

@@ -38,7 +38,6 @@ export const OverviewScreen = (props: OverviewScreenProps) => {
           id: 2,
           label: "secure chat messaging",
         },
-        ,
         {
           id: 3,
           label: "merchant account & voucher registry",
@@ -78,7 +77,7 @@ export const OverviewScreen = (props: OverviewScreenProps) => {
                 Proposal PDF
               </a>
               <Icon
-                name={downloading ? "spinners-ring" : "px-download"}
+                name={downloading ? "spinners-ring" : "download"}
                 className="size-4"
               />
             </div>
@@ -152,7 +151,7 @@ export const OverviewScreen = (props: OverviewScreenProps) => {
 
 const ObjectiveItem = ({ label }: GenericList) => (
   <div className="flex items-center capitalize text-gray-700 font-space">
-    <Icon name="px-check" className="h-5 text-slate-500 mr-1" />
+    <Icon name="checkmark-circle" className="h-5 text-slate-500 mr-1" />
     {label}
   </div>
 );

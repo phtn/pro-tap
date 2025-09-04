@@ -1,4 +1,4 @@
-import { type IconName } from "@/lib/icons";
+import { type IconName } from '@/lib/icons'
 
 export interface FeatureItem {
   title: string;

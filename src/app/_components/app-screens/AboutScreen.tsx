@@ -19,7 +19,7 @@ export const AboutScreen = ({ onNext, onPrev }: AboutScreenProps) => {
           className="rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50"
         >
           <Icon
-            name="px-chevron-right"
+            name="chevron-right"
             className="size-6 aspect-square rotate-180"
           />
         </Button>
@@ -30,7 +30,7 @@ export const AboutScreen = ({ onNext, onPrev }: AboutScreenProps) => {
           onClick={onNext}
           className="rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50"
         >
-          <Icon name="px-chevron-right" className="size-6 aspect-square" />
+          <Icon name="chevron-right" className="size-6 aspect-square" />
         </Button>
       </div>
 
@@ -49,7 +49,7 @@ export const AboutScreen = ({ onNext, onPrev }: AboutScreenProps) => {
             className="mb-8"
           >
             <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-orange-400 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <Icon name="px-zap" className="w-10 h-10 text-white" />
+              <Icon name="zap" className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-3xl font-bold mb-2">ProTap</h2>
             <p className="text-gray-400">Professional Contact Management</p>

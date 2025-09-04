@@ -63,7 +63,7 @@ export const ProfileDetailScreen = ({
           className="rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50"
         >
           <Icon
-            name="px-chevron-right"
+            name="chevron-right"
             className="size-6 aspect-square rotate-180"
           />
         </Button>
@@ -74,7 +74,7 @@ export const ProfileDetailScreen = ({
           onClick={onNext}
           className="rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50"
         >
-          <Icon name="px-chevron-right" className="size-6 aspect-square" />
+          <Icon name="chevron-right" className="size-6 aspect-square" />
         </Button>
       </div>
 
@@ -96,7 +96,7 @@ export const ProfileDetailScreen = ({
                 height={80}
                 className="rounded-full aspect-square object-cover border-2 border-white/20"
               />
-              <div className="absolute -bottom-1 right-2 size-6 aspect-square bg-teal-500 rounded-full border-2 border-black"></div>
+              <div className="absolute -bottom-1 right-2 size-6 aspect-square bg-teal-500 rounded-full border-2 border-black" />
             </div>
             <div className="flex-1">
               <h1 className="text-xl font-bold tracking-tight">
@@ -105,7 +105,10 @@ export const ProfileDetailScreen = ({
               <p className="text-slate-300 text-sm">{profile.title}</p>
               <p className="text-slate-400 text-xs">{profile.company}</p>
               <div className="flex items-center mt-1">
-                <Icon name="px-pin" className="w-3 h-3 mr-1 text-slate-400" />
+                <Icon
+                  name="pin-location"
+                  className="w-3 h-3 mr-1 text-slate-400"
+                />
                 <span className="text-slate-400 text-xs">
                   {profile.location}
                 </span>
@@ -209,10 +212,10 @@ export const ProfileDetailScreen = ({
             {profile.experience.map((exp, index) => (
               <div key={index} className="relative">
                 {index < profile.experience.length - 1 && (
-                  <div className="absolute left-1 top-[1.35rem] w-1 h-16 rounded-full bg-gradient-to-br from-slate-600/60 via-slate-500/50 to-slate-400/60"></div>
+                  <div className="absolute left-1 top-[1.35rem] w-1 h-16 rounded-full bg-gradient-to-br from-slate-600/60 via-slate-500/50 to-slate-400/60" />
                 )}
                 <div className="flex items-start space-x-3">
-                  <div className="size-3 aspect-square bg-teal-300 rounded-full mt-1 flex-shrink-0"></div>
+                  <div className="size-3 aspect-square bg-teal-300 rounded-full mt-1 flex-shrink-0" />
                   <div className="flex-1">
                     <h3 className="text-sm font-medium text-teal-50">
                       {exp.title}

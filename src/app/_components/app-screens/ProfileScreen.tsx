@@ -25,7 +25,7 @@ export const ProfileScreen = ({
     links: [
       {
         type: "phone",
-        icon: "fb-f",
+        icon: "facebook",
         href: "tel:+1234567890",
         style: "bg-[#0866ff]",
       },
@@ -61,7 +61,7 @@ export const ProfileScreen = ({
           className="rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50"
         >
           <Icon
-            name="px-chevron-right"
+            name="chevron-right"
             className="size-6 aspect-square rotate-180"
           />
         </Button>
@@ -72,7 +72,7 @@ export const ProfileScreen = ({
           onClick={onNext}
           className="rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50"
         >
-          <Icon name="px-chevron-right" className="size-6 aspect-square" />
+          <Icon name="chevron-right" className="size-6 aspect-square" />
         </Button>
       </div>
 
@@ -128,7 +128,7 @@ export const ProfileScreen = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.6 }}
           >
-            <Icon name="px-pin" className="h-4 w-4 mr-1" />
+            <Icon name="pin-location" className="h-4 w-4 mr-1" />
             <span>{profile.location}</span>
           </motion.div>
         </motion.div>
@@ -177,7 +177,7 @@ export const ProfileScreen = ({
                 View Profile
               </span>
               <Icon
-                name="px-arrow-up"
+                name="arrow-up"
                 className="size-6 rotate-45 text-cyan-600 group-hover:text-cyan-700"
               />
             </div>
