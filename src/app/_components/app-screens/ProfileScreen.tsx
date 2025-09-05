@@ -53,7 +53,7 @@ export const ProfileScreen = ({
   return (
     <>
       {/* Top Bar */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-4">
+      <div className="rounded-t-3xl overflow-hidden absolute top-3 left-0 right-0 z-10 flex justify-between items-center p-10">
         <Button
           size="icon"
           variant="ghost"
@@ -77,7 +77,7 @@ export const ProfileScreen = ({
       </div>
 
       {/* Profile Image Section */}
-      <div className="relative flex-shrink-0 bg-gray-200 flex items-center justify-center w-full overflow-hidden h-[68%]">
+      <div className="relative flex-shrink-0 bg-gray-200 flex items-center justify-center w-full overflow-hidden h-[80%]">
         <Image
           src={profile.imageUrl || "/placeholder.svg"}
           alt={profile.name}
@@ -86,7 +86,7 @@ export const ProfileScreen = ({
           className="object-cover w-full h-full"
         />
         <motion.div
-          className="absolute md:-bottom-28 -bottom-32 left-0 right-0 bg-black h-1/2 rounded-t-[2rem] flex flex-col justify-start p-6 pb-8 gap-y-0 my-0 pt-6"
+          className="absolute md:bottom-0 -bottom-32 left-0 right-0 bg-black h-1/2 rounded-t-[2rem] flex flex-col justify-start p-6 pb-8 gap-y-0 my-0 pt-6"
           initial={{ y: "100%" }}
           animate={{ y: "0%" }}
           transition={{
@@ -167,7 +167,7 @@ export const ProfileScreen = ({
           transition={{ duration: 0.3, delay: 0.8 }}
         >
           <Button
-            size="xl"
+            size="lg"
             variant="secondary"
             onClick={onViewProfile}
             className="flex bg-white group w-full border-0 border-border/40 py-2 px-3 pb-2"

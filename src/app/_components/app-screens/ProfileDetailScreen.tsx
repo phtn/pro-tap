@@ -240,13 +240,13 @@ export const ProfileDetailScreen = ({
           className="px-6 pb-8 pt-6 space-y-3 font-space"
         >
           <Button
-            size="xl"
+            size="lg"
             className="w-full bg-teal-500 hover:bg-teal-600 text-white"
           >
             Connect
           </Button>
           <Button
-            size="xl"
+            size="lg"
             onClick={onSendMessage}
             variant="outline"
             className="w-full border-gray-700 text-slate-700 hover:text-teal-300 hover:bg-gray-700"

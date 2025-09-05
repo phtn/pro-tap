@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { DesktopDetails } from './_components/details'
-import { AppViewer } from './_components/app-viewer'
-import { Header } from './_components/header'
-import { Nav } from './_components/nav'
+import { DesktopDetails } from "./_components/details";
+import { AppViewer } from "./_components/app-viewer";
+import { Header } from "./_components/header";
+import { Nav } from "./_components/nav";
 
 export const Content = () => {
   return (
-    <div className='flex mx-auto lg:items-start items-center justify-center min-h-screen lg:max-w-7xl xl:max-w-10/12 max-w-full  lg:p-4'>
-      <div className='space-y-4'>
+    <div className="flex lg:items-start items-center justify-center min-h-screen lg:p-4  bg-zinc-800">
+      <div className="space-y-4">
         <Nav />
-        <Header />
-        <div className='flex lg:space-x-8'>
+        {/*<Header />*/}
+        <div className="flex lg:space-x-8">
           {/* This div simulates the phone screen for presentation */}
           <AppViewer />
           {/* This div shows the details presentation */}
@@ -19,5 +19,5 @@ export const Content = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

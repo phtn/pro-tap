@@ -22,13 +22,13 @@ export const Palantir: React.FC<Props> = ({
   className,
   colors,
   animationDuration = 120,
-  darkness = 0.01,
+  darkness = 0.001,
 }) => {
   const defaultColors = {
-    bg: `oklch(2% 100.52 264.695)`,
-    c1: "oklch(0.654 0.185 270.53)", // Pastel lavamder
-    c2: "oklch(8% 0.12 200)", // Pastel blue
-    c3: "oklch(0.27 0.121 74.65)", // Pastel amber
+    bg: `oklch(1 0 0)`,
+    c1: "oklch(32.1 97.7 83.1)", // Pastel lavamder
+    c2: "emerald-400", // Bloodlust
+    c3: "cyan-200", // Pastel amber
   };
 
   const finalColors = { ...defaultColors, ...colors };
@@ -49,8 +49,8 @@ export const Palantir: React.FC<Props> = ({
 
   const dotSize =
     sizeValue < 50
-      ? Math.max(sizeValue * 0.18, 2) // Much larger dots for small sizes (minimum 2px)
-      : Math.max(sizeValue * 0.12, 8); // Much larger dots for bigger sizes (minimum 8px)
+      ? Math.max(sizeValue * 0.002, 0.04) // Much larger dots for small sizes (minimum 2px)
+      : Math.max(sizeValue * 0.004, 0.02); // Much larger dots for bigger sizes (minimum 8px)
 
   const shadowSpread =
     sizeValue < 50
@@ -59,7 +59,7 @@ export const Palantir: React.FC<Props> = ({
 
   // Adjust mask radius based on size to reduce black center in small sizes
   const maskRadius =
-    sizeValue < 30
+    sizeValue < 10
       ? "0%"
       : sizeValue < 50
         ? "5%"
@@ -75,11 +75,11 @@ export const Palantir: React.FC<Props> = ({
         ? Math.max(contrastAmount * 1.2, 1.3) // Reduced contrast for small sizes
         : contrastAmount;
 
-  const darknessOpacity = Math.max(0.05, darkness * 0.3);
+  const darknessOpacity = Math.max(0.05, darkness * 0.5);
 
   return (
     <div
-      className={cn("siri-orb", className)}
+      className={cn("palantir", className)}
       style={
         {
           width: size,
@@ -90,7 +90,7 @@ export const Palantir: React.FC<Props> = ({
           "--c3": finalColors.c3,
           "--animation-duration": `${animationDuration}s`,
           "--blur-amount": `${blurAmount}px`,
-          "--contrast-amount": finalContrast,
+          "--contrast-amount": finalContrast / 2,
           "--dot-size": `${dotSize}px`,
           "--shadow-spread": `${shadowSpread}px`,
           "--mask-radius": maskRadius,
@@ -100,7 +100,7 @@ export const Palantir: React.FC<Props> = ({
     >
       <div className="background-layer" />
       <div className="contrail-lines" />
-      <div className="animated-lines" />
+      {/*<div className="animated-lines" />*/}
 
       <style jsx>{`
         @property --angle {
@@ -121,7 +121,7 @@ export const Palantir: React.FC<Props> = ({
           initial-value: 0%;
         }
 
-        .siri-orb {
+        .palantir {
           display: grid;
           grid-template-areas: "stack";
           overflow: hidden;
@@ -131,7 +131,7 @@ export const Palantir: React.FC<Props> = ({
           /* Added outer glow effect */
           box-shadow:
             0 0 calc(var(--blur-amount) * 3) rgba(147, 51, 234, 0.4),
-            0 0 calc(var(--blur-amount) * 6) rgba(59, 130, 246, 0.3),
+            0 0 calc(var(--blur-amount) * 5) rgba(59, 130, 246, 0.3),
             0 0 calc(var(--blur-amount) * 9) rgba(236, 72, 153, 0.2),
             0 0 calc(var(--blur-amount) * 12) rgba(34, 197, 94, 0.15);
           animation: glow-pulse calc(var(--animation-duration) * 0.5)
@@ -208,7 +208,7 @@ export const Palantir: React.FC<Props> = ({
             radial-gradient(
               circle at calc(50% + var(--pulse) * 5%)
                 calc(20% + var(--pulse) * 8%),
-              rgba(236, 72, 153, 0.35) 0%,
+              rgba(255, 206, 178, 0.35) 0%,
               transparent 45%
             ),
             conic-gradient(
@@ -244,7 +244,7 @@ export const Palantir: React.FC<Props> = ({
               from calc(var(--angle) * 0.2) at 50% 50%,
               transparent 0%,
               transparent 30%,
-              rgba(147, 51, 234, 0.8) 12%,
+              rgba(188, 253, 202, 0.8) 12%,
               rgba(59, 130, 246, 0.6) 14%,
               transparent 16%,
               transparent 90%
@@ -254,18 +254,18 @@ export const Palantir: React.FC<Props> = ({
                 from calc(var(--angle) * 0.2 + 25deg) at 50% 50%,
                 transparent 0%,
                 transparent 45%,
-                rgba(236, 72, 153, 0.7) 17%,
+                rgba(212, 212, 212, 0.7) 17%,
                 rgba(34, 197, 94, 0.5) 19%,
                 transparent 21%,
                 transparent 90%
               );
           filter: blur(calc(var(--blur-amount) * 0.5));
           animation: rotate calc(var(--animation-duration) * 2) linear infinite;
-          mix-blend-mode: screen;
+          mix-blend-mode: hard-light;
           z-index: 2;
         }
 
-        .siri-orb::before {
+        .palantir::before {
           content: "";
           display: block;
           grid-area: stack;
@@ -318,11 +318,11 @@ export const Palantir: React.FC<Props> = ({
           box-shadow:
             inset rgba(0, 0, 0, var(--darkness-opacity)) 0 0
               var(--shadow-spread) calc(var(--shadow-spread) * 0.2),
-            inset 0 0 calc(var(--blur-amount) * 2) rgba(147, 51, 234, 0.3),
+            inset 0 0 calc(var(--blur-amount) * 2) rgba(147, 151, 234, 0.3),
             inset 0 0 calc(var(--blur-amount) * 4) rgba(59, 130, 246, 0.2);
         }
 
-        .siri-orb::after {
+        .palantir::after {
           content: "";
           display: block;
           grid-area: stack;
@@ -386,13 +386,13 @@ export const Palantir: React.FC<Props> = ({
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .siri-orb::before,
+          .palantir::before,
           .background-layer,
           .animated-lines,
           .contrail-lines {
             animation: none;
           }
-          .siri-orb {
+          .palantir {
             animation: none;
           }
         }
