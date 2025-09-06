@@ -1,14 +1,20 @@
+import { type ClassName } from "@/app/types";
 import { Icon } from "@/lib/icons";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
+interface Props {
+  className?: ClassName;
+}
 export const Logo = () => <Icon name="re-up.ph" className="size-10" />;
-export const LogoPro = () => (
+
+export const LogoPro = ({ className }: Props) => (
   <Image
     alt="pro-logo"
     src="/svg/pro.svg"
     width={0}
     height={0}
-    className="h-6 w-auto aspect-auto"
+    className={cn("h-6 w-auto aspect-auto", className)}
   />
 );
 export const LogoImage = () => (

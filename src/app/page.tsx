@@ -1,16 +1,16 @@
 import CardFlip from "@/components/kokonutui/card-flip";
 import { Content } from "./content";
-import { Hero } from "./hero";
 import { CreditCard } from "@/components/experimental/nfc-card";
 import CurrencyTransfer from "@/components/kokonutui/currency-transfer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-export default async function Main() {
+import { LogoPro } from "@/components/logo";
+export default async function RootPage() {
+  // throw new Error("Error occurred");
   return (
-    <div className="relative size-screen portrait:flex items-center justify-center">
-      <Hero />
-      <div className="w-full space-x-4 flex items-center justify-center absolute z-100">
+    <div className="relative h-screen portrait:flex items-center justify-center bg-gray-950">
+      <Content />
+      {/*<div className="w-full space-x-4 flex items-center justify-center absolute z-100">
         <CurrencyTransfer />
         <div>
           <CreditCard
@@ -29,7 +29,7 @@ export default async function Main() {
           </Link>
         </div>
         <CardFlip />
-      </div>
+      </div>*/}
     </div>
   );
 }

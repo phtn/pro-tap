@@ -24,7 +24,7 @@ export interface CardFlipProps {
   features?: string[];
 }
 
-export default function CardFlip({
+export function ProtapCard({
   title = "Design Systems",
   subtitle = "Explore the fundamentals",
   description = "Dive deep into the world of modern UI/UX design.",
@@ -41,7 +41,7 @@ export default function CardFlip({
     >
       <div
         className={cn(
-          "relative w-full h-full bg-zinc-900 rounded-[2rem]",
+          "relative w-full h-full bg-zinc-900 rounded-[24px]",
           "[transform-style:preserve-3d]",
           "transition-all duration-700",
           on ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]",
@@ -52,7 +52,7 @@ export default function CardFlip({
             className={cn(
               "p-px absolute inset-0 w-full h-full ",
               "[backface-visibility:hidden] [transform:rotateY(0deg)]",
-              "overflow-hidden rounded-4xl",
+              "overflow-hidden rounded-[22px]",
               "bg-[url('/svg/circuit-fine.svg')] bg-cover object-center  dark:bg-zinc-900",
               "border border-zinc-600 dark:border-zinc-800/50",
               "shadow-xs dark:shadow-lg",
@@ -229,7 +229,7 @@ interface Props {
 
 const GlassBorder = ({ children, ref }: Props) => {
   return (
-    <div className="border-2 grid grid-cols-1 rounded-lg sm:rounded-xl h-full md:rounded-[2rem] p-1 sm:p-1.5 md:p-2 shadow-md shadow-black/15">
+    <div className="border-2 grid grid-cols-1 rounded-3xl h-full sm:rounded-[2rem] p-1 sm:p-1.5 md:p-2 shadow-md shadow-black/15">
       <div className="rounded-lg sm:rounded-lg md:rounded-3xl p-2 sm:p-3 md:p-2 shadow-xl ring-1 ring-black/5">
         <div className="w-full h-full overflow-hidden">
           {/* Ref for measuring content dimensions (so we can let framer know to animate into the dimensions) */}

@@ -4,10 +4,17 @@ import { DesktopDetails } from "./_components/details";
 import { AppViewer } from "./_components/app-viewer";
 import { Header } from "./_components/header";
 import { Nav } from "./_components/nav";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const Content = () => {
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/alpha");
+  }, [router]);
+
   return (
-    <div className="flex lg:items-start items-center justify-center min-h-screen lg:p-4  bg-zinc-800">
+    <div className="flex lg:items-start items-center justify-center min-h-screen lg:p-4  ">
       <div className="space-y-4">
         <Nav />
         {/*<Header />*/}
