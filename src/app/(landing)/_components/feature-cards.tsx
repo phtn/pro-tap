@@ -1,5 +1,8 @@
+import { Expansive } from "@/components/experimental/expansive";
 import { BentoCard } from "@/components/kokonutui/bento-grid";
 import { Card } from "@/components/ui/card";
+
+import { TextureButton } from "@/components/ui/texture-button";
 import {
   TextureCardStyled as TextureCard,
   TextureCardContent,
@@ -7,29 +10,16 @@ import {
   TextureSeparator,
 } from "@/components/ui/texture-card";
 import { Icon } from "@/lib/icons";
+import { cn } from "@/lib/utils";
+import { metadata } from "motion/react-client";
 
 export const FeatureCards = () => {
   return (
-    <div className="mt-20">
-      <BentoCard
-        item={{
-          id: "0",
-          title: "Personalized Page",
-          description:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum eos quia incidunt perspiciatis, ut, deleniti fugit a aliquam sequi, voluptatum pariatur quaerat. Temporibus sed facere at, voluptas dolorem officiis incidunt!",
-        }}
-      ></BentoCard>
-      {/*<FeatureCard
-        title="Personalized Page"
-        description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum eos
-                quia incidunt perspiciatis, ut, deleniti fugit a aliquam sequi,
-                voluptatum pariatur quaerat. Temporibus sed facere at, voluptas
-                dolorem officiis incidunt!"
-      />*/}
-      {/*<BasicCard
-        title="Personalized Page"
-        description="Drag-n-drop the prebuilt templates into your design and finish it in minutes"
-      />*/}
+    <div className="h-[38lvh] overflow-auto flex items-center justify-between w-full">
+      <Expansive title="Account Personalization" />
+      <Expansive title="Personal Accident Coverage" />
+      <Expansive title="Open Merchant Account" />
+      <Expansive title="Create Affiliate Account" />
     </div>
   );
 };
@@ -40,25 +30,26 @@ interface FeatureCardProps {
 }
 const FeatureCard = ({ title, description }: FeatureCardProps) => {
   return (
-    <TextureCard>
-      <TextureCardHeader className="flex flex-col gap-4 justify-center items-center  ">
-        <div className="p-3 bg-neutral-950 rounded-full">
-          <Icon name="user-profile" className="h-4 w-4 stroke-neutral-200" />
-        </div>
-        {title}
+    <TextureCard radius={28}>
+      <TextureCardHeader className="flex items-center justify-between px-6 ">
+        <div />
+        <TextureButton variant="icon" className="aspect-square">
+          <Icon name="arrow-up" className="rotate-45" />
+        </TextureButton>
       </TextureCardHeader>
 
-      <TextureCardContent className=" w-48 ">
-        <p>{description}</p>
+      <TextureCardContent className="p-6 w-1/3">
+        <span className="w-full">{description}</span>
       </TextureCardContent>
       <TextureSeparator />
 
       <div>
         <div className="dark:bg-neutral-800 bg-stone-100 pt-px rounded-b-[20px] overflow-hidden ">
           <div className="flex flex-col items-center justify-center">
-            <div className="py-2 px-2">
+            <div className="py-2 px-4">
               <p className="font-light dark:text-white text-black">
-                Texture <span className="font-medium tracking-wide">card</span>
+                Personalized{" "}
+                <span className="font-medium tracking-wide">Page</span>
               </p>
             </div>
           </div>

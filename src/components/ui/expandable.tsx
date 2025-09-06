@@ -21,7 +21,7 @@ import useMeasure from "react-use-measure";
 
 import { cn } from "@/lib/utils";
 
-const springConfig: Transition = { stiffness: 200, damping: 20, bounce: 0.2 };
+const springConfig: Transition = { stiffness: 200, damping: 30, bounce: 0.2 };
 
 interface ExpandableContextType {
   isExpanded: boolean; // Indicates whether the component is expanded
@@ -439,14 +439,15 @@ const ExpandableCard = React.forwardRef<HTMLDivElement, ExpandableCardProps>(
             "max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] md:max-w-[calc(100%-4rem)]",
             "mx-auto w-full",
             "transition-all duration-300 ease-in-out",
+            "bg-background/20",
           )}
         >
           {/* Nested divs purely for styling and layout (the shadow ring around the card) */}
           <div className="grid grid-cols-1 rounded-lg sm:rounded-xl md:rounded-[2rem] p-1 sm:p-1.5 md:p-2 shadow-md shadow-black/5">
-            <div className="rounded-md sm:rounded-lg md:rounded-3xl bg-white p-2 sm:p-3 md:p-4 shadow-xl ring-1 ring-black/5">
-              <div className="w-full h-full overflow-hidden">
+            <div className="rounded-md sm:rounded-lg md:rounded-3xl  p-2 sm:p-3 md:p-4 shadow-xl ring-1 ring-black/5">
+              <div className="w-full overflow-hidden">
                 {/* Ref for measuring content dimensions (so we can let framer know to animate into the dimensions) */}
-                <div ref={measureRef} className="flex flex-col h-full">
+                <div ref={measureRef} className="flex flex-col">
                   {children}
                 </div>
               </div>

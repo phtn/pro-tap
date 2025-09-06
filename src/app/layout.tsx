@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 // eslint-disable-next-line camelcase
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk, Figtree } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -18,6 +18,10 @@ const space = Space_Grotesk({
   variable: "--font-space",
   subsets: ["latin"],
 });
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin"],
+});
 export const metadata: Metadata = {
   title: "ProTap Project",
   description: "for ProTap",
@@ -32,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
+        className={`${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
       >
         <ThemeProvider
           enableSystem

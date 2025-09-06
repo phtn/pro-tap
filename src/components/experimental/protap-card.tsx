@@ -25,10 +25,15 @@ export interface CardFlipProps {
 }
 
 export function ProtapCard({
-  title = "Design Systems",
-  subtitle = "Explore the fundamentals",
-  description = "Dive deep into the world of modern UI/UX design.",
-  features = ["UI/UX", "Modern Design", "Tailwind CSS", "Kokonut UI"],
+  title = "What's Inside",
+  subtitle = "",
+  description = "A closer look into Protap's Technology.",
+  features = [
+    "NFC Enabled Card",
+    "Personal Accident Protection",
+    "Increase Online Presence",
+    "Affiliate Enabled Account",
+  ],
 }: CardFlipProps) {
   const { on, toggle } = useToggle(false);
 
@@ -45,6 +50,7 @@ export function ProtapCard({
           "[transform-style:preserve-3d]",
           "transition-all duration-700",
           on ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]",
+          "",
         )}
       >
         <GlassBorder>
@@ -73,16 +79,16 @@ export function ProtapCard({
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-5">
-              <div className="relative flex items-center justify-between gap-3">
-                <div className="space-y-1.5">
+              <div className="relative flex items-center justify-between">
+                <div className="">
                   {/* Chip */}
-                  <div className="absolute bottom-5 left-8">
-                    <div className="w-12 h-11 border border-cyan-50/70 bg-gradient-to-br from-protap-blue/70 to-protap-blue/80 rounded-md drop-shadow-sm drop-shadow-cyan-50">
-                      <div className="w-full flex items-center justify-center h-full bg-gradient-to-br from-yellow-200/50 to-transparent rounded-md">
-                        <Icon name="secure" className="size-9 text-cyan-50" />
+                  <div className="absolute bottom-3.75 left-[1.35rem]">
+                    <div className="w-[4.25rem] h-[4.15rem] bg-gradient-to-br from-black/70 to-black/60 rounded-sm drop-shadow-cyan-50">
+                      <div className="w-full flex items-center justify-center h-full bg-gradient-to-br from-cyan-100/30 dark:from-yellow-100/30 to-transparent rounded-sm">
+                        <Icon name="secure" className="size-10 text-cyan-50" />
                       </div>
                     </div>
-                    <GlassFilter />
+                    {/*<GlassFilter />*/}
                   </div>
                 </div>
                 <div className="relative group/icon text-cyan-100 text-xs font-space space-x-2">
@@ -132,10 +138,7 @@ export function ProtapCard({
                     transitionDelay: `${index * 100 + 200}ms`,
                   }}
                 >
-                  <Icon
-                    name="arrow-right"
-                    className="w-3 h-3 text-orange-500"
-                  />
+                  <Icon name="arrow-right" className="size-4 text-orange-300" />
                   <span>{feature}</span>
                 </div>
               ))}
@@ -151,25 +154,25 @@ export function ProtapCard({
                 "transition-all duration-300",
                 "bg-gradient-to-r from-zinc-100 via-zinc-100 to-zinc-100",
                 "dark:from-zinc-800 dark:via-zinc-800 dark:to-zinc-800",
-                "hover:from-orange-500/10 hover:from-0% hover:via-orange-500/5 hover:via-100% hover:to-transparent hover:to-100%",
-                "dark:hover:from-orange-500/20 dark:hover:from-0% dark:hover:via-orange-500/10 dark:hover:via-100% dark:hover:to-transparent dark:hover:to-100%",
+                "hover:from-sky-500/10 hover:from-0% hover:via-sky-500/5 hover:via-100% hover:to-transparent hover:to-100%",
+                "dark:hover:from-sky-500/20 dark:hover:from-0% dark:hover:via-sky-500/10 dark:hover:via-100% dark:hover:to-transparent dark:hover:to-100%",
                 "hover:scale-[1.02] hover:cursor-pointer",
               )}
             >
-              <span className="text-sm font-medium text-zinc-900 dark:text-white transition-colors duration-300 group-hover/start:text-orange-600 dark:group-hover/start:text-orange-400">
+              <span className="text-sm font-medium text-zinc-900 dark:text-white transition-colors duration-300 group-hover/start:text-sky-600 dark:group-hover/start:text-sky-400">
                 Start today
               </span>
               <div className="relative group/icon">
                 <div
                   className={cn(
                     "absolute inset-[-6px] rounded-lg transition-all duration-300",
-                    "bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent",
+                    "bg-gradient-to-br from-sky-500/20 via-sky-500/10 to-transparent",
                     "opacity-0 group-hover/start:opacity-100 scale-90 group-hover/start:scale-100",
                   )}
                 />
                 <Icon
                   name="arrow-right"
-                  className="relative z-10 w-4 h-4 text-orange-500 transition-all duration-300 group-hover/start:translate-x-0.5 group-hover/start:scale-110"
+                  className="relative z-10 w-4 h-4 text-sky-500 transition-all duration-300 group-hover/start:translate-x-0.5 group-hover/start:scale-110"
                 />
               </div>
             </div>
