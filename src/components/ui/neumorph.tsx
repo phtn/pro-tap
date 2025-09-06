@@ -58,13 +58,22 @@ const buttonVariants = cva(
         outline: [
           "border-foreground/10 border-2",
           "text-foreground",
-          "hover:enabled:bg-[#FFF]",
+          "hover:enabled:bg-foreground/5",
           "disabled:bg-[#F5A799]",
-          // "[box-shadow:inset_0px_-2.108433723449707px_0px_0px_#D63A1F,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(214,_58,_31,_58%)]",
-          "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
+          // "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
           "disabled:shadow-none",
-          "active:bg-[#F0F0F0]",
-          "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_70%)]",
+          "active:bg-[#FFF]",
+          // "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_70%)]",
+        ],
+        ghost: [
+          "border-foreground/10 border-0",
+          "text-foreground",
+          "hover:enabled:bg-foreground/10",
+          "disabled:bg-[#F5A799]",
+          "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF_20%,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
+          "disabled:shadow-none",
+          "active:bg-[#F0F0F0]/10",
+          // "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_10%)]",
         ],
       },
       size: {
@@ -72,18 +81,19 @@ const buttonVariants = cva(
         md: ["text-base", "py-2", "px-5", "h-11", "rounded-[10px]"],
         lg: ["text-lg", "py-3", "px-8", "h-14", "rounded-[12px]"],
         xl: ["text-xl", "py-3", "px-10", "h-16", "rounded-[14px]"],
+        sq: ["text-base", "p-1", "aspect-square", "rounded-full"],
       },
       fullWidth: {
         true: "w-full",
       },
     },
-    // compoundVariants: [
-    //   {
-    //     intent: ["default", "primary", "secondary", "danger"],
-    //     size: "md",
-    //     className: "uppercase",
-    //   },
-    // ],
+    compoundVariants: [
+      {
+        intent: ["ghost"],
+        size: ["md", "lg"],
+        className: "p-0 aspect-square rounded-full",
+      },
+    ],
     defaultVariants: {
       intent: "default",
       size: "md",

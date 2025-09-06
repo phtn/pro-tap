@@ -8,7 +8,7 @@ import { FeatureCards } from "@/app/(landing)/_components/feature-cards";
 
 export const Landing = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-background to-background text-foreground">
+    <div className="min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-background to-background text-foreground">
       {/* Navigation */}
       <Navbar />
 
@@ -18,13 +18,13 @@ export const Landing = () => {
           {/* Left Content */}
           <div className="h-full space-y-8 flex flex-col justify-center">
             <div className="space-y-4">
-              <h2 className="text-protap-blue font-bold leading-6">
+              <h2 className="text-protap-blue dark:text-foreground font-bold leading-6">
                 <TextAnimate
                   text={`Protap`}
                   type="popIn"
                   className="tracking-normal text-left text-5xl lg:text-6xl"
                 />
-                <span className="capitalize font-space text-xl lg:text-2xl font-medium tracking-wide">
+                <span className="capitalize font-space text-xl lg:text-2xl font-medium tracking-wide opacity-80">
                   Digital Insurance
                 </span>
               </h2>

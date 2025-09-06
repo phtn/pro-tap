@@ -11,11 +11,11 @@ import { useToggle } from "@/hooks/use-toggle";
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
+import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { ReactNode, Ref, useState } from "react";
+import { type ReactNode, type Ref } from "react";
 import { GlassFilter } from "../experimental/glass";
 import { LogoPro } from "../logo";
-import { Icon } from "@/lib/icons";
 
 export interface CardFlipProps {
   title?: string;
@@ -41,7 +41,7 @@ export function ProtapCard({
     >
       <div
         className={cn(
-          "relative w-full h-full bg-zinc-900 rounded-[24px]",
+          "relative w-full h-full bg-zinc-900 rounded-[20px]",
           "[transform-style:preserve-3d]",
           "transition-all duration-700",
           on ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]",
@@ -49,12 +49,13 @@ export function ProtapCard({
       >
         <GlassBorder>
           <div
+            id="bf"
             className={cn(
-              "p-px absolute inset-0 w-full h-full ",
+              "absolute inset-0 w-full h-full ",
               "[backface-visibility:hidden] [transform:rotateY(0deg)]",
-              "overflow-hidden rounded-[22px]",
+              "overflow-hidden rounded-[18px]",
               "bg-[url('/svg/circuit-fine.svg')] bg-cover object-center  dark:bg-zinc-900",
-              "border border-zinc-600 dark:border-zinc-800/50",
+              "border border-zinc-600 dark:border-zinc-800 _dark:border-zinc-800/50",
               "shadow-xs dark:shadow-lg",
               "transition-all duration-700",
               "group-hover:shadow-lg dark:group-hover:shadow-xl",
@@ -62,29 +63,12 @@ export function ProtapCard({
             )}
           >
             <GlassFilter />
-            <div className="relative border-2 border-white/20 shadow-lg shadow-black/20 rounded-[1.75rem] h-full overflow-hidden bg-gradient-to-b from-protap-blue to-protap-blue/50 dark:from-zinc-900 dark:to-black/30">
+            <div
+              id="logo-container"
+              className="rounded-[16px] relative border-0 border-background/15 shadow-lg shadow-black/20 h-full overflow-hidden bg-gradient-to-b from-protap-blue to-protap-blue/50 dark:from-zinc-900 dark:to-black/30"
+            >
               <div className="fill-neutral-400 absolute right-8 top-8">
                 <LogoPro />
-              </div>
-              <div className="absolute inset-0 flex items-start justify-center pt-24">
-                <div className="hidden relative w-[200px] h-[100px] _flex items-center justify-center">
-                  {[...Array(10)].map((_, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        "absolute w-[50px] h-[50px]",
-                        "rounded-[140px]",
-                        "animate-[scale_3s_linear_infinite]",
-                        "opacity-0",
-                        "shadow-[0_0_50px_rgba(255,165,0,0.5)]",
-                        "group-hover:animate-[scale_2s_linear_infinite]",
-                      )}
-                      style={{
-                        animationDelay: `${i * 0.3}s`,
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
 
@@ -100,12 +84,6 @@ export function ProtapCard({
                     </div>
                     <GlassFilter />
                   </div>
-                  <h3 className="hidden text-lg font-semibold text-zinc-900 dark:text-white leading-snug tracking-tighter transition-all duration-500 ease-out-expo group-hover:translate-y-[-4px]">
-                    {title}
-                  </h3>
-                  <p className="hidden text-sm text-zinc-600 dark:text-zinc-200 line-clamp-2 tracking-tight transition-all duration-500 ease-out-expo group-hover:translate-y-[-4px] delay-[50ms]">
-                    {subtitle}
-                  </p>
                 </div>
                 <div className="relative group/icon text-cyan-100 text-xs font-space space-x-2">
                   <span className="uppercase font-bold tracking-wider">
@@ -229,8 +207,11 @@ interface Props {
 
 const GlassBorder = ({ children, ref }: Props) => {
   return (
-    <div className="border-2 grid grid-cols-1 rounded-3xl h-full sm:rounded-[2rem] p-1 sm:p-1.5 md:p-2 shadow-md shadow-black/15">
-      <div className="rounded-lg sm:rounded-lg md:rounded-3xl p-2 sm:p-3 md:p-2 shadow-xl ring-1 ring-black/5">
+    <div
+      id="glass-border"
+      className=" grid grid-cols-1 h-full rounded-[1.5rem] p-px shadow-md shadow-black/15 overflow-hidden"
+    >
+      <div className="p-0 border-2 border-background/20 rounded-[17px] shadow-xl ring-1 ring-black/5">
         <div className="w-full h-full overflow-hidden">
           {/* Ref for measuring content dimensions (so we can let framer know to animate into the dimensions) */}
           <div ref={ref} className="flex flex-col h-full">

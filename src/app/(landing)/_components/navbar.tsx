@@ -19,7 +19,7 @@ export const Navbar = () => {
           viewBox="0 0 425 71"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-protap-blue h-8 w-auto"
+          className="text-protap-blue dark:text-foreground h-8 w-auto"
         >
           <g clipPath="url(#clip0_3509_262)">
             <path
@@ -64,17 +64,19 @@ export const Navbar = () => {
           </defs>
         </svg>
       </div>
-      <NeumorphButton size="lg" intent="outline" className="rounded-full">
-        Sign up
-      </NeumorphButton>
-      <NeumorphButton
-        onClick={toggleTheme}
-        size="lg"
-        intent="outline"
-        className="rounded-full"
-      >
-        <Icon name="dark-theme" />
-      </NeumorphButton>
+      <div className="flex items-center space-x-4">
+        <NeumorphButton size="lg" intent="outline" className="rounded-full">
+          Sign up
+        </NeumorphButton>
+        <NeumorphButton
+          onClick={toggleTheme}
+          size="sq"
+          intent="ghost"
+          className="rounded-full"
+        >
+          <Icon name="dark-theme" />
+        </NeumorphButton>
+      </div>
     </nav>
   );
 };

@@ -1,3 +1,4 @@
+import { BentoCard } from "@/components/kokonutui/bento-grid";
 import { Card } from "@/components/ui/card";
 import {
   TextureCardStyled as TextureCard,
@@ -10,17 +11,25 @@ import { Icon } from "@/lib/icons";
 export const FeatureCards = () => {
   return (
     <div className="mt-20">
-      <FeatureCard
+      <BentoCard
+        item={{
+          id: "0",
+          title: "Personalized Page",
+          description:
+            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum eos quia incidunt perspiciatis, ut, deleniti fugit a aliquam sequi, voluptatum pariatur quaerat. Temporibus sed facere at, voluptas dolorem officiis incidunt!",
+        }}
+      ></BentoCard>
+      {/*<FeatureCard
         title="Personalized Page"
         description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum eos
                 quia incidunt perspiciatis, ut, deleniti fugit a aliquam sequi,
                 voluptatum pariatur quaerat. Temporibus sed facere at, voluptas
                 dolorem officiis incidunt!"
-      />
-      <BasicCard
+      />*/}
+      {/*<BasicCard
         title="Personalized Page"
         description="Drag-n-drop the prebuilt templates into your design and finish it in minutes"
-      />
+      />*/}
     </div>
   );
 };
