@@ -60,7 +60,7 @@ export const Expansive = memo(function ExpandableComponent({
             className="relative"
             collapsedSize={COLLAPSED_SIZE}
             expandedSize={EXPANDED_SIZE}
-            hoverToExpand={true}
+            hoverToExpand={false}
             expandDelay={50}
             collapseDelay={300}
           >
@@ -86,7 +86,7 @@ export const Expansive = memo(function ExpandableComponent({
                         <TextAnimate text="100" />
                       )
                     }
-                    className={cn("text-teal-600 bg-gray-50 hidden", {
+                    className={cn("text-teal-600 hidden", {
                       flex: isExpanded,
                       "text-indigo-400": loading,
                     })}
@@ -112,7 +112,7 @@ export const Expansive = memo(function ExpandableComponent({
               <div className="flex flex-col items-start justify-between">
                 <div
                   className={cn(
-                    "flex max-w-[218px] overflow-auto mx-auto items-center text-sm text-gray-600",
+                    "flex max-w-[218px] overflow-auto mx-auto items-center text-sm text-foreground",
                     {
                       hidden: isExpanded,
                     },
@@ -129,7 +129,7 @@ export const Expansive = memo(function ExpandableComponent({
                           <div
                             key={icon}
                             className={cn(
-                              "size-8 text-neutral-800 rounded-sm bg-white shadow-xs flex items-center justify-center hover:bg-zinc-100",
+                              "size-8 text-foreground/60 rounded-sm shadow-xs flex items-center justify-center hover:bg-foreground/10",
                             )}
                             title={String(icon)}
                           >
@@ -154,7 +154,7 @@ export const Expansive = memo(function ExpandableComponent({
                           <div
                             key={icon}
                             className={cn(
-                              "size-12 hover:rounded-xs rounded-sm shadow-xs shadow-stone-200/80 flex items-center justify-center hover:bg-zinc-100",
+                              "size-12 flex items-center justify-center",
                             )}
                           >
                             <QuickActions
@@ -168,7 +168,7 @@ export const Expansive = memo(function ExpandableComponent({
                         ))}
                         {[1, 2].length === 0 && (
                           <div className="text-xs text-neutral-500 col-span-8">
-                            No icons loaded.
+                            No items loaded.
                           </div>
                         )}
                       </div>
@@ -180,8 +180,8 @@ export const Expansive = memo(function ExpandableComponent({
             <ExpandableContent preset="slide-down" className="mb-2">
               <ExpandableCardFooter>
                 <div className="flex items-start justify-between w-full text-sm text-gray-500">
-                  <div className="flex items-center font-jet w-full"></div>
-                  <div className="space-x-2 flex itens-center"></div>
+                  <div className="flex items-center font-jet w-full">items</div>
+                  <div className="space-x-2 flex itens-center">4</div>
                 </div>
               </ExpandableCardFooter>
             </ExpandableContent>

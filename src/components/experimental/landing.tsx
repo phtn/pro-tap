@@ -24,13 +24,13 @@ export const Landing = () => {
                   type="popIn"
                   className="font-space tracking-normal text-left text-5xl lg:text-6xl"
                 />
-                <span className="capitalize font-figtree text-xl lg:text-2xl font-medium tracking-wide opacity-80">
+                <span className="capitalize font-doto text-xl lg:text-2xl font-bold tracking-normal text-primary">
                   Digital Insurance
                 </span>
               </div>
-              <p className="hidden md:flex font-figtree text-lg text-muted-foreground tracking-wide leading-snug max-w-lg text-balance">
-                Experience the future of insurance with Protap's secure, and
-                personalized insurance services.
+              <p className="hidden md:flex font-figtree text-lg text-foreground/60 tracking-wide leading-snug max-w-lg text-balance">
+                Experience the future of secured, personalized, and feature rich
+                insurance services.
               </p>
             </div>
 

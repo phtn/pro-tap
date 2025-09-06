@@ -145,7 +145,7 @@ export function ProtapCard({
             </div>
           </div>
 
-          <div className="pt-6 mt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="px-2 pt-6 mt-6 border-t border-zinc-200 dark:border-zinc-800">
             <div
               className={cn(
                 "group/start relative",
@@ -159,8 +159,8 @@ export function ProtapCard({
                 "hover:scale-[1.02] hover:cursor-pointer",
               )}
             >
-              <span className="text-sm font-medium text-zinc-900 dark:text-white transition-colors duration-300 group-hover/start:text-sky-600 dark:group-hover/start:text-sky-400">
-                Start today
+              <span className="text-base font-doto font-bold text-zinc-900 dark:text-white transition-colors duration-300 group-hover/start:text-sky-600 dark:group-hover/start:text-sky-200">
+                Get Insured today
               </span>
               <div className="relative group/icon">
                 <div

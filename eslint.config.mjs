@@ -1,5 +1,4 @@
 import neostandard, { plugins, resolveIgnoresFromGitignore } from "neostandard";
-import stylistic from "@stylistic/eslint-config";
 
 export default (config) => [
   ...neostandard({
@@ -8,5 +7,4 @@ export default (config) => [
     ts: true,
   }),
   plugins.n.configs["flat/recommended"],
-  stylistic.configs.recommended,
 ];

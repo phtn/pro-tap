@@ -16,8 +16,8 @@ interface Metadata {
 }
 
 export const useMeta = <T extends Metadata, R extends { name: string }>(
-  endpoint: `/api/${string}`,
-  body: object,
+  endpoint?: `/api/${string}`,
+  body?: object,
   options = DEFAULT_OPTIONS,
 ) => {
   const [metadata, setMetadata] = useState<T | null>(null);
@@ -39,6 +39,7 @@ export const useMeta = <T extends Metadata, R extends { name: string }>(
     metaAbortRef.current = controller;
 
     const fetchMetadata = async () => {
+      if (!endpoint) return;
       try {
         setLoadingMeta(true);
         const response = await fetch(endpoint, {

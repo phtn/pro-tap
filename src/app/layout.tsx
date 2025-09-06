@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 // eslint-disable-next-line camelcase
-import { Geist, Geist_Mono, Space_Grotesk, Figtree } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Space_Grotesk,
+  Figtree,
+  Doto,
+} from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -18,8 +24,13 @@ const space = Space_Grotesk({
   variable: "--font-space",
   subsets: ["latin"],
 });
+
 const figtree = Figtree({
   variable: "--font-figtree",
+  subsets: ["latin"],
+});
+const doto = Doto({
+  variable: "--font-doto",
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
@@ -36,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
+        className={`${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
       >
         <ThemeProvider
           enableSystem
