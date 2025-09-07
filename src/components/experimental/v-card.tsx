@@ -20,45 +20,47 @@ interface ServerInfo {
 interface Props {
   children?: ReactNode;
   serverInfo?: ServerInfo;
+  toolbar?: ReactNode;
+  toggle: VoidFunction;
 }
 
-export function VCard({ children, serverInfo }: Props) {
+export function VCard({ children, serverInfo, toolbar, toggle }: Props) {
   return (
     <div className="flex items-center justify-center">
       <div className="bg-zinc-800/60 px-1 pb-1 backdrop-blur-2xl h-full rounded-md">
-        {children}
+        <div className="h-12 px-4 flex items-center justify-between">
+          {toolbar}
+          <button className="hover:bg-amber-50" onClick={toggle}>
+            <Icon name="close" className="size-4 text-zinc-200" />
+          </button>
+        </div>
         <div className=" items-start justify-center gap-6 rounded-lg grid grid-cols-1 ">
           <div className="col-span-1 grid items-start gap-6 lg:col-span-1">
             <div>
               <TextureCardStyled className="">
                 <TextureCardHeader className="flex flex-col gap-1 items-center justify-center p-4">
-                  <div className="p-3 bg-neutral-950 rounded-full mb-3">
-                    <Icon
-                      name="chevron-right"
-                      className="h-7 w-7 stroke-neutral-200"
-                    />
-                  </div>
-                  <TextureCardTitle>Create your account</TextureCardTitle>
-                  <p className="text-center">
-                    Welcome! Please fill in the details to get started.
-                  </p>
+                  <div className="p-3 bg-neutral-950 rounded-full mb-3"></div>
+                  <TextureCardTitle>Devtools</TextureCardTitle>
+                  <p className="text-center"></p>
                 </TextureCardHeader>
                 <TextureSeparator />
-                <TextureCardContent>{/**/}</TextureCardContent>
+                <TextureCardContent className="min-w-xs">
+                  {/**/}
+                </TextureCardContent>
                 <TextureSeparator />
-                <TextureCardFooter className="border-b rounded-b-sm">
+                <TextureCardFooter className="">
                   <TextureButton variant="accent" className="w-full">
                     <div className="flex gap-1 items-center justify-center">
                       Continue
                       <Icon
                         name="arrow-right"
-                        className="h-7 w-7 stroke-neutral-200"
+                        className="size-5 stroke-neutral-200"
                       />
                     </div>
                   </TextureButton>
                 </TextureCardFooter>
 
-                <div className="dark:bg-neutral-800 bg-stone-100 pt-px rounded-b-[20px] overflow-hidden ">
+                <div className="dark:bg-neutral-800 bg-stone-400 pt-px rounded-b-[24px] overflow-hidden">
                   <TextureSeparator />
                   <div className="flex flex-col items-center justify-center ">
                     <div className="py-2 px-5 w-full">

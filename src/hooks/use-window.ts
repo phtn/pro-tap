@@ -1,26 +1,25 @@
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useCallback,
-  useMemo,
-} from "react";
+import { MouseEvent, useCallback, useMemo } from "react";
 import { useToggle } from "./use-toggle";
 
-export type Keys = "j" | "k" | "i" | "'" | ".";
+const keys = {
+  /** dev */
+  k: "dev",
+  /**
+   *
+   * theme
+   */
+  i: "i",
+  ".": ".",
+  "/": "/",
+} as const;
 
-export const useWindow = (
-  _open?: boolean,
-  setOpen?: Dispatch<SetStateAction<boolean>>,
-) => {
+export type Keys = keyof typeof keys;
+
+export const useWindow = (_open = false, setOpen: VoidFunction) => {
   const { on, toggle } = useToggle(_open);
-  const toggleWindow = useCallback(() => {
-    if (setOpen) setOpen(!_open);
-  }, [_open, setOpen]);
-
   const onKeyDown = useCallback(
     <T, R extends void>(k?: Keys, action?: (p?: T) => R) =>
-      keyListener(keyDown(k, setOpen ? toggleWindow : toggle, action)),
+      keyListener(keyDown(k, toggle, action)),
     [],
   );
 

@@ -11,12 +11,12 @@ interface DialogWindowProps {
   value?: string;
   title?: ReactNode;
   children?: ReactNode;
+  open: boolean;
+  setOpen: VoidFunction;
   // action?: <T, R>(p: T) => R;
 }
 export const DialogWindow = (props: DialogWindowProps) => {
-  const { keyCode, action, children } = props;
-
-  const [_open, setOpen] = useState(false);
+  const { keyCode, action, children, open: _open, setOpen } = props;
 
   const { open, onKeyDown, stopPropagation } = useWindow(_open, setOpen);
 
@@ -41,7 +41,7 @@ export const DialogWindow = (props: DialogWindowProps) => {
             drag
             dragMomentum={false}
             initial={{ scale: 0.95, opacity: 0, borderRadius: 112 }}
-            animate={{ scale: 1, opacity: 1, borderRadius: 31 }}
+            animate={{ scale: 1, opacity: 1, borderRadius: 28 }}
             exit={{ scale: 0.85, opacity: 0, y: 20 }}
             className={cn("z-50 w-fit overflow-hidden shadow-xl", "")}
             onClick={stopPropagation}

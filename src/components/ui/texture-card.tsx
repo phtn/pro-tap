@@ -15,31 +15,22 @@ const TextureCardStyled = React.forwardRef<
       ` border border-white/60 dark:border-stone-950/60`,
       "bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-900 from-white to-white/70",
       className,
-      `rounded-[28px]`,
+      `rounded-[27px]`,
     )}
     {...props}
   >
     {/* Nested structure for aesthetic borders */}
-    <div
-      className={cn(
-        `border  dark:border-neutral-900/80 border-black/10`,
-        `rounded-[27px] `,
-      )}
-    >
-      <div
-        className={cn(
-          `rounded-[26px] border  dark:border-neutral-950 border-white/50`,
-        )}
-      >
+    <div className={cn(`border-0  dark:border-neutral-900/80 `)}>
+      <div className={cn(`rounded-[26px] border-1  border-slate-100/40 `)}>
         <div
           className={cn(
-            `rounded-[25px] border  dark:border-neutral-900/70  border-neutral-950/20`,
+            `rounded-[25px] border  dark:border-neutral-900/70  border-neutral-200`,
           )}
         >
           {/* Inner content wrapper */}
           <div
             className={cn(
-              `rounded-[24px] w-full border border-white/50 dark:border-neutral-700/50 text-neutral-500 `,
+              `rounded-[28px] w-full border-0  dark:border-neutral-700/50 text-neutral-500 `,
             )}
           >
             {children}
@@ -138,7 +129,7 @@ const TextureCardFooter = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex items-center justify-between px-6 py-4  gap-2",
+      "flex items-center justify-between px-6 py-4 gap-2",
 
       className,
     )}
