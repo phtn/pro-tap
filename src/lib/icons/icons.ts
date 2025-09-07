@@ -197,6 +197,41 @@ export const icons = {
     viewBox: "0 0 24 24",
     set: "proicons",
   },
+  server: {
+    symbol:
+      '<g fill="none"><rect width="18.5" height="7.5" x="2.75" y="2.751" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" rx="2"/><circle cx="6.25" cy="6.501" r="1.25" fill="currentColor"/><circle cx="10.25" cy="6.501" r="1.25" fill="currentColor"/><rect width="18.5" height="7.5" x="2.75" y="13.749" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" rx="2"/><circle cx="6.25" cy="17.499" r="1.25" fill="currentColor"/><circle cx="10.25" cy="17.499" r="1.25" fill="currentColor"/></g>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
+  link: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.621 7.5H7.25a4.5 4.5 0 0 0-4.5 4.5v0a4.5 4.5 0 0 0 4.5 4.5h2.371m4.758-9h2.371a4.5 4.5 0 0 1 4.5 4.5v0a4.5 4.5 0 0 1-4.5 4.5h-2.371M7.243 12h9.514"/>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
+  play: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" d="M5.5 12V5.624c0-1.974 2.18-3.17 3.844-2.108l10 6.376c1.541.983 1.541 3.233 0 4.216l-10 6.376C7.68 21.545 5.5 20.35 5.5 18.376z"/>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
+  typescript: {
+    symbol:
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect width="16.5" height="16.5" x="3.75" y="3.75" rx="2"/><path d="M17.25 11.25h-2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2m-4.75-6v6m-2-6h4"/></g>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
+  reactjs: {
+    symbol:
+      '<g fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8.013c-5.385 0-9.75 1.785-9.75 3.987s4.365 3.987 9.75 3.987s9.75-1.785 9.75-3.987S17.385 8.013 12 8.013"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.423 10.006c-2.692-4.704-6.407-7.625-8.298-6.524c-1.89 1.101-1.24 5.807 1.452 10.512c2.692 4.704 6.408 7.625 8.298 6.524s1.24-5.807-1.452-10.512"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.423 13.994c2.693-4.705 3.343-9.41 1.452-10.512c-1.89-1.1-5.606 1.82-8.298 6.524s-3.342 9.41-1.452 10.512c1.89 1.1 5.606-1.82 8.298-6.524"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
+  nextjs: {
+    symbol: `<path d="M22.0833 23.0102L19.6117 19.8265L17.3704 16.9394L7.13098 3.75H3.75V19.8198H6.45478V7.18492L18.7033 23.0102H22.0833Z" fill="url(#paint0_linear_3540_290)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M17.3704 3.75H20.0498V19.8265H19.6117L17.3704 16.9394V3.75Z" fill="url(#paint1_linear_3540_290)"/><defs><linearGradient id="paint0_linear_3540_290" x1="13.6691" y1="13.4105" x2="20.4306" y2="23.1321" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><linearGradient id="paint1_linear_3540_290" x1="18.7097" y1="3.75" x2="18.6648" y2="15.5562" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs>`,
+    viewBox: `0 0 24 24`,
+    set: "xpriori",
+  },
   "spinners-dots": {
     symbol:
       '<circle cx="4" cy="12" r="0" fill="currentColor"><animate fill="freeze" attributeName="r" begin="0;svgSpinners3DotsMove1.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="0;3"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove7.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="4;12"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove5.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="12;20"></animate><animate id="svgSpinners3DotsMove0" fill="freeze" attributeName="r" begin="svgSpinners3DotsMove3.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="3;0"></animate><animate id="svgSpinners3DotsMove1" fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove0.end" dur="0.001s" values="20;4"></animate></circle><circle cx="4" cy="12" r="3" fill="currentColor"><animate fill="freeze" attributeName="cx" begin="0;svgSpinners3DotsMove1.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="4;12"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove7.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="12;20"></animate><animate id="svgSpinners3DotsMove2" fill="freeze" attributeName="r" begin="svgSpinners3DotsMove5.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="3;0"></animate><animate id="svgSpinners3DotsMove3" fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove2.end" dur="0.001s" values="20;4"></animate><animate fill="freeze" attributeName="r" begin="svgSpinners3DotsMove3.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="0;3"></animate></circle><circle cx="12" cy="12" r="3" fill="currentColor"><animate fill="freeze" attributeName="cx" begin="0;svgSpinners3DotsMove1.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="12;20"></animate><animate id="svgSpinners3DotsMove4" fill="freeze" attributeName="r" begin="svgSpinners3DotsMove7.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="3;0"></animate><animate id="svgSpinners3DotsMove5" fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove4.end" dur="0.001s" values="20;4"></animate><animate fill="freeze" attributeName="r" begin="svgSpinners3DotsMove5.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="0;3"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove3.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="4;12"></animate></circle><circle cx="20" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsMove6" fill="freeze" attributeName="r" begin="0;svgSpinners3DotsMove1.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="3;0"></animate><animate id="svgSpinners3DotsMove7" fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove6.end" dur="0.001s" values="20;4"></animate><animate fill="freeze" attributeName="r" begin="svgSpinners3DotsMove7.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="0;3"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove5.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="4;12"></animate><animate fill="freeze" attributeName="cx" begin="svgSpinners3DotsMove3.end" calcMode="spline" dur="0.5s" keySplines=".36,.6,.31,1" values="12;20"></animate></circle>',
@@ -236,6 +271,9 @@ export const icons = {
 };
 
 /*
+
+
+
 
 */
 

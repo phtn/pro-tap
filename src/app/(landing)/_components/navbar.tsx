@@ -1,25 +1,27 @@
 import { LogoPro } from "@/components/logo";
 import { NeumorphButton } from "@/components/ui/neumorph";
+import { useMobile } from "@/hooks/use-mobile";
 import { useToggle } from "@/hooks/use-toggle";
 import { Icon } from "@/lib/icons";
 import { useTheme } from "next-themes";
 import { useMemo } from "react";
 
 export const Navbar = () => {
-  const { on, toggle } = useToggle();
-  const { setTheme, theme } = useTheme();
-  const isDark = useMemo(() => theme === "dark", [theme]);
+  const { setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
+
+  const isMobile = useMobile();
+
   return (
-    <nav className="h-[12lvh] flex items-center justify-between py-6 max-w-7xl mx-auto">
-      <div className="flex items-center gap-8">
+    <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 max-w-7xl mx-auto">
+      <div className="flex items-center gap-8 md:px-0 px-4">
         <svg
           viewBox="0 0 425 71"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-protap-blue dark:text-foreground h-8 w-auto"
+          className="text-zinc-900 dark:text-foreground h-5 md:h-8 w-auto"
         >
           <g clipPath="url(#clip0_3509_262)">
             <path
@@ -64,8 +66,12 @@ export const Navbar = () => {
           </defs>
         </svg>
       </div>
-      <div className="flex items-center space-x-4">
-        <NeumorphButton size="lg" intent="outline" className="rounded-full">
+      <div className="flex items-center space-x-2 md:space-x-4">
+        <NeumorphButton
+          size={isMobile ? "sm" : "lg"}
+          intent="outline"
+          className="rounded-full md:border-2 border-1"
+        >
           Sign up
         </NeumorphButton>
         <NeumorphButton
@@ -74,7 +80,7 @@ export const Navbar = () => {
           intent="ghost"
           className="rounded-full"
         >
-          <Icon name="dark-theme" />
+          <Icon name="dark-theme" className="portrait:size-6" />
         </NeumorphButton>
       </div>
     </nav>

@@ -23,7 +23,7 @@ const buttonVariants = cva(
         primary: [
           "bg-primary",
           "text-[#fff]",
-          "hover:enabled:bg-[#3D8DF5]",
+          "hover:enabled:bg-primary-hover",
           "disabled:bg-[#9FC3F5]",
           "[box-shadow:inset_0px_-2.108433723449707px_0px_0px_#1A68D1,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(28,_100,_242,_28%)]",
           "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#2C7BE5,_0px_1.44578px_7.59036px_0px_rgba(28,_100,_242,_64%)]",

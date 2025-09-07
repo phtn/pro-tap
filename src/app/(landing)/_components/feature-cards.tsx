@@ -15,8 +15,8 @@ import { metadata } from "motion/react-client";
 
 export const FeatureCards = () => {
   return (
-    <div className="h-[38lvh] overflow-auto flex items-center justify-between w-full">
-      <Expansive title="Account Personalization" />
+    <div className="relative z-100 md:h-[38lvh] h-[50lvh] space-y-10 md:space-y-0 flex-grow overflow-auto flex-col md:flex-row flex items-center justify-evenly md:justify-between w-full">
+      {/*<BasicCard title="Account Personalization" />*/}
       <Expansive title="Personal Accident Coverage" />
       <Expansive title="Open Merchant Account" />
       <Expansive title="Create Affiliate Account" />

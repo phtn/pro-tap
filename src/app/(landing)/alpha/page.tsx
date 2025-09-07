@@ -1,3 +1,9 @@
 import { Content } from "./content";
-const Page = async () => <Content />;
+import Devtools from "@/devtools";
+const Page = async () => (
+  <>
+    <Devtools />
+    <Content />
+  </>
+);
 export default Page;

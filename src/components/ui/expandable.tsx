@@ -439,7 +439,11 @@ const ExpandableCard = React.forwardRef<HTMLDivElement, ExpandableCardProps>(
             "max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] md:max-w-[calc(100%-4rem)]",
             "w-full",
             "transition-all duration-300 ease-in-out",
-            "dark:bg-[#121210]/80 bg-white",
+            "bg-white dark:bg-[#565656]/80",
+            {
+              "bg-gradient-to-br from-white via-orange-50 to-primary/40 dark:from-background/90 dark:via-black/70 dark:via-75% dark:to-primary/40":
+                isExpanded,
+            },
           )}
         >
           {/* Nested divs purely for styling and layout (the shadow ring around the card) */}

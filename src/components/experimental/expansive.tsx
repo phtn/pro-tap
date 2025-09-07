@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useMeta } from "@/hooks/use-meta";
 
 const COLLAPSED_SIZE = Object.freeze({ width: 320, height: 0 });
-const EXPANDED_SIZE = Object.freeze({ width: 540, height: 200 });
+const EXPANDED_SIZE = Object.freeze({ width: 540, height: 100 });
 
 interface ExpansiveProps {
   title?: string;
@@ -145,7 +145,7 @@ export const Expansive = memo(function ExpandableComponent({
                   <ScrollArea
                     ref={scrollAreaRef}
                     className={cn("w-full max-h-0 overflow-auto font-space", {
-                      "h-[100px] max-h-[200px]": isExpanded,
+                      "h-[80px] max-h-[80px]": isExpanded,
                     })}
                   >
                     <ExpandableTrigger>

@@ -121,7 +121,7 @@ export function handleAsync<TArgs extends unknown[], TResult>(
     retries = 0,
     onError,
     rethrowInDev = false,
-    logger = (msg, meta) => console.error(msg, meta),
+    logger = (msg, meta) => console.log(msg, meta),
     functionName,
     backoffMs = 0,
   } = options;

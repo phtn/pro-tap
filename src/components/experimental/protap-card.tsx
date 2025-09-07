@@ -39,7 +39,7 @@ export function ProtapCard({
 
   return (
     <div
-      className="relative shrink-0 w-full max-w-[380px] h-[240px] group [perspective:2000px]"
+      className="relative shrink-0 scale-75 md:scale-100 w-full max-w-[380px] h-[240px] group [perspective:2000px]"
       onClick={toggle}
       // onMouseEnter={() => setIsFlipped(true)}
       // onMouseLeave={() => setIsFlipped(false)}
