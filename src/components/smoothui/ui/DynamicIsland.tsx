@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { ReactNode, useMemo, useState } from "react"
+import { ReactNode, useMemo, useState } from "react";
 import {
   Bell,
   CloudLightning,
@@ -12,8 +12,8 @@ import {
   SkipForward,
   Thermometer,
   Timer as TimerIcon,
-} from "lucide-react"
-import { AnimatePresence, motion } from "motion/react"
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 // Animation variants
 const ANIMATION_VARIANTS = {
@@ -23,17 +23,17 @@ const ANIMATION_VARIANTS = {
   "timer-idle": { scale: 0.7, y: -7.5, bounce: 0.3 },
   "idle-timer": { scale: 1.2, y: 5, bounce: 0.3 },
   "idle-ring": { scale: 1.1, y: 3, bounce: 0.5 },
-} as const
+} as const;
 
 const BOUNCE_VARIANTS = {
-  idle: 0.5,
-  "ring-idle": 0.5,
+  idle: 0.1,
+  "ring-idle": 0.25,
   "timer-ring": 0.35,
   "ring-timer": 0.35,
   "timer-idle": 0.3,
   "idle-timer": 0.3,
   "idle-ring": 0.5,
-} as const
+} as const;
 
 const variants = {
   exit: (transition: any, custom: any) => {
@@ -45,23 +45,23 @@ const variants = {
         scale: 0.7,
         filter: "blur(5px)",
         transition: { duration: 0.18, ease: "ease-in" },
-      }
+      };
     }
     return {
       ...transition,
       opacity: [1, 0],
       filter: "blur(5px)",
-    }
+    };
   },
-}
+};
 
 // Idle Component with Weather
 const DefaultIdle = () => {
-  const [showTemp, setShowTemp] = useState(false)
+  const [showTemp, setShowTemp] = useState(false);
 
   return (
     <motion.div
-      className="flex items-center gap-2 px-3 py-2"
+      className="flex items-center justify-center hover:px-2 h-10 aspect-square"
       onHoverStart={() => setShowTemp(true)}
       onHoverEnd={() => setShowTemp(false)}
       layout
@@ -94,8 +94,8 @@ const DefaultIdle = () => {
         )}
       </AnimatePresence>
     </motion.div>
-  )
-}
+  );
+};
 
 // Ring Component
 const DefaultRing = () => {
@@ -112,19 +112,19 @@ const DefaultRing = () => {
       </div>
       <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
     </div>
-  )
-}
+  );
+};
 
 // Timer Component
 const DefaultTimer = () => {
-  const [time, setTime] = useState(60)
+  const [time, setTime] = useState(60);
 
   useMemo(() => {
     const timer = setInterval(() => {
-      setTime((t) => (t > 0 ? t - 1 : 0))
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+      setTime((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="text-foreground flex w-64 items-center gap-3 overflow-hidden px-4 py-2">
@@ -143,8 +143,8 @@ const DefaultTimer = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Notification Component
 const Notification = () => (
@@ -162,11 +162,11 @@ const Notification = () => (
       1
     </span>
   </div>
-)
+);
 
 // Music Player Component
 const MusicPlayer = () => {
-  const [playing, setPlaying] = useState(true)
+  const [playing, setPlaying] = useState(true);
   return (
     <div className="text-foreground flex w-72 items-center gap-3 overflow-hidden px-4 py-2">
       <Music2 className="h-5 w-5 text-pink-500" />
@@ -201,18 +201,18 @@ const MusicPlayer = () => {
         <SkipForward className="h-4 w-4 text-white" />
       </button>
     </div>
-  )
-}
+  );
+};
 
-type View = "idle" | "ring" | "timer" | "notification" | "music"
+type View = "idle" | "ring" | "timer" | "notification" | "music";
 
 export interface DynamicIslandProps {
-  view?: View
-  onViewChange?: (view: View) => void
-  idleContent?: ReactNode
-  ringContent?: ReactNode
-  timerContent?: ReactNode
-  className?: string
+  view?: View;
+  onViewChange?: (view: View) => void;
+  idleContent?: ReactNode;
+  ringContent?: ReactNode;
+  timerContent?: ReactNode;
+  className?: string;
 }
 
 export default function DynamicIsland({
@@ -223,32 +223,32 @@ export default function DynamicIsland({
   timerContent,
   className = "",
 }: DynamicIslandProps) {
-  const [internalView, setInternalView] = useState<View>("idle")
-  const [variantKey, setVariantKey] = useState<string>("idle")
+  const [internalView, setInternalView] = useState<View>("idle");
+  const [variantKey, setVariantKey] = useState<string>("idle");
 
-  const view = controlledView ?? internalView
+  const view = controlledView ?? internalView;
 
   const content = useMemo(() => {
     switch (view) {
       case "ring":
-        return ringContent ?? <DefaultRing />
+        return ringContent ?? <DefaultRing />;
       case "timer":
-        return timerContent ?? <DefaultTimer />
+        return timerContent ?? <DefaultTimer />;
       case "notification":
-        return <Notification />
+        return <Notification />;
       case "music":
-        return <MusicPlayer />
+        return <MusicPlayer />;
       default:
-        return idleContent ?? <DefaultIdle />
+        return idleContent ?? <DefaultIdle />;
     }
-  }, [view, idleContent, ringContent, timerContent])
+  }, [view, idleContent, ringContent, timerContent]);
 
   const handleViewChange = (newView: View) => {
-    if (view === newView) return
-    setVariantKey(`${view}-${newView}`)
-    if (onViewChange) onViewChange(newView)
-    else setInternalView(newView)
-  }
+    if (view === newView) return;
+    setVariantKey(`${view}-${newView}`);
+    if (onViewChange) onViewChange(newView);
+    else setInternalView(newView);
+  };
 
   return (
     <div className={`h-[200px] ${className}`}>
@@ -262,7 +262,7 @@ export default function DynamicIsland({
               0.5,
           }}
           style={{ borderRadius: 32 }}
-          className="mx-auto w-fit min-w-[100px] overflow-hidden rounded-full bg-black"
+          className="mx-auto w-fit overflow-hidden rounded-full bg-black"
         >
           <motion.div
             transition={{
@@ -305,8 +305,8 @@ export default function DynamicIsland({
               className="bg-primary flex size-8 cursor-pointer items-center justify-center rounded-full border px-2"
               onClick={() => {
                 if (view !== key) {
-                  setVariantKey(`${view}-${key}`)
-                  handleViewChange(key as View)
+                  setVariantKey(`${view}-${key}`);
+                  handleViewChange(key as View);
                 }
               }}
               key={key}
@@ -318,5 +318,5 @@ export default function DynamicIsland({
         </div>
       </div>
     </div>
-  )
+  );
 }

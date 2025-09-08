@@ -17,7 +17,8 @@ type CookieType =
   | "darkMode"
   | "favorites"
   | "soundEnabled"
-  | "devServer";
+  | "devServer"
+  | "protapCode";
 
 type ValuesMap = {
   theme: string;
@@ -27,6 +28,7 @@ type ValuesMap = {
   darkMode: boolean;
   favorites: string[];
   devServer?: string;
+  protapCode?: string;
 };
 
 interface Expiry {
@@ -41,6 +43,7 @@ const cookieNameMap: Record<CookieType, string> = {
   favorites: "user-favorites",
   soundEnabled: "sound-enabled",
   devServer: "dev-server-ip",
+  protapCode: "protap-code",
 };
 
 const defaults: CookieOptions = {

@@ -215,6 +215,12 @@ export const icons = {
     viewBox: "0 0 24 24",
     set: "proicons",
   },
+  hexagon: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.42 3.173a3.16 3.16 0 0 1 3.16 0l5.275 3.046a3.16 3.16 0 0 1 1.579 2.735v6.092a3.16 3.16 0 0 1-1.58 2.735l-5.275 3.046a3.16 3.16 0 0 1-3.158 0L5.145 17.78a3.16 3.16 0 0 1-1.579-2.735V8.954c0-1.128.602-2.17 1.58-2.735z"/>',
+    viewBox: "0 0 24 24",
+    set: "proicons",
+  },
   typescript: {
     symbol:
       '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect width="16.5" height="16.5" x="3.75" y="3.75" rx="2"/><path d="M17.25 11.25h-2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2m-4.75-6v6m-2-6h4"/></g>',

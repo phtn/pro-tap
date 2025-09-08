@@ -3,6 +3,22 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   let response: NextResponse;
   response = NextResponse.next({ request });
+  // const cookieStore = await cookies();
+
+  const pathname = request.nextUrl.pathname;
+  // if (pathname.startsWith("/verify/") && pathname !== "/verify") {
+  //   const segments = pathname.split("/");
+  //   if (segments.length === 3 && segments[1] === "verify") {
+  //     const code = segments[2];
+  //     response = NextResponse.rewrite(new URL("/verify", request.url));
+  //     cookieStore.set("protap_code", code, {
+  //       httpOnly: true,
+  //       secure: true,
+  //       maxAge: 60 * 60 * 24 * 7,
+  //     });
+  //     return response;
+  //   }
+  // }
 
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const csp = `

@@ -58,7 +58,7 @@ const buttonVariants = cva(
         outline: [
           "border-2 border-foreground/5 dark:border-foreground/15",
           "dark:bg-foreground/10 text-foreground",
-          "hover:enabled:bg-foreground hover:enabled:text-white dark:hover:enabled:text-background",
+          "md:hover:enabled:bg-foreground md:hover:enabled:text-white md:dark:hover:enabled:text-background",
           "disabled:bg-[#F5A799]",
           // "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
           "disabled:shadow-none",
@@ -68,9 +68,10 @@ const buttonVariants = cva(
         ghost: [
           "border-foreground/10 border-0",
           "text-foreground",
-          "hover:enabled:bg-foreground/10",
+          "md:hover:enabled:bg-foreground/10",
           "disabled:bg-[#F5A799]",
-          "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF_20%,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
+          "md:hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF_20%,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
+          "md:dark:hover:enabled:text-background",
           "disabled:shadow-none",
           "active:bg-[#F0F0F0]/10",
           // "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_10%)]",

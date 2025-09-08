@@ -6,16 +6,22 @@ interface Props {
   size?: number;
   children?: ReactNode;
   className?: ClassName;
+  rotate?: number;
 }
 
 export const HEX_SIZE = 80; // Overall width of the hexagon (point to point)
 
-export const Hex = ({ size = HEX_SIZE, children, className }: Props) => {
+export const Hex = ({
+  size = HEX_SIZE,
+  rotate = 0,
+  children,
+  className,
+}: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   return (
     <div
       className={cn(
-        "size-full relative flex items-center justify-center z-100",
+        "size-full rotate-90 relative flex items-center justify-center z-100",
         className,
       )}
     >
@@ -26,8 +32,8 @@ export const Hex = ({ size = HEX_SIZE, children, className }: Props) => {
         )}
       >
         <svg
-          width={size}
-          height={size + 20}
+          width={size + 20}
+          height={size}
           viewBox="0 0 140 120"
           className={cn(
             "absolute z-0 group-hover/tile:opacity-100 opacity-0 transition-all duration-300",
