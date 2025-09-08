@@ -1,17 +1,7 @@
-import { NeumorphButton } from "@/components/ui/neumorph";
-import { useMobile } from "@/hooks/use-mobile";
-import { Icon } from "@/lib/icons";
-import { useTheme } from "next-themes";
-import { useMemo } from "react";
+import { NavbarCtxProvider } from "@/ctx/navbar";
+import { memo, PropsWithChildren } from "react";
 
-export const Navbar = () => {
-  const { setTheme } = useTheme();
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
-
-  const isMobile = useMobile();
-
+const Nav = ({ children }: PropsWithChildren) => {
   return (
     <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 max-w-7xl mx-auto">
       <div className="flex items-center gap-8 md:px-0 px-4">
@@ -64,23 +54,13 @@ export const Navbar = () => {
           </defs>
         </svg>
       </div>
-      <div className="flex items-center space-x-2 md:space-x-4">
-        <NeumorphButton
-          size={isMobile ? "sm" : "lg"}
-          intent="outline"
-          className="rounded-full md:border-2 border-1"
-        >
-          Sign up
-        </NeumorphButton>
-        <NeumorphButton
-          onClick={toggleTheme}
-          size="sq"
-          intent="ghost"
-          className="rounded-full"
-        >
-          <Icon name="dark-theme" className="portrait:size-6" />
-        </NeumorphButton>
-      </div>
+      {children}
     </nav>
   );
 };
+
+export const Navbar = memo(({ children }: PropsWithChildren) => (
+  <NavbarCtxProvider>
+    <Nav>{children}</Nav>
+  </NavbarCtxProvider>
+));

@@ -3,11 +3,7 @@
 import { Navbar } from "@/app/(landing)/_components/navbar";
 import { VisualContent } from "@/app/(landing)/_components/visual-content";
 import { FeatureCards } from "@/app/(landing)/_components/feature-cards";
-import {
-  GetButton,
-  HeroCTA,
-  ViewButton,
-} from "@/app/(landing)/_components/hero-cta";
+import { HeroCTA, ViewButton } from "@/app/(landing)/_components/hero-cta";
 import { useMobile } from "@/hooks/use-mobile";
 
 export const Landing = () => {

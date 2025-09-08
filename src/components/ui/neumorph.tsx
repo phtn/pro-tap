@@ -56,9 +56,9 @@ const buttonVariants = cva(
           "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_70%)]",
         ],
         outline: [
-          "border-foreground/10 border-2",
-          "text-foreground",
-          "hover:enabled:bg-foreground/5",
+          "border-2 border-foreground/5 dark:border-foreground/15",
+          "dark:bg-foreground/10 text-foreground",
+          "hover:enabled:bg-foreground hover:enabled:text-white dark:hover:enabled:text-background",
           "disabled:bg-[#F5A799]",
           // "hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
           "disabled:shadow-none",
@@ -81,7 +81,7 @@ const buttonVariants = cva(
         md: ["text-base", "py-2", "px-5", "h-11", "rounded-[10px]"],
         lg: ["text-lg", "py-3", "px-8", "h-14", "rounded-[12px]"],
         xl: ["text-xl", "py-3", "px-10", "h-16", "rounded-[14px]"],
-        sq: ["text-base", "p-1", "aspect-square", "rounded-full"],
+        sq: ["text-base", "p-0", "aspect-square", "rounded-full"],
       },
       fullWidth: {
         true: "w-full",
@@ -104,7 +104,7 @@ const buttonVariants = cva(
 export interface NeumorphButtonProps
   extends HTMLMotionProps<"button">,
     VariantProps<typeof buttonVariants> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   loading?: boolean;
   icon?: IconName;
 }
@@ -130,7 +130,7 @@ export const NeumorphButton: React.FC<NeumorphButtonProps> = ({
       {...props}
     >
       {icon ? (
-        <Icon name={loading ? "spinners-ring" : icon} className="mr-2 size-4" />
+        <Icon name={loading ? "spinners-ring" : icon} className="size-6" />
       ) : null}
       <motion.span
         initial={{ opacity: 1 }}
