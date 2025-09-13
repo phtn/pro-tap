@@ -5,6 +5,7 @@ import { Icon } from "@/lib/icons";
 import { DialogWindow } from "@/components/ui/window";
 import { useState } from "react";
 import { useToggle } from "@/hooks/use-toggle";
+import { Tabs } from "./_components/tabs";
 
 export const Content = () => {
   const { ip, port } = useDevtools();
@@ -23,7 +24,9 @@ export const Content = () => {
             </div>
           </>
         }
-      ></VCard>
+      >
+        <Tabs />
+      </VCard>
     </DialogWindow>
   );
 };

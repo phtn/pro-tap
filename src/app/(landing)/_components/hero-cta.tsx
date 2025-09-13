@@ -5,7 +5,7 @@ import { Icon } from "@/lib/icons";
 export const HeroCTA = () => {
   return (
     <div className="h-full space-y-8 px-6 flex flex-col justify-center">
-      <div className="space-y-6">
+      <div className="space-y-12">
         <div className="font-bold leading-6">
           <TextAnimate
             text={`Protap`}

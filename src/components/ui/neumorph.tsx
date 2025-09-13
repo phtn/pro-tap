@@ -71,7 +71,7 @@ const buttonVariants = cva(
           "md:hover:enabled:bg-foreground/10",
           "disabled:bg-[#F5A799]",
           "md:hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF_20%,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
-          "md:dark:hover:enabled:text-background",
+          // "md:dark:hover:enabled:text-background",
           "disabled:shadow-none",
           "active:bg-[#F0F0F0]/10",
           // "active:[box-shadow:inset_0px_-1.5px_0px_0px_#B22E17,_0px_0.5px_2px_0px_rgba(214,_58,_31,_10%)]",

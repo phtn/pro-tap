@@ -16,9 +16,7 @@ export const useDevtools = () => {
     }
 
     const response = result.data;
-    const data = await response.json() as { ip: string; port: string };
-
-    console.log(data);
+    const data = (await response.json()) as { ip: string; port: string };
 
     if (data && "ip" in data) {
       setIp(data.ip);

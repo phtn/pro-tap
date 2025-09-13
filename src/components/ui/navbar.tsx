@@ -1,10 +1,11 @@
 import { NavbarCtxProvider } from "@/ctx/navbar";
+import Link from "next/link";
 import { memo, PropsWithChildren } from "react";
 
 const Nav = ({ children }: PropsWithChildren) => {
   return (
     <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-7xl mx-auto">
-      <div className="flex items-center gap-8 lg:px-0 px-3">
+      <Link href={"/alpha"} className="flex items-center gap-8 lg:px-0 px-3">
         <svg
           viewBox="0 0 425 71"
           fill="currentColor"
@@ -53,7 +54,7 @@ const Nav = ({ children }: PropsWithChildren) => {
             </clipPath>
           </defs>
         </svg>
-      </div>
+      </Link>
       <div>{children}</div>
     </nav>
   );

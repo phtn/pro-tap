@@ -31,7 +31,7 @@ export const Landing = () => {
         ) : null}
 
         {/* Feature Cards */}
-        {isMobile ? null : <FeatureCards />}
+        {isMobile ? <FeatureCards /> : <FeatureCards />}
       </main>
     </div>
   );

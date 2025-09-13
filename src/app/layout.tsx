@@ -10,6 +10,8 @@ import {
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Devtools from "@/devtools";
+import { ThemeHotkey } from "@/components/theme-hotkey";
+import { AuthCtxProvider } from "@/ctx/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +40,7 @@ export const metadata: Metadata = {
   title: "ProTap Project",
   description: "for ProTap",
   icons: ["/re-up-icon.svg"],
+  referrer: "strict-origin-when-cross-origin",
 };
 
 export default function RootLayout({
@@ -57,8 +60,11 @@ export default function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          {children}
-          <Devtools />
+          <AuthCtxProvider>
+            {children}
+            <ThemeHotkey />
+            <Devtools />
+          </AuthCtxProvider>
         </ThemeProvider>
       </body>
     </html>

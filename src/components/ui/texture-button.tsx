@@ -24,7 +24,7 @@ const buttonVariantsOuter = cva("", {
     size: {
       sm: "rounded-[6px]",
       default: "rounded-[12px]",
-      lg: "rounded-[12px]",
+      lg: "h-16 rounded-[16px]",
       icon: "rounded-full",
     },
   },
@@ -54,7 +54,7 @@ const innerDivVariants = cva(
       size: {
         sm: "text-xs rounded-[4px] px-4 py-1",
         default: "text-sm rounded-[10px] px-4 py-2",
-        lg: "text-base rounded-[10px] px-4 py-2",
+        lg: "text-base rounded-[14px] px-4 py-2",
         icon: " rounded-full p-1",
       },
     },
@@ -94,7 +94,11 @@ const TextureButton = React.forwardRef<HTMLButtonElement, UnifiedButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariantsOuter({ variant, size }), className)}
+        className={cn(
+          buttonVariantsOuter({ variant, size }),
+          "cursor-pointer",
+          className,
+        )}
         ref={ref}
         {...props}
       >

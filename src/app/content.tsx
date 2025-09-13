@@ -2,7 +2,6 @@
 
 import { DesktopDetails } from "./_components/details";
 import { AppViewer } from "./_components/app-viewer";
-import { Header } from "./_components/header";
 import { Nav } from "./_components/nav";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

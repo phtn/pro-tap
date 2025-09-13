@@ -35,7 +35,6 @@ export const DialogWindow = (props: DialogWindowProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className={cn("fixed z-200 inset-0 flex items-center justify-center")}
-          // onClick={close}
         >
           <motion.div
             drag
@@ -46,23 +45,6 @@ export const DialogWindow = (props: DialogWindowProps) => {
             className={cn("z-50 w-fit overflow-hidden shadow-xl", "")}
             onClick={stopPropagation}
           >
-            {/*{props.toolbar ? (
-              <props.toolbar
-                value={value}
-                title={title}
-                closeFn={close}
-                variant={variant}
-              />
-            ) : (
-              <Toolbar
-                title={title}
-                value={value}
-                closeFn={close}
-                variant={variant}
-              />
-            )}*/}
-
-            {/*<section className="h-10 flex items-center px-4">Toolbal</section>*/}
             <WindowContent>{children}</WindowContent>
           </motion.div>
         </motion.div>

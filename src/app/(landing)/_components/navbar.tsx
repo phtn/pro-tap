@@ -2,7 +2,8 @@ import { NeumorphButton } from "@/components/ui/neumorph";
 import { useMobile } from "@/hooks/use-mobile";
 import { Icon } from "@/lib/icons";
 import { useTheme } from "next-themes";
-import { useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 export const Navbar = () => {
   const { setTheme } = useTheme();
@@ -12,9 +13,14 @@ export const Navbar = () => {
 
   const isMobile = useMobile();
 
+  const router = useRouter();
+  const handleSignIn = useCallback(() => {
+    router.push("/sign");
+  }, [router]);
+
   return (
     <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 max-w-7xl mx-auto">
-      <div className="flex items-center gap-8 md:px-0 px-4">
+      <div className="flex items-center gap-8 xl:px-0 px-4">
         <svg
           viewBox="0 0 425 71"
           fill="currentColor"
@@ -66,6 +72,7 @@ export const Navbar = () => {
       </div>
       <div className="flex items-center space-x-2 md:space-x-4">
         <NeumorphButton
+          onClick={handleSignIn}
           size={isMobile ? "sm" : "lg"}
           intent="outline"
           className="rounded-full md:border-2 border-1"

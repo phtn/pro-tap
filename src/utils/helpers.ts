@@ -1,6 +1,6 @@
 import { onError, onSuccess, onWarn } from "@/ctx/toast";
 import crypto from "crypto";
-import { ReactElement } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 export function generateUID(): string {
   const uuid: string = crypto.randomUUID(); // e.g., "9e107d9d-372b-4f99-a567-16e0c3b8a8d3"
   const hex: string = uuid.replace(/-/g, ""); // dash delete
@@ -68,3 +68,20 @@ export const copyFn: CopyFn = async ({ name, text }) => {
       return false;
     });
 };
+
+export const Err =
+  <T extends Error | null | undefined>(
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    msg?: string,
+  ) =>
+  (e: T) => {
+    onError(msg ?? `Error: ${e?.name}`);
+    setLoading(false);
+  };
+
+export const Ok =
+  (setLoading: Dispatch<SetStateAction<boolean>>, ...args: string[]) =>
+  () => {
+    setLoading(false);
+    onSuccess(`${args[0]} ${args[1] ?? ""}`);
+  };

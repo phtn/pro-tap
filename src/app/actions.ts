@@ -18,7 +18,9 @@ type CookieType =
   | "favorites"
   | "soundEnabled"
   | "devServer"
-  | "protapCode";
+  | "protapCode"
+  | "protapUserId"
+  | "protapUserEmail";
 
 type ValuesMap = {
   theme: string;
@@ -29,6 +31,8 @@ type ValuesMap = {
   favorites: string[];
   devServer?: string;
   protapCode?: string;
+  protapUserId?: string;
+  protapUserEmail?: string;
 };
 
 interface Expiry {
@@ -36,7 +40,7 @@ interface Expiry {
 }
 
 const cookieNameMap: Record<CookieType, string> = {
-  theme: "re-up-themes",
+  theme: "protap-themes",
   session: "user-session",
   language: "preferred-language",
   darkMode: "dark-mode-enabled",
@@ -44,6 +48,8 @@ const cookieNameMap: Record<CookieType, string> = {
   soundEnabled: "sound-enabled",
   devServer: "dev-server-ip",
   protapCode: "protap-code",
+  protapUserId: "protap-user-id",
+  protapUserEmail: "protap-user-email",
 };
 
 const defaults: CookieOptions = {

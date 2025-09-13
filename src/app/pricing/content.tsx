@@ -1,0 +1,33 @@
+"use client";
+
+import { PricingCard } from "@/components/experimental/pricing-card";
+import { Navbar } from "@/components/ui/navbar";
+import { useAuthCtx } from "@/ctx/auth";
+
+export const Content = () => {
+  const { user, signOut } = useAuthCtx();
+  return (
+    <div className="h-screen bg-background">
+      <Navbar />
+      <main className="h-full pt-28 flex items-start justify-center gap-8">
+        <PricingCard
+          title={"PRO"}
+          price={"999"}
+          period={"12 month"}
+          billing={"yearly"}
+          buttonText={"Get Insurance"}
+          gradient={"linear-gradient(to right, #ff6666, #ff9966)"}
+          popular={true}
+          features={[
+            { icon: "add", text: "Feature 1" },
+            { icon: "arrow-up", text: "Feature 2" },
+            { icon: "arrow-up", text: "Feature 3" },
+            { icon: "arrow-up", text: "Feature 4" },
+            { icon: "arrow-up", text: "Feature 5" },
+          ]}
+          footerText={"Payments"}
+        />
+      </main>
+    </div>
+  );
+};

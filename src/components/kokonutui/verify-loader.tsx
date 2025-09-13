@@ -10,20 +10,18 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { motion, AnimatePresence } from "motion/react";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { Icon } from "@/lib/icons";
-import TextAnimate from "../ui/text-animate";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { Hex } from "../experimental/hex";
+import TextAnimate from "../ui/text-animate";
 
 interface CheckmarkProps {
   size?: number;
@@ -52,11 +50,6 @@ const draw = {
 
 export function VerifyLoader({ code }: { code?: string }) {
   const [isCompleted, setIsCompleted] = useState(false);
-  const timestamp = new Date().toLocaleString();
-  const transactionId =
-    code || `TXN-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-
-  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,10 +71,11 @@ export function VerifyLoader({ code }: { code?: string }) {
         <Hex
           size={240}
           className={cn(
-            "z-0 absolute fill-primary/5 dark:fill-primary-hover/20",
-            "transition-colors duration-500",
+            "z-0 absolute fill-primary/1 dark:fill-primary-hover/2",
+            "transition-all duration-500 blur-xs translate-y-10 scale-75",
             {
-              "fill-emerald-400/5 dark:fill-emerald-900/30": isCompleted,
+              "fill-emerald-400/15 dark:fill-emerald-900/30 translate-y-0 scale-100":
+                isCompleted,
             },
           )}
         />
@@ -154,7 +148,7 @@ export function VerifyLoader({ code }: { code?: string }) {
                             },
                           }}
                         />
-                        <div className="relative z-10 bg-white dark:bg-zinc-900 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                        <div className="relative z-10 bg-white dark:bg-zinc-950 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
                           <Icon
                             name="hexagon"
                             className={cn("size-10 text-primary", {
@@ -181,7 +175,7 @@ export function VerifyLoader({ code }: { code?: string }) {
                       }}
                       className="w-[100px] h-[100px] flex items-center justify-center"
                     >
-                      <div className="relative z-10 rounded-full p-3 bg-emerald-400/5 backdrop-blur-lg">
+                      <div className="relative z-10 rounded-full p-3 bg-emerald-400/15 backdrop-blur-lg">
                         <Checkmark
                           className="size-14 md:size-20  text-emerald-500 bg-white dark:bg-background rounded-full"
                           strokeWidth={3.5}
@@ -195,7 +189,7 @@ export function VerifyLoader({ code }: { code?: string }) {
           </div>
           <div className="flex flex-col">
             <motion.div
-              className="space-y-2 text-center w-full mb-4"
+              className="space-y-2 text-center w-full mt-3 mb-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -244,7 +238,7 @@ export function VerifyLoader({ code }: { code?: string }) {
                     <motion.div
                       key="completed-id"
                       className={cn(
-                        "text-xs md:text-sm text-primary-hover dark:text-primary-hover font-medium",
+                        "text-xs md:text-sm text-primary-hover dark:text-primary-hover font-medium font-figtree",
                         {
                           "text-emerald-600 dark:text-emerald-400": isCompleted,
                         },

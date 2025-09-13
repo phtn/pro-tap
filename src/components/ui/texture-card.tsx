@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { ClassName } from "@/app/types";
 
 const TextureCardStyled = React.forwardRef<
   HTMLDivElement,
@@ -12,19 +13,19 @@ const TextureCardStyled = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      ` border border-white/60 dark:border-stone-950/60`,
+      ` border-2 border-white/60 dark:border-stone-950/60`,
       "bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-900 from-white to-white/70",
       className,
-      `rounded-[27px]`,
+      `rounded-[26px]`,
     )}
     {...props}
   >
     {/* Nested structure for aesthetic borders */}
     <div className={cn(`border-0  dark:border-neutral-900/80 `)}>
-      <div className={cn(`rounded-[26px] border-1  border-slate-100/40 `)}>
+      <div className={cn(`rounded-[24px] border-1  border-slate-100/40 `)}>
         <div
           className={cn(
-            `rounded-[25px] border  dark:border-neutral-900/70  border-neutral-200`,
+            `rounded-[24px] border  dark:border-neutral-900/70  border-neutral-200`,
           )}
         >
           {/* Inner content wrapper */}
@@ -138,9 +139,17 @@ const TextureCardFooter = React.forwardRef<
 ));
 TextureCardFooter.displayName = "TextureCardFooter";
 
-const TextureSeparator = () => {
+interface TextureSeparatorProps {
+  className?: ClassName;
+}
+const TextureSeparator = ({ className }: TextureSeparatorProps) => {
   return (
-    <div className="border border-t-neutral-50 border-b-neutral-300/50 dark:border-t-neutral-950 dark:border-b-neutral-700/50 border-l-transparent border-r-transparent" />
+    <div
+      className={cn(
+        "border border-t-neutral-50 border-b-neutral-300/50 dark:border-t-neutral-950 dark:border-b-neutral-700/50 border-l-transparent border-r-transparent",
+        className,
+      )}
+    />
   );
 };
 
