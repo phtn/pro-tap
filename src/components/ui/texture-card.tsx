@@ -13,7 +13,7 @@ const TextureCardStyled = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      ` border-2 border-white/60 dark:border-stone-950/60`,
+      ` border-2 border-white/60 dark:border-stone-950/60 md:w-fit w-[95lvw]`,
       "bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-900 from-white to-white/70",
       className,
       `rounded-[26px]`,
@@ -130,7 +130,7 @@ const TextureCardFooter = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex items-center justify-between px-6 py-4 gap-2",
+      "flex items-center justify-between p-1 gap-2",
 
       className,
     )}

@@ -17,7 +17,7 @@ export const Content = () => {
   return (
     <div className="h-screen bg-background">
       <Navbar />
-      <main className="h-fit pt-20 flex items-start justify-center gap-8">
+      <main className="h-fit pt-8 md:pt-16 flex items-start justify-center gap-8 px-2 md:px-0">
         <SignInCard user={user} signOut={signOut} />
       </main>
     </div>
@@ -31,61 +31,68 @@ interface SignInCardProps {
 
 const SignInCard = ({ user, signOut }: SignInCardProps) => {
   return (
-    <div className="rounded-b-[2.5rem] rounded-t-4xl overflow-hidden">
+    <div className="rounded-b-[1.75rem] rounded-t-4xl overflow-hidden">
       <VCard
-        className="px-0 relative "
+        className="px-0 relative"
         toolbar={
           <div className="px-4 font-figtree text-zinc-100 font-semibold tracking-tight">
             Account
           </div>
         }
         footer={
-          <div className="flex items-center justify-end w-full">
-            {user && (
+          <div className="flex items-center justify-between w-full">
+            {user ? (
               <TextureButton onClick={signOut} size="lg">
                 Sign out
               </TextureButton>
+            ) : (
+              <div className="flex items-center justify-between w-full px-4 text-xs font-figtree">
+                <span>Last login</span>
+                <span>{Date.now().toLocaleString()}</span>
+              </div>
             )}
           </div>
         }
       >
-        <div className="relative z-20 size-96 rounded-3xl overflow-hidden">
-          <Beams
-            beamWidth={2}
-            beamHeight={15}
-            beamNumber={10}
-            lightColor="#ffffff"
-            speed={1.33}
-            noiseIntensity={1.25}
-            scale={0.2}
-            rotation={45}
-          />
-        </div>
-        <div className="absolute font-figtree flex flex-col space-y-6 items-center justify-center text-zinc-100 size-96 top-16 z-100">
-          <p className="font-bold text-xl tracking-tight">
-            {user ? "You're logged in as" : "Sign in"}
-          </p>
-          {user ? (
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 bg-zinc-500/15 dark:bg-zinc-500/60 backdrop-blur-md pl-3 pr-6 py-3 rounded-full">
-                {user && user.photoURL && (
-                  <ProAvatar photoURL={user.photoURL} />
-                )}
-                <span className="font-medium tracking-tight">
-                  {user.displayName}
-                </span>
+        <div className="relative flex items-center justify-center flex-col z-20 w-[22rem] sm:w-[93lvw] h-96 md:size-96 rounded-2xl overflow-hidden">
+          <div className="flex items-center relative h-full w-full">
+            <Beams
+              beamWidth={2}
+              beamHeight={15}
+              beamNumber={10}
+              lightColor="#ffffff"
+              speed={1.33}
+              noiseIntensity={1.25}
+              scale={0.2}
+              rotation={45}
+            />
+          </div>
+          <div className="absolute font-figtree flex flex-col space-y-6 items-center justify-center text-zinc-100 size-96 top-0 z-100">
+            <p className="font-bold text-xl tracking-tight">
+              {user ? "You're logged in as" : "Sign in"}
+            </p>
+            {user ? (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3 bg-zinc-500/15 dark:bg-zinc-500/60 backdrop-blur-md pl-3 pr-6 py-3 rounded-full">
+                  {user && user.photoURL && (
+                    <ProAvatar photoURL={user.photoURL} />
+                  )}
+                  <span className="font-medium tracking-tight">
+                    {user.displayName}
+                  </span>
+                </div>
+                <Link
+                  href={"/account"}
+                  className="flex items-center space-x-3 px-3 hover:underline underline-offset-3 decoration-dashed decoration-[0.5px]"
+                >
+                  <Icon name="arrow-right" className="size-4 text-orange-300" />
+                  <span className="">Account Page</span>
+                </Link>
               </div>
-              <Link
-                href={"/account"}
-                className="flex items-center space-x-3 px-3 hover:underline underline-offset-3 decoration-dashed decoration-[0.5px]"
-              >
-                <Icon name="arrow-right" className="size-4 text-orange-300" />
-                <span className="">Account Page</span>
-              </Link>
-            </div>
-          ) : (
-            <SignInContent />
-          )}
+            ) : (
+              <SignInContent />
+            )}
+          </div>
         </div>
       </VCard>
     </div>
@@ -121,7 +128,7 @@ const SignInContent = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center gap-4 mb-4 font-figtree">
+    <div className="flex flex-col justify-center gap-6 font-figtree">
       <TextureButton
         variant="primary"
         className="min-w-3xs border-none h-16 rounded-full overflow-hidden"
@@ -180,7 +187,7 @@ const SignInContent = () => {
             fill="currentColor"
           />
         </svg>
-        <span className="pl-3 font-semibold dark:text-zinc-100 text-zinc-700 text-lg">
+        <span className="pl-5 font-semibold dark:text-zinc-100 text-zinc-700 text-lg">
           Github
         </span>
       </TextureButton>

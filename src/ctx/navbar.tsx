@@ -2,7 +2,14 @@
 
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "next-themes";
-import { createContext, useMemo, useContext, type ReactNode } from "react";
+import {
+  createContext,
+  useMemo,
+  useContext,
+  type ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 interface NavbarProviderProps {
   children: ReactNode;
@@ -11,13 +18,15 @@ interface NavbarProviderProps {
 interface NavbarCtxValues {
   isMobile: boolean;
   toggleTheme: VoidFunction;
+  setTheme: Dispatch<SetStateAction<string>>;
+  theme?: string;
 }
 
 const NavbarCtx = createContext<NavbarCtxValues | null>(null);
 
 const NavbarCtxProvider = ({ children }: NavbarProviderProps) => {
   const isMobile = useMobile();
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
@@ -25,8 +34,10 @@ const NavbarCtxProvider = ({ children }: NavbarProviderProps) => {
     () => ({
       isMobile,
       toggleTheme,
+      setTheme,
+      theme,
     }),
-    [isMobile, toggleTheme],
+    [isMobile, toggleTheme, setTheme, theme],
   );
   return <NavbarCtx value={value}>{children}</NavbarCtx>;
 };

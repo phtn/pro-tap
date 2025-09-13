@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { motion, isMotionComponent, type HTMLMotionProps } from 'motion/react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { motion, isMotionComponent, type HTMLMotionProps } from "motion/react";
+import { cn } from "@/lib/utils";
 
 type AnyProps = Record<string, unknown>;
 
 type DOMMotionProps<T extends HTMLElement = HTMLElement> = Omit<
   HTMLMotionProps<keyof HTMLElementTagNameMap>,
-  'ref'
->;
+  "ref"
+> & { ref?: React.Ref<T> };
 
 type WithAsChild<Base extends object> =
   | (Base & { asChild: true; children: React.ReactElement })
@@ -25,7 +25,7 @@ function mergeRefs<T>(
   return (node) => {
     refs.forEach((ref) => {
       if (!ref) return;
-      if (typeof ref === 'function') {
+      if (typeof ref === "function") {
         ref(node);
       } else {
         (ref as React.RefObject<T | null>).current = node;
@@ -57,41 +57,43 @@ function mergeProps<T extends HTMLElement>(
   return merged;
 }
 
-const Slot = React.forwardRef(function SlotInner<T extends HTMLElement = HTMLElement>(
-  { children, ...props }: SlotProps<T>,
-  ref: React.Ref<T>,
-) {
-  // Determine a safe type without touching children.type before validation
-  const safeType = React.isValidElement(children) ? children.type : 'div';
+function Slot<T extends HTMLElement = HTMLElement>({
+  children,
+  ref,
+  ...props
+}: SlotProps<T>) {
+  if (!React.isValidElement(children)) return null;
 
   const isAlreadyMotion =
-    typeof safeType === 'object' &&
-    safeType !== null &&
-    isMotionComponent(safeType as React.ElementType);
+    typeof children.type === "object" &&
+    children.type !== null &&
+    isMotionComponent(children.type);
 
-  const Base = React.useMemo<React.ForwardRefExoticComponent<DOMMotionProps<T> & React.RefAttributes<T>>>(
+  const Base = React.useMemo(
     () =>
       isAlreadyMotion
-        ? (safeType as unknown as React.ForwardRefExoticComponent<DOMMotionProps<T> & React.RefAttributes<T>>)
-        : (motion.create(safeType as React.ElementType) as unknown as React.ForwardRefExoticComponent<DOMMotionProps<T> & React.RefAttributes<T>>),
-    [isAlreadyMotion, safeType],
+        ? (children.type as React.ElementType)
+        : motion.create(children.type as React.ElementType),
+    [isAlreadyMotion, children.type],
   );
 
-  if (!React.isValidElement(children)) return null;
+  // Ensure the chosen element type accepts a ref of T at the type level
+  const BaseWithRef = Base as unknown as React.ComponentType<
+    AnyProps & React.RefAttributes<T>
+  >;
 
   const { ref: childRef, ...childProps } = children.props as AnyProps;
 
+  // const mergedProps = mergeProps(childProps, props);
   const mergedProps = mergeProps<T>(childProps, props as DOMMotionProps<T>);
 
   return (
-    <Base
+    <BaseWithRef
       {...mergedProps}
       ref={mergeRefs(childRef as React.Ref<T>, ref)}
     />
   );
-}) as unknown as <T extends HTMLElement = HTMLElement>(
-  props: SlotProps<T> & React.RefAttributes<T>,
-) => React.ReactElement | null;
+}
 
 export {
   Slot,

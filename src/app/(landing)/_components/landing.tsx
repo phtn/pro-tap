@@ -1,17 +1,20 @@
 "use client";
 
-import { Navbar } from "@/app/(landing)/_components/navbar";
 import { VisualContent } from "@/app/(landing)/_components/visual-content";
 import { FeatureCards } from "@/app/(landing)/_components/feature-cards";
 import { HeroCTA, ViewButton } from "@/app/(landing)/_components/hero-cta";
 import { useMobile } from "@/hooks/use-mobile";
+import { Navbar } from "@/components/ui/navbar";
+import { NavChild } from "./nav-child";
 
 export const Landing = () => {
   const isMobile = useMobile();
   return (
     <div className="min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-white to-background text-foreground">
       {/* Navigation */}
-      <Navbar />
+      <Navbar>
+        <NavChild />
+      </Navbar>
 
       {/* Hero Section */}
       <main className="max-w-6xl mx-auto">

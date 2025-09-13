@@ -1,20 +1,66 @@
 import { useAuthCtx } from "@/ctx/auth";
 import { NavbarCtxProvider } from "@/ctx/navbar";
+import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { User } from "firebase/auth";
 import Link from "next/link";
-import { memo, PropsWithChildren, ReactNode } from "react";
+import { memo, type ReactNode, useCallback, useId, useMemo } from "react";
+import { ProfileDropdown } from "../kokonutui/profile-dropdown";
+import { Button } from "./button";
 import { ProAvatar } from "./pro-avatar";
 import TextAnimate from "./text-animate";
-import { Button } from "./button";
-import { Icon } from "@/lib/icons";
-import { ProfileDropdown } from "../kokonutui/profile-dropdown";
 
 interface NavProps {
   children?: ReactNode;
 }
+interface EssentialButton {
+  href: string;
+  icon: IconName;
+  onClick?: () => void;
+}
 const Nav = ({ children }: NavProps) => {
   const { user } = useAuthCtx();
+
+  const essentialButtons = useMemo(
+    () =>
+      [
+        {
+          href: "/account",
+          icon: "hexagon",
+          onClick: () => {},
+        },
+        {
+          href: "/chat",
+          icon: "chat",
+          onClick: () => {},
+        },
+        {
+          href: "/notifications",
+          icon: "bell",
+          onClick: () => {},
+        },
+      ] as EssentialButton[],
+    [],
+  );
+
+  const EssentialButtons = useCallback(
+    () =>
+      essentialButtons.map((button) => {
+        const id = useId();
+        return (
+          <Link key={id} href={button.href}>
+            <Button
+              id={id}
+              variant="secondary"
+              size="icon"
+              onClick={button.onClick}
+            >
+              <Icon name={button.icon} className="size-6" />
+            </Button>
+          </Link>
+        );
+      }),
+    [],
+  );
 
   return (
     user && (
@@ -32,12 +78,7 @@ const Nav = ({ children }: NavProps) => {
         </Link>
         <div className="flex items-center space-x-2 md:space-x-4">
           {children}
-          <Button variant="secondary" size="icon" onClick={() => {}}>
-            <Icon name="chat" className="size-6" />
-          </Button>
-          <Button variant="secondary" size="icon" onClick={() => {}}>
-            <Icon name="bell" className="size-6" />
-          </Button>
+          <EssentialButtons />
           <ProfileDropdown>
             <ProAvatar
               photoURL={user.photoURL}
