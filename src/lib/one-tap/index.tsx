@@ -3,7 +3,7 @@
 import { onError } from "@/ctx/toast";
 import { env } from "@/env";
 import { auth } from "@/lib/firebase";
-import { useAuthStore } from "@/lib/one-tap/store";
+import { useAuthStore } from "@/ctx/auth/store";
 import { Err } from "@/utils/helpers";
 import { Log } from "@/utils/logger";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
@@ -104,7 +104,10 @@ export const GoogleOneTap = () => {
     // Only initialize Google One Tap if NO user AND NO session are present
     const shouldInit = !isAuthenticated && !hasSession();
     if (!shouldInit) {
-      Log("GoogleOneTap: user or session present, skipping One Tap init", false);
+      Log(
+        "GoogleOneTap: user or session present, skipping One Tap init",
+        false,
+      );
       return;
     }
 

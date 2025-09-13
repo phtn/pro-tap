@@ -14,7 +14,7 @@ export const Landing = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <main className="max-w-7xl mx-auto">
+      <main className="max-w-6xl mx-auto">
         <div className="h-[40lvh] md:h-[50lvh] grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           {isMobile ? null : <HeroCTA />}

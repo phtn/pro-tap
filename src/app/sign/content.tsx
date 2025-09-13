@@ -4,10 +4,12 @@ import { VCard } from "@/components/experimental/v-card";
 import Beams from "@/components/react-bits/beams";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Navbar } from "@/components/ui/navbar";
+import { ProAvatar } from "@/components/ui/pro-avatar";
 import { TextureButton } from "@/components/ui/texture-button";
 import { useAuthCtx } from "@/ctx/auth";
 import { Icon } from "@/lib/icons";
 import { User } from "firebase/auth";
+import Link from "next/link";
 import { useState } from "react";
 
 export const Content = () => {
@@ -15,7 +17,7 @@ export const Content = () => {
   return (
     <div className="h-screen bg-background">
       <Navbar />
-      <main className="h-full pt-28 flex items-start justify-center gap-8">
+      <main className="h-fit pt-20 flex items-start justify-center gap-8">
         <SignInCard user={user} signOut={signOut} />
       </main>
     </div>
@@ -61,32 +63,25 @@ const SignInCard = ({ user, signOut }: SignInCardProps) => {
         </div>
         <div className="absolute font-figtree flex flex-col space-y-6 items-center justify-center text-zinc-100 size-96 top-16 z-100">
           <p className="font-bold text-xl tracking-tight">
-            {user ? "Logged in as" : "Sign in"}
+            {user ? "You're logged in as" : "Sign in"}
           </p>
           {user ? (
             <div className="space-y-4">
               <div className="flex items-center space-x-3 bg-zinc-500/15 dark:bg-zinc-500/60 backdrop-blur-md pl-3 pr-6 py-3 rounded-full">
-                {user && user.photoURL ? (
-                  <Avatar className="border-px border-white  aspect-square size-12 shadow-2xs">
-                    <AvatarFallback className="bg-zinc-700">
-                      <Icon name="spinners-ring" className="size-6" />
-                    </AvatarFallback>
-                    <AvatarImage
-                      src={"https://github.com/yukideluxe.png"}
-                      className="aspect-auto size-12 border border-zinc-50/80 rounded-full"
-                    ></AvatarImage>
-                  </Avatar>
-                ) : (
-                  <Icon name="user-profile" />
+                {user && user.photoURL && (
+                  <ProAvatar photoURL={user.photoURL} />
                 )}
                 <span className="font-medium tracking-tight">
                   {user.displayName}
                 </span>
               </div>
-              <div className="flex items-center space-x-3 px-3">
+              <Link
+                href={"/account"}
+                className="flex items-center space-x-3 px-3 hover:underline underline-offset-3 decoration-dashed decoration-[0.5px]"
+              >
                 <Icon name="arrow-right" className="size-4 text-orange-300" />
-                <span className="">Account</span>
-              </div>
+                <span className="">Account Page</span>
+              </Link>
             </div>
           ) : (
             <SignInContent />

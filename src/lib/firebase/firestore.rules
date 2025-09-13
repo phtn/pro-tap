@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Your users live at: /protap/users/users/{uid}
+    match /protap/users/account/{uid} {
+      // Read (get/query) only your own doc
+      allow read: if isSelf(uid);
+
+      // Create only your own doc and ensure the stored uid matches auth uid
+      allow create: if isSelf(uid) &&
+                    request.resource.data.uid == request.auth.uid;
+
+      // Update only your own doc and keep uid immutable
+      allow update: if isSelf(uid) &&
+                    request.resource.data.uid == resource.data.uid;
+
+      // Delete only your own doc
+      allow delete: if isSelf(uid);
+    }
+  }
+}

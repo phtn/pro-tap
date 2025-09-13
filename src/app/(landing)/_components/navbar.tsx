@@ -19,7 +19,7 @@ export const Navbar = () => {
   }, [router]);
 
   return (
-    <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 max-w-7xl mx-auto">
+    <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 max-w-6xl mx-auto">
       <div className="flex items-center gap-8 xl:px-0 px-4">
         <svg
           viewBox="0 0 425 71"

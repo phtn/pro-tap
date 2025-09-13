@@ -1,6 +1,7 @@
 "use client";
 
 import { auth } from "@/lib/firebase";
+import { updateUser } from "@/lib/firebase/users";
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -8,7 +9,6 @@ import {
   UserCredential,
   onAuthStateChanged,
   signInWithPopup,
-  signInWithRedirect,
   signOut as firebaseSignOut,
 } from "firebase/auth";
 import {
@@ -40,6 +40,13 @@ const AuthCtxProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
+      if (u) {
+        void updateUser(u).catch((err) => {
+          if (process.env.NODE_ENV !== "production") {
+            console.error("updateUser failed", err);
+          }
+        });
+      }
     });
     return () => unsubscribe();
   }, []);

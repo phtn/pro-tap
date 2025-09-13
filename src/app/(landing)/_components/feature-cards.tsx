@@ -33,9 +33,6 @@ export const FeatureCards = () => {
       <AnimatedFeatureCard title="Account Personalization">
         <Visual1 mainColor="#ff6900" secondaryColor="#f54900" />
       </AnimatedFeatureCard>
-      <AnimatedFeatureCard title="Account Personalization">
-        <Visual2 mainColor="#ff6900" secondaryColor="#f54900" />
-      </AnimatedFeatureCard>
     </div>
   );
 };
