@@ -10,32 +10,24 @@ import { NavChild } from "./nav-child";
 export const Landing = () => {
   const isMobile = useMobile();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-white to-background text-foreground">
-      {/* Navigation */}
-      <Navbar>
-        <NavChild />
-      </Navbar>
+    <main className="max-w-6xl mx-auto">
+      <div className="h-[40lvh] md:h-[50lvh] grid lg:grid-cols-2 gap-12 items-center">
+        {/* Left Content */}
+        {isMobile ? null : <HeroCTA />}
 
-      {/* Hero Section */}
-      <main className="max-w-6xl mx-auto">
-        <div className="h-[40lvh] md:h-[50lvh] grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          {isMobile ? null : <HeroCTA />}
+        {/* Right Content - 3D Character Placeholder */}
+        <VisualContent />
+      </div>
 
-          {/* Right Content - 3D Character Placeholder */}
-          <VisualContent />
+      {/* CTA */}
+      {isMobile ? (
+        <div className="w-full flex items-center justify-center relative z-100">
+          <ViewButton />
         </div>
+      ) : null}
 
-        {/* CTA */}
-        {isMobile ? (
-          <div className="w-full flex items-center justify-center relative z-100">
-            <ViewButton />
-          </div>
-        ) : null}
-
-        {/* Feature Cards */}
-        {isMobile ? <FeatureCards /> : <FeatureCards />}
-      </main>
-    </div>
+      {/* Feature Cards */}
+      {isMobile ? <FeatureCards /> : <FeatureCards />}
+    </main>
   );
 };

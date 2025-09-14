@@ -4,6 +4,7 @@ import {
   Geist,
   Geist_Mono,
   Space_Grotesk,
+  Space_Mono,
   Figtree,
   Doto,
 } from "next/font/google";
@@ -51,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`bg-background ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
+        className={`bg-background selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
       >
         <ThemeProvider
           enableSystem

@@ -13,12 +13,12 @@
 import * as React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
+import { type IconName } from "@/lib/icons";
 
 interface TabItem {
   id: string;
   title: string;
-  icon?: LucideIcon;
+  icon?: IconName;
   content?: React.ReactNode;
   cardContent?: React.ReactNode;
   color: string;

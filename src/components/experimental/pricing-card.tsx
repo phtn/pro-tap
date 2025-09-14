@@ -1,14 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { TextureButton } from "../ui/texture-button";
+import { NeumorphButton } from "../ui/neumorph";
 import {
-  TextureCard,
   TextureCardContent,
   TextureCardFooter,
   TextureCardHeader,
-  TextureCardStyled,
   TextureSeparator,
 } from "../ui/texture-card";
 
@@ -41,10 +37,13 @@ export function PricingCard({
   popular = false,
 }: PricingCardProps) {
   return (
-    <TextureCardStyled
+    <div
       className={cn(
-        "relative p-0 shadow-lg bg-white dark:bg-transparent overflow-hidden transition-transform hover:scale-105 min-w-sm",
-        // popular && "ring-2 ring-blue-500 ring-offset-2",
+        "min-w-sm h-fit overflow-hidden rounded-4xl",
+        "bg-gradient-to-b from-white/95 to-white/95 dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm",
+        " border-[0.33px] border-zinc-300 dark:border-zinc-800/60",
+        " shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20",
+        "font-figtree font-semibold",
       )}
     >
       {popular && (
@@ -83,21 +82,21 @@ export function PricingCard({
             </div>
 
             <div className="relative">
-              <div className="absolute select-none pointer-events-none z-0 bottom-8 -left-16 h-6 w-32 -rotate-3 dark:bg-yellow-200 rounded-full blur-xl" />
-              <div className="absolute select-none pointer-events-none z-0 -bottom-2 -left-16 h-6 w-32 -rotate-3 dark:bg-orange-300/80 rounded-full blur-xl" />
-              <div className="absolute select-none pointer-events-none z-0 bottom-10 -right-16 h-6 w-32 -rotate-12 dark:bg-yellow-200 rounded-full blur-xl" />
-              <div className="absolute select-none pointer-events-none z-0 bottom-1 -right-16 h-10 w-32 rotate-6 dark:bg-orange-300/60 rounded-full blur-xl" />
-              <TextureButton
+              <div className="hidden absolute select-none pointer-events-none z-0 bottom-8 -left-16 h-6 w-32 -rotate-3 dark:bg-yellow-200 rounded-full blur-xl" />
+              <div className="hidden absolute select-none pointer-events-none z-0 -bottom-2 -left-16 h-6 w-32 -rotate-3 dark:bg-orange-300/80 rounded-full blur-xl" />
+              <div className="hidden absolute select-none pointer-events-none z-0 bottom-10 -right-16 h-6 w-32 -rotate-12 dark:bg-yellow-200 rounded-full blur-xl" />
+              <div className="hidden absolute select-none pointer-events-none z-0 bottom-1 -right-16 h-10 w-32 rotate-6 dark:bg-orange-300/60 rounded-full blur-xl" />
+              <NeumorphButton
                 className="relative z-20 w-full bg-gray-900 hover:bg-gray-800 text-orange-300 font-semibold text-2xl"
                 size="lg"
               >
                 {buttonText}
-              </TextureButton>
+              </NeumorphButton>
             </div>
           </div>
         </div>
       </TextureCardHeader>
-      <TextureCardContent className="h-full text-zinc-700 dark:text-foreground">
+      <TextureCardContent className="h-full text-zinc-700 px-2 dark:text-foreground">
         <div className="bg-white dark:bg-transparent space-y-4">
           <div className="space-y-2.5">
             {features.map((feature, index) => (
@@ -109,17 +108,17 @@ export function PricingCard({
           </div>
         </div>
       </TextureCardContent>
-      <TextureSeparator />
-      <TextureCardFooter className="">
-        <div className="w-full flex items-center justify-between py-2 px-2 font-figtree">
-          <p className="text-sm text-zinc-600 dark:text-zinc-300 tracking-normal opacity-60">
+      {/*<TextureSeparator />*/}
+      <TextureCardFooter className="dark:bg-zinc-800/50 bg-slate-100">
+        <div className="w-full flex items-center justify-between py-4 px-3 font-figtree ">
+          <p className="text-sm text-zinc-600 dark:text-zinc-200 font-mono opacity-60">
             {footerText}
           </p>
-          <p className="text-sm text-emerald-500 tracking-tighter">
-            all systems secure.
+          <p className="text-sm text-teal-500 dark:text-teal-400 font-normal">
+            All systems secure.
           </p>
         </div>
       </TextureCardFooter>
-    </TextureCardStyled>
+    </div>
   );
 }

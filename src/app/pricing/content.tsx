@@ -25,7 +25,7 @@ export const Content = () => {
             { icon: "arrow-up", text: "Feature 4" },
             { icon: "arrow-up", text: "Feature 5" },
           ]}
-          footerText={"Payments"}
+          footerText={"Payment Gateway"}
         />
       </main>
     </div>

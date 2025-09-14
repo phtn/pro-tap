@@ -1,8 +1,9 @@
 "use client";
 
+import { FullSignIn } from "@/components/experimental/full-signin";
 import { VCard } from "@/components/experimental/v-card";
 import Beams from "@/components/react-bits/beams";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Navbar } from "@/components/ui/navbar";
 import { ProAvatar } from "@/components/ui/pro-avatar";
 import { TextureButton } from "@/components/ui/texture-button";
@@ -17,8 +18,9 @@ export const Content = () => {
   return (
     <div className="h-screen bg-background">
       <Navbar />
-      <main className="h-fit pt-8 md:pt-16 flex items-start justify-center gap-8 px-2 md:px-0">
-        <SignInCard user={user} signOut={signOut} />
+      <main className="max-w-7xl mx-auto h-fit pt-8 md:pt-10 flex items-start justify-center">
+        <FullSignIn />
+        {/*<NewSignInCard user={user} signOut={signOut} />*/}
       </main>
     </div>
   );
@@ -29,9 +31,64 @@ interface SignInCardProps {
   signOut: () => Promise<void>;
 }
 
+const NewSignInCard = ({ user, signOut }: SignInCardProps) => {
+  return (
+    <div className="w-96 h-[28rem] px-3 py-3.5 font-figtree font-semibold bg-white dark:bg-zinc-900/95 backdrop-blur-sm border-[0.33px] border-zinc-300 dark:border-zinc-800/60 rounded-3xl shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20 overflow-hidden">
+      <div className="left-0 top-8 absolute size-full font-figtree flex flex-col space-y-12 items-center justify-start text-zinc-600 dark:text-zinc-400 z-100">
+        <div className="w-full flex items-center space-x-8 px-8 font-bold text-xl tracking-tight">
+          <Icon name="shield-checkmark" className="text-zinc-500/80 size-9" />
+          <span>{user ? "You're logged in as" : "Sign in"}</span>
+        </div>
+        {user ? (
+          <div className="space-y-12">
+            <div className="flex items-center min-w-3xs space-x-4 bg-zinc-500/15 dark:bg-zinc-500/60 backdrop-blur-md pl-3 pr-6 py-3 rounded-full">
+              {user && user.photoURL && <ProAvatar photoURL={user.photoURL} />}
+              <span className="font-medium tracking-tight dark:text-zinc-300">
+                {user.displayName}
+              </span>
+            </div>
+            <Link
+              href={"/account"}
+              className="flex items-center space-x-3 px-3 hover:underline underline-offset-3 decoration-dashed decoration-[0.5px]"
+            >
+              <Icon name="arrow-right" className="size-5 text-primary" />
+              <span className="">Account Page</span>
+            </Link>
+
+            <section className="fixed bottom-[1px] left-px right-[1px] flex flex-col justify-center space-y-px h-16 w-full">
+              <DropdownMenuSeparator className="relative z-20 my-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-800" />
+              <div className="flex items-center justify-between w-full h-16">
+                <button
+                  type="button"
+                  className="flex items-center justify-center space-x-1 w-full h-[3.75rem] hover:bg-zinc-100/80 cursor-pointer group rounded-xs"
+                >
+                  <Icon name="chevron-left" className="size-4" />
+                  <Icon name="zap" className="text-foreground/60 size-7" />
+                </button>
+                {/*<div className="bg-gradient-to-b from-zinc-200 via-zinc-200/50 to-transparent dark:via-zinc-800 px-[0.5px] h-full w-px" />*/}
+                <button
+                  type="button"
+                  className="flex items-center justify-center space-x-4 w-full h-[3.75rem] hover:bg-zinc-100/80 cursor-pointer group rounded-xs"
+                >
+                  <span className="text-base font-medium font-figtree tracking-tight">
+                    Sign out
+                  </span>
+                  <Icon name="sign-out" className="text-foreground/60 size-6" />
+                </button>
+              </div>
+            </section>
+          </div>
+        ) : (
+          <SignInContent />
+        )}
+      </div>
+    </div>
+  );
+};
+
 const SignInCard = ({ user, signOut }: SignInCardProps) => {
   return (
-    <div className="rounded-b-[1.75rem] rounded-t-4xl overflow-hidden">
+    <div className="rounded-b-[2.25rem] rounded-t-4xl overflow-hidden">
       <VCard
         className="px-0 relative"
         toolbar={
@@ -54,7 +111,7 @@ const SignInCard = ({ user, signOut }: SignInCardProps) => {
           </div>
         }
       >
-        <div className="relative flex items-center justify-center flex-col z-20 w-[22rem] sm:w-[93lvw] h-96 md:size-96 rounded-2xl overflow-hidden">
+        <div className="relative flex items-center justify-center flex-col z-20 w-[22rem] sm:w-[93lvw] h-96 md:size-96 rounded-t-3xl rounded-b-md overflow-hidden">
           <div className="flex items-center relative h-full w-full">
             <Beams
               beamWidth={2}
@@ -130,20 +187,20 @@ const SignInContent = () => {
   return (
     <div className="flex flex-col justify-center gap-6 font-figtree">
       <TextureButton
-        variant="primary"
-        className="min-w-3xs border-none h-16 rounded-full overflow-hidden"
         size="lg"
+        variant="primary"
         onClick={handleGoogle}
         disabled={loading !== null}
+        className="min-w-3xs border-none h-16 rounded-full overflow-hidden"
       >
         {/* Google Icon */}
         <svg
           width="256"
           height="262"
+          className="size-6"
           viewBox="0 0 256 262"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="xMidYMid"
-          className="size-6"
         >
           <path
             d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"

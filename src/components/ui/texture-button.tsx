@@ -23,8 +23,8 @@ const buttonVariantsOuter = cva("", {
     },
     size: {
       sm: "rounded-[6px]",
-      default: "rounded-[12px]",
-      lg: "h-16 rounded-[16px]",
+      default: "h-14 rounded-md",
+      lg: "h-16 rounded-sm",
       icon: "rounded-full",
     },
   },
@@ -54,7 +54,7 @@ const innerDivVariants = cva(
       size: {
         sm: "text-xs rounded-[4px] px-4 py-1",
         default: "text-sm rounded-[10px] px-4 py-2",
-        lg: "text-base rounded-[14px] px-4 py-2",
+        lg: "text-base rounded-[2px] px-4 py-2",
         icon: " rounded-full p-1",
       },
     },

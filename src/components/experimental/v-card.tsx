@@ -25,7 +25,7 @@ interface Props {
 export function VCard({ children, className, toolbar, toggle, footer }: Props) {
   return (
     <div className={cn("flex items-center justify-center")}>
-      <div className="bg-zinc-800/60 px-0.5 pb-0.5 backdrop-blur-2xl h-full">
+      <div className="bg-zinc-800/60 backdrop-blur-2xl h-full">
         <div
           className={cn(
             "h-12 px-4 flex items-center justify-between",

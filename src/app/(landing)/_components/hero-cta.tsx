@@ -7,11 +7,13 @@ export const HeroCTA = () => {
     <div className="h-full space-y-8 px-6 flex flex-col justify-center">
       <div className="space-y-12">
         <div className="font-bold leading-6">
-          <TextAnimate
-            text={`Protap`}
-            type="popIn"
-            className="font-space tracking-normal text-left text-5xl lg:text-6xl"
-          />
+          <div className="flex items-center justify-start border w-64 h-20">
+            <TextAnimate
+              text={`Protap`}
+              type="whipInUp"
+              className="font-space tracking-normal text-left text-5xl lg:text-6xl"
+            />
+          </div>
           <span className="capitalize font-doto text-xl lg:text-2xl font-bold tracking-normal text-primary">
             Digital Insurance
           </span>
