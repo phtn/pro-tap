@@ -5,7 +5,6 @@ import {
   TextureCardContent,
   TextureCardFooter,
   TextureCardHeader,
-  TextureSeparator,
 } from "../ui/texture-card";
 
 interface Feature {

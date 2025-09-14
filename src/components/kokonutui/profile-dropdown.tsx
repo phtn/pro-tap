@@ -12,6 +12,8 @@ import {
 import { Icon, IconName } from "@/lib/icons";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
+import { getNextTheme } from "../animate-ui/components/buttons/theme-toggler";
+import { ThemeSelection } from "../animate-ui/primitives/effects/theme-toggler";
 
 interface Profile {
   name: string;
@@ -52,8 +54,15 @@ export function ProfileDropdown({
   children,
   ...props
 }: ProfileDropdownProps) {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+
+  const isDark = useMemo(() => theme === "dark", [theme]);
+
+  const toggler = useCallback(() => {
+    setTheme(getNextTheme(theme as ThemeSelection, ["dark", "light"]));
+  }, [theme, setTheme]);
+
   const menuItems = useMemo(
     () =>
       [
@@ -83,14 +92,15 @@ export function ProfileDropdown({
           type: "link",
         },
         {
-          label: `${theme === "light" ? "Dark" : "Light"} mode`,
+          label: isDark ? "Light mode" : "Dark mode",
           href: "#",
           icon: "dark-theme",
           external: true,
           type: "action",
+          fn: toggler,
         },
       ] as MenuItem[],
-    [data, theme],
+    [data, isDark],
   );
 
   const MenuItemList = useCallback(
@@ -98,30 +108,19 @@ export function ProfileDropdown({
       <div className="space-y-1.5">
         {menuItems.map((item) =>
           item.type === "link" ? (
-            <LinkMenuItem
-              key={item.label}
-              href={item.href}
-              label={item.label}
-              icon={item.icon}
-              type={"link"}
-            />
+            <LinkMenuItem key={item.label} {...item} />
           ) : (
-            <ActionMenuItem
-              key={item.label}
-              label={item.label}
-              icon={item.icon}
-              type={item.type}
-            />
+            <ActionMenuItem key={item.label} {...item} />
           ),
         )}
       </div>
     ),
-    [],
+    [menuItems],
   );
 
   return (
     <div className={cn("relative", className)} {...props}>
-      <DropdownMenu onOpenChange={setIsOpen}>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <div className="group relative">
           <DropdownMenuTrigger asChild>
             <button
@@ -178,10 +177,13 @@ const LinkMenuItem = (item: MenuItem) => {
 const ActionMenuItem = (item: MenuItem) => {
   return (
     <DropdownMenuItem key={item.label} asChild>
-      <div className="flex items-center h-12 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/60 rounded-xl transition-all duration-200 cursor-pointer group">
+      <button
+        onClick={item.fn}
+        className="flex w-full items-center h-12 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/60 rounded-xl transition-all duration-200 cursor-pointer group"
+      >
         <IconLabel icon={item.icon} label={item.label} />
         <ExtraValueItem value={item.value} label={item.label} />
-      </div>
+      </button>
     </DropdownMenuItem>
   );
 };

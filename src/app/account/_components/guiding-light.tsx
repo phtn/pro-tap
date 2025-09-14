@@ -1,4 +1,4 @@
-import Prism from "@/components/react-bits/prism";
+import { Prism } from "@/components/react-bits/prism";
 export const GuidingLight = () => {
   return (
     <div className="absolute pointer-events-none opacity-20 bottom-0 size-full overflow-hidden">

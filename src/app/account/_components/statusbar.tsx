@@ -2,7 +2,7 @@ import { ClassName } from "@/app/types";
 import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState } from "react";
 
 interface ControlItem {
   id: string;

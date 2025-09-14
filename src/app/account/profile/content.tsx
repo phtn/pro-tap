@@ -3,6 +3,7 @@
 import { ProAvatar } from "@/components/ui/pro-avatar";
 import Image from "next/image";
 import { useAuthCtx } from "@/ctx/auth";
+
 export const Content = () => {
   const { user } = useAuthCtx();
   return (
