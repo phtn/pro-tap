@@ -78,7 +78,7 @@ export const SignInBeams = ({ user, signOut }: SignInCardProps) => {
   );
 };
 
-const SignInContent = () => {
+export const SignInContent = () => {
   const { signInWithGoogle, signInWithGithub } = useAuthCtx();
   const [loading, setLoading] = useState<"google" | "github" | null>(null);
 

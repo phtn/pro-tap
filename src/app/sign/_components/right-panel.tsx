@@ -17,6 +17,7 @@ import {
 import { AuthedCard } from "./authed-card";
 import { type VoidPromise } from "@/app/types";
 import { cn } from "@/lib/utils";
+import { SignInContent } from "./sign-beams";
 
 interface HeaderProps {
   title: string;
@@ -27,17 +28,17 @@ interface HeaderProps {
 
 const Header = ({ title, description, children }: HeaderProps) => {
   return (
-    <div className="flex flex-col items-start justify-center w-full space-y-4">
-      <div className="space-y-4">
-        <h2 className="text-2xl md:text-4xl font-semibold md:font-bold text-gray-900 font-figtree tracking-tighter">
+    <div className="flex flex-col items-start justify-center w-full md:space-y-4">
+      <div className="space-y-0 md:space-y-4">
+        <h2 className="text-lg md:text-4xl font-semibold md:font-bold text-gray-900 dark:text-zinc-300 font-figtree tracking-tighter">
           {title}
         </h2>
         <p
           className={cn(
-            "text-zinc-500 dark:text-white mt-2 font-figtree font-light leading-5 max-w-[30ch] tracking-normal text-lg space-x-2 md:flex hidden",
+            "text-zinc-500 dark:text-white md:mt-2 font-figtree font-light leading-5 max-w-[30ch] tracking-normal text-lg space-x-2 md:flex hidden",
           )}
         >
-          <span className=" text-xl tracking-tight font-semibold font-sans text-transparent bg-clip-text bg-gradient-to-r from-orange-950 via-cyan-700 to-sky-600 dark:from-teal-500 dark:via-sky-300 dark:to-orange-200">
+          <span className=" text-xl tracking-tight font-semibold font-sans text-transparent bg-clip-text bg-gradient-to-r from-orange-900 via-cyan-700 to-sky-600 dark:from-teal-500 dark:via-sky-300 dark:to-orange-200">
             {children}
           </span>
           <span>{description}</span>
@@ -227,7 +228,20 @@ export const RightPanel = ({
 }: RightPanelProps) => {
   return (
     <div className="lg:w-1/2 p-12 flex flex-col justify-center">
-      <div className="max-w-md mx-auto w-full space-y-10">
+      <div className="md:hidden space-y-8 h-[64lvh]">
+        <Header
+          title={user ? "You're logged in as" : "Create an account"}
+          description={
+            user
+              ? ""
+              : "your web presence online to match your unique style and preferences"
+          }
+        >
+          {user ? "" : "Personalize"}
+        </Header>
+        <SignInContent />
+      </div>
+      <div className="max-w-md mx-auto w-full space-y-6 md:space-y-10 flex-col hidden md:flex">
         <Header
           title={user ? "You're logged in as" : "Create an account"}
           description={
