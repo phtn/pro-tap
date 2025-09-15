@@ -1,10 +1,16 @@
 import { NavbarCtxProvider } from "@/ctx/navbar";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { memo, PropsWithChildren } from "react";
+import { memo, type ReactNode } from "react";
 
-const Nav = ({ children }: PropsWithChildren) => {
+const Nav = ({ children, hideOnMobile }: NavbarProps) => {
   return (
-    <nav className="h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-7xl mx-auto">
+    <nav
+      className={cn(
+        "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-7xl mx-auto",
+        { hidden: hideOnMobile },
+      )}
+    >
       <Link href={"/alpha"} className="flex items-center gap-8 lg:px-0 px-3">
         <svg
           viewBox="0 0 425 71"
@@ -60,8 +66,15 @@ const Nav = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const Navbar = memo(({ children }: PropsWithChildren) => (
-  <NavbarCtxProvider>
-    <Nav>{children}</Nav>
-  </NavbarCtxProvider>
-));
+interface NavbarProps {
+  children?: ReactNode;
+  hideOnMobile?: boolean;
+}
+
+export const Navbar = memo(
+  ({ children, hideOnMobile = false }: NavbarProps) => (
+    <NavbarCtxProvider>
+      <Nav hideOnMobile={hideOnMobile}>{children}</Nav>
+    </NavbarCtxProvider>
+  ),
+);

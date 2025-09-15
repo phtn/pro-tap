@@ -16,6 +16,7 @@ import {
 } from "react";
 import { AuthedCard } from "./authed-card";
 import { type VoidPromise } from "@/app/types";
+import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   title: string;
@@ -28,10 +29,14 @@ const Header = ({ title, description, children }: HeaderProps) => {
   return (
     <div className="flex flex-col items-start justify-center w-full space-y-4">
       <div className="space-y-4">
-        <h2 className="text-4xl font-bold text-gray-900 font-figtree tracking-tighter">
+        <h2 className="text-2xl md:text-4xl font-semibold md:font-bold text-gray-900 font-figtree tracking-tighter">
           {title}
         </h2>
-        <p className="text-zinc-500 dark:text-white mt-2 font-figtree font-light leading-5 max-w-[30ch] tracking-normal text-lg space-x-2">
+        <p
+          className={cn(
+            "text-zinc-500 dark:text-white mt-2 font-figtree font-light leading-5 max-w-[30ch] tracking-normal text-lg space-x-2 md:flex hidden",
+          )}
+        >
           <span className=" text-xl tracking-tight font-semibold font-sans text-transparent bg-clip-text bg-gradient-to-r from-orange-950 via-cyan-700 to-sky-600 dark:from-teal-500 dark:via-sky-300 dark:to-orange-200">
             {children}
           </span>
@@ -165,7 +170,7 @@ interface SocialLoginProps {
 
 const SocialLogins = ({ data }: SocialLoginProps) => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-14 md:space-y-8">
       <div className="select-none relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t-[0.33px] border-gray-300" />

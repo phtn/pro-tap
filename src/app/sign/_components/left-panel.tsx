@@ -1,6 +1,6 @@
+import { LogoPro } from "@/components/logo";
 import { Prism } from "@/components/react-bits/prism";
 import { TextTrain } from "@/components/ui/text-train";
-import { Icon } from "@/lib/icons";
 
 export const LeftPanel = () => {
   return (
@@ -21,15 +21,14 @@ export const LeftPanel = () => {
       <div className="p-12 relative z-50">
         {/* Brand Logo */}
         <div className="flex items-center gap-2 text-white">
-          <Icon name="zap" className="h-6 text-black" />
-          <span className="text-xl font-semibold text-black">Protap</span>
+          <LogoPro className="h-4 invert opacity-30" />
+          {/*<span className="text-xl font-semibold text-black">Protap</span>*/}
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col space-y-4">
-          <p className="text-lg opacity-90">You can easily</p>
-          <div className="pt-20 space-y-3 flex flex-col justify-center">
-            <div className="block w-full">
+        <div className="flex flex-col space-y-6">
+          <div className="pt-12 md:pt-20 space-y-2 md:space-y-3 flex flex-col justify-center items-center">
+            <div className="block">
               <TextTrain
                 words={[
                   "Level up",
@@ -40,7 +39,7 @@ export const LeftPanel = () => {
                   "Become famous",
                   "It's your turn",
                 ]}
-                className="text-sky-950 font-extrabold text-6xl whitespace-nowrap"
+                className="text-sky-950 font-bold md:font-extrabold text-4xl drop-shadow drop-shadow-sky-100/20 md:text-6xl whitespace-nowrap"
               />
             </div>
             <div>
@@ -50,12 +49,12 @@ export const LeftPanel = () => {
                   "your Web Presence.",
                   "Professional Network.",
                   "current Revenue limits.",
-                  "your Brand the right way.",
+                  "your brand the right way.",
                   "listen to your Masterpiece.",
                   "Become an Inspiration.",
                   "for Status Upgrade.",
                 ]}
-                className="text-sky-950 text-4xl font-medium max-w-[20ch] tracking-tighter"
+                className="text-sky-950 text-2xl md:text-4xl drop-shadow drop-shadow-amber-100/10 font-space font-medium max-w-[20ch] tracking-tighter"
               />
             </div>
           </div>

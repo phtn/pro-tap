@@ -63,7 +63,7 @@ export function FullSignIn() {
 
   return (
     <div className="w-full flex items-center justify-center font-figtree">
-      <div className="bg-white dark:bg-zinc-500  w-full rounded-4xl shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-zinc-500  w-full md:rounded-4xl md:shadow-2xl overflow-hidden">
         <div className="flex flex-col lg:flex-row min-h-[70lvh]">
           <LeftPanel />
           <RightPanel
