@@ -47,8 +47,8 @@ export const AuthedCard = ({ user, signOut }: SignInCardProps) => {
                   type="button"
                   className="flex items-center justify-center space-x-1 w-full h-[3.75rem] bg-slate-100 dark:bg-slate-100/5 dark:hover:bg-slate-100/10 hover:bg-zinc-100/80 cursor-pointer group rounded-xs"
                 >
-                  <Icon name="chevron-left" className="size-4" />
-                  <Icon name="hexagon" className="text-foreground/60 size-7" />
+                  {/*<Icon name="chevron-left" className="size-4" />*/}
+                  {/*<Icon name="hexagon" className="text-foreground/60 size-7" />*/}
                 </button>
               </Link>
               <button

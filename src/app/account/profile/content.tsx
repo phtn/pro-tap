@@ -22,7 +22,7 @@ export const Content = () => {
       </div>
       <div>
         {user && (
-          <div className="absolute border-2 bg-white border-white aspect-square size-28 flex items-center justify-center left-20 -bottom-12 rounded-full shadow-2xl">
+          <div className="absolute border-2 bg-white border-white aspect-square size-20 md:size-28 flex items-center justify-center left-20 -bottom-12 rounded-full shadow-2xl">
             <ProAvatar
               photoURL={user.photoURL}
               className="size-full shrink-0"

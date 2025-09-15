@@ -107,7 +107,7 @@ export const SignInContent = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center gap-6 font-figtree">
+    <div className="flex flex-col justify-center space-y-12 font-figtree">
       <TextureButton
         size="lg"
         variant="primary"

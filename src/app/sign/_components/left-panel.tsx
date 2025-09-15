@@ -23,7 +23,7 @@ export const LeftPanel = () => {
       <div className="p-12 relative z-50">
         {/* Brand Logo */}
         <div className="flex items-center gap-2 text-white">
-          <LogoPro className="h-4 md:invert md:opacity-30 opacity-50" />
+          <LogoPro className="h-4 md:opacity-50 opacity-50" />
           {/*<span className="text-xl font-semibold text-black">Protap</span>*/}
         </div>
 
@@ -41,7 +41,7 @@ export const LeftPanel = () => {
                   "Become famous",
                   "It's your turn",
                 ]}
-                className="text-sky-950 md:dark:text-sky-950 dark:text-sky-50 font-semibold md:font-extrabold text-3xl tracking-tighter md:text-6xl whitespace-nowrap md:tracking-normal"
+                className="text-sky-950 md:dark:text-sky-50 dark:text-sky-50 font-semibold md:font-extrabold text-3xl tracking-tighter md:text-6xl whitespace-nowrap md:tracking-tight"
               />
             </div>
             <div>
@@ -56,7 +56,7 @@ export const LeftPanel = () => {
                   "Become an Inspiration.",
                   "for Status Upgrade.",
                 ]}
-                className="text-sky-950 md:dark:text-sky-950 dark:text-sky-50/80 text-xl md:text-4xl font-space font-medium max-w-[20ch] tracking-tighter"
+                className="text-sky-950 md:dark:text-orange-50 dark:text-sky-50/80 text-xl md:text-3xl font-space font-medium max-w-[20ch] tracking-tighter"
               />
             </div>
           </div>

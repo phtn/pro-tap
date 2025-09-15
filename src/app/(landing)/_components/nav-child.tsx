@@ -1,5 +1,6 @@
 import { getNextTheme } from "@/components/animate-ui/components/buttons/theme-toggler";
 import { ThemeSelection } from "@/components/animate-ui/primitives/effects/theme-toggler";
+import { SexyButton } from "@/components/experimental/sexy-button";
 import { ProfileDropdown } from "@/components/kokonutui/profile-dropdown";
 import { NeumorphButton as Button } from "@/components/ui/neumorph";
 import { ProAvatar } from "@/components/ui/pro-avatar";
@@ -18,19 +19,21 @@ export const NavChild = () => {
   }, [theme]);
 
   return (
-    <div className="flex items-center space-x-2 md:space-x-4">
+    <div className="flex items-center px-4 md:px-0 space-x-2 md:space-x-4">
       <Link href="/sign">
-        <Button
-          size={isMobile ? "sm" : "lg"}
-          intent="outline"
-          className="rounded-full md:border-2 border-1"
+        <SexyButton
+          // size={isMobile ? "sm" : "lg"}
+          // intent="outline"
+
+          className="w-24"
         >
           Sign up
-        </Button>
+        </SexyButton>
       </Link>
       {user ? (
         <ProfileDropdown>
           <ProAvatar
+            tiny
             photoURL={user.photoURL}
             className=" hover:border-primary border-[1.5px]"
           />

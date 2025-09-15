@@ -2,64 +2,18 @@ import { NavbarCtxProvider } from "@/ctx/navbar";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { memo, type ReactNode } from "react";
+import { LogoPro } from "../logo";
 
 const Nav = ({ children, hideOnMobile }: NavbarProps) => {
   return (
     <nav
       className={cn(
         "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-7xl mx-auto",
-        { hidden: hideOnMobile },
+        { "hidden md:flex": hideOnMobile },
       )}
     >
-      <Link href={"/alpha"} className="flex items-center gap-8 lg:px-0 px-3">
-        <svg
-          viewBox="0 0 425 71"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-zinc-900 dark:text-foreground h-5 md:h-8 w-auto"
-        >
-          <g clipPath="url(#clip0_3509_262)">
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M159 15L145 15L145 51.3125C145 62.1856 153.814 71 164.688 71L195.313 71C205.5 71 215 63.5 215 51.3125L215 20.6875C215 9.8144 206.186 0.999992 195.313 0.999991L159 0.999987L159 15L191.047 15L159 47.0469L159 15ZM201 24.8438L168.844 57C205 58 203 61 201 24.8438Z"
-              fill="currentColor"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M89.5 70.9961L75.5 70.9876V0.996094L114 0.998688C129.501 0.998688 138.501 9.49774 138.501 23.7443C138.501 37.9909 130.5 46.4916 114 46.4916L148 70.9994H124L89.5 46.489V70.9961ZM89.5 14.9961V32.4895L114 32.4921C123.501 32.4921 124.5 26.4985 124.5 23.7443C124.5 20.9902 123.501 14.9971 114 14.9971L89.5 14.9961Z"
-              fill="currentColor"
-            />
-            <path
-              d="M262.5 70.9974L246.475 70.9888V14.9983L220 14.9974V1H287V14.9984L262.5 14.9974V32.4908V46.4903V70.9974Z"
-              fill="currentColor"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M271.5 70.9974L308.475 70.9888L349 70.9974L308.475 1L271.5 70.9974ZM293.5 57.4378L308.475 31.5L323.45 57.4378H308.475H293.5Z"
-              fill="currentColor"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M14 71L0 70.9915V1H45.4988C61 1 70 7.49978 70 23.7456C70 39.9915 55.9984 46.4929 45.4988 46.4929H14V71ZM14 15V32.4934H45.4988C55 32.4934 55.9984 26.4998 55.9984 23.7456C55.9984 20.9915 55 14.9984 45.4988 14.9984L14 15Z"
-              fill="currentColor"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M369 71L355 70.9915V1H400.499C416 1 425 7.49978 425 23.7456C425 39.9915 410.998 46.4929 400.499 46.4929H369V71ZM369 15V32.4934H400.499C410 32.4934 410.998 26.4998 410.998 23.7456C410.998 20.9915 410 14.9984 400.499 14.9984L369 15Z"
-              fill="currentColor"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_3509_262">
-              <rect width="425" height="71" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
+      <Link href={"/alpha"} className="flex items-center gap-8 lg:px-0 px-6">
+        <LogoPro className="h-4 md:h-8 invert opacity-80" />
       </Link>
       <div>{children}</div>
     </nav>

@@ -65,14 +65,14 @@ const Nav = ({ children }: NavProps) => {
   return user ? (
     <nav
       className={cn(
-        "h-[7lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-5xl mx-auto px-4",
+        "h-[8lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-5xl mx-auto px-4",
       )}
     >
       <Link href={"/account"} className="flex items-center gap-8 lg:px-0">
         <TextAnimate
-          text={`Hello ${user.displayName}`}
+          text={`${user.displayName}`}
           type="whipInUp"
-          className="tracking-tighter font-figtree font-medium"
+          className="tracking-tighter font-figtree font-medium text-xl md:text-3xl"
         />
       </Link>
       <div className="h-12 flex items-center space-x-2 md:space-x-4">
