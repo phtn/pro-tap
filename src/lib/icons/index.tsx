@@ -4,6 +4,7 @@ import { type IconNameType, icons } from "@/lib/icons/icons";
 import type { IconData, IconProps } from "@/lib/icons/types";
 import type { FC } from "react";
 import { motion, MotionProps } from "motion/react";
+import { cn } from "../utils";
 
 export type IconName = IconNameType;
 
@@ -24,7 +25,7 @@ export const Icon: FC<IconProps & { motionprops?: MotionProps }> = ({
         viewBox={icon.viewBox ?? "0 0 24 24"}
         width={size}
         height={size}
-        className={className}
+        className={cn("shrink-0", className)}
         fill={solid ? color : "none"}
         stroke={solid ? "none" : color}
         strokeWidth="1"

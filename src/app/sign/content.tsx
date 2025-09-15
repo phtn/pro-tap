@@ -7,7 +7,7 @@ export const Content = () => {
   return (
     <div className="h-screen bg-background">
       <Navbar hideOnMobile />
-      <main className="max-w-7xl mx-auto h-fit md:pt-10 flex items-start justify-center">
+      <main className="max-w-6xl mx-auto h-fit pt-10 md:pt-0 flex items-start justify-center">
         <FullSignIn />
       </main>
     </div>

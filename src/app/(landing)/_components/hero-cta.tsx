@@ -4,23 +4,21 @@ import { Icon } from "@/lib/icons";
 
 export const HeroCTA = () => {
   return (
-    <div className="h-full space-y-8 px-6 flex flex-col justify-center">
+    <div className="h-full space-y-14 px-6 md:px-0 flex flex-col justify-center">
       <div className="space-y-12">
-        <div className="font-bold leading-6">
-          <div className="flex items-center justify-start border w-64 h-20">
-            <TextAnimate
-              text={`Protap`}
-              type="whipInUp"
-              className="font-space tracking-normal text-left text-5xl lg:text-6xl"
-            />
+        <div className="font-bold leading-4">
+          <div className="flex items-center justify-start w-64 h-16">
+            <Icon name="protap" className="h-48 w-auto" />
           </div>
-          <span className="capitalize font-doto text-xl lg:text-2xl font-bold tracking-normal text-primary">
-            Digital Insurance
-          </span>
+          <TextAnimate
+            text={`Digital Insurance`}
+            type="whipInUp"
+            className="font-doto text-xl lg:text-2xl font-extrabold tracking-normal text-primary"
+          />
         </div>
-        <p className="hidden md:flex font-figtree text-lg text-foreground/60 tracking-wide leading-snug max-w-lg text-balance">
-          Experience the future of secured, personalized, and feature rich
-          insurance services.
+        <p className="hidden md:flex font-figtree text-lg text-foreground/70 tracking-wide leading-snug max-w-lg text-balance">
+          Experience the future of personalized, and feature rich business
+          platform.
         </p>
       </div>
 

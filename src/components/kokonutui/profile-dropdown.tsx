@@ -14,6 +14,7 @@ import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import { getNextTheme } from "../animate-ui/components/buttons/theme-toggler";
 import { ThemeSelection } from "../animate-ui/primitives/effects/theme-toggler";
+import { useAuthCtx } from "@/ctx/auth";
 
 interface Profile {
   name: string;
@@ -56,6 +57,7 @@ export function ProfileDropdown({
 }: ProfileDropdownProps) {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const { signOut } = useAuthCtx();
 
   const isDark = useMemo(() => theme === "dark", [theme]);
 
@@ -146,6 +148,7 @@ export function ProfileDropdown({
 
             <DropdownMenuItem asChild>
               <button
+                onClick={signOut}
                 type="button"
                 className="flex items-center justify-between bg-zinc-500/10 w-full h-11 hover:bg-zinc-100/80 dark:hover:bg-zinc-600/60 rounded-xl transition-all duration-200 cursor-pointer group"
               >

@@ -14,7 +14,7 @@ export const LogoPro = ({ className }: Props) => (
     src="/svg/pro.svg"
     width={0}
     height={0}
-    className={cn("h-6 w-auto aspect-auto", className)}
+    className={cn("h-6 w-auto aspect-auto  invert", className)}
   />
 );
 export const LogoImage = () => (

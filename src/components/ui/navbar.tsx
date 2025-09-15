@@ -2,33 +2,44 @@ import { NavbarCtxProvider } from "@/ctx/navbar";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { memo, type ReactNode } from "react";
-import { LogoPro } from "../logo";
+import { Icon } from "@/lib/icons";
 
-const Nav = ({ children, hideOnMobile }: NavbarProps) => {
+interface NavbarProps {
+  children?: ReactNode;
+  hideOnMobile?: boolean;
+  label?: string;
+}
+
+const Nav = ({ children, hideOnMobile, label }: NavbarProps) => {
   return (
     <nav
       className={cn(
-        "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-7xl mx-auto",
+        "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-6xl mx-auto",
         { "hidden md:flex": hideOnMobile },
       )}
     >
-      <Link href={"/alpha"} className="flex items-center gap-8 lg:px-0 px-6">
-        <LogoPro className="h-4 md:h-8 invert opacity-80" />
+      <Link href={"/alpha"} className="flex items-center px-6 md:px-0">
+        {label ? (
+          <span className="text-3xl tracking-tighter font-figtree">
+            {label}
+          </span>
+        ) : (
+          <Icon
+            name="protap"
+            className="h-24 md:h-36 w-auto aspect-auto text-foreground"
+          />
+        )}
       </Link>
       <div>{children}</div>
     </nav>
   );
 };
-
-interface NavbarProps {
-  children?: ReactNode;
-  hideOnMobile?: boolean;
-}
-
 export const Navbar = memo(
-  ({ children, hideOnMobile = false }: NavbarProps) => (
+  ({ children, hideOnMobile = false, label }: NavbarProps) => (
     <NavbarCtxProvider>
-      <Nav hideOnMobile={hideOnMobile}>{children}</Nav>
+      <Nav hideOnMobile={hideOnMobile} label={label}>
+        {children}
+      </Nav>
     </NavbarCtxProvider>
   ),
 );

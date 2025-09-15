@@ -22,10 +22,10 @@ export const NavChild = () => {
     <div className="flex items-center px-4 md:px-0 space-x-2 md:space-x-4">
       <Link href="/sign">
         <SexyButton
-          // size={isMobile ? "sm" : "lg"}
-          // intent="outline"
+        // size={isMobile ? "sm" : "lg"}
+        // intent="outline"
 
-          className="w-24"
+        // className="w-24"
         >
           Sign up
         </SexyButton>

@@ -1,17 +1,14 @@
 "use client";
 
-import { VisualContent } from "@/app/(landing)/_components/visual-content";
-import { FeatureCards } from "@/app/(landing)/_components/feature-cards";
 import { HeroCTA, ViewButton } from "@/app/(landing)/_components/hero-cta";
+import { VisualContent } from "@/app/(landing)/_components/visual-content";
 import { useMobile } from "@/hooks/use-mobile";
-import { Navbar } from "@/components/ui/navbar";
-import { NavChild } from "./nav-child";
 
 export const Landing = () => {
   const isMobile = useMobile();
   return (
-    <main className="max-w-6xl mx-auto">
-      <div className="h-[40lvh] md:h-[50lvh] grid lg:grid-cols-2 gap-12 items-center">
+    <main className="">
+      <div className="h-[40lvh] md:h-[60lvh] grid lg:grid-cols-2 gap-12 w-full items-center">
         {/* Left Content */}
         {isMobile ? null : <HeroCTA />}
 
@@ -27,7 +24,7 @@ export const Landing = () => {
       ) : null}
 
       {/* Feature Cards */}
-      {isMobile ? <FeatureCards /> : <FeatureCards />}
+      {/*{isMobile ? <FeatureCards /> : <FeatureCards />}*/}
     </main>
   );
 };

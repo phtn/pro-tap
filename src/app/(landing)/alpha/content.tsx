@@ -10,9 +10,9 @@ export const Content = () => {
   const authRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-white to-background text-foreground">
+    <div className="min-h-screen max-w-6xl mx-auto ">
       {/* Navigation */}
-      <Navbar>
+      <Navbar label="Reimagined Business Platforms">
         <NavChild />
       </Navbar>
       <Landing />

@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`bg-background selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans  bg-zinc-400`}
+        className={`bg-background  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
       >
         <ThemeProvider
           enableSystem
@@ -62,7 +62,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthCtxProvider>
-            {children}
+            <div className="max-w-6xl mx-auto">{children}</div>
             <ThemeHotkey />
             <Devtools />
           </AuthCtxProvider>

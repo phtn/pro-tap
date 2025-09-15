@@ -73,8 +73,11 @@ export function ProtapCard({
               id="logo-container"
               className="rounded-[16px] relative border-0 border-background/15 shadow-lg shadow-black/20 h-full overflow-hidden bg-gradient-to-b from-protap-blue to-protap-blue/50 dark:from-zinc-900 dark:to-black/30"
             >
-              <div className="fill-neutral-400 absolute right-8 top-8">
-                <LogoPro />
+              <div className="fill-neutral-400 absolute right-8 -top-2">
+                <Icon
+                  name="protap"
+                  className="h-20 w-auto text-gray-400 aspect-auto"
+                />
               </div>
             </div>
 
