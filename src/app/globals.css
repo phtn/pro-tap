@@ -52,7 +52,7 @@
 
 :root {
     --radius: 0.625rem;
-    --background: oklch(0.94 0 0);
+    --background: oklch(0.96 0 0);
     --foreground: oklch(0.129 0.042 264.695);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.129 0.042 264.695);
@@ -164,5 +164,33 @@
     }
     100% {
         transform: translateX(100%);
+    }
+}
+
+@layer utilities {
+    .bg-size-200 {
+        background-size: 200%;
+    }
+    .bg-pos-0 {
+        background-position: 0%;
+    }
+    .bg-pos-100 {
+        background-position: 100%;
+    }
+    /* Additional utility variants for more flexibility */
+    .bg-size-150 {
+        background-size: 150%;
+    }
+    .bg-size-300 {
+        background-size: 300%;
+    }
+    .bg-pos-25 {
+        background-position: 25%;
+    }
+    .bg-pos-50 {
+        background-position: 50%;
+    }
+    .bg-pos-75 {
+        background-position: 75%;
     }
 }

@@ -62,32 +62,33 @@ const Nav = ({ children }: NavProps) => {
     [],
   );
 
-  return (
-    user && (
-      <nav
-        className={cn(
-          "h-[7lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-5xl mx-auto px-4",
-        )}
-      >
-        <Link href={"/account"} className="flex items-center gap-8 lg:px-0">
-          <TextAnimate
-            text={`Hello ${user.displayName}`}
-            type="whipInUp"
-            className="tracking-tighter font-figtree font-medium"
+  return user ? (
+    <nav
+      className={cn(
+        "h-[7lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-5xl mx-auto px-4",
+      )}
+    >
+      <Link href={"/account"} className="flex items-center gap-8 lg:px-0">
+        <TextAnimate
+          text={`Hello ${user.displayName}`}
+          type="whipInUp"
+          className="tracking-tighter font-figtree font-medium"
+        />
+      </Link>
+      <div className="h-12 flex items-center space-x-2 md:space-x-4">
+        {children}
+        <EssentialButtons />
+        <ProfileDropdown>
+          <ProAvatar
+            photoURL={user.photoURL}
+            className=" hover:border-primary border-[1.5px]"
+            tiny
           />
-        </Link>
-        <div className="flex items-center space-x-2 md:space-x-4">
-          {children}
-          <EssentialButtons />
-          <ProfileDropdown>
-            <ProAvatar
-              photoURL={user.photoURL}
-              className=" hover:border-primary border-[1.5px]"
-            />
-          </ProfileDropdown>
-        </div>
-      </nav>
-    )
+        </ProfileDropdown>
+      </div>
+    </nav>
+  ) : (
+    <div className={cn("h-[7lvh] md:h-[12lvh] md:max-w-5xl mx-auto px-4")} />
   );
 };
 

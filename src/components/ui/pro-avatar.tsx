@@ -7,13 +7,14 @@ import { cn } from "@/lib/utils";
 interface Props {
   photoURL: string | null;
   className?: ClassName;
+  tiny?: boolean;
 }
 
-export const ProAvatar = ({ photoURL, className }: Props) => {
+export const ProAvatar = ({ photoURL, className, tiny = false }: Props) => {
   return photoURL ? (
     <Avatar
       className={cn(
-        "   aspect-square size-12 shadow-2xs select-none",
+        "flex items-center justify-center aspect-square size-12 shadow-2xs select-none",
         className,
       )}
     >
@@ -23,7 +24,8 @@ export const ProAvatar = ({ photoURL, className }: Props) => {
       <AvatarImage
         src={photoURL}
         className={cn(
-          "aspect-auto size-full border border-white/40 dark:border-zinc-900 rounded-full",
+          "aspect-auto border-0 border-white/40 dark:border-zinc-900 rounded-full",
+          { "h-10 w-auto": tiny },
         )}
       ></AvatarImage>
     </Avatar>

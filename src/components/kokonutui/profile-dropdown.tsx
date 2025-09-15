@@ -121,7 +121,7 @@ export function ProfileDropdown({
   return (
     <div className={cn("relative", className)} {...props}>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <div className="group relative">
+        <div className="group relative p-px">
           <DropdownMenuTrigger asChild>
             <button
               type="button"

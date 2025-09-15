@@ -3,6 +3,7 @@
 import { ProAvatar } from "@/components/ui/pro-avatar";
 import Image from "next/image";
 import { useAuthCtx } from "@/ctx/auth";
+import { SexyButton } from "@/components/experimental/sexy-button";
 
 export const Content = () => {
   const { user } = useAuthCtx();
@@ -19,11 +20,16 @@ export const Content = () => {
           unoptimized
         />
       </div>
-      {user && (
-        <div className="absolute border-2 bg-white border-white aspect-square size-28 flex items-center justify-center left-20 -bottom-12 rounded-full shadow-2xl">
-          <ProAvatar photoURL={user.photoURL} className="size-full" />
-        </div>
-      )}
+      <div>
+        {user && (
+          <div className="absolute border-2 bg-white border-white aspect-square size-28 flex items-center justify-center left-20 -bottom-12 rounded-full shadow-2xl">
+            <ProAvatar
+              photoURL={user.photoURL}
+              className="size-full shrink-0"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

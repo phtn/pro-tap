@@ -1,7 +1,74 @@
-export const SexyButton = ({ children }: { children: React.ReactNode }) => {
+import { cn } from "@/lib/utils";
+import { HTMLAttributes } from "react";
+
+interface SexyButtonProps extends HTMLAttributes<HTMLButtonElement> {
+  children?: React.ReactNode;
+}
+
+export const SexyButton = ({ children, ...props }: SexyButtonProps) => {
   return (
-    <button className="whitespace-nowrap text-sm ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-zinc-950 dark:focus-visible:ring-zinc-300 cursor-pointer py-2 inline-flex items-center justify-center gap-4 rounded-xl font-medium relative h-10 px-6 min-w-72 md:min-w-56 bg-white dark:bg-black text-black dark:text-white border border-black/0 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10 backdrop-blur-xs shadow-md hover:shadow-lg transition-all duration-200">
-      {children}
+    <button
+      {...props}
+      className={cn(
+        "relative h-16 px-6 min-w-72 md:min-w-56 inline-flex items-center justify-center gap-4",
+        "bg-gradient-to-r from-white via-slate-50 to-slate-100/60 dark:from-zinc-800 dark:via-zinc-700 dark:to-zinc-700 ",
+        "hover:text-foreground md:dark:hover:text-zinc-100",
+        "text-lg text-secondary-foreground/80 font-figtree font-bold",
+        "backdrop-blur-xs shadow-sm hover:shadow-sm overflow-hidden",
+        "border-0 py-4 rounded-3xl border-zinc-100/50 dark:border-zinc-500/5 hover:border-zinc-200/50",
+        "disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap cursor-pointer",
+        "ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2  dark:focus-visible:ring-zinc-300",
+        "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+        "active:scale-96 active:shadow-xs transition-all duration-300",
+      )}
+    >
+      <div className="pointer-events-none relative z-50 ">{children}</div>
+      <div
+        className={cn(
+          "absolute h-full w-full bg-gradient-to-r",
+          "opacity-0 inset-0 rounded-[18px] ",
+          "from-slate-100 via-slate-100/60 to-slate-200/50",
+          "dark:from-zinc-800/80 dark:via-zinc-800/80 dark:to-zinc-800",
+          "hover:opacity-100 transition duration-400",
+        )}
+      />
     </button>
+  );
+};
+
+const GradientTransitions = () => {
+  return (
+    <div className="text-center">
+      <h2 className="text-xl font-semibold mb-4 text-gray-700">
+        Original Design
+      </h2>
+      <button className="bg-size-200 bg-pos-0 hover:bg-pos-100 m-2 rounded-xl bg-gradient-to-t from-red-500 via-black to-white p-10 text-white transition-all duration-500 font-semibold">
+        Hover me
+      </button>
+
+      <button className="relative bg-gradient-to-b from-gray-200 to-gray-500 w-40 h-20 rounded-xl">
+        <div className="opacity-0 hover:opacity-100 transition duration-500 absolute inset-0 h-full w-full bg-gradient-to-b from-gray-400 to-gray-900"></div>
+      </button>
+
+      {/*Variations using the custom utilities */}
+      <div className="text-center">
+        <h2 className="text-xl font-semibold mb-4 text-gray-700">Variations</h2>
+
+        {/*Horizontal gradient */}
+        <button className="bg-size-200 bg-pos-0 hover:bg-pos-100 m-2 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-6 text-white transition-all duration-700 font-semibold">
+          Horizontal Slide
+        </button>
+
+        {/*Slower transition */}
+        <button className="bg-size-300 bg-pos-0 hover:bg-pos-100 m-2 rounded-xl bg-gradient-to-r from-green-500 via-yellow-500 to-orange-500 p-6 text-white transition-all duration-1000 font-semibold">
+          Slow & Wide
+        </button>
+
+        {/*Different starting position */}
+        <button className="bg-size-200 bg-pos-50 hover:bg-pos-0 m-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 text-white transition-all duration-500 font-semibold">
+          Reverse Direction
+        </button>
+      </div>
+    </div>
   );
 };
