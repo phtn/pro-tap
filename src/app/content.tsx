@@ -13,7 +13,7 @@ export const Content = () => {
   }, [router]);
 
   return (
-    <div className="flex lg:items-start items-center justify-center min-h-screen lg:p-4  ">
+    <div className="flex lg:items-start items-center justify-center min-h-screen lg:p-4">
       <div className="space-y-4">
         <Nav />
         {/*<Header />*/}

@@ -14,12 +14,12 @@ export const Content = () => {
           title={"PRO"}
           price={"999"}
           period={"12 month"}
-          billing={"yearly"}
-          buttonText={"Get Insurance"}
+          billing={"annually"}
+          buttonText={"Get Protap"}
           gradient={"linear-gradient(to right, #ff6666, #ff9966)"}
           popular={true}
           features={[
-            { icon: "add", text: "Feature 1" },
+            { icon: "checkmark-circle", text: "Personal Accident Protection" },
             { icon: "arrow-up", text: "Feature 2" },
             { icon: "arrow-up", text: "Feature 3" },
             { icon: "arrow-up", text: "Feature 4" },

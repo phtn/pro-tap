@@ -14,13 +14,13 @@ const Nav = ({ children, hideOnMobile, label }: NavbarProps) => {
   return (
     <nav
       className={cn(
-        "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-full md:max-w-6xl mx-auto",
+        "h-[8lvh] md:h-[12lvh] flex items-center justify-between py-6 w-screen md:max-w-6xl mx-auto",
         { "hidden md:flex": hideOnMobile },
       )}
     >
       <Link href={"/alpha"} className="flex items-center px-6 md:px-0">
         {label ? (
-          <span className="text-3xl tracking-tighter font-figtree">
+          <span className="md:text-3xl tracking-tighter font-space font-light opacity-60">
             {label}
           </span>
         ) : (

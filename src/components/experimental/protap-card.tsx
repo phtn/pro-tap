@@ -11,17 +11,20 @@ import { useToggle } from "@/hooks/use-toggle";
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { Icon } from "@/lib/icons";
+import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type ReactNode, type Ref } from "react";
 import { GlassFilter } from "../experimental/glass";
-import { LogoPro } from "../logo";
+import { ClassName } from "@/app/types";
 
 export interface CardFlipProps {
   title?: string;
   subtitle?: string;
   description?: string;
   features?: string[];
+  icon?: IconName;
+  className?: ClassName;
+  canFlip?: boolean;
 }
 
 export function ProtapCard({
@@ -34,13 +37,19 @@ export function ProtapCard({
     "Increase Online Presence",
     "Affiliate Enabled Account",
   ],
+  icon,
+  className,
+  canFlip = true,
 }: CardFlipProps) {
   const { on, toggle } = useToggle(false);
 
   return (
     <div
-      className="relative shrink-0 scale-75 md:scale-100 w-full max-w-[380px] h-[240px] group [perspective:2000px]"
-      onClick={toggle}
+      className={cn(
+        "relative shrink-0 scale-80 md:scale-100 w-full max-w-[380px] h-[240px] group [perspective:2000px]",
+        className,
+      )}
+      onClick={canFlip ? toggle : undefined}
       // onMouseEnter={() => setIsFlipped(true)}
       // onMouseLeave={() => setIsFlipped(false)}
     >
@@ -88,16 +97,17 @@ export function ProtapCard({
                   <div className="absolute bottom-3.75 left-[1.35rem]">
                     <div className="w-[4.25rem] h-[4.15rem] bg-gradient-to-br from-black/70 to-black/60 rounded-sm drop-shadow-cyan-50">
                       <div className="w-full flex items-center justify-center h-full bg-gradient-to-br from-cyan-100/30 dark:from-yellow-100/30 to-transparent rounded-sm">
-                        <Icon name="secure" className="size-10 text-cyan-50" />
+                        <Icon
+                          name={icon ?? "secure"}
+                          className="size-10 text-cyan-50"
+                        />
                       </div>
                     </div>
                     {/*<GlassFilter />*/}
                   </div>
                 </div>
-                <div className="relative group/icon text-cyan-100 text-xs font-space space-x-2">
-                  <span className="uppercase font-bold tracking-wider">
-                    Active
-                  </span>
+                <div className="relative group/icon text-cyan-100 text-xs font-space space-x-2 select-none">
+                  <span className="uppercase font-bold tracking-wider"></span>
                   <span className="font-mono font-light">12/26</span>
                 </div>
               </div>

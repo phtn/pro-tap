@@ -1,6 +1,6 @@
 import { getNextTheme } from "@/components/animate-ui/components/buttons/theme-toggler";
 import { ThemeSelection } from "@/components/animate-ui/primitives/effects/theme-toggler";
-import { SexyButton } from "@/components/experimental/sexy-button";
+import { SexyButton } from "@/components/experimental/sexy-button-variants";
 import { ProfileDropdown } from "@/components/kokonutui/profile-dropdown";
 import { NeumorphButton as Button } from "@/components/ui/neumorph";
 import { ProAvatar } from "@/components/ui/pro-avatar";
@@ -20,16 +20,17 @@ export const NavChild = () => {
 
   return (
     <div className="flex items-center px-4 md:px-0 space-x-2 md:space-x-4">
-      <Link href="/sign">
-        <SexyButton
-        // size={isMobile ? "sm" : "lg"}
-        // intent="outline"
-
-        // className="w-24"
-        >
-          Sign up
-        </SexyButton>
-      </Link>
+      {user ? (
+        <span className="font-figtree tracking-tight text-sm opacity-80">
+          {user.displayName}
+        </span>
+      ) : (
+        <Link href="/sign">
+          <SexyButton variant="default" className="rounded-full" size="md">
+            Sign in
+          </SexyButton>
+        </Link>
+      )}
       {user ? (
         <ProfileDropdown>
           <ProAvatar
@@ -43,9 +44,9 @@ export const NavChild = () => {
           onClick={handleThemeChange}
           size="sq"
           intent="ghost"
-          className="rounded-full"
+          className="rounded-full flex items-center justify-center size-12 pt-2.5"
         >
-          <Icon name="dark-theme" className="portrait:size-6" />
+          <Icon name="dark-theme" className="size-6" />
         </Button>
       )}
     </div>

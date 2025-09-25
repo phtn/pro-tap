@@ -1,3 +1,4 @@
+import { SexyButton } from "@/components/experimental/sexy-button-variants";
 import { NeumorphButton as Button } from "@/components/ui/neumorph";
 import TextAnimate from "@/components/ui/text-animate";
 import { Icon } from "@/lib/icons";
@@ -32,16 +33,21 @@ export const HeroCTA = () => {
 
 export const GetButton = () => {
   return (
-    <Button size="lg" intent="primary" className="rounded-full">
-      Get the card
-    </Button>
+    <SexyButton size="lg" variant="primary" className="rounded-full">
+      Get The Card
+    </SexyButton>
   );
 };
 
 export const ViewButton = () => {
   return (
-    <Button size="lg" intent="secondary" icon="play" className="rounded-full">
-      Video intro
-    </Button>
+    <SexyButton
+      size="lg"
+      variant="default"
+      leftIcon="play"
+      className="rounded-full"
+    >
+      Video Intro
+    </SexyButton>
   );
 };

@@ -16,11 +16,8 @@ export const SexyButton = ({
     <button
       {...props}
       className={cn(
-        "relative h-12 w-32 px-4 inline-flex items-center justify-center",
-        // "bg-gradient-to-r from-white via-white to-slate-100/60 dark:from-zinc-700 dark:via-zinc-700 dark:to-zinc-700 ",
-        "bg-gradient-to-r",
-        // "from-[#e3e3e3] via-[#e5e5e5] to-[#e7e7e7]",
-        "from-white/50 via-white/70 to-white",
+        "relative h-10 md:h-12 w-32 px-4 inline-flex items-center justify-center",
+        "bg-gradient-to-r from-white/50 via-white/70 to-white",
         "dark:from-zinc-700 dark:via-zinc-700 dark:to-zinc-700",
         "rounded-[11.5px] border-[0.5px] py-4 border-[#bbbbbb] dark:border-zinc-500/5 dark:hover:border-zinc-600/80  hover:border-[#cccccc]",
         "hover:text-foreground md:dark:hover:text-zinc-100",
@@ -30,11 +27,8 @@ export const SexyButton = ({
         "ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2  dark:focus-visible:ring-zinc-300",
         "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
         "active:scale-96 active:shadow-xs transition-all duration-300",
-        "",
         "inset-shadow-[0_1px_rgb(237_237_237)]",
-        "dark:inset-shadow-[0_1px_rgb(120_120_120)] dark:hover:dark:inset-shadow-[0_1px_rgb(120_120_120)]",
-        // "#ededed",
-        "scale-100",
+        "dark:inset-shadow-[0_1px_rgb(100_100_100)] dark:hover:dark:inset-shadow-[0_1px_rgb(120_120_120)]",
         className,
       )}
     >

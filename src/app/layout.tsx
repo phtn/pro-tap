@@ -62,9 +62,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthCtxProvider>
-            <div className="max-w-6xl mx-auto">{children}</div>
-            <ThemeHotkey />
-            <Devtools />
+            <div className=" border border-pink-300">
+              {children}
+
+              <ThemeHotkey />
+              <Devtools />
+            </div>
           </AuthCtxProvider>
         </ThemeProvider>
       </body>

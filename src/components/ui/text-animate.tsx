@@ -1,7 +1,12 @@
 "use client";
 
 import { FC, useRef } from "react";
-import { HTMLMotionProps, motion, Variants } from "motion/react";
+import {
+  HTMLMotionProps,
+  motion,
+  ValueTransition,
+  Variants,
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 type AnimationType =
@@ -238,6 +243,7 @@ const TextAnimate: FC<Props> = ({
               animate="visible"
               variants={container}
               transition={{
+                animationDelay: (props.delay ?? 0) as ValueTransition,
                 delayChildren: index * 0.13,
                 // delayChildren: index * 0.35,
                 staggerChildren: 0.025,

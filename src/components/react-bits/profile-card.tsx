@@ -1,10 +1,11 @@
-import React, {
+import {
   useEffect,
   useRef,
   useCallback,
   useMemo,
   CSSProperties,
   SyntheticEvent,
+  memo,
 } from "react";
 import "./profile-card.css";
 import Image from "next/image";
@@ -61,7 +62,7 @@ interface Props {
   onContactClick: VoidFunction;
 }
 
-const ProfileCardComponent = ({
+export const ProfileCard = ({
   avatarUrl = "<Placeholder for avatar URL>",
   iconUrl = "<Placeholder for icon URL>",
   grainUrl = "<Placeholder for grain URL>",
@@ -71,7 +72,7 @@ const ProfileCardComponent = ({
   className = "",
   enableTilt = true,
   enableMobileTilt = false,
-  mobileTiltSensitivity = 5,
+  mobileTiltSensitivity = 4,
   miniAvatarUrl = "",
   name = "Javi A. Torres",
   title = "Software Engineer",
@@ -89,72 +90,66 @@ const ProfileCardComponent = ({
 
     let rafId: number | null = null;
 
-    const updateCardTransform = useCallback(
-      (
-        offsetX: number,
-        offsetY: number,
-        card: HTMLElement,
-        wrap: HTMLElement,
-      ) => {
-        const width = card.clientWidth;
-        const height = card.clientHeight;
+    const updateCardTransform = (
+      offsetX: number,
+      offsetY: number,
+      card: HTMLElement,
+      wrap: HTMLElement,
+    ) => {
+      const width = card.clientWidth;
+      const height = card.clientHeight;
 
-        const percentX = clamp((100 / width) * offsetX);
-        const percentY = clamp((100 / height) * offsetY);
+      const percentX = clamp((100 / width) * offsetX);
+      const percentY = clamp((100 / height) * offsetY);
 
-        const centerX = percentX - 50;
-        const centerY = percentY - 50;
+      const centerX = percentX - 50;
+      const centerY = percentY - 50;
 
-        const properties = {
-          "--pointer-x": `${percentX}%`,
-          "--pointer-y": `${percentY}%`,
-          "--background-x": `${adjust(percentX, 0, 100, 35, 65)}%`,
-          "--background-y": `${adjust(percentY, 0, 100, 35, 65)}%`,
-          "--pointer-from-center": `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
-          "--pointer-from-top": `${percentY / 100}`,
-          "--pointer-from-left": `${percentX / 100}`,
-          "--rotate-x": `${round(-(centerX / 5))}deg`,
-          "--rotate-y": `${round(centerY / 4)}deg`,
-        };
+      const properties = {
+        "--pointer-x": `${percentX}%`,
+        "--pointer-y": `${percentY}%`,
+        "--background-x": `${adjust(percentX, 0, 100, 35, 65)}%`,
+        "--background-y": `${adjust(percentY, 0, 100, 35, 65)}%`,
+        "--pointer-from-center": `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
+        "--pointer-from-top": `${percentY / 100}`,
+        "--pointer-from-left": `${percentX / 100}`,
+        "--rotate-x": `${round(-(centerX / 20))}deg`,
+        "--rotate-y": `${round(centerY / 40)}deg`,
+      };
 
-        Object.entries(properties).forEach(([property, value]) => {
-          wrap.style.setProperty(property, value);
-        });
-      },
-      [],
-    );
+      Object.entries(properties).forEach(([property, value]) => {
+        wrap.style.setProperty(property, value);
+      });
+    };
 
-    const createSmoothAnimation = useCallback(
-      (
-        duration: number,
-        startX: number,
-        startY: number,
-        card: HTMLElement,
-        wrap: HTMLElement,
-      ) => {
-        const startTime = performance.now();
-        const targetX = wrap.clientWidth / 2;
-        const targetY = wrap.clientHeight / 2;
+    const createSmoothAnimation = (
+      duration: number,
+      startX: number,
+      startY: number,
+      card: HTMLElement,
+      wrap: HTMLElement,
+    ) => {
+      const startTime = performance.now();
+      const targetX = wrap.clientWidth / 2;
+      const targetY = wrap.clientHeight / 2;
 
-        const animationLoop = (currentTime: number) => {
-          const elapsed = currentTime - startTime;
-          const progress = clamp(elapsed / duration);
-          const easedProgress = easeInOutCubic(progress);
+      const animationLoop = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = clamp(elapsed / duration);
+        const easedProgress = easeInOutCubic(progress);
 
-          const currentX = adjust(easedProgress, 0, 1, startX, targetX);
-          const currentY = adjust(easedProgress, 0, 1, startY, targetY);
+        const currentX = adjust(easedProgress, 0, 1, startX, targetX);
+        const currentY = adjust(easedProgress, 0, 1, startY, targetY);
 
-          updateCardTransform(currentX, currentY, card, wrap);
+        updateCardTransform(currentX, currentY, card, wrap);
 
-          if (progress < 1) {
-            rafId = requestAnimationFrame(animationLoop);
-          }
-        };
+        if (progress < 1) {
+          rafId = requestAnimationFrame(animationLoop);
+        }
+      };
 
-        rafId = requestAnimationFrame(animationLoop);
-      },
-      [],
-    );
+      rafId = requestAnimationFrame(animationLoop);
+    };
 
     return {
       updateCardTransform,
@@ -230,7 +225,7 @@ const ProfileCardComponent = ({
       animationHandlers.updateCardTransform(
         card.clientHeight / 2 + gamma * mobileTiltSensitivity,
         card.clientWidth / 2 +
-        (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
+          (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
         card,
         wrap,
       );
@@ -390,6 +385,4 @@ const ProfileCardComponent = ({
   );
 };
 
-const ProfileCard = React.memo(ProfileCardComponent);
-
-export default ProfileCard;
+// export const ProfileCard = memo(ProfileCardComponent);

@@ -69,7 +69,8 @@ const buttonVariants = cva(
         ghost: [
           "border-foreground/10 border-0",
           "text-foreground",
-          "md:hover:enabled:bg-foreground/10",
+          "md:hover:enabled:bg-foreground/5",
+          "dark:md:hover:enabled:bg-foreground/15",
           "disabled:bg-[#F5A799]",
           "md:hover:enabled:[box-shadow:inset_0px_-2.53012px_0px_0px_#EFEFEF_20%,_0px_1.44578px_7.59036px_0px_rgba(0,_0,_0,_12%)]",
           // "md:dark:hover:enabled:text-background",
@@ -83,7 +84,10 @@ const buttonVariants = cva(
         md: ["text-base", "py-2", "px-5", "h-11", "rounded-[10px]"],
         lg: ["text-lg", "py-3", "px-8", "h-14", "rounded-[12px]"],
         xl: ["text-xl", "py-3", "px-10", "h-16", "rounded-[14px]"],
-        sq: ["text-base", "p-0", "aspect-square", "rounded-full"],
+        sq: [
+          "text-base aspect-square",
+          "flex items-center justify-center rounded-full",
+        ],
       },
       fullWidth: {
         true: "w-full",
@@ -93,7 +97,8 @@ const buttonVariants = cva(
       {
         intent: ["ghost"],
         size: ["md", "lg"],
-        className: "p-0 aspect-square rounded-full",
+        className:
+          "aspect-square rounded-full flex items-center justify-center",
       },
     ],
     defaultVariants: {

@@ -2,12 +2,13 @@ import { LogoPro } from "@/components/logo";
 import { Prism } from "@/components/react-bits/prism";
 import { TextTrain } from "@/components/ui/text-train";
 import { useMobile } from "@/hooks/use-mobile";
+import { Icon } from "@/lib/icons";
 
 export const LeftPanel = () => {
   const isMobile = useMobile();
   return (
-    <div className="relative lg:w-1/2 overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between">
-      <div className="absolute size-full animate-in md:opacity-100 opacity-30">
+    <div className="relative lg:w-1/2 h-[75lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between">
+      <div className="absolute w-full h-full md:opacity-100 opacity-30">
         <Prism
           animationType="3drotate"
           timeScale={0.2}
@@ -22,9 +23,8 @@ export const LeftPanel = () => {
       </div>
       <div className="p-12 relative z-50">
         {/* Brand Logo */}
-        <div className="flex items-center gap-2 text-white">
-          <LogoPro className="h-4 md:opacity-50 opacity-50" />
-          {/*<span className="text-xl font-semibold text-black">Protap</span>*/}
+        <div className="absolute top-0 left-8 flex items-center text-foreground">
+          <Icon name="protap" className="size-20 opacity-20" />
         </div>
 
         {/* Main Content */}

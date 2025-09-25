@@ -8,16 +8,18 @@ import { ProfileDropdown } from "../kokonutui/profile-dropdown";
 import { Button } from "./button";
 import { ProAvatar } from "./pro-avatar";
 import TextAnimate from "./text-animate";
+import { ShimmerButton } from "./shim-button";
 
 interface NavProps {
   children?: ReactNode;
+  extra?: ReactNode;
 }
 interface EssentialButton {
   href: string;
   icon: IconName;
   onClick?: () => void;
 }
-const Nav = ({ children }: NavProps) => {
+const Nav = ({ children, extra }: NavProps) => {
   const { user } = useAuthCtx();
 
   const essentialButtons = useMemo(
@@ -65,18 +67,21 @@ const Nav = ({ children }: NavProps) => {
   return user ? (
     <nav
       className={cn(
-        "h-[8lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-5xl mx-auto px-4",
+        "h-[8lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-6xl mx-auto px-4",
       )}
     >
-      <Link href={"/account"} className="flex items-center gap-8 lg:px-0">
-        <TextAnimate
-          text={`${user.displayName}`}
-          type="whipInUp"
-          className="tracking-tighter font-figtree font-medium text-xl md:text-3xl"
-        />
-      </Link>
-      <div className="h-12 flex items-center space-x-2 md:space-x-4">
+      <div className="flex items-center space-x-5">
+        <Link href={"/account"} className="flex items-center gap-8 lg:px-0">
+          <TextAnimate
+            text={`${user.displayName}`}
+            type="whipInUp"
+            className="tracking-tighter font-figtree font-medium text-xl md:text-3xl"
+          />
+        </Link>
         {children}
+      </div>
+      <div className="h-12 flex items-center space-x-2 md:space-x-4">
+        {extra}
         <EssentialButtons />
         <ProfileDropdown>
           <ProAvatar

@@ -36,7 +36,7 @@ export const AuthedCard = ({ user, signOut }: SignInCardProps) => {
             <span className="">Account Page</span>
           </Link>
 
-          <section className="fixed bottom-[1px] left-px right-[1px] flex flex-col justify-center space-y-px h-16 w-full">
+          <section className="fixed bottom-px left-0 right-[1px]  px-px flex flex-col justify-center space-y-px h-16 w-full">
             <DropdownMenuSeparator className="relative z-20 my-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-800" />
             <div className="flex items-center justify-between w-full h-16">
               <Link
@@ -45,7 +45,7 @@ export const AuthedCard = ({ user, signOut }: SignInCardProps) => {
               >
                 <button
                   type="button"
-                  className="flex items-center justify-center space-x-1 w-full h-[3.75rem] bg-slate-100 dark:bg-slate-100/5 dark:hover:bg-slate-100/10 hover:bg-zinc-100/80 cursor-pointer group rounded-xs"
+                  className="flex items-center justify-center space-x-1 w-full h-[3.75rem] bg-slate-100 dark:bg-slate-100/5 dark:hover:bg-slate-100/10 hover:bg-zinc-100/80 cursor-pointer group rounded-bl-[17px] rounded-tl-xs"
                 >
                   {/*<Icon name="chevron-left" className="size-4" />*/}
                   {/*<Icon name="hexagon" className="text-foreground/60 size-7" />*/}
@@ -54,7 +54,7 @@ export const AuthedCard = ({ user, signOut }: SignInCardProps) => {
               <button
                 onClick={signOut}
                 type="button"
-                className="flex items-center justify-center space-x-4 w-full h-[3.75rem] bg-slate-100 dark:bg-slate-100/5 dark:hover:bg-slate-100/10 hover:bg-zinc-100/80 cursor-pointer group rounded-xs"
+                className="flex items-center justify-center space-x-4 w-full h-[3.75rem] bg-slate-100 dark:bg-slate-100/5 dark:hover:bg-slate-100/10 hover:bg-zinc-100/80 cursor-pointer group rounded-br-[17px] rounded-tr-xs"
               >
                 <span className="text-base font-medium font-figtree tracking-tight">
                   Sign out

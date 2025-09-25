@@ -10,13 +10,11 @@ export const Content = () => {
   const authRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto ">
-      {/* Navigation */}
-      <Navbar label="Reimagined Business Platforms">
+    <div className="min-h-screen md:max-w-6xl mx-auto ">
+      <Navbar label="Protap Digital Insurance">
         <NavChild />
       </Navbar>
       <Landing />
-      {/*<GoogleOneTap />*/}
     </div>
   );
 };

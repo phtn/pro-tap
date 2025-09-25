@@ -31,14 +31,14 @@ const Header = ({ title, description, children }: HeaderProps) => {
     <div className="flex flex-col items-start justify-center w-full py-4 md:space-y-4">
       <div className="space-y-0 md:space-y-2">
         <h2 className="text-lg md:text-2xl dark:text-cyan-100 font-doto font-bold md:font-figtree md:font-bold text-gray-900 md:dark:text-zinc-100 md:tracking-tight">
-          {title}
+          {title}.
         </h2>
         <div
           className={cn(
             "text-zinc-500 dark:text-white flex-row items-center font-figtree font-light leading-5 max-w-[45ch] tracking-normal text-base space-x-2 md:flex hidden",
           )}
         >
-          <span className="flex text-base tracking-normal font-medium font-sans text-transparent bg-clip-text bg-gradient-to-r from-orange-900 via-cyan-700 to-sky-600 dark:from-teal-400 dark:via-teal-300 dark:via-15% dark:to-orange-200">
+          <span className="flex text-base tracking-normal font-sans text-foreground/60">
             {children}
           </span>
         </div>
@@ -237,10 +237,10 @@ export const RightPanel = ({
         )}
       >
         <Header
-          title={user ? "Authenticated" : "Create an account"}
+          title={user ? "Authenticated" : "Sign in to your account"}
           description={""}
         >
-          {user ? "" : "Get your Status Upgrade"}
+          {user ? "" : "Personalize your web presence!"}
         </Header>
         {user ? (
           <AuthedCard user={user} signOut={signOut} />
