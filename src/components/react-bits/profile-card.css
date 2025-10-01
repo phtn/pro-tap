@@ -4,7 +4,7 @@
     --pointer-from-center: 0;
     --pointer-from-top: 0.5;
     --pointer-from-left: 0.5;
-    --card-opacity: 0;
+    --card-opacity: 0.5;
     --rotate-x: 0deg;
     --rotate-y: 0deg;
     --background-x: 50%;
@@ -29,7 +29,7 @@
 }
 
 .pc-card-wrapper {
-    perspective: 500px;
+    perspective: 540px;
     transform: translate3d(0, 0, 0.1px);
     position: relative;
     touch-action: none;
@@ -495,7 +495,7 @@
 
 @media (max-width: 480px) {
     .pc-card {
-        height: 60svh;
+        height: 65svh;
         max-height: 380px;
     }
 

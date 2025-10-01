@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   type ReactNode,
@@ -7,17 +7,15 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-} from "react";
+} from 'react'
 import {
-  createTimeline,
   createAnimatable,
   engine,
   utils,
   type Scope,
   createScope,
   animate,
-} from "animejs";
-import { cn } from "@/lib/utils";
+} from 'animejs'
 
 interface Props {
   shouldAnimate?: boolean;
@@ -35,15 +33,14 @@ export const ScopeBurst = ({
   count = 16,
   root,
 }: Props) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [_fps, setSpeed] = useState(fps);
-  const [_shouldAnimate] = useState(shouldAnimate);
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [_fps] = useState(fps)
   const [particles, setParticles] = useState<
     Array<{ id: number; x: number; y: number; scale: number; delay: number }>
-  >([]);
+  >([])
 
-  const scope = useRef<Scope>(null);
-  const particleRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scope = useRef<Scope>(null)
+  const particleRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
     const newParticles = Array.from({ length: count }, (_, i) => ({
@@ -52,18 +49,18 @@ export const ScopeBurst = ({
       y: utils.random(-3, 3, 2),
       scale: 0,
       delay: utils.random(0, 1000),
-    }));
-    setParticles(newParticles);
-    particleRefs.current = new Array(count).fill(null);
-  }, [count]);
+    }))
+    setParticles(newParticles)
+    particleRefs.current = new Array(count).fill(null)
+  }, [count])
 
   useLayoutEffect(() => {
-    if (!root.current || particles.length === 0) return;
+    if (!root.current || particles.length === 0) return
 
-    scope.current = createScope({ root: root.current });
+    scope.current = createScope({ root: root.current })
 
     particles.forEach((particle, i) => {
-      const el = particleRefs.current[i];
+      const el = particleRefs.current[i]
 
       if (el) {
         createAnimatable(el, {
@@ -71,19 +68,19 @@ export const ScopeBurst = ({
           y: 0,
           scale: particle.scale,
           delay: particle.delay,
-        });
+        })
         animate(el, {
           x:
             particle.x +
             utils.random(
               utils.random(-16, -6, 0),
               particle.x + utils.random(6, 16, 0),
-              2,
+              2
             ) +
-            "rem",
+            'rem',
           y:
             // utils.random(utils.random(-8, -2, 0), utils.random(0, 6, 0), 2) +
-            particle.y + "rem",
+            particle.y + 'rem',
           scale: [
             { from: utils.random(0, 0.3, 2), to: utils.random(0.8, 1.2, 2) },
             { to: 0 },
@@ -91,38 +88,38 @@ export const ScopeBurst = ({
           // width: [{ from: 1, to: utils.random(4, 8, 0) }, { to: 8 }],
           delay: particle.delay + utils.random(20, 60, 0),
           loop: true,
-        });
+        })
       }
-    });
+    })
 
     return () => {
-      scope.current?.revert();
-    };
-  }, [particles, root]);
+      scope.current?.revert()
+    }
+  }, [particles, root])
 
   useEffect(() => {
-    engine.fps = _fps;
-    engine.resume();
-  }, [_fps]);
+    engine.fps = _fps
+    engine.resume()
+  }, [_fps])
 
   return (
-    <div className="particles-wrapper size-full flex flex-col items-center justify-center">
+    <div className='particles-wrapper size-full flex flex-col items-center justify-center'>
       <div
-        className="relative w-[36rem] h-20 -rotate-12 flex justify-center items-center overflow-hidden"
+        className='relative w-[36rem] h-20 -rotate-12 flex justify-center items-center overflow-hidden'
         ref={containerRef}
       >
         {particles.map((_, i) => (
           <div
             key={i}
             ref={(el) => {
-              particleRefs.current[i] = el;
+              particleRefs.current[i] = el
             }}
-            className="relative particle origin-center bg-amber-100 h-1 w-2"
+            className='relative particle origin-center bg-amber-100 h-1 w-2'
           >
-            <div className="absolute top-0 left-0 bg-amber-100 blur-xs scale-110 w-full h-full" />
+            <div className='absolute top-0 left-0 bg-amber-100 blur-xs scale-110 w-full h-full' />
           </div>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

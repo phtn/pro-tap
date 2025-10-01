@@ -1,9 +1,9 @@
-import { Prism } from "@/components/react-bits/prism";
+import { Prism } from '@/components/react-bits/prism'
 export const GuidingLight = () => {
   return (
-    <div className="absolute pointer-events-none opacity-20 bottom-0 size-full overflow-hidden">
+    <div className='absolute pointer-events-none opacity-20 bottom-0 size-full overflow-hidden'>
       <Prism
-        animationType="3drotate"
+        animationType='3drotate'
         timeScale={0.005}
         height={3.5}
         baseWidth={5.5}
@@ -14,7 +14,7 @@ export const GuidingLight = () => {
         glow={1}
       />
 
-      <div className="top-0 left-0 size-full absolute bg-background/40 backdrop-blur-3xl"></div>
+      <div className='top-0 left-0 size-full absolute bg-background/40 backdrop-blur-3xl' />
     </div>
-  );
-};
+  )
+}

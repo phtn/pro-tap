@@ -1,25 +1,25 @@
-"use client";
+'use client'
 
-import { FC, useRef } from "react";
+import { FC, useRef } from 'react'
 import {
   HTMLMotionProps,
   motion,
   ValueTransition,
   Variants,
-} from "motion/react";
-import { cn } from "@/lib/utils";
+} from 'motion/react'
+import { cn } from '@/lib/utils'
 
 type AnimationType =
-  | "fadeIn"
-  | "fadeInUp"
-  | "popIn"
-  | "shiftInUp"
-  | "rollIn"
-  | "whipIn"
-  | "whipInUp"
-  | "calmInUp";
+  | 'fadeIn'
+  | 'fadeInUp'
+  | 'popIn'
+  | 'shiftInUp'
+  | 'rollIn'
+  | 'whipIn'
+  | 'whipInUp'
+  | 'calmInUp'
 
-interface Props extends HTMLMotionProps<"div"> {
+interface Props extends HTMLMotionProps<'div'> {
   text: string;
   type?: AnimationType;
   delay?: number;
@@ -40,7 +40,7 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
         opacity: 1,
         y: [0, -10, 0],
         transition: {
-          type: "spring",
+          type: 'spring',
           damping: 12,
           stiffness: 100,
         },
@@ -73,7 +73,7 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
       visible: {
         opacity: 1,
         scale: 1.1,
-        transition: { type: "spring", damping: 15, stiffness: 400 },
+        transition: { type: 'spring', damping: 15, stiffness: 400 },
       },
       hidden: { opacity: 0, scale: 0 },
     },
@@ -87,7 +87,7 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
     },
     child: {
       hidden: {
-        y: "200%",
+        y: '200%',
         transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.85 },
       },
       visible: {
@@ -112,7 +112,7 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
     },
     child: {
       hidden: {
-        y: "100%", // Starting from below but not too far to ensure a dramatic but manageable shift.
+        y: '100%', // Starting from below but not too far to ensure a dramatic but manageable shift.
         transition: {
           ease: [0.75, 0, 0.25, 1], // Starting quickly
           duration: 0.6, // Shortened duration for a more dramatic start
@@ -136,7 +136,7 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
     },
     child: {
       hidden: {
-        y: "200%",
+        y: '200%',
         transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.45 },
       },
       visible: {
@@ -156,11 +156,11 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
     child: {
       hidden: {
         opacity: 0,
-        y: `0.25em`,
+        y: '0.25em',
       },
       visible: {
         opacity: 1,
-        y: `0em`,
+        y: '0em',
         transition: {
           duration: 0.65,
           ease: [0.65, 0, 0.75, 1], // Great! Swift Beginning, Prolonged Ease, Quick Finish
@@ -179,11 +179,11 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
     child: {
       hidden: {
         opacity: 0,
-        y: `0.35em`,
+        y: '0.35em',
       },
       visible: {
         opacity: 1,
-        y: `0em`,
+        y: '0em',
         transition: {
           duration: 0.45,
           //   ease: [0.75, 0.05, 0.85, 1], // Quick Start, Smooth Middle, Sharp End
@@ -194,11 +194,11 @@ const animationVariants: Record<AnimationType, Record<string, Variants>> = {
       },
     },
   },
-};
+}
 
 const TextAnimate: FC<Props> = ({
   text,
-  type = "whipInUp",
+  type = 'whipInUp',
   className,
   ...props
 }: Props) => {
@@ -207,11 +207,11 @@ const TextAnimate: FC<Props> = ({
   //     triggerOnce: true,
   //   });
 
-  const ref = useRef(null);
+  const ref = useRef(null)
   // const isInView = useInView(ref, { once: true })
 
-  const letters = Array.from(text);
-  const { container, child } = animationVariants[type];
+  const letters = Array.from(text)
+  const { container, child } = animationVariants[type]
 
   // const ctrls = useAnimation()
 
@@ -224,23 +224,23 @@ const TextAnimate: FC<Props> = ({
   //     }
   //   }, [ctrls, isInView]);
 
-  if (type === "rollIn" || type === "whipIn") {
+  if (type === 'rollIn' || type === 'whipIn') {
     return (
       <h2
         className={cn(
-          "mt-10 text-3xl font-black py-5 pb-8 px-8 md:text-5xl",
-          className,
+          'mt-10 text-3xl font-black py-5 pb-8 px-8 md:text-5xl',
+          className
         )}
       >
-        {text.split(" ").map((word, index) => {
+        {text.split(' ').map((word, index) => {
           return (
             <motion.span
               ref={ref}
-              className="inline-block mr-[0.25em] whitespace-nowrap"
-              aria-hidden="true"
+              className='inline-block mr-[0.25em] whitespace-nowrap'
+              aria-hidden='true'
               key={index}
-              initial="hidden"
-              animate="visible"
+              initial='hidden'
+              animate='visible'
               variants={container}
               transition={{
                 animationDelay: (props.delay ?? 0) as ValueTransition,
@@ -250,43 +250,43 @@ const TextAnimate: FC<Props> = ({
                 // staggerChildren: 0.05,
               }}
             >
-              {word.split("").map((character, index) => {
+              {word.split('').map((character, index) => {
                 return (
                   <motion.span
-                    aria-hidden="true"
+                    aria-hidden='true'
                     key={index}
                     variants={child}
-                    className="inline-block -mr-[0.01em]"
+                    className='inline-block -mr-[0.01em]'
                   >
                     {character}
                   </motion.span>
-                );
+                )
               })}
             </motion.span>
-          );
+          )
         })}
       </h2>
-    );
+    )
   }
 
   return (
     <motion.h2
-      style={{ display: "flex", overflow: "hidden" }}
-      role="heading"
+      style={{ display: 'flex', overflow: 'hidden' }}
+      role='heading'
       variants={container}
-      initial="hidden"
-      animate="visible"
-      className={cn("text-4xl", className)}
+      initial='hidden'
+      animate='visible'
+      className={cn('text-4xl', className)}
       {...props}
     >
       {letters.map((letter, index) => (
         <motion.span key={index} variants={child}>
-          {letter === " " ? "\u00A0" : letter}
+          {letter === ' ' ? '\u00A0' : letter}
         </motion.span>
       ))}
     </motion.h2>
-  );
-};
+  )
+}
 
-export { TextAnimate };
-export default TextAnimate;
+export { TextAnimate }
+export default TextAnimate

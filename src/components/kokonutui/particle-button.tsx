@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 /**
  * @author: @dorian_baffier
@@ -10,10 +10,10 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { Button, type ButtonProps } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useRef, useState, type RefObject } from "react";
+import { Button, type ButtonProps } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { AnimatePresence, motion } from 'motion/react'
+import { useCallback, useRef, useState, type RefObject } from 'react'
 
 interface ParticleButtonProps extends ButtonProps {
   onSuccess?: () => void;
@@ -25,18 +25,18 @@ function SuccessParticles({
 }: {
   buttonRef: React.RefObject<HTMLButtonElement>;
 }) {
-  const rect = buttonRef.current?.getBoundingClientRect();
-  if (!rect) return null;
+  const rect = buttonRef.current?.getBoundingClientRect()
+  if (!rect) return null
 
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+  const centerX = rect.left + rect.width / 2
+  const centerY = rect.top + rect.height / 2
 
   return (
     <AnimatePresence>
       {[...Array(6)].map((_, i) => (
         <motion.div
           key={i}
-          className="fixed w-1 h-1 bg-yellow-200 dark:bg-white rounded-full"
+          className='fixed w-1 h-1 bg-yellow-200 dark:bg-white rounded-full'
           style={{ left: centerX, top: centerY }}
           initial={{
             scale: 0,
@@ -51,12 +51,12 @@ function SuccessParticles({
           transition={{
             duration: 0.6,
             delay: i * 0.1,
-            ease: "easeOut",
+            ease: 'easeOut',
           }}
         />
       ))}
     </AnimatePresence>
-  );
+  )
 }
 
 export default function ParticleButton({
@@ -67,20 +67,18 @@ export default function ParticleButton({
   className,
   ...props
 }: ParticleButtonProps) {
-  const [showParticles, setShowParticles] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [showParticles, setShowParticles] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const handleClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
-      setShowParticles(true);
-      let timer: NodeJS.Timeout | undefined;
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
-        setShowParticles(false);
-      }, duration);
+      setShowParticles(true)
+      setTimeout(() => {
+        setShowParticles(false)
+      }, duration)
     },
-    [duration],
-  );
+    [duration]
+  )
 
   return (
     <>
@@ -93,15 +91,15 @@ export default function ParticleButton({
         ref={buttonRef}
         onClick={handleClick}
         className={cn(
-          "relative",
-          showParticles && "scale-95",
-          "transition-transform duration-100",
-          className,
+          'relative',
+          showParticles && 'scale-95',
+          'transition-transform duration-100',
+          className
         )}
         {...props}
       >
         {children}
       </Button>
     </>
-  );
+  )
 }

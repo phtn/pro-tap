@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react'
 
 // NFC Web API TypeScript definitions
 interface NDEFMessage {
@@ -21,19 +21,19 @@ interface NDEFReader extends EventTarget {
     options?: { overwrite?: boolean; signal?: AbortSignal },
   ): Promise<void>;
   addEventListener(
-    type: "reading",
+    type: 'reading',
     listener: (event: NDEFReadingEvent) => void,
   ): void;
   addEventListener(
-    type: "readingerror",
+    type: 'readingerror',
     listener: (event: Event) => void,
   ): void;
   removeEventListener(
-    type: "reading",
+    type: 'reading',
     listener: (event: NDEFReadingEvent) => void,
   ): void;
   removeEventListener(
-    type: "readingerror",
+    type: 'readingerror',
     listener: (event: Event) => void,
   ): void;
 }
@@ -77,48 +77,48 @@ export interface UseNFCReturn {
   startScanning: () => Promise<void>;
   stopScanning: () => void;
   clearHistory: () => void;
-  formatRecordData: (record: NFCData["records"][0]) => string;
+  formatRecordData: (record: NFCData['records'][0]) => string;
 }
 
 export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
-  const { onScan, onError, maxHistorySize = 10 } = options;
+  const { onScan, onError, maxHistorySize = 10 } = options
 
-  const [isScanning, setIsScanning] = useState<boolean>(false);
-  const [isSupported, setIsSupported] = useState<boolean>(false);
-  const [lastScan, setLastScan] = useState<NFCData | null>(null);
-  const [scanHistory, setScanHistory] = useState<NFCData[]>([]);
-  const [nfcReader, setNfcReader] = useState<NDEFReader | null>(null);
+  const [isScanning, setIsScanning] = useState<boolean>(false)
+  const [isSupported, setIsSupported] = useState<boolean>(false)
+  const [lastScan, setLastScan] = useState<NFCData | null>(null)
+  const [scanHistory, setScanHistory] = useState<NFCData[]>([])
+  const [nfcReader, setNfcReader] = useState<NDEFReader | null>(null)
   const [abortController, setAbortController] =
-    useState<AbortController | null>(null);
+    useState<AbortController | null>(null)
 
   // Check NFC support on mount
   useEffect(() => {
     const checkNFCSupport = (): boolean => {
-      return typeof window !== "undefined" && "NDEFReader" in window;
-    };
+      return typeof window !== 'undefined' && 'NDEFReader' in window
+    }
 
-    setIsSupported(checkNFCSupport());
-  }, []);
+    setIsSupported(checkNFCSupport())
+  }, [])
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (abortController) {
-        abortController.abort();
+        abortController.abort()
       }
-    };
-  }, [abortController]);
+    }
+  }, [abortController])
 
   const handleNFCReading = useCallback(
     (event: NDEFReadingEvent): void => {
-      const { serialNumber, message } = event;
+      const { serialNumber, message } = event
 
-      const records = message.records.map((record): NFCData["records"][0] => {
-        let data = "";
+      const records = message.records.map((record): NFCData['records'][0] => {
+        let data = ''
 
         if (record.data) {
-          const decoder = new TextDecoder(record.encoding || "utf-8");
-          data = decoder.decode(record.data);
+          const decoder = new TextDecoder(record.encoding || 'utf-8')
+          data = decoder.decode(record.data)
         }
 
         return {
@@ -126,105 +126,105 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
           data,
           mediaType: record.mediaType,
           id: record.id,
-        };
-      });
+        }
+      })
 
       const nfcData: NFCData = {
         serialNumber,
         records,
         timestamp: new Date(),
-      };
+      }
 
-      setLastScan(nfcData);
-      setScanHistory((prev) => [nfcData, ...prev.slice(0, maxHistorySize - 1)]);
+      setLastScan(nfcData)
+      setScanHistory((prev) => [nfcData, ...prev.slice(0, maxHistorySize - 1)])
 
       if (onScan) {
-        onScan(nfcData);
+        onScan(nfcData)
       }
     },
-    [onScan, maxHistorySize],
-  );
+    [onScan, maxHistorySize]
+  )
 
   const handleNFCError = useCallback(
     (event: Event): void => {
-      const errorMessage = `NFC reading error: ${event.type}`;
-      console.error(errorMessage, event);
+      const errorMessage = `NFC reading error: ${event.type}`
+      console.error(errorMessage, event)
 
       if (onError) {
-        onError(errorMessage);
+        onError(errorMessage)
       }
     },
-    [onError],
-  );
+    [onError]
+  )
 
   const startScanning = useCallback(async (): Promise<void> => {
     if (!isSupported) {
-      const errorMsg = "NFC is not supported on this device/browser";
+      const errorMsg = 'NFC is not supported on this device/browser'
       if (onError) {
-        onError(errorMsg);
+        onError(errorMsg)
       }
-      return;
+      return
     }
 
     try {
-      const reader = new window.NDEFReader();
-      const controller = new AbortController();
+      const reader = new window.NDEFReader()
+      const controller = new AbortController()
 
-      setNfcReader(reader);
-      setAbortController(controller);
-      setIsScanning(true);
+      setNfcReader(reader)
+      setAbortController(controller)
+      setIsScanning(true)
 
-      reader.addEventListener("reading", handleNFCReading);
-      reader.addEventListener("readingerror", handleNFCError);
+      reader.addEventListener('reading', handleNFCReading)
+      reader.addEventListener('readingerror', handleNFCError)
 
-      await reader.scan({ signal: controller.signal });
+      await reader.scan({ signal: controller.signal })
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error
           ? `Failed to start NFC scanning: ${error.message}`
-          : "Failed to start NFC scanning: Unknown error";
+          : 'Failed to start NFC scanning: Unknown error'
 
-      console.error(errorMessage, error);
-      setIsScanning(false);
+      console.error(errorMessage, error)
+      setIsScanning(false)
 
       if (onError) {
-        onError(errorMessage);
+        onError(errorMessage)
       }
     }
-  }, [isSupported, onError, handleNFCReading, handleNFCError]);
+  }, [isSupported, onError, handleNFCReading, handleNFCError])
 
   const stopScanning = useCallback((): void => {
     if (abortController) {
-      abortController.abort();
-      setAbortController(null);
+      abortController.abort()
+      setAbortController(null)
     }
 
     if (nfcReader) {
-      nfcReader.removeEventListener("reading", handleNFCReading);
-      nfcReader.removeEventListener("readingerror", handleNFCError);
-      setNfcReader(null);
+      nfcReader.removeEventListener('reading', handleNFCReading)
+      nfcReader.removeEventListener('readingerror', handleNFCError)
+      setNfcReader(null)
     }
 
-    setIsScanning(false);
-  }, [abortController, nfcReader, handleNFCReading, handleNFCError]);
+    setIsScanning(false)
+  }, [abortController, nfcReader, handleNFCReading, handleNFCError])
 
   const clearHistory = useCallback((): void => {
-    setScanHistory([]);
-    setLastScan(null);
-  }, []);
+    setScanHistory([])
+    setLastScan(null)
+  }, [])
 
   const formatRecordData = useCallback(
-    (record: NFCData["records"][0]): string => {
-      if (record.recordType === "text") {
-        return record.data;
-      } else if (record.recordType === "url") {
-        return record.data;
+    (record: NFCData['records'][0]): string => {
+      if (record.recordType === 'text') {
+        return record.data
+      } else if (record.recordType === 'url') {
+        return record.data
       } else {
-        return `${record.recordType}: ${record.data.slice(0, 50)}${record.data.length > 50 ? "..." : ""}`;
+        return `${record.recordType}: ${record.data.slice(0, 50)}${record.data.length > 50 ? '...' : ''}`
       }
     },
-    [],
-  );
+    []
+  )
 
   return {
     isScanning,
@@ -235,5 +235,5 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
     stopScanning,
     clearHistory,
     formatRecordData,
-  };
-};
+  }
+}

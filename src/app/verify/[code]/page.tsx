@@ -1,4 +1,4 @@
-import { Content } from "./content";
+import { Content } from './content'
 
 interface VerifyPageProps {
   params: Promise<{
@@ -7,7 +7,7 @@ interface VerifyPageProps {
 }
 
 const Page = async ({ params }: VerifyPageProps) => {
-  const { code } = await params;
-  return <Content code={code} />;
-};
-export default Page;
+  const { code } = await params
+  return <Content code={code} />
+}
+export default Page

@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import type React from "react";
+import type React from 'react'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 interface Props {
   size?: string;
@@ -18,54 +18,54 @@ interface Props {
 }
 
 export const Palantir: React.FC<Props> = ({
-  size = "192px",
+  size = '192px',
   className,
   colors,
   animationDuration = 120,
   darkness = 0.001,
 }) => {
   const defaultColors = {
-    bg: `oklch(1 0 0)`,
-    c1: "oklch(32.1 97.7 83.1)", // Pastel lavamder
-    c2: "emerald-400", // Bloodlust
-    c3: "cyan-200", // Pastel amber
-  };
+    bg: 'oklch(1 0 0)',
+    c1: 'oklch(32.1 97.7 83.1)', // Pastel lavamder
+    c2: 'emerald-400', // Bloodlust
+    c3: 'cyan-200', // Pastel amber
+  }
 
-  const finalColors = { ...defaultColors, ...colors };
+  const finalColors = { ...defaultColors, ...colors }
 
   // Extract numeric value from size for calculations
-  const sizeValue = Number.parseInt(size.replace("px", ""), 10);
+  const sizeValue = Number.parseInt(size.replace('px', ''), 10)
 
   // Responsive calculations based on size
   const blurAmount =
     sizeValue < 50
       ? Math.max(sizeValue * 0.008, 1) // Reduced blur for small sizes
-      : Math.max(sizeValue * 0.015, 4);
+      : Math.max(sizeValue * 0.015, 4)
 
   const contrastAmount =
     sizeValue < 50
       ? Math.max(sizeValue * 0.004, 1.2) // Reduced contrast for small sizes
-      : Math.max(sizeValue * 0.008, 1.5);
+      : Math.max(sizeValue * 0.008, 1.5)
 
   const dotSize =
     sizeValue < 50
       ? Math.max(sizeValue * 0.002, 0.04) // Much larger dots for small sizes (minimum 2px)
-      : Math.max(sizeValue * 0.004, 0.02); // Much larger dots for bigger sizes (minimum 8px)
+      : Math.max(sizeValue * 0.004, 0.02) // Much larger dots for bigger sizes (minimum 8px)
 
   const shadowSpread =
     sizeValue < 50
       ? Math.max(sizeValue * 0.004, 0.5) // Reduced shadow for small sizes
-      : Math.max(sizeValue * 0.008, 0.8);
+      : Math.max(sizeValue * 0.008, 0.8)
 
   // Adjust mask radius based on size to reduce black center in small sizes
   const maskRadius =
     sizeValue < 10
-      ? "0%"
+      ? '0%'
       : sizeValue < 50
-        ? "5%"
+        ? '5%'
         : sizeValue < 100
-          ? "15%"
-          : "25%";
+          ? '15%'
+          : '25%'
 
   // Use more subtle contrast for very small sizes
   const finalContrast =
@@ -73,34 +73,34 @@ export const Palantir: React.FC<Props> = ({
       ? 1.1 // Very subtle contrast for tiny sizes
       : sizeValue < 50
         ? Math.max(contrastAmount * 1.2, 1.3) // Reduced contrast for small sizes
-        : contrastAmount;
+        : contrastAmount
 
-  const darknessOpacity = Math.max(0.05, darkness * 0.5);
+  const darknessOpacity = Math.max(0.05, darkness * 0.5)
 
   return (
     <div
-      className={cn("palantir", className)}
+      className={cn('palantir', className)}
       style={
         {
           width: size,
           height: size,
-          "--bg": finalColors.bg,
-          "--c1": finalColors.c1,
-          "--c2": finalColors.c2,
-          "--c3": finalColors.c3,
-          "--animation-duration": `${animationDuration}s`,
-          "--blur-amount": `${blurAmount}px`,
-          "--contrast-amount": finalContrast / 2,
-          "--dot-size": `${dotSize}px`,
-          "--shadow-spread": `${shadowSpread}px`,
-          "--mask-radius": maskRadius,
-          "--darkness-opacity": darknessOpacity,
+          '--bg': finalColors.bg,
+          '--c1': finalColors.c1,
+          '--c2': finalColors.c2,
+          '--c3': finalColors.c3,
+          '--animation-duration': `${animationDuration}s`,
+          '--blur-amount': `${blurAmount}px`,
+          '--contrast-amount': finalContrast / 2,
+          '--dot-size': `${dotSize}px`,
+          '--shadow-spread': `${shadowSpread}px`,
+          '--mask-radius': maskRadius,
+          '--darkness-opacity': darknessOpacity,
         } as React.CSSProperties
       }
     >
-      <div className="background-layer" />
-      <div className="contrail-lines" />
-      {/*<div className="animated-lines" />*/}
+      <div className='background-layer' />
+      <div className='contrail-lines' />
+      {/* <div className="animated-lines" /> */}
 
       <style jsx>{`
         @property --angle {
@@ -396,7 +396,8 @@ export const Palantir: React.FC<Props> = ({
             animation: none;
           }
         }
-      `}</style>
+      `}
+      </style>
     </div>
-  );
-};
+  )
+}

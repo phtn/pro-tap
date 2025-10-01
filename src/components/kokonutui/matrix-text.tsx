@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 /**
  * @author: @dorian_baffier
@@ -10,10 +10,10 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { motion } from 'motion/react'
+import { cn } from '@/lib/utils'
+import { useTheme } from 'next-themes'
 
 interface LetterState {
   char: string;
@@ -30,84 +30,84 @@ interface MatrixTextProps {
 }
 
 export const MatrixText = ({
-  text = "HelloWorld!",
+  text = 'HelloWorld!',
   className,
   initialDelay = 200,
   letterAnimationDuration = 500,
   letterInterval = 100,
 }: MatrixTextProps) => {
   const [letters, setLetters] = useState<LetterState[]>(() =>
-    text.split("").map((char) => ({
+    text.split('').map((char) => ({
       char,
       isMatrix: false,
-      isSpace: char === " ",
-    })),
-  );
-  const [isAnimating, setIsAnimating] = useState(false);
-  const { theme } = useTheme();
+      isSpace: char === ' ',
+    }))
+  )
+  const [isAnimating, setIsAnimating] = useState(false)
+  const { theme } = useTheme()
 
   const getRandomChar = useCallback(
-    () => (Math.random() > 0.5 ? "1" : "0"),
-    [],
-  );
+    () => (Math.random() > 0.5 ? '1' : '0'),
+    []
+  )
 
   const animateLetter = useCallback(
     (index: number) => {
-      if (index >= text.length) return;
+      if (index >= text.length) return
 
       requestAnimationFrame(() => {
         setLetters((prev) => {
-          const newLetters = [...prev];
+          const newLetters = [...prev]
           if (!newLetters[index].isSpace) {
             newLetters[index] = {
               ...newLetters[index],
               char: getRandomChar(),
               isMatrix: true,
-            };
+            }
           }
-          return newLetters;
-        });
+          return newLetters
+        })
 
         setTimeout(() => {
           setLetters((prev) => {
-            const newLetters = [...prev];
+            const newLetters = [...prev]
             newLetters[index] = {
               ...newLetters[index],
               char: text[index],
               isMatrix: false,
-            };
-            return newLetters;
-          });
-        }, letterAnimationDuration);
-      });
+            }
+            return newLetters
+          })
+        }, letterAnimationDuration)
+      })
     },
-    [getRandomChar, text, letterAnimationDuration],
-  );
+    [getRandomChar, text, letterAnimationDuration]
+  )
 
   const startAnimation = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating) return
 
-    setIsAnimating(true);
-    let currentIndex = 0;
+    setIsAnimating(true)
+    let currentIndex = 0
 
     const animate = () => {
       if (currentIndex >= text.length) {
-        setIsAnimating(false);
-        return;
+        setIsAnimating(false)
+        return
       }
 
-      animateLetter(currentIndex);
-      currentIndex++;
-      setTimeout(animate, letterInterval);
-    };
+      animateLetter(currentIndex)
+      currentIndex++
+      setTimeout(animate, letterInterval)
+    }
 
-    animate();
-  }, [animateLetter, text, isAnimating, letterInterval]);
+    animate()
+  }, [animateLetter, text, isAnimating, letterInterval])
 
   useEffect(() => {
-    const timer = setTimeout(startAnimation, initialDelay);
-    return () => clearTimeout(timer);
-  }, []);
+    const timer = setTimeout(startAnimation, initialDelay)
+    return () => clearTimeout(timer)
+  }, [])
 
   const motionVariants = useMemo(
     () => ({
@@ -116,7 +116,7 @@ export const MatrixText = ({
       // },
       matrix: {
         color:
-          theme === "light" ? "oklch(0.60 0.10 185)" : "oklch(0.85 0.13 181)",
+          theme === 'light' ? 'oklch(0.60 0.10 185)' : 'oklch(0.85 0.13 181)',
         // textShadow: "0 1px 1px rgba(0, 255, 0, 0.5)",
       },
       // normal: {
@@ -124,43 +124,43 @@ export const MatrixText = ({
       //     textShadow: "none",
       // },
     }),
-    [theme],
-  );
+    [theme]
+  )
 
   return (
     <div
       className={cn(
-        "flex items-center justify-center text-foreground ",
-        className,
+        'flex items-center justify-center text-foreground ',
+        className
       )}
-      aria-label="Matrix text animation"
+      aria-label='Matrix text animation'
     >
-      <div className="flex items-center justify-center">
-        <div className="flex flex-wrap items-center justify-center">
+      <div className='flex items-center justify-center'>
+        <div className='flex flex-wrap items-center justify-center'>
           {letters.map((letter, index) => (
             <motion.div
               key={`${index}-${letter.char}`}
-              className="font-doto opacity-100 font-semibold dark:text-cyan-100 tracking-[0.025em]"
-              initial="initial"
-              animate={letter.isMatrix ? "matrix" : "normal"}
+              className='font-doto opacity-100 font-semibold dark:text-cyan-100 tracking-[0.025em]'
+              initial='initial'
+              animate={letter.isMatrix ? 'matrix' : 'normal'}
               variants={motionVariants}
               transition={{
                 duration: 0.1,
-                ease: "easeInOut",
+                ease: 'easeInOut',
               }}
               style={{
-                display: "inline-block",
-                fontVariantNumeric: "tabular-nums",
+                display: 'inline-block',
+                fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {letter.isSpace ? "\u00A0" : letter.char}
+              {letter.isSpace ? '\u00A0' : letter.char}
             </motion.div>
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 /*
 |

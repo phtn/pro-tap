@@ -1,11 +1,10 @@
-"use client";
+'use client'
 
-import { ElementType, useEffect, useState, createElement } from "react";
-import type { ReactNode, HTMLAttributes } from "react";
-import { motion, Variants } from "motion/react";
+import { ElementType, useEffect, useState, createElement } from 'react'
+import type { ReactNode, HTMLAttributes } from 'react'
+import { motion, Variants } from 'motion/react'
 
-import { cn } from "@/lib/utils";
-
+import { cn } from '@/lib/utils'
 
 interface TypewriterProps {
   /**
@@ -83,7 +82,6 @@ interface TypewriterProps {
   as?: ElementType;
 }
 
-
 export const Typewriter = ({
   text,
   as,
@@ -95,8 +93,8 @@ export const Typewriter = ({
   className,
   showCursor = true,
   hideCursorOnType = false,
-  cursorChar = "|",
-  cursorClassName = "ml-1",
+  cursorChar = '|',
+  cursorClassName = 'ml-1',
   cursorAnimationVariants = {
     initial: { opacity: 0 },
     animate: {
@@ -105,62 +103,62 @@ export const Typewriter = ({
         duration: 0.01,
         repeat: Infinity,
         repeatDelay: 0.4,
-        repeatType: "reverse",
+        repeatType: 'reverse',
       },
     },
   },
   ...props
 }: TypewriterProps & HTMLAttributes<HTMLElement>) => {
-  const [displayText, setDisplayText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
 
-  const texts = Array.isArray(text) ? text : [text];
-  const Tag: ElementType = as ?? "div";
+  const texts = Array.isArray(text) ? text : [text]
+  const Tag: ElementType = as ?? 'div'
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
+    let timeout: ReturnType<typeof setTimeout>
 
-    const currentText = texts[currentTextIndex];
+    const currentText = texts[currentTextIndex]
 
     const startTyping = () => {
       if (isDeleting) {
-        if (displayText === "") {
-          setIsDeleting(false);
+        if (displayText === '') {
+          setIsDeleting(false)
           if (currentTextIndex === texts.length - 1 && !loop) {
-            return;
+            return
           }
-          setCurrentTextIndex((prev) => (prev + 1) % texts.length);
-          setCurrentIndex(0);
-          timeout = setTimeout(() => { }, waitTime);
+          setCurrentTextIndex((prev) => (prev + 1) % texts.length)
+          setCurrentIndex(0)
+          timeout = setTimeout(() => { }, waitTime)
         } else {
           timeout = setTimeout(() => {
-            setDisplayText((prev) => prev.slice(0, -1));
-          }, deleteSpeed);
+            setDisplayText((prev) => prev.slice(0, -1))
+          }, deleteSpeed)
         }
       } else {
         if (currentIndex < currentText.length) {
           timeout = setTimeout(() => {
-            setDisplayText((prev) => prev + currentText[currentIndex]);
-            setCurrentIndex((prev) => prev + 1);
-          }, speed);
+            setDisplayText((prev) => prev + currentText[currentIndex])
+            setCurrentIndex((prev) => prev + 1)
+          }, speed)
         } else if (texts.length > 1) {
           timeout = setTimeout(() => {
-            setIsDeleting(true);
-          }, waitTime);
+            setIsDeleting(true)
+          }, waitTime)
         }
       }
-    };
-
-    // Apply initial delay only at the start
-    if (currentIndex === 0 && !isDeleting && displayText === "") {
-      timeout = setTimeout(startTyping, initialDelay);
-    } else {
-      startTyping();
     }
 
-    return () => clearTimeout(timeout);
+    // Apply initial delay only at the start
+    if (currentIndex === 0 && !isDeleting && displayText === '') {
+      timeout = setTimeout(startTyping, initialDelay)
+    } else {
+      startTyping()
+    }
+
+    return () => clearTimeout(timeout)
   }, [
     currentIndex,
     displayText,
@@ -171,11 +169,11 @@ export const Typewriter = ({
     texts,
     currentTextIndex,
     loop,
-  ]);
+  ])
 
   return createElement(
     Tag,
-    { className: cn("inline whitespace-pre-wrap tracking-tight", className), ...props },
+    { className: cn('inline whitespace-pre-wrap tracking-tight', className), ...props },
     <>
       <span>{displayText}</span>
       {showCursor && (
@@ -185,15 +183,15 @@ export const Typewriter = ({
             cursorClassName,
             hideCursorOnType &&
               (currentIndex < texts[currentTextIndex].length || isDeleting)
-              ? "hidden"
-              : "",
+              ? 'hidden'
+              : ''
           )}
-          initial="initial"
-          animate="animate"
+          initial='initial'
+          animate='animate'
         >
           {cursorChar}
         </motion.span>
       )}
     </>
-  );
-};
+  )
+}

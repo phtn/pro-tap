@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { db } from "@/lib/firebase";
-import type { User } from "firebase/auth";
+import { db } from '@/lib/firebase'
+import type { User } from 'firebase/auth'
 import {
   collection,
   doc,
@@ -13,9 +13,9 @@ import {
   type DocumentReference,
   type Timestamp,
   type FieldValue,
-} from "firebase/firestore";
+} from 'firebase/firestore'
 
-type ServerTime = FieldValue | Timestamp;
+type ServerTime = FieldValue | Timestamp
 
 export interface ProtapUserDoc {
   uid: string;
@@ -27,19 +27,19 @@ export interface ProtapUserDoc {
   lastLogin: ServerTime;
 }
 
-function usersCollection(): CollectionReference<ProtapUserDoc> {
-  const protapCol = collection(db, "protap");
-  const usersDoc = doc(protapCol, "users");
-  return collection(usersDoc, "account") as CollectionReference<ProtapUserDoc>;
+function usersCollection (): CollectionReference<ProtapUserDoc> {
+  const protapCol = collection(db, 'protap')
+  const usersDoc = doc(protapCol, 'users')
+  return collection(usersDoc, 'account') as CollectionReference<ProtapUserDoc>
 }
 
-function accountDocRef(uid: string): DocumentReference<ProtapUserDoc> {
-  return doc(usersCollection(), uid) as DocumentReference<ProtapUserDoc>;
+function accountDocRef (uid: string): DocumentReference<ProtapUserDoc> {
+  return doc(usersCollection(), uid) as DocumentReference<ProtapUserDoc>
 }
 
-export async function updateUser(user: User): Promise<void> {
-  const ref = accountDocRef(user.uid);
-  const snap = await getDoc(ref);
+export async function updateUser (user: User): Promise<void> {
+  const ref = accountDocRef(user.uid)
+  const snap = await getDoc(ref)
 
   if (!snap.exists()) {
     const data: ProtapUserDoc = {
@@ -50,16 +50,16 @@ export async function updateUser(user: User): Promise<void> {
       providerIds: user.providerData.map((p) => p.providerId),
       createdAt: serverTimestamp() as ServerTime,
       lastLogin: serverTimestamp() as ServerTime,
-    };
-    await setDoc(ref, data);
-    return;
+    }
+    await setDoc(ref, data)
+    return
   }
 
   await updateDoc(ref, {
     lastLogin: serverTimestamp(),
-  });
+  })
 }
 
-export function getUserDocRef(uid: string): DocumentReference<ProtapUserDoc> {
-  return accountDocRef(uid);
+export function getUserDocRef (uid: string): DocumentReference<ProtapUserDoc> {
+  return accountDocRef(uid)
 }

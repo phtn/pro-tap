@@ -1,13 +1,12 @@
-"use client";
-import { GoogleAuthProvider } from "firebase/auth";
-import * as fbui from "firebaseui";
-import { auth } from ".";
+'use client'
+import { GoogleAuthProvider } from 'firebase/auth'
+import * as fbui from 'firebaseui'
 
-export const yolo_config = {
-  signInSuccessUrl: "",
+export const yoloConfig = {
+  signInSuccessUrl: '',
   signInOptions: [GoogleAuthProvider.PROVIDER_ID],
   credentialHelper: fbui.auth.CredentialHelper.GOOGLE_YOLO,
-};
+}
 
 /*
 import { yolo_config } from "@/lib/firebase/yolo";

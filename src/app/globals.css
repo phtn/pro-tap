@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,6 +43,7 @@
     --color-progress-start: oklch(0.834 0.212 135.94);
     --color-progress-end: oklch(0.845 0.128 195.01);
     --color-card: var(--card);
+    --color-ash: var(--ash);
     --color-protap-blue: oklch(0.304 0.109 261.73);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -84,6 +85,7 @@
     --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
     --sidebar-border: oklch(0.929 0.013 255.508);
     --sidebar-ring: oklch(0.704 0.04 256.788);
+    --ash: oklch(0.884 0.007 208.78);
 }
 
 .dark {
@@ -120,6 +122,16 @@
     --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.551 0.027 264.364);
+    --ash: oklch(0.25 0.04 245);
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        scrollbar-width: none;
+    }
 }
 
 @layer base {
@@ -132,6 +144,12 @@
         }
 
         @apply bg-background text-foreground;
+    }
+}
+
+.no-scrollbar {
+    ::-webkit-scrollbar {
+        display: none;
     }
 }
 

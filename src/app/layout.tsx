@@ -1,76 +1,74 @@
-import type { Metadata } from "next";
-// eslint-disable-next-line camelcase
+import {ThemeHotkey} from '@/components/theme-hotkey'
+import {ThemeProvider} from '@/components/theme-provider'
+import {AuthCtxProvider} from '@/ctx/auth'
+import {Toasts} from '@/ctx/toast'
+import Devtools from '@/devtools'
+import type {Metadata} from 'next'
 import {
-  Geist,
-  Geist_Mono,
-  Space_Grotesk,
-  Space_Mono,
-  Figtree,
   Doto,
-} from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import Devtools from "@/devtools";
-import { ThemeHotkey } from "@/components/theme-hotkey";
-import { AuthCtxProvider } from "@/ctx/auth";
+  Figtree,
+  Geist,
+  Geist_Mono as GeistMono,
+  Space_Grotesk as SpaceGrotesk,
+} from 'next/font/google'
+import './globals.css'
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistMono = GeistMono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
-const space = Space_Grotesk({
-  variable: "--font-space",
-  subsets: ["latin"],
-});
+const space = SpaceGrotesk({
+  variable: '--font-space',
+  subsets: ['latin'],
+})
 
 const figtree = Figtree({
-  variable: "--font-figtree",
-  subsets: ["latin"],
-});
+  variable: '--font-figtree',
+  subsets: ['latin'],
+})
 const doto = Doto({
-  variable: "--font-doto",
-  subsets: ["latin"],
-});
+  variable: '--font-doto',
+  subsets: ['latin'],
+})
 export const metadata: Metadata = {
-  title: "ProTap Project",
-  description: "for ProTap",
-  icons: ["/re-up-icon.svg"],
-  referrer: "strict-origin-when-cross-origin",
-};
+  title: 'ProTap Project',
+  description: 'for ProTap',
+  icons: ['/re-up-icon.svg'],
+  referrer: 'strict-origin-when-cross-origin',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`bg-background  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
-      >
+    <html lang='en' suppressHydrationWarning>
+      <body>
         <ThemeProvider
           enableSystem
-          attribute="class"
+          attribute='class'
           enableColorScheme
-          defaultTheme="system"
-          disableTransitionOnChange
-        >
+          defaultTheme='system'
+          disableTransitionOnChange>
           <AuthCtxProvider>
-            <div className=" border border-pink-300">
+            <div
+              className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
               {children}
 
               <ThemeHotkey />
               <Devtools />
             </div>
+            <Toasts />
           </AuthCtxProvider>
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

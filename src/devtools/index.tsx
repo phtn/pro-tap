@@ -1,7 +1,7 @@
-import { Content } from "./content";
+import { Content } from './content'
 
 const Devtools = async () => {
-  return <Content />;
-};
+  return <Content />
+}
 
-export default Devtools;
+export default Devtools

@@ -1,14 +1,13 @@
-"use client";
+'use client'
 
-import { motion } from "motion/react";
-import { useAppNavigation } from "../hooks/useNavigation";
-import { ProfileScreen } from "./app-screens/ProfileScreen";
-import { ProfileDetailScreen } from "./app-screens/ProfileDetailScreen";
-import { ChatScreen } from "./app-screens/ChatScreen";
-import { ContactsScreen } from "./app-screens/ContactsScreen";
-import { SettingsScreen } from "./app-screens/SettingsScreen";
-import { AboutScreen } from "./app-screens/AboutScreen";
-import { Iphone15Pro } from "@/components/iPhone";
+import { motion } from 'motion/react'
+import { useAppNavigation } from '../hooks/useNavigation'
+import { ProfileScreen } from './app-screens/ProfileScreen'
+import { ProfileDetailScreen } from './app-screens/ProfileDetailScreen'
+import { ChatScreen } from './app-screens/ChatScreen'
+import { ContactsScreen } from './app-screens/ContactsScreen'
+import { SettingsScreen } from './app-screens/SettingsScreen'
+import { AboutScreen } from './app-screens/AboutScreen'
 
 export const AppViewer = () => {
   const {
@@ -19,19 +18,19 @@ export const AppViewer = () => {
     goBackToProfile,
     goToChat,
     goBackToProfileDetail,
-  } = useAppNavigation();
+  } = useAppNavigation()
 
   const renderScreen = () => {
     switch (currentScreen) {
-      case "profile":
+      case 'profile':
         return (
           <ProfileScreen
             onNext={nextScreen}
             onPrev={prevScreen}
             onViewProfile={goToProfileDetail}
           />
-        );
-      case "profile-detail":
+        )
+      case 'profile-detail':
         return (
           <ProfileDetailScreen
             onNext={nextScreen}
@@ -39,21 +38,21 @@ export const AppViewer = () => {
             onBack={goBackToProfile}
             onSendMessage={goToChat}
           />
-        );
-      case "chat":
+        )
+      case 'chat':
         return (
           <ChatScreen
             onNext={nextScreen}
             onPrev={prevScreen}
             onBack={goBackToProfileDetail}
           />
-        );
-      case "contacts":
-        return <ContactsScreen onNext={nextScreen} onPrev={prevScreen} />;
-      case "settings":
-        return <SettingsScreen onNext={nextScreen} onPrev={prevScreen} />;
-      case "about":
-        return <AboutScreen onNext={nextScreen} onPrev={prevScreen} />;
+        )
+      case 'contacts':
+        return <ContactsScreen onNext={nextScreen} onPrev={prevScreen} />
+      case 'settings':
+        return <SettingsScreen onNext={nextScreen} onPrev={prevScreen} />
+      case 'about':
+        return <AboutScreen onNext={nextScreen} onPrev={prevScreen} />
       default:
         return (
           <ProfileScreen
@@ -61,9 +60,9 @@ export const AppViewer = () => {
             onPrev={prevScreen}
             onViewProfile={goToProfileDetail}
           />
-        );
+        )
     }
-  };
+  }
 
   return (
     <div className="relative w-screen lg:min-w-fit px-[9px] py-[7.5px] aspect-auto h-[calc(100vh)] lg:h-[600px] lg:max-w-md shrink-0 lg:aspect-[9/16] bg-[url('/svg/15pro_max.svg')] bg-cover overflow-scroll flex flex-col">
@@ -73,10 +72,10 @@ export const AppViewer = () => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 0 }}
         transition={{ duration: 0.3 }}
-        className="h-[88lvh] rounded-t-[46px] border border-zinc-300/5 overflow-hidden"
+        className='h-[88lvh] rounded-t-[46px] border border-zinc-300/5 overflow-hidden'
       >
         {renderScreen()}
       </motion.div>
     </div>
-  );
-};
+  )
+}

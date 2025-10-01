@@ -1,6 +1,6 @@
 type AsyncFn<TArgs extends unknown[], TResult> = (
   ...args: TArgs
-) => Promise<TResult>;
+) => Promise<TResult>
 
 interface AsyncHandlerResponseOptions<TArgs extends unknown[]> {
   /** Number of retry attempts (default: 0) */
@@ -22,52 +22,52 @@ interface AsyncHandlerResponseOptions<TArgs extends unknown[]> {
 
 type AsyncResult<T> =
   | { data: T; error: undefined }
-  | { data: undefined; error: unknown };
+  | { data: undefined; error: unknown }
 
 /**
  * Enhanced function name extraction that handles arrow functions and assignments
  */
-function getFunctionName(fn: unknown): string | undefined {
+function getFunctionName (fn: unknown): string | undefined {
   // Prefer the runtime name if available (named functions / function expressions)
-  if (typeof fn === "function") {
-    const name = (fn as { name?: string }).name;
-    if (typeof name === "string" && name.length > 0) return name;
+  if (typeof fn === 'function') {
+    const name = (fn as { name?: string }).name
+    if (typeof name === 'string' && name.length > 0) return name
   }
 
   // Fallback to string representation (covers arrow functions and assignments)
-  const fnString = typeof fn === "function" ? fn.toString() : String(fn);
+  const fnString = typeof fn === 'function' ? fn.toString() : String(fn)
 
   // Match: const funcName = (...) => or let funcName = (...) =>
-  const assignmentMatch = fnString.match(/(?:const|let|var)\s+(\w+)\s*=/);
-  if (assignmentMatch) return assignmentMatch[1];
+  const assignmentMatch = fnString.match(/(?:const|let|var)\s+(\w+)\s*=/)
+  if (assignmentMatch) return assignmentMatch[1]
 
   // Match: funcName: (...) => (object method shorthand)
-  const methodMatch = fnString.match(/(\w+):\s*(?:async\s+)?\(/);
-  if (methodMatch) return methodMatch[1];
+  const methodMatch = fnString.match(/(\w+):\s*(?:async\s+)?\(/)
+  if (methodMatch) return methodMatch[1]
 
-  return "anonymous";
+  return 'anonymous'
 }
 
 /**
  * Sleep utility for backoff delays
  */
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function sleep (ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
  * Format errors into a consistent structure
  */
-function formatError(error: unknown): Record<string, unknown> {
-  if (typeof error === "string") return { message: error };
+function formatError (error: unknown): Record<string, unknown> {
+  if (typeof error === 'string') return { message: error }
   if (error instanceof Error) {
     return {
       name: error.name,
       message: error.message,
       stack: error.stack,
-    };
+    }
   }
-  return { message: "Unknown error", raw: error };
+  return { message: 'Unknown error', raw: error }
 }
 
 /**
@@ -113,9 +113,9 @@ function formatError(error: unknown): Record<string, unknown> {
  *
  * @see {@link https://www.typescriptlang.org/docs/handbook/2/functions.html#function-types Function Types - TS Docs}
  */
-export function handleAsync<TArgs extends unknown[], TResult>(
+export function handleAsync<TArgs extends unknown[], TResult> (
   fn: AsyncFn<TArgs, TResult>,
-  options: AsyncHandlerResponseOptions<TArgs> = {},
+  options: AsyncHandlerResponseOptions<TArgs> = {}
 ): (...args: TArgs) => Promise<AsyncResult<TResult>> {
   const {
     retries = 0,
@@ -124,36 +124,36 @@ export function handleAsync<TArgs extends unknown[], TResult>(
     logger = (msg, meta) => console.log(msg, meta),
     functionName,
     backoffMs = 0,
-  } = options;
+  } = options
 
-  const resolvedFunctionName = functionName || getFunctionName(fn);
+  const resolvedFunctionName = functionName || getFunctionName(fn)
 
   /**
    * Fire-and-forget async logger that doesn't block execution
    */
   const logAsync = (message: string, meta?: Record<string, unknown>): void => {
     try {
-      const result = logger(message, meta);
+      const result = logger(message, meta)
       // Normalize the logger result to a Promise so both sync and async
       // loggers are handled uniformly. This avoids relying on `instanceof Promise`.
       Promise.resolve(result).catch((logError) =>
-        console.error("Async logger failed:", formatError(logError)),
-      );
+        console.error('Async logger failed:', formatError(logError))
+      )
     } catch (logError) {
-      console.error("Logger failed:", formatError(logError));
+      console.error('Logger failed:', formatError(logError))
     }
-  };
+  }
 
   return async (...args: TArgs): Promise<AsyncResult<TResult>> => {
-    let attempt = 0;
+    let attempt = 0
 
     while (attempt <= retries) {
       try {
-        const data = await fn(...args);
-        return { data, error: undefined };
+        const data = await fn(...args)
+        return { data, error: undefined }
       } catch (error: unknown) {
-        attempt++;
-        const context = { args };
+        attempt++
+        const context = { args }
 
         // Log the error
         logAsync(
@@ -163,46 +163,46 @@ export function handleAsync<TArgs extends unknown[], TResult>(
             args,
             attempt,
             maxAttempts: retries + 1,
-          },
-        );
+          }
+        )
 
         // Execute custom error handler
         if (onError) {
           try {
-            onError(error, context);
+            onError(error, context)
           } catch (handlerError) {
-            logAsync("Error in custom onError handler", {
+            logAsync('Error in custom onError handler', {
               error: formatError(handlerError),
               originalError: formatError(error),
-            });
+            })
           }
         }
 
-        const isLastAttempt = attempt > retries;
+        const isLastAttempt = attempt > retries
 
         if (isLastAttempt) {
           // Check if we should rethrow in development
           const isDevelopment =
-            typeof process !== "undefined"
-              ? process.env?.NODE_ENV !== "production"
-              : false;
+            typeof process !== 'undefined'
+              ? process.env?.NODE_ENV !== 'production'
+              : false
 
           if (rethrowInDev && isDevelopment) {
-            throw error;
+            throw error
           }
 
-          return { data: undefined, error: formatError(error) };
+          return { data: undefined, error: formatError(error) }
         }
 
         // Apply backoff delay before next retry
         if (backoffMs > 0) {
-          const delay = backoffMs * Math.pow(2, attempt - 1);
-          await sleep(delay);
+          const delay = backoffMs * Math.pow(2, attempt - 1)
+          await sleep(delay)
         }
       }
     }
 
     // This should never be reached, but TypeScript requires it
-    return { data: undefined, error: formatError("Unexpected execution path") };
-  };
+    return { data: undefined, error: formatError('Unexpected execution path') }
+  }
 }

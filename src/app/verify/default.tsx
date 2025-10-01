@@ -1,7 +1,7 @@
-export default async function DefaultLayout({
+export default async function DefaultLayout ({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <>{children}</>
 }

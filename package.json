@@ -1,17 +1,18 @@
 {
   "name": "pro-tap",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "bun run eslint",
-    "lint:fix": "bun run eslint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "fb:es": "firebase emulators:start"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
+    "@gsap/react": "^2.1.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -59,6 +60,8 @@
     "@types/node": "^20.19.13",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
     "eslint": "^9.35.0",
     "eslint-config-next": "15.4.2",
     "neostandard": "^0.12.2",

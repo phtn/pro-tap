@@ -1,16 +1,15 @@
-import { LogoPro } from "@/components/logo";
-import { Prism } from "@/components/react-bits/prism";
-import { TextTrain } from "@/components/ui/text-train";
-import { useMobile } from "@/hooks/use-mobile";
-import { Icon } from "@/lib/icons";
+import { Prism } from '@/components/react-bits/prism'
+import { TextTrain } from '@/components/ui/text-train'
+import { useMobile } from '@/hooks/use-mobile'
+import { Icon } from '@/lib/icons'
 
 export const LeftPanel = () => {
-  const isMobile = useMobile();
+  const isMobile = useMobile()
   return (
-    <div className="relative lg:w-1/2 h-[75lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between">
-      <div className="absolute w-full h-full md:opacity-100 opacity-30">
+    <div className='relative lg:w-1/2 h-[75lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between'>
+      <div className='absolute w-full h-full md:opacity-100 opacity-30'>
         <Prism
-          animationType="3drotate"
+          animationType='3drotate'
           timeScale={0.2}
           height={isMobile ? 4.8 : 4.8}
           baseWidth={5.0}
@@ -21,47 +20,47 @@ export const LeftPanel = () => {
           glow={1}
         />
       </div>
-      <div className="p-12 relative z-50">
+      <div className='p-12 relative z-50'>
         {/* Brand Logo */}
-        <div className="absolute top-0 left-8 flex items-center text-foreground">
-          <Icon name="protap" className="size-20 opacity-20" />
+        <div className='absolute top-0 left-8 flex items-center text-foreground'>
+          <Icon name='protap' className='size-20 opacity-20' />
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col space-y-6">
-          <div className="pt-12 md:pt-20 space-y-1 md:space-y-3 flex flex-col justify-center items-center">
-            <div className="block">
+        <div className='flex flex-col space-y-6'>
+          <div className='pt-12 md:pt-20 space-y-1 md:space-y-3 flex flex-col justify-center items-center'>
+            <div className='block'>
               <TextTrain
                 words={[
-                  "Level up",
-                  "Grow your",
-                  "Break thru your",
-                  "Start building",
-                  "Make the world",
-                  "Become famous",
+                  'Level up',
+                  'Grow your',
+                  'Break thru your',
+                  'Start building',
+                  'Make the world',
+                  'Become famous',
                   "It's your turn",
                 ]}
-                className="text-sky-950 md:dark:text-sky-50 dark:text-sky-50 font-semibold md:font-extrabold text-3xl tracking-tighter md:text-6xl whitespace-nowrap md:tracking-tight"
+                className='text-sky-950 md:dark:text-sky-50 dark:text-sky-50 font-semibold md:font-extrabold text-3xl tracking-tighter md:text-6xl whitespace-nowrap md:tracking-tight'
               />
             </div>
             <div>
               <TextTrain
                 delay={50}
                 words={[
-                  "your Web Presence.",
-                  "Professional Network.",
-                  "current Revenue limits.",
-                  "your brand the right way.",
-                  "listen to your Masterpiece.",
-                  "Become an Inspiration.",
-                  "for Status Upgrade.",
+                  'your Web Presence.',
+                  'Professional Network.',
+                  'current Revenue limits.',
+                  'your brand the right way.',
+                  'listen to your Masterpiece.',
+                  'Become an Inspiration.',
+                  'for Status Upgrade.',
                 ]}
-                className="text-sky-950 md:dark:text-orange-50 dark:text-sky-50/80 text-xl md:text-3xl font-space font-medium max-w-[20ch] tracking-tighter"
+                className='text-sky-950 md:dark:text-orange-50 dark:text-sky-50/80 text-xl md:text-3xl font-space font-medium max-w-[20ch] tracking-tighter'
               />
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

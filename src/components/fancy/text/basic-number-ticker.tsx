@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   forwardRef,
@@ -6,7 +6,7 @@ import {
   useEffect,
   useImperativeHandle,
   useState,
-} from "react";
+} from 'react'
 import {
   animate,
   AnimationPlaybackControls,
@@ -15,9 +15,9 @@ import {
   useTransform,
   useMotionValueEvent,
   ValueAnimationTransition,
-} from "motion/react";
+} from 'motion/react'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 interface NumberTickerProps {
   from: number; // Starting value of the animation
@@ -41,8 +41,8 @@ const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
       target = 0,
       transition = {
         duration: 3,
-        type: "tween",
-        ease: "easeInOut",
+        type: 'tween',
+        ease: 'easeInOut',
       },
       className,
       onStart,
@@ -50,69 +50,69 @@ const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
       autoStart = true,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const count = useMotionValue(from);
-    const rounded = useTransform(count, (latest) => Math.round(latest));
+    const count = useMotionValue(from)
+    const rounded = useTransform(count, (latest) => Math.round(latest))
     const [controls, setControls] = useState<AnimationPlaybackControls | null>(
-      null,
-    );
+      null
+    )
 
     // Local display state that mirrors the motion value for React text rendering
-    const [display, setDisplay] = useState<number>(from);
+    const [display, setDisplay] = useState<number>(from)
 
     // Keep display in sync with the rounded motion value
-    useMotionValueEvent(rounded, "change", (latest: number) => {
-      setDisplay(Math.round(latest));
-    });
+    useMotionValueEvent(rounded, 'change', (latest: number) => {
+      setDisplay(Math.round(latest))
+    })
 
     // Reset displayed value when "from" changes and before a new animation starts
     useEffect(() => {
-      setDisplay(Math.round(from));
-    }, [from]);
+      setDisplay(Math.round(from))
+    }, [from])
 
     // Function to start the animation
     const startAnimation = useCallback(() => {
       // Stop any ongoing animation before starting a new one
-      if (controls) controls.stop();
+      if (controls) controls.stop()
 
-      onStart?.();
+      onStart?.()
 
       // Reset to the latest "from" then animate to the latest "target"
-      count.set(from);
+      count.set(from)
 
       const newControls = animate(count, target, {
         ...transition,
         onComplete: () => {
-          onComplete?.();
+          onComplete?.()
         },
-      });
-      setControls(newControls);
-    }, [controls, count, from, target, transition, onStart, onComplete]);
+      })
+      setControls(newControls)
+    }, [controls, count, from, target, transition, onStart, onComplete])
 
     // Expose the startAnimation function via ref
     useImperativeHandle(ref, () => ({
       startAnimation,
-    }));
+    }))
 
     useEffect(() => {
       if (autoStart) {
-        startAnimation();
+        startAnimation()
       }
-      return () => controls?.stop();
-    }, [autoStart, startAnimation]);
+      return () => controls?.stop()
+    }, [autoStart, startAnimation])
 
     return (
       <motion.span className={cn(className)} {...props}>
         {display}
       </motion.span>
-    );
-  },
-);
+    )
+  }
+)
 
-NumberTicker.displayName = "NumberTicker";
+NumberTicker.displayName = 'NumberTicker'
 
-export default NumberTicker;
+export default NumberTicker
 
 // Usage example:
 // To start the animation from outside the component:

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 /**
  * @author: @dorian_baffier
@@ -10,12 +10,12 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { cn } from "@/lib/utils";
-import { motion, useAnimationControls, useReducedMotion } from "motion/react";
-import type { Transition } from "motion/react";
-import { useEffect, useState } from "react";
+import { cn } from '@/lib/utils'
+import { motion, useAnimationControls, useReducedMotion } from 'motion/react'
+import type { Transition } from 'motion/react'
+import { useEffect, useState } from 'react'
 
-interface ShimmerTextProps {
+export interface ShimmerTextProps {
   text?: string;
   className?: string;
   auto?: boolean;
@@ -25,72 +25,72 @@ interface ShimmerTextProps {
   active?: boolean;
   duration?: number;
   loop?: boolean;
-  ease?: Transition["ease"];
-  surface?: "auto" | "light" | "dark";
-  variant?: "default" | "chatgpt";
+  ease?: Transition['ease'];
+  surface?: 'auto' | 'light' | 'dark';
+  variant?: 'default' | 'chatgpt';
   children?: React.ReactNode;
 }
 
-export default function ShimmerText({
+export default function ShimmerText ({
   text,
   className,
   playOnHover = false,
   playOnClick = false,
   loading = false,
-  auto = playOnHover ? false : true,
+  auto = !playOnHover,
   active,
   duration,
   loop = true,
   ease,
-  surface = "auto",
-  variant = "default",
+  surface = 'auto',
+  variant = 'default',
   children,
 }: ShimmerTextProps) {
-  const controls = useAnimationControls();
-  const prefersReducedMotion = useReducedMotion();
+  const controls = useAnimationControls()
+  const prefersReducedMotion = useReducedMotion()
 
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false)
+  const [isClicked, setIsClicked] = useState<boolean>(false)
 
   const shouldPlay: boolean =
-    typeof active === "boolean"
+    typeof active === 'boolean'
       ? active
       : loading ||
         auto ||
         (playOnHover && isHovered) ||
-        (playOnClick && isClicked);
+        (playOnClick && isClicked)
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      controls.stop();
+      controls.stop()
       controls.set({
-        backgroundPosition: variant === "chatgpt" ? "0% center" : "200% center",
-      });
-      return;
+        backgroundPosition: variant === 'chatgpt' ? '0% center' : '200% center',
+      })
+      return
     }
     if (shouldPlay) {
       controls.start({
         backgroundPosition:
-          variant === "chatgpt"
-            ? ["100% center", "-200% center"]
-            : ["200% center", "-200% center"],
+          variant === 'chatgpt'
+            ? ['100% center', '-200% center']
+            : ['200% center', '-200% center'],
         transition: {
-          duration: duration ?? (variant === "chatgpt" ? 1.65 : 2.5),
+          duration: duration ?? (variant === 'chatgpt' ? 1.65 : 2.5),
           ease: (ease ??
-            (variant === "chatgpt"
+            (variant === 'chatgpt'
               ? [0.4, 0.0, 0.2, 1.4]
-              : "linear")) as Transition["ease"],
+              : 'linear')) as Transition['ease'],
           repeat: loop ? Number.POSITIVE_INFINITY : 0,
           repeatDelay: 6,
           delay: 3,
         },
-      });
+      })
     } else {
-      controls.stop();
+      controls.stop()
       controls.set({
         backgroundPosition:
-          variant === "chatgpt" ? "200% center" : "200% center",
-      });
+          variant === 'chatgpt' ? '200% center' : '200% center',
+      })
     }
   }, [
     shouldPlay,
@@ -100,43 +100,45 @@ export default function ShimmerText({
     variant,
     prefersReducedMotion,
     controls,
-  ]);
+  ])
 
-  const isInteractive = playOnClick || playOnHover;
+  const isInteractive = playOnClick || playOnHover
 
-  const lightDefault = "from-neutral-950 via-neutral-400 to-neutral-950";
-  const darkDefault = "from-white via-neutral-600 to-white";
-  const lightChatgpt = "from-zinc-500 via-zinc-300 to-zinc-500";
-  const darkChatgpt = "from-zinc-200 via-zinc-400 to-zinc-200";
+  const lightDefault = 'from-neutral-950 via-neutral-400 to-neutral-950'
+  const darkDefault = 'from-white via-neutral-600 to-white'
+  const lightChatgpt =
+    'dark:from-zinc-700 dark:via-zinc-400 dark:to-zinc-600 from-zinc-200 via-zinc-400 to-zinc-200'
+  const darkChatgpt =
+    'dark:from-zinc-500 dark:via-zinc-400 dark:to-zinc-700 from-zinc-200 via-zinc-400 to-zinc-200'
 
   const gradientClass =
-    surface === "auto"
-      ? `bg-gradient-to-r ${variant === "chatgpt" ? lightChatgpt : lightDefault} dark:${variant === "chatgpt" ? darkChatgpt : darkDefault}`
-      : surface === "light"
-        ? `bg-gradient-to-r ${variant === "chatgpt" ? lightChatgpt : lightDefault}`
-        : `bg-gradient-to-r ${variant === "chatgpt" ? darkChatgpt : darkDefault}`;
+    surface === 'auto'
+      ? `bg-gradient-to-r ${variant === 'chatgpt' ? lightChatgpt : lightDefault} dark:${variant === 'chatgpt' ? darkChatgpt : darkDefault}`
+      : surface === 'light'
+        ? `bg-gradient-to-r ${variant === 'chatgpt' ? lightChatgpt : lightDefault}`
+        : `bg-gradient-to-r ${variant === 'chatgpt' ? darkChatgpt : darkDefault}`
 
   const bgLengthClass =
-    variant === "chatgpt" ? "bg-[length:300%_100%]" : "bg-[length:200%_100%]";
+    variant === 'chatgpt' ? 'bg-[length:300%_100%]' : 'bg-[length:200%_100%]'
 
   return (
-    <div className="flex items-center justify-center">
+    <div className='flex items-center justify-center'>
       <motion.div
-        className="relative py-2 overflow-hidden"
+        className='relative py-2 overflow-hidden'
         initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.25 }}
       >
         <motion.h1
           className={cn(
-            "text-3xl font-semibold tracking-tight bg-clip-text text-transparent",
+            'text-3xl font-semibold tracking-tight bg-clip-text text-transparent',
             gradientClass,
             bgLengthClass,
-            className,
+            className
           )}
           initial={{
             backgroundPosition:
-              variant === "chatgpt" ? "300% center" : "100% center",
+              variant === 'chatgpt' ? '300% center' : '100% center',
           }}
           animate={controls}
           onHoverStart={playOnHover ? () => setIsHovered(true) : undefined}
@@ -145,23 +147,23 @@ export default function ShimmerText({
           onKeyDown={
             playOnClick
               ? (e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setIsClicked((p) => !p);
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setIsClicked((p) => !p)
                   }
                 }
               : undefined
           }
-          role={isInteractive ? "button" : undefined}
+          role={isInteractive ? 'button' : undefined}
           tabIndex={isInteractive ? 0 : undefined}
           aria-pressed={playOnClick ? isClicked : undefined}
           aria-busy={loading || undefined}
-          aria-live={loading ? "polite" : undefined}
+          aria-live={loading ? 'polite' : undefined}
         >
           {text}
           {children}
         </motion.h1>
       </motion.div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import { motion } from 'motion/react';
+import * as React from 'react'
+import { motion } from 'motion/react'
 
 import {
   AvatarGroup as AvatarGroupPrimitive,
@@ -9,12 +9,12 @@ import {
   AvatarGroupTooltipArrow as AvatarGroupTooltipArrowPrimitive,
   type AvatarGroupProps as AvatarGroupPropsPrimitive,
   type AvatarGroupTooltipProps as AvatarGroupTooltipPropsPrimitive,
-} from '@/components/animate-ui/primitives/animate/avatar-group';
-import { cn } from '@/lib/utils';
+} from '@/components/animate-ui/primitives/animate/avatar-group'
+import { cn } from '@/lib/utils'
 
-type AvatarGroupProps = AvatarGroupPropsPrimitive;
+type AvatarGroupProps = AvatarGroupPropsPrimitive
 
-function AvatarGroup({
+function AvatarGroup ({
   className,
   invertOverlap = true,
   ...props
@@ -25,7 +25,7 @@ function AvatarGroup({
       invertOverlap={invertOverlap}
       {...props}
     />
-  );
+  )
 }
 
 type AvatarGroupTooltipProps = Omit<
@@ -34,9 +34,9 @@ type AvatarGroupTooltipProps = Omit<
 > & {
   children: React.ReactNode;
   layout?: boolean | 'position' | 'size' | 'preserve-aspect';
-};
+}
 
-function AvatarGroupTooltip({
+function AvatarGroupTooltip ({
   className,
   children,
   layout = 'preserve-aspect',
@@ -46,11 +46,11 @@ function AvatarGroupTooltip({
     <AvatarGroupTooltipPrimitive
       className={cn(
         'bg-primary text-primary-foreground z-50 w-fit rounded-md px-3 py-1.5 text-xs text-balance',
-        className,
+        className
       )}
       {...props}
     >
-      <motion.div layout={layout} className="overflow-hidden">
+      <motion.div layout={layout} className='overflow-hidden'>
         {children}
       </motion.div>
       <AvatarGroupTooltipArrowPrimitive
@@ -58,7 +58,7 @@ function AvatarGroupTooltip({
         tipRadius={2}
       />
     </AvatarGroupTooltipPrimitive>
-  );
+  )
 }
 
 export {
@@ -66,4 +66,4 @@ export {
   AvatarGroupTooltip,
   type AvatarGroupProps,
   type AvatarGroupTooltipProps,
-};
+}

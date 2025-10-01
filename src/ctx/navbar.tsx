@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { useMobile } from "@/hooks/use-mobile";
-import { useTheme } from "next-themes";
+import { useMobile } from '@/hooks/use-mobile'
+import { useTheme } from 'next-themes'
 import {
   createContext,
   useMemo,
@@ -9,7 +9,7 @@ import {
   type ReactNode,
   Dispatch,
   SetStateAction,
-} from "react";
+} from 'react'
 
 interface NavbarProviderProps {
   children: ReactNode;
@@ -22,14 +22,14 @@ interface NavbarCtxValues {
   theme?: string;
 }
 
-const NavbarCtx = createContext<NavbarCtxValues | null>(null);
+const NavbarCtx = createContext<NavbarCtxValues | null>(null)
 
 const NavbarCtxProvider = ({ children }: NavbarProviderProps) => {
-  const isMobile = useMobile();
-  const { setTheme, theme } = useTheme();
+  const isMobile = useMobile()
+  const { setTheme, theme } = useTheme()
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+  }
   const value = useMemo(
     () => ({
       isMobile,
@@ -37,15 +37,15 @@ const NavbarCtxProvider = ({ children }: NavbarProviderProps) => {
       setTheme,
       theme,
     }),
-    [isMobile, toggleTheme, setTheme, theme],
-  );
-  return <NavbarCtx value={value}>{children}</NavbarCtx>;
-};
+    [isMobile, toggleTheme, setTheme, theme]
+  )
+  return <NavbarCtx value={value}>{children}</NavbarCtx>
+}
 
 const useNavbarCtx = () => {
-  const ctx = useContext(NavbarCtx);
-  if (!ctx) throw new Error("NavbarCtxProvider is missing");
-  return ctx;
-};
+  const ctx = useContext(NavbarCtx)
+  if (!ctx) throw new Error('NavbarCtxProvider is missing')
+  return ctx
+}
 
-export { NavbarCtx, NavbarCtxProvider, useNavbarCtx };
+export { NavbarCtx, NavbarCtxProvider, useNavbarCtx }

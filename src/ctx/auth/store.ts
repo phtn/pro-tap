@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { User } from "firebase/auth";
+import { create } from 'zustand'
+import { User } from 'firebase/auth'
 
 interface AuthState {
   user: User | null;
@@ -26,4 +26,4 @@ export const useAuthStore = create<AuthState>((set) => ({
       isLoading: false,
       isAuthed: false,
     }),
-}));
+}))

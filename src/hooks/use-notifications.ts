@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react'
 
 export interface Notification {
   id: string;
-  type: "success" | "error" | "info" | "warning";
+  type: 'success' | 'error' | 'info' | 'warning';
   message: string;
   timestamp: Date;
 }
@@ -19,13 +19,13 @@ export interface UseNotificationsOptions {
 
 export interface UseNotificationsReturn {
   notifications: Notification[];
-  addNotification: (type: Notification["type"], message: string) => void;
+  addNotification: (type: Notification['type'], message: string) => void;
   removeNotification: (id: string) => void;
   clearAllNotifications: () => void;
 }
 
 export const useNotifications = (
-  options: UseNotificationsOptions = {},
+  options: UseNotificationsOptions = {}
 ): UseNotificationsReturn => {
   const {
     maxNotifications = 5,
@@ -35,49 +35,49 @@ export const useNotifications = (
       info: 4000,
       warning: 6000,
     },
-  } = options;
+  } = options
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([])
 
   const addNotification = useCallback(
-    (type: Notification["type"], message: string): void => {
+    (type: Notification['type'], message: string): void => {
       const notification: Notification = {
         id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         type,
         message,
         timestamp: new Date(),
-      };
+      }
 
       setNotifications((prev) => [
         notification,
         ...prev.slice(0, maxNotifications - 1),
-      ]);
+      ])
 
       // Auto-remove notification after specified delay
-      const delay = autoRemoveDelay[type];
+      const delay = autoRemoveDelay[type]
       if (delay && delay > 0) {
         setTimeout(() => {
           setNotifications((prev) =>
-            prev.filter((n) => n.id !== notification.id),
-          );
-        }, delay);
+            prev.filter((n) => n.id !== notification.id)
+          )
+        }, delay)
       }
     },
-    [maxNotifications, autoRemoveDelay],
-  );
+    [maxNotifications, autoRemoveDelay]
+  )
 
   const removeNotification = useCallback((id: string): void => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-  }, []);
+    setNotifications((prev) => prev.filter((n) => n.id !== id))
+  }, [])
 
   const clearAllNotifications = useCallback((): void => {
-    setNotifications([]);
-  }, []);
+    setNotifications([])
+  }, [])
 
   return {
     notifications,
     addNotification,
     removeNotification,
     clearAllNotifications,
-  };
-};
+  }
+}
