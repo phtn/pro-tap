@@ -29,16 +29,6 @@ const Nav = ({children, extra}: NavProps) => {
           icon: 'zap',
           onClick: () => {},
         },
-        // {
-        //   href: "/chat",
-        //   icon: "chat",
-        //   onClick: () => {},
-        // },
-        // {
-        //   href: "/notifications",
-        //   icon: "bell",
-        //   onClick: () => {},
-        // },
       ] as EssentialButton[],
     [],
   )

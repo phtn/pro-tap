@@ -1,10 +1,10 @@
 'use client'
 
-import { onSuccess } from '@/ctx/toast'
-import { Icon } from '@/lib/icons'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { GuidingLight } from './account/_components/guiding-light'
+import {onSuccess} from '@/ctx/toast'
+import {Icon} from '@/lib/icons'
+import {useRouter} from 'next/navigation'
+import {useEffect, useState} from 'react'
+import {GuidingLight} from './account/_components/guiding-light'
 
 export const Content = () => {
   const router = useRouter()
@@ -31,7 +31,7 @@ export const Content = () => {
   }, [router])
 
   return (
-    <div className='flex items-start justify-center min-h-screen lg:p-4'>
+    <div className='bg-background flex items-start justify-center min-h-screen lg:p-4'>
       <GuidingLight />
       <div className='size-96 flex flex-col items-center justify-center'>
         <div>

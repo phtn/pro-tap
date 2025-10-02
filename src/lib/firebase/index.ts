@@ -1,11 +1,11 @@
 import {
-  initializeApp,
-  getApps,
   getApp,
+  getApps,
+  initializeApp,
   type FirebaseOptions,
 } from 'firebase/app'
-import { getAuth, connectAuthEmulator } from 'firebase/auth'
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import {connectAuthEmulator, getAuth} from 'firebase/auth'
+import {connectFirestoreEmulator, getFirestore} from 'firebase/firestore'
 
 const config: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_APIKEY,

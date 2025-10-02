@@ -41,6 +41,7 @@ export const metadata: Metadata = {
   description: 'for ProTap',
   icons: ['/re-up-icon.svg'],
   referrer: 'strict-origin-when-cross-origin',
+  themeColor: '#eeeeee',
 }
 
 export default function RootLayout({

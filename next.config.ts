@@ -1,6 +1,11 @@
-import type { NextConfig } from 'next';
+import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://192.168.1.5:3000',
+  ],
   images: {
     remotePatterns: [
       {
@@ -23,11 +28,11 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: [
           // Ensure outgoing requests use a safer referrer policy than "unsafe-url"
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin'},
         ],
       },
-    ];
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

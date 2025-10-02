@@ -1,13 +1,11 @@
-import * as React from 'react'
+import {useEffect, useState} from 'react'
 
 const MOBILE_BREAKPOINT = 768
 
 export function useMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(
-    undefined
-  )
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Check if we're in a browser environment
     if (typeof window === 'undefined') return
 

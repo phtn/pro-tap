@@ -1,13 +1,13 @@
 'use client'
 import {UserNavbar} from '@/components/ui/navbar-user'
-import {ShimmerButton} from '@/components/ui/shim-button'
 import {useToggle} from '@/hooks/use-toggle'
 import {cn} from '@/lib/utils'
 
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {Icon} from '@/lib/icons'
 import {usePathname, useRouter} from 'next/navigation'
 import {useCallback} from 'react'
-import {TapActivation} from './_components/tap-activation'
+import {FullActivation} from './_components/full-activation'
 
 export default function Layout({children}: {children: React.ReactNode}) {
   const {on, toggle} = useToggle()
@@ -17,7 +17,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const back = useCallback(() => router.back(), [router])
 
   return (
-    <div className='bg-background/20 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
+    <div className='bg-background/10 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
       {isPreview ? (
         <div className='flex items-center justify-end'>
           <button onClick={back} className='h-14 px-5'>
@@ -26,14 +26,14 @@ export default function Layout({children}: {children: React.ReactNode}) {
         </div>
       ) : (
         <UserNavbar>
-          <ShimmerButton
-            auto
-            surface='light'
+          <SexyButton
             onClick={toggle}
-            icon='arrow-right'
-            className='dark:bg-accent-foreground'>
-            Activate Protap
-          </ShimmerButton>
+            variant='ghost'
+            className='bg-mac-blue/85 hover:bg-mac-blue dark:bg-mac-teal/60 dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
+            <span className='md:px-2 md:text-lg text-white dark:text-white'>
+              Activate Protap
+            </span>
+          </SexyButton>
         </UserNavbar>
       )}
       <main className='max-w-6xl mx-auto'>
@@ -41,10 +41,10 @@ export default function Layout({children}: {children: React.ReactNode}) {
           className={cn(
             'overflow-hidden',
             'transition-all duration-500 ease-in-out',
-            `${on ? 'max-h-160' : 'max-h-0'}`,
+            `${on ? 'max-h-[70lvh] translate-y-10' : 'max-h-0'}`,
           )}>
-          <div className='h-160 md:w-6xl relative overflow-clip'>
-            <TapActivation />
+          <div className='h-[70lvh] md:pb-40 md:w-6xl relative border-zinc-600'>
+            <FullActivation />
           </div>
         </div>
         {children}

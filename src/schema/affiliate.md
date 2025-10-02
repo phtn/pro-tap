@@ -1,0 +1,11 @@
+## **Affiliate Account Schema** - Includes:
+- **Profile & Personal Info**: Business details, social media, experience level
+- **Payment System**: Multiple payment methods (bank, PayPal, Stripe, crypto), tax info
+- **Link Management**: Custom affiliate links with UTM tracking
+- **Performance Tracking**: Clicks, conversions, earnings per click (EPC), conversion rates
+- **Earnings & Payments**: Balance tracking, payment history, earning summaries
+- **Marketing Tools**: Campaigns, content pieces, marketing materials
+- **Merchant Partnerships**: Application status, custom terms, performance requirements
+- **Compliance & Fraud**: Violation tracking, fraud alerts, quality scores
+- **Gamification**: Tiers (Bronze to Diamond), achievements, goals, reputation scores
+- **Support**: Notifications, tickets, communication with merchants

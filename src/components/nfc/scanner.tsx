@@ -1,13 +1,13 @@
-'use client'
+'us</div>e client'
 
+import {useNFC, type NFCData} from '@/hooks/use-nfc' // Adjust path as needed
+import {Icon} from '@/lib/icons'
 import React from 'react'
-import { useNFC, type NFCData } from '@/hooks/use-nfc' // Adjust path as needed
-import { Icon } from '@/lib/icons'
 
 interface NFCScannerProps {
-  onScan?: (data: NFCData) => void;
-  onError?: (error: string) => void;
-  maxHistorySize?: number;
+  onScan?: (data: NFCData) => void
+  onError?: (error: string) => void
+  maxHistorySize?: number
 }
 
 const NFCScanner: React.FC<NFCScannerProps> = ({
@@ -16,9 +16,10 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
   maxHistorySize = 10,
 }) => {
   const {
+    lastScan,
+    isLoading,
     isScanning,
     isSupported,
-    lastScan,
     scanHistory,
     startScanning,
     stopScanning,
@@ -30,7 +31,18 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
     maxHistorySize,
   })
 
-  if (!isSupported) {
+  if (isLoading) {
+    return (
+      <div>
+        <Icon
+          name='spinners-ring'
+          className='size-5 text-blue-700 dark:text-blue-400 animate-spin'
+        />
+      </div>
+    )
+  }
+
+  if (!isLoading && !isSupported) {
     return (
       <div className='px-4 max-w-[40ch]'>
         <h3 className='dark:text-red-300 font-semibold text-lg md:font-bold tracking-tight inline-flex space-x-2 items-center'>
@@ -49,38 +61,34 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
   }
 
   return (
-    <div className='max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg'>
-      <div className='text-center mb-6'>
-        <h2 className='text-2xl font-bold text-gray-800 mb-2'>NFC Scanner</h2>
-        <p className='text-gray-600'>
+    <div className='p-2 bg-white rounded-lg h-84 w-full overflow-auto'>
+      <div className='text-center'>
+        {/*<h2 className='text-xl font-bold text-gray-800 mb-2'>NFC Scanner</h2>*/}
+        {/*<p className='text-gray-600'>
           {isScanning
             ? 'Hold an NFC tag near your device'
             : 'Click start to begin scanning'}
-        </p>
+        </p>*/}
       </div>
 
-      <div className='flex justify-center mb-6'>
-        {!isScanning
-          ? (
-            <button
-              onClick={startScanning}
-              className='px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold'
-            >
-              Start Scanning
-            </button>
-            )
-          : (
-            <button
-              onClick={stopScanning}
-              className='px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold'
-            >
-              Stop Scanning
-            </button>
-            )}
+      <div className='flex justify-center mb-2'>
+        {!isScanning ? (
+          <button
+            onClick={startScanning}
+            className='px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold'>
+            Start Scanning
+          </button>
+        ) : (
+          <button
+            onClick={stopScanning}
+            className='px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold'>
+            Stop Scanning
+          </button>
+        )}
       </div>
 
       {isScanning && (
-        <div className='text-center mb-6'>
+        <div className='text-center mb-2'>
           <div className='inline-block animate-pulse'>
             <div className='w-12 h-12 bg-blue-500 rounded-full mx-auto mb-2' />
             <p className='text-blue-600 font-medium'>Scanning...</p>
@@ -89,7 +97,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
       )}
 
       {lastScan && (
-        <div className='mb-6 p-4 bg-green-50 border border-green-200 rounded-lg'>
+        <div className='mb-2 p-4 bg-green-50 border border-green-200 rounded-lg'>
           <h3 className='font-semibold text-green-800 mb-2'>Last Scan</h3>
           <p className='text-sm text-gray-600 mb-1'>
             Serial: {lastScan.serialNumber}
@@ -145,8 +153,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
           {scanHistory.length > 0 && (
             <button
               onClick={clearHistory}
-              className='mt-4 px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors'
-            >
+              className='mt-4 px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors'>
               Clear History
             </button>
           )}

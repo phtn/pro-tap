@@ -1,123 +1,73 @@
 'use client'
 
-import { HeroCTA, ViewButton } from '@/app/(landing)/_components/hero-cta'
-import { VisualContent } from '@/app/(landing)/_components/visual-content'
-import { SexyButton } from '@/components/experimental/sexy-button-variants'
+import {HeroCTA} from '@/app/(landing)/_components/hero-cta'
+import {VisualContent} from '@/app/(landing)/_components/visual-content'
+import ShimmerText from '@/components/kokonutui/shimmer-text'
+import {LogoCarousel} from '@/components/ui/logo-carousel'
 import TextAnimate from '@/components/ui/text-animate'
-import { useMobile } from '@/hooks/use-mobile'
-import { Icon } from '@/lib/icons'
+import {useMobile} from '@/hooks/use-mobile'
+import {opts} from '@/utils/helpers'
+import {useCallback} from 'react'
 
 export const Landing = () => {
   const isMobile = useMobile()
+  const Hero = useCallback(() => {
+    const options = opts(null, <HeroCTA />)
+    return <>{options.get(isMobile)}</>
+  }, [isMobile])
+
+  const Activate = useCallback(() => {
+    const options = opts(
+      <div className='w-full space-y-2 md:px-4 px-0 h-48 flex flex-col items-center justify-center rounded-4xl '>
+        <TextAnimate
+          type='whipInUp'
+          className='md:text-4xl lg:text-5xl font-figtree font-semibold tracking-tighter h-14'>
+          Introducing
+        </TextAnimate>
+        <div className='flex items-center font-figtree dark:bg-zinc-500/10 backdrop-blur-3xl md:tracking-wide md:text-lg w-full rounded-3xl'>
+          <div className='bg-zinc-900 dark:bg-transparent max-w-[10ch] md:max-w-[10ch] h-20 w-1/3 flex flex-1 items-center justify-center border border-zinc-900 dark:border-transparent'>
+            <ShimmerText
+              surface='dark'
+              // auto={false}
+              className='text-base sm:text-lg md:text-xl lg:text-2xl flex leading-6 md:leading-6 items-center p-0 m-0 text-center md:font-bold font-extrabold h-20'>
+              The world's first ever
+            </ShimmerText>
+          </div>
+          <div className='w-full flex flex-1 items-center justify-center text-center font-medium h-20 border border-zinc-900/50 dark:border-transparent dark:opacity-75 bg-teal-100/20 dark:bg-transparent'>
+            <p className='text-sm text-center border-l max-w-[20ch]'>
+              <span>Unified Professional Career Builder, built for</span>
+              <span className='font-bold ml-1 dark:text-teal-200'>
+                everyone
+              </span>
+              .
+            </p>
+          </div>
+        </div>
+      </div>,
+      null,
+    )
+    return (
+      <div className='w-full flex items-center justify-center p-4 relative z-100'>
+        {options.get(isMobile)}
+      </div>
+    )
+  }, [isMobile])
+
   return (
     <main className='overflow-y-scroll md:overflow-visible h-screen'>
-      <div className='h-[40lvh] md:h-[55lvh] grid lg:grid-cols-2 gap-12 w-full items-center'>
-        {/* Left Content */}
-        {isMobile ? null : <HeroCTA />}
-
-        {/* Right Content - 3D Character Placeholder */}
+      <div className='h-[35lvh] md:h-[55lvh] grid lg:grid-cols-2 gap-12 w-full items-center'>
+        <Hero />
         <VisualContent />
       </div>
 
-      {/* CTA */}
-      {isMobile ? (
-        <div className='w-full flex items-center justify-center relative z-100'>
-          <ViewButton />
-        </div>
-      ) : null}
+      <Activate />
 
-      {/* Feature Cards */}
-      {/* {isMobile ? <FeatureCards /> : <FeatureCards />} */}
-      <div className='lg:h-[36lvh] py-6 md:px-0 px-4 pb-40'>
-        <div className='h-full grid grid-cols-1 md:grid-cols-2 items-center md:gap-10 gap-12'>
-          <CardTapActivation />
-          <QRCodeActivation />
+      <div className='h-[24lvh] flex flex-col justify-center items-center w-full lg:h-[36lvh]'>
+        <div className='w-full px-5 font-space capitalize text-sm h-10 opacity-60 tracking-tighter'>
+          <h3>our users</h3>
         </div>
+        <LogoCarousel columnCount={isMobile ? 4 : 5} />
       </div>
     </main>
-  )
-}
-
-const CardTapActivation = () => {
-  return (
-    <div className='bg-gradient-to-br from-ash via-ash/60 via-60% to-lime-100/60 backdrop-blur-lg border border-zinc-400/80 dark:border-zinc-950 rounded-3xl pt-3 md:pt-2'>
-      <div className='h-full flex items-center md:space-x-3 space-x-2'>
-        <div className='md:w-96 w-64 md:h-44 h-32 flex items-center justify-center'>
-          <Icon
-            name='protap-scan-silver'
-            className='md:size-44 size-32 text-blue-950'
-          />
-        </div>
-        <div className='size-full flex flex-col items-start justify-center'>
-          <div className='md:h-24 h-24 md:px-4 px-0'>
-            <TextAnimate
-              type='whipInUp'
-              text='Card Tap Activation'
-              className='tracking-tight text-base md:text-xl font-semibold font-figtree'
-              delay={500}
-            />
-            <div className='md:text-sm text-xs max-w-[25ch] md:max-w-[28ch] font-figtree opacity-90'>
-              Enable NFC on your device to activate your account using your{' '}
-              <span className='text-primary dark:text-sky-300 font-medium'>
-                Protap Card
-              </span>
-              .
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='md:p-4 px-3 pb-3 md:pt-3'>
-        <SexyButton
-          fullWidth
-          size='lg'
-          className=''
-          variant='dark'
-          rightIcon='chevron-right'>
-          Begin Activation
-        </SexyButton>
-      </div>
-    </div>
-  )
-}
-
-const QRCodeActivation = () => {
-  return (
-    <div className='bg-gradient-to-br from-zinc-400 via-zinc-300 to-red-400/30 via-70% dark:from-zinc-400 dark:via-zinc-500 dark:to-rose-300/40 backdrop-blur-lg border border-zinc-400 dark:border-zinc-800 rounded-3xl pt-3 md:pt-2'>
-      <div className='h-full flex items-center md:space-x-0 space-x-2'>
-        <div className='md:w-96 w-64 md:h-44 h-32 overflow-visible flex items-center justify-center'>
-          <Icon
-            name='qrcode-scan'
-            className='md:size-24 size-24 text-blue-950'
-          />
-        </div>
-        <div className='size-full flex flex-col items-start justify-center'>
-          <div className='h-20 md:h-24 md:px-0 px-0'>
-            <TextAnimate
-              type='whipInUp'
-              text='QR Code Activation'
-              className='tracking-tight text-base md:text-xl font-semibold font-figtree'
-              delay={500}
-            />
-            <div className='md:text-sm text-xs max-w-[25ch] md:max-w-[29ch] font-figtree opacity-90'>
-              Your QR code will be auto generated upon purchase of a
-              <span className='text-primary dark:text-sky-300 font-medium px-1'>
-                Protap
-              </span>
-              Subscription.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='md:p-4 px-3 pb-3 md:pt-3'>
-        <SexyButton
-          fullWidth
-          size='lg'
-          className=''
-          // variant="secondary"
-          rightIcon='chevron-right'>
-          Upload QR Code
-        </SexyButton>
-      </div>
-    </div>
   )
 }

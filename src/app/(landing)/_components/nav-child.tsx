@@ -1,18 +1,20 @@
-import { getNextTheme } from '@/components/animate-ui/components/buttons/theme-toggler'
-import { ThemeSelection } from '@/components/animate-ui/primitives/effects/theme-toggler'
-import { SexyButton } from '@/components/experimental/sexy-button-variants'
-import { ProfileDropdown } from '@/components/kokonutui/profile-dropdown'
-import { NeumorphButton as Button } from '@/components/ui/neumorph'
-import { ProAvatar } from '@/components/ui/pro-avatar'
-import { useAuthCtx } from '@/ctx/auth'
-import { useNavbarCtx } from '@/ctx/navbar'
-import { Icon } from '@/lib/icons'
+import {getNextTheme} from '@/components/animate-ui/components/buttons/theme-toggler'
+import {ThemeSelection} from '@/components/animate-ui/primitives/effects/theme-toggler'
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
+import {ProfileDropdown} from '@/components/kokonutui/profile-dropdown'
+import {NeumorphButton as Button} from '@/components/ui/neumorph'
+import {ProAvatar} from '@/components/ui/pro-avatar'
+import {useAuthCtx} from '@/ctx/auth'
+import {useNavbarCtx} from '@/ctx/navbar'
+import {useMobile} from '@/hooks/use-mobile'
+import {Icon} from '@/lib/icons'
 import Link from 'next/link'
-import { useCallback } from 'react'
+import {useCallback} from 'react'
 
 export const NavChild = () => {
-  const { theme, setTheme } = useNavbarCtx()
-  const { user } = useAuthCtx()
+  const {theme, setTheme} = useNavbarCtx()
+  const isMobile = useMobile()
+  const {user} = useAuthCtx()
 
   const handleThemeChange = useCallback(() => {
     setTheme(getNextTheme(theme as ThemeSelection, ['light', 'dark']))
@@ -26,8 +28,15 @@ export const NavChild = () => {
         </span>
       ) : (
         <Link href='/sign'>
-          <SexyButton variant='default' className='rounded-full' size='sm'>
-            Sign in
+          <SexyButton
+            variant='ghost'
+            id='activation-trigger'
+            size={isMobile ? 'md' : 'lg'}
+            className='rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
+            iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5'>
+            <span className='md:px-4 md:text-lg text-white md:text-foreground dark:text-white'>
+              Sign in
+            </span>
           </SexyButton>
         </Link>
       )}

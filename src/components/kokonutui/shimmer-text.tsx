@@ -10,28 +10,28 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { cn } from '@/lib/utils'
-import { motion, useAnimationControls, useReducedMotion } from 'motion/react'
-import type { Transition } from 'motion/react'
-import { useEffect, useState } from 'react'
+import {cn} from '@/lib/utils'
+import type {Transition} from 'motion/react'
+import {motion, useAnimationControls, useReducedMotion} from 'motion/react'
+import {useEffect, useState} from 'react'
 
 export interface ShimmerTextProps {
-  text?: string;
-  className?: string;
-  auto?: boolean;
-  playOnHover?: boolean;
-  playOnClick?: boolean;
-  loading?: boolean;
-  active?: boolean;
-  duration?: number;
-  loop?: boolean;
-  ease?: Transition['ease'];
-  surface?: 'auto' | 'light' | 'dark';
-  variant?: 'default' | 'chatgpt';
-  children?: React.ReactNode;
+  text?: string
+  className?: string
+  auto?: boolean
+  playOnHover?: boolean
+  playOnClick?: boolean
+  loading?: boolean
+  active?: boolean
+  duration?: number
+  loop?: boolean
+  ease?: Transition['ease']
+  surface?: 'auto' | 'light' | 'dark'
+  variant?: 'default' | 'chatgpt'
+  children?: React.ReactNode
 }
 
-export default function ShimmerText ({
+export default function ShimmerText({
   text,
   className,
   playOnHover = false,
@@ -81,7 +81,7 @@ export default function ShimmerText ({
               ? [0.4, 0.0, 0.2, 1.4]
               : 'linear')) as Transition['ease'],
           repeat: loop ? Number.POSITIVE_INFINITY : 0,
-          repeatDelay: 6,
+          repeatDelay: 3,
           delay: 3,
         },
       })
@@ -104,8 +104,8 @@ export default function ShimmerText ({
 
   const isInteractive = playOnClick || playOnHover
 
-  const lightDefault = 'from-neutral-950 via-neutral-400 to-neutral-950'
-  const darkDefault = 'from-white via-neutral-600 to-white'
+  const lightDefault = 'from-sky-100 via-white via-50% to-orange-50'
+  const darkDefault = 'from-white via-neutral-500 to-white'
   const lightChatgpt =
     'dark:from-zinc-700 dark:via-zinc-400 dark:to-zinc-600 from-zinc-200 via-zinc-400 to-zinc-200'
   const darkChatgpt =
@@ -125,16 +125,15 @@ export default function ShimmerText ({
     <div className='flex items-center justify-center'>
       <motion.div
         className='relative py-2 overflow-hidden'
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.25 }}
-      >
+        initial={{opacity: 0, y: 0}}
+        animate={{opacity: 1, y: 0}}
+        transition={{duration: 1.25}}>
         <motion.h1
           className={cn(
             'text-3xl font-semibold tracking-tight bg-clip-text text-transparent',
             gradientClass,
             bgLengthClass,
-            className
+            className,
           )}
           initial={{
             backgroundPosition:
@@ -158,8 +157,7 @@ export default function ShimmerText ({
           tabIndex={isInteractive ? 0 : undefined}
           aria-pressed={playOnClick ? isClicked : undefined}
           aria-busy={loading || undefined}
-          aria-live={loading ? 'polite' : undefined}
-        >
+          aria-live={loading ? 'polite' : undefined}>
           {text}
           {children}
         </motion.h1>

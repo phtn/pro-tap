@@ -1,7 +1,8 @@
-import { type ClassName } from '@/app/types'
-import { Icon, type IconName } from '@/lib/icons'
-import { cn } from '@/lib/utils'
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import {type ClassName} from '@/app/types'
+import {Icon, type IconName} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {HTMLMotionProps, motion} from 'motion/react'
+import {forwardRef, type ReactNode} from 'react'
 
 type SexyButtonVariant =
   | 'default'
@@ -12,7 +13,7 @@ type SexyButtonVariant =
   | 'invert'
 type SexyButtonSize = 'sm' | 'md' | 'lg'
 
-interface SexyButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface SexyButtonProps extends HTMLMotionProps<'button'> {
   children?: ReactNode
   className?: ClassName
   variant?: SexyButtonVariant
@@ -21,6 +22,7 @@ interface SexyButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
   leftIcon?: IconName
   rightIcon?: IconName
+  iconStyle?: ClassName
   badge?: IconName | ReactNode
 }
 
@@ -40,6 +42,7 @@ const variantClasses: Record<SexyButtonVariant, string> = {
     'border-zinc-400 dark:border-zinc-800/80 hover:border-zinc-500 dark:hover:border-zinc-800/90',
     'text-secondary-foreground/80 hover:text-foreground md:dark:hover:text-zinc-100',
     'dark:inset-shadow-[0_1px_rgb(237_237_237)]/20',
+    'inset-shadow-[0_1px_rgb(237_237_237)]/30',
   ),
   invert: cn(
     'bg-gradient-to-r from-foreground via-foreground/90 to-foreground/90',
@@ -63,7 +66,7 @@ const variantClasses: Record<SexyButtonVariant, string> = {
   ),
   secondary: cn(
     'bg-gradient-to-r from-zinc-100 via-zinc-100 to-white',
-    'dark:from-zinc-300/90 dark:via-zinc-400 dark:to-zinc-400',
+    'dark:from-zinc-300/90 dark:via-zinc-300 dark:to-zinc-300',
     'text-foreground/80 hover:text-foreground',
     'dark:text-zinc-700 dark:hover:text-zinc-700',
     'border-zinc-300/70 hover:border-zinc-400/80',
@@ -105,6 +108,7 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
       isLoading,
       leftIcon,
       rightIcon,
+      iconStyle,
       disabled,
       badge,
       ...props
@@ -112,11 +116,15 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
     ref,
   ) => {
     return (
-      <button
+      <motion.button
+        onClick={props.onClick}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{type: 'spring', bounce: 0.3}}
+        whileTap={{scale: 0.9}}
         ref={ref}
         disabled={disabled || isLoading}
         aria-busy={isLoading || undefined}
-        {...props}
         className={cn(
           base,
           variantClasses[variant],
@@ -159,16 +167,22 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
           ) : (
             <>
               {leftIcon ? (
-                <Icon name={leftIcon} className='mr-1.5 -ml-0.5' />
+                <Icon
+                  name={leftIcon}
+                  className={cn('mr-1.5 -ml-0.5', iconStyle)}
+                />
               ) : null}
               <span>{children}</span>
               {rightIcon ? (
-                <Icon name={rightIcon} className='ml-1.5 -mr-0.5' />
+                <Icon
+                  name={rightIcon}
+                  className={cn('ml-1.5 -mr-0.5', iconStyle)}
+                />
               ) : null}
             </>
           )}
         </span>
-      </button>
+      </motion.button>
     )
   },
 )
@@ -199,4 +213,4 @@ function Spinner() {
   )
 }
 
-export type { SexyButtonProps, SexyButtonSize, SexyButtonVariant }
+export type {SexyButtonProps, SexyButtonSize, SexyButtonVariant}

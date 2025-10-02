@@ -10,18 +10,24 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import * as React from 'react'
-import { AnimatePresence, motion } from 'motion/react'
-import { cn } from '@/lib/utils'
-import { type IconName } from '@/lib/icons'
+import {type IconName} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {AnimatePresence, motion} from 'motion/react'
+import {
+  KeyboardEvent,
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
-interface TabItem {
-  id: string;
-  title: string;
-  icon?: IconName;
-  content?: React.ReactNode;
-  cardContent?: React.ReactNode;
-  color: string;
+export interface TabItem {
+  id: string
+  title: string
+  icon?: IconName
+  content?: ReactNode
+  cardContent?: ReactNode
+  color: string
 }
 
 const WaveformPath = () => (
@@ -60,27 +66,24 @@ const DEFAULT_TABS: TabItem[] = [
             viewBox='0 0 420 100'
             preserveAspectRatio='none'
             aria-hidden='true'
-            role='presentation'
-          >
+            role='presentation'>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.15}}
+              transition={{duration: 0.5}}
               className='fill-blue-500 stroke-blue-500'
-              style={{ strokeWidth: 1 }}
-            >
+              style={{strokeWidth: 1}}>
               <WaveformPath />
             </motion.g>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.1 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.1}}
+              transition={{duration: 0.5}}
               className='fill-blue-500 stroke-blue-500'
               style={{
                 strokeWidth: 1,
                 transform: 'translateY(10px)',
-              }}
-            >
+              }}>
               <WaveformPath />
             </motion.g>
           </svg>
@@ -110,27 +113,24 @@ const DEFAULT_TABS: TabItem[] = [
             viewBox='0 0 420 100'
             preserveAspectRatio='none'
             aria-hidden='true'
-            role='presentation'
-          >
+            role='presentation'>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.15}}
+              transition={{duration: 0.5}}
               className='fill-purple-500 stroke-purple-500'
-              style={{ strokeWidth: 1 }}
-            >
+              style={{strokeWidth: 1}}>
               <WaveformPath />
             </motion.g>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.1 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.1}}
+              transition={{duration: 0.5}}
               className='fill-purple-500 stroke-purple-500'
               style={{
                 strokeWidth: 1,
                 transform: 'translateY(10px)',
-              }}
-            >
+              }}>
               <WaveformPath />
             </motion.g>
           </svg>
@@ -160,27 +160,24 @@ const DEFAULT_TABS: TabItem[] = [
             viewBox='0 0 420 100'
             preserveAspectRatio='none'
             aria-hidden='true'
-            role='presentation'
-          >
+            role='presentation'>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.15}}
+              transition={{duration: 0.5}}
               className='fill-emerald-500 stroke-emerald-500'
-              style={{ strokeWidth: 1 }}
-            >
+              style={{strokeWidth: 1}}>
               <WaveformPath />
             </motion.g>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.1 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.1}}
+              transition={{duration: 0.5}}
               className='fill-emerald-500 stroke-emerald-500'
               style={{
                 strokeWidth: 1,
                 transform: 'translateY(10px)',
-              }}
-            >
+              }}>
               <WaveformPath />
             </motion.g>
           </svg>
@@ -210,27 +207,24 @@ const DEFAULT_TABS: TabItem[] = [
             viewBox='0 0 420 100'
             preserveAspectRatio='none'
             aria-hidden='true'
-            role='presentation'
-          >
+            role='presentation'>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.15}}
+              transition={{duration: 0.5}}
               className='fill-amber-500 stroke-amber-500'
-              style={{ strokeWidth: 1 }}
-            >
+              style={{strokeWidth: 1}}>
               <WaveformPath />
             </motion.g>
             <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.1 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 0.1}}
+              transition={{duration: 0.5}}
               className='fill-amber-500 stroke-amber-500'
               style={{
                 strokeWidth: 1,
                 transform: 'translateY(10px)',
-              }}
-            >
+              }}>
               <WaveformPath />
             </motion.g>
           </svg>
@@ -251,11 +245,11 @@ const DEFAULT_TABS: TabItem[] = [
 ]
 
 interface SmoothTabProps {
-  items?: TabItem[];
-  defaultTabId?: string;
-  className?: string;
-  activeColor?: string;
-  onChange?: (tabId: string) => void;
+  items?: TabItem[]
+  defaultTabId?: string
+  className?: string
+  activeColor?: string
+  onChange?: (tabId: string) => void
 }
 
 const slideVariants = {
@@ -287,23 +281,23 @@ const transition = {
   ease: [0.32, 0.72, 0, 1],
 }
 
-export default function SmoothTab ({
+export default function SmoothTab({
   items = DEFAULT_TABS,
   defaultTabId = DEFAULT_TABS[0].id,
   className,
   activeColor = 'bg-[#1F9CFE]',
   onChange,
 }: SmoothTabProps) {
-  const [selected, setSelected] = React.useState<string>(defaultTabId)
-  const [direction, setDirection] = React.useState(0)
-  const [dimensions, setDimensions] = React.useState({ width: 0, left: 0 })
+  const [selected, setSelected] = useState<string>(defaultTabId)
+  const [direction, setDirection] = useState(0)
+  const [dimensions, setDimensions] = useState({width: 0, left: 0})
 
   // Reference for the selected button
-  const buttonRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map())
-  const containerRef = React.useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // Update dimensions whenever selected tab changes or on mount
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const updateDimensions = () => {
       const selectedButton = buttonRefs.current.get(selected)
       const container = containerRef.current
@@ -338,8 +332,8 @@ export default function SmoothTab ({
   }
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLButtonElement>,
-    tabId: string
+    e: KeyboardEvent<HTMLButtonElement>,
+    tabId: string,
   ) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -350,16 +344,15 @@ export default function SmoothTab ({
   const selectedItem = items.find((item) => item.id === selected)
 
   return (
-    <div className='flex flex-col h-full'>
+    <div className='flex flex-col h-full w-full'>
       {/* Card Content Area */}
       <div className='flex-1 mb-4 relative'>
-        <div className='bg-card rounded-3xl overflow-hidden min-h-[250px] w-full relative'>
+        <div className='bg-card rounded-3xl overflow-hidden min-h-[200px] w-full relative'>
           <div className='absolute inset-0'>
             <AnimatePresence
               initial={false}
               mode='popLayout'
-              custom={direction}
-            >
+              custom={direction}>
               <motion.div
                 key={`card-${selected}`}
                 custom={direction}
@@ -372,8 +365,7 @@ export default function SmoothTab ({
                 style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
-                }}
-              >
+                }}>
                 {selectedItem?.cardContent}
               </motion.div>
             </AnimatePresence>
@@ -391,14 +383,13 @@ export default function SmoothTab ({
           'bg-transparent w-[400px] mx-auto',
           'rounded-xl',
           'transition-all duration-200',
-          className
-        )}
-      >
+          className,
+        )}>
         {/* Sliding Background */}
         <motion.div
           className={cn(
             'absolute rounded-md z-[1]',
-            selectedItem?.color || activeColor
+            selectedItem?.color || activeColor,
           )}
           initial={false}
           animate={{
@@ -411,7 +402,7 @@ export default function SmoothTab ({
             stiffness: 400,
             damping: 30,
           }}
-          style={{ height: 'calc(100% - 8px)', top: '4px' }}
+          style={{height: 'calc(100% - 8px)', top: '4px'}}
         />
 
         <div className='grid grid-cols-4 w-full gap-1 relative z-[2]'>
@@ -439,9 +430,8 @@ export default function SmoothTab ({
                   'truncate',
                   isSelected
                     ? 'text-white'
-                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-                )}
-              >
+                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                )}>
                 <span className='truncate'>{item.title}</span>
               </motion.button>
             )

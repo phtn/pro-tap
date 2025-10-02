@@ -1,0 +1,15 @@
+## **Merchant Account Schema** - Includes:
+- **Business Information**: Legal details, tax info, multiple contact persons
+- **Affiliate Program Config**: Visibility settings, approval methods, commission models
+- **Commission Structures**: Product-specific, category-based, tiered, special rates
+- **Product Catalog**: Full product management with SKUs, inventory, categories
+- **Promotions & Incentives**: Discounts, bonuses, contests, performance tiers
+- **Affiliate Management**: Applications, relationship tracking, performance ratings
+- **Tracking & Analytics**: Conversion tracking, sales reports, top performers
+- **Payment Management**: Payout schedules, batch processing, transaction history
+- **Marketing Materials**: Creative assets, landing pages, banners, email templates
+- **Communication**: Newsletters, announcements, direct messaging
+- **Compliance**: Rule enforcement, violation reports, fraud monitoring
+- **API & Integrations**: Webhook events, platform integrations (Shopify, WooCommerce, etc.)
+- **Financial Records**: Invoices, transactions, subscription management
+- **Team Management**: Multiple users with role-based permissions

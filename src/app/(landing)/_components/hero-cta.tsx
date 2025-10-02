@@ -1,8 +1,8 @@
-import { SexyButton } from '@/components/experimental/sexy-button-variants'
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import TextAnimate from '@/components/ui/text-animate'
-import { Icon } from '@/lib/icons'
-import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import {Icon} from '@/lib/icons'
+import {useRouter} from 'next/navigation'
+import {useCallback} from 'react'
 
 export const HeroCTA = () => {
   const router = useRouter()
@@ -18,9 +18,9 @@ export const HeroCTA = () => {
             <Icon name='protap' className='h-48 w-auto' />
           </div>
           <TextAnimate
-            text='Digital Insurance'
             type='whipInUp'
-            className='font-doto text-xl lg:text-2xl font-extrabold tracking-normal text-primary'
+            text='Digital Insurance'
+            className='font-doto text-xl lg:text-2xl font-extrabold tracking-normal dark:text-teal-500 text-primary'
           />
         </div>
         <p className='hidden md:flex font-figtree text-lg text-foreground/70 tracking-wide leading-snug max-w-lg text-balance'>
@@ -31,7 +31,7 @@ export const HeroCTA = () => {
 
       <div className='flex flex-col sm:flex-row gap-4'>
         <GetButton onClick={handleRouter} />
-        <ViewButton />
+        <ActivateButton />
       </div>
     </div>
   )
@@ -41,26 +41,27 @@ interface GetButtonProps {
   onClick: VoidFunction
 }
 
-export const GetButton = ({ onClick }: GetButtonProps) => {
+export const GetButton = ({onClick}: GetButtonProps) => {
   return (
     <SexyButton
       onClick={onClick}
       size='lg'
       variant='primary'
-      className='rounded-full'>
-      Get The Card
+      className='rounded-full bg-primary-hover dark:bg-teal-500'>
+      <span className='drop-shadow-xs text-white'>Get The Card</span>
     </SexyButton>
   )
 }
 
-export const ViewButton = () => {
+export const ActivateButton = () => {
   return (
     <SexyButton
       size='lg'
-      variant='default'
-      leftIcon='play'
+      variant='secondary'
+      iconStyle='text-teal-800'
+      leftIcon='zap'
       className='rounded-full'>
-      Video Intro
+      Activate Protap
     </SexyButton>
   )
 }
