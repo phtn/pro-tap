@@ -22,7 +22,7 @@ export const Landing = () => {
         <TextAnimate
           type='whipInUp'
           className='md:text-4xl lg:text-5xl font-figtree font-semibold tracking-tighter h-14'>
-          Introducing
+          Introducing, Protap.
         </TextAnimate>
         <div className='flex items-center font-figtree dark:bg-zinc-500/10 backdrop-blur-3xl md:tracking-wide md:text-lg w-full rounded-3xl'>
           <div className='bg-zinc-900 dark:bg-transparent max-w-[10ch] md:max-w-[10ch] h-20 w-1/3 flex flex-1 items-center justify-center border border-zinc-900 dark:border-transparent'>
@@ -34,8 +34,11 @@ export const Landing = () => {
             </ShimmerText>
           </div>
           <div className='w-full flex flex-1 items-center justify-center text-center font-medium h-20 border border-zinc-900/50 dark:border-transparent dark:opacity-75 bg-teal-100/20 dark:bg-transparent'>
-            <p className='text-sm text-center border-l max-w-[20ch]'>
-              <span>Unified Professional Career Builder, built for</span>
+            <p className='text-sm text-center border-l max-w-[28ch]'>
+              <span>
+                Unified Digital Insurance Platform, Career Builder made and
+                built with love for
+              </span>
               <span className='font-bold ml-1 dark:text-teal-200'>
                 everyone
               </span>
@@ -63,8 +66,8 @@ export const Landing = () => {
       <Activate />
 
       <div className='h-[24lvh] flex flex-col justify-center items-center w-full lg:h-[36lvh]'>
-        <div className='w-full px-5 font-space capitalize text-sm h-10 opacity-60 tracking-tighter'>
-          <h3>our users</h3>
+        <div className='w-full px-8 font-space capitalize text-sm h-10 opacity-60 tracking-tighter'>
+          <h3 className='md:text-xl font-semibold'>our users</h3>
         </div>
         <LogoCarousel columnCount={isMobile ? 4 : 5} />
       </div>

@@ -21,7 +21,7 @@ export const NavChild = () => {
   }, [theme])
 
   return (
-    <div className='flex items-center px-4 md:px-0 space-x-2 md:space-x-4'>
+    <div className='flex items-center px-4 md:px-0 space-x-1 md:space-x-4'>
       {user ? (
         <span className='font-figtree tracking-tight text-sm opacity-80'>
           {user.displayName}
@@ -32,7 +32,7 @@ export const NavChild = () => {
             variant='ghost'
             id='activation-trigger'
             size={isMobile ? 'md' : 'lg'}
-            className='rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
+            className='hidden rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
             iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5'>
             <span className='md:px-4 md:text-lg text-white md:text-foreground dark:text-white'>
               Sign in

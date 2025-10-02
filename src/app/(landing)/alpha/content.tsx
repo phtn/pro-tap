@@ -11,7 +11,7 @@ import {Landing} from '../_components/landing'
 import {NavChild} from '../_components/nav-child'
 
 export const Content = () => {
-  const {on, toggle} = useToggle()
+  const {on} = useToggle()
   const isMobile = useMobile()
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -64,20 +64,27 @@ export const Content = () => {
     return () => window.clearTimeout(id)
   }, [on, isMobile])
 
+  // const inProduction = useMemo(() => env.NODE_ENV === 'production', [])
+
+  // const ctaLabel = useMemo(
+  //   () => (inProduction ? 'Launching Soon' : 'Activate Account'),
+  //   [],
+  // )
+
   return (
-    <div className='min-h-screen md:max-w-6xl mx-auto'>
+    <div className='min-h-screen md:max-w-5xl lg:max-w-6xl mx-auto'>
       <Navbar
         label={
           <SexyButton
             variant='ghost'
-            onClick={toggle}
+            onClick={undefined}
             id='activation-trigger'
             size={isMobile ? 'md' : 'lg'}
             className='rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
-            iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5'
+            iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5 -rotate-[45deg]'
             rightIcon={on ? 'close' : 'arrow-right'}>
             <span className='md:px-4 md:text-lg text-white md:text-foreground dark:text-white'>
-              {on ? 'Select Activation Method' : 'Activate Your Account'}
+              {on ? 'Select Activation Method' : 'Launching Soon'}
             </span>
           </SexyButton>
         }>

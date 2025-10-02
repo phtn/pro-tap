@@ -1,7 +1,7 @@
 'use client'
 
-import { PricingCard } from '@/components/experimental/pricing-card'
-import { Navbar } from '@/components/ui/navbar'
+import {PricingCard} from '@/components/experimental/pricing-card'
+import {Navbar} from '@/components/ui/navbar'
 export const Content = () => {
   return (
     <div className='h-screen bg-background'>
@@ -16,11 +16,11 @@ export const Content = () => {
           buttonText='Get Protap'
           gradient='linear-gradient(to right, #ff6666, #ff9966)'
           features={[
-            { icon: 'checkmark-circle', text: 'Personal Accident Protection' },
-            { icon: 'arrow-up', text: 'Feature 2' },
-            { icon: 'arrow-up', text: 'Feature 3' },
-            { icon: 'arrow-up', text: 'Feature 4' },
-            { icon: 'arrow-up', text: 'Feature 5' },
+            {icon: 'checkmark-circle', text: 'NFC Enabled Business Card'},
+            {icon: 'arrow-up', text: 'Fully Customizable Web Page'},
+            {icon: 'arrow-up', text: 'Personal Accident Insurance'},
+            {icon: 'arrow-up', text: 'Affiliate Account'},
+            {icon: 'arrow-up', text: 'Merchant Account'},
           ]}
           footerText='Payment Gateway'
         />

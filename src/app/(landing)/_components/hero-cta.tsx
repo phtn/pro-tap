@@ -23,15 +23,14 @@ export const HeroCTA = () => {
             className='font-doto text-xl lg:text-2xl font-extrabold tracking-normal dark:text-teal-500 text-primary'
           />
         </div>
-        <p className='hidden md:flex font-figtree text-lg text-foreground/70 tracking-wide leading-snug max-w-lg text-balance'>
-          Experience the future of personalized, and feature rich business
-          platform.
+        <p className='hidden md:flex font-figtree text-lg md:max-w-[25ch] text-foreground/70 tracking-wide leading-snug max-w-lg text-balance'>
+          Experience the future of unified, digital insurance platform.
         </p>
       </div>
 
       <div className='flex flex-col sm:flex-row gap-4'>
         <GetButton onClick={handleRouter} />
-        <ActivateButton />
+        {/*<ActivateButton />*/}
       </div>
     </div>
   )
@@ -44,11 +43,12 @@ interface GetButtonProps {
 export const GetButton = ({onClick}: GetButtonProps) => {
   return (
     <SexyButton
-      onClick={onClick}
       size='lg'
+      onClick={onClick}
       variant='primary'
-      className='rounded-full bg-primary-hover dark:bg-teal-500'>
-      <span className='drop-shadow-xs text-white'>Get The Card</span>
+      rightIcon='arrow-right'
+      className='rounded-full bg-primary-hover dark:text-white dark:bg-teal-500'>
+      <span className='px-2 drop-shadow-xs text-white'>Get The Card</span>
     </SexyButton>
   )
 }
