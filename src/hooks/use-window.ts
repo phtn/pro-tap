@@ -1,25 +1,28 @@
-import { MouseEvent, useCallback, useMemo } from 'react'
-import { useToggle } from './use-toggle'
-import { useTheme } from 'next-themes'
+import {useTheme} from 'next-themes'
+import {MouseEvent, useCallback, useMemo} from 'react'
+import {useToggle} from './use-toggle'
 
 export type Keys = 'k' | 'i' | '.' | '/'
 
 export const useWindow = (_open = false, setOpen: VoidFunction) => {
-  const { on, toggle } = useToggle(_open)
-  const { setTheme, resolvedTheme, theme } = useTheme()
+  const {on, toggle} = useToggle(_open)
+  const {setTheme, resolvedTheme, theme} = useTheme()
   const onKeyDown = useCallback(
     <T, R extends void>(k?: Keys, action?: (p?: T) => R) =>
       k === 'i'
         ? keyListener((e: KeyboardEvent) => {
-          if ((e.metaKey || e.ctrlKey) && e.key === 'i') {
-            e.preventDefault()
-            const current = (resolvedTheme ?? theme) as 'light' | 'dark' | 'system'
-            const next = current === 'dark' ? 'light' : 'dark'
-            setTheme(next)
-          }
-        })
+            if ((e.metaKey || e.ctrlKey) && e.key === 'i') {
+              e.preventDefault()
+              const current = (resolvedTheme ?? theme) as
+                | 'light'
+                | 'dark'
+                | 'system'
+              const next = current === 'dark' ? 'light' : 'dark'
+              setTheme(next)
+            }
+          })
         : keyListener(keyDown(k, toggle, action)),
-    [resolvedTheme, setTheme, toggle]
+    [resolvedTheme, setTheme, toggle],
   )
 
   const stopPropagation = (e: MouseEvent<HTMLDivElement>) => {
@@ -28,24 +31,24 @@ export const useWindow = (_open = false, setOpen: VoidFunction) => {
 
   const open = useMemo(() => _open || on, [_open, on])
 
-  return { onKeyDown, stopPropagation, keyListener, open }
+  return {onKeyDown, stopPropagation, keyListener, open}
 }
 
 const keyDown =
   <T, R extends void>(
     k: Keys | undefined,
     toggle: VoidFunction,
-    action?: (p?: T) => R
+    action?: (p?: T) => R,
   ) =>
-    (e: KeyboardEvent) => {
-      if (k && e.key === k && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        toggle()
-        if (typeof action !== 'undefined') {
-          action()
-        }
+  (e: KeyboardEvent) => {
+    if (k && e.key === k && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault()
+      toggle()
+      if (typeof action !== 'undefined') {
+        action()
       }
     }
+  }
 
 const keyListener = (keydownFn: (e: KeyboardEvent) => void) => {
   return {

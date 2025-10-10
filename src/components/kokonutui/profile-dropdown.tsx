@@ -1,5 +1,6 @@
 'use client'
 
+import {type ClassName} from '@/app/types'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,11 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {useAuthCtx} from '@/ctx/auth'
-import {Icon, IconName} from '@/lib/icons'
+import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {useTheme} from 'next-themes'
 import Link from 'next/link'
-import {ReactNode, useCallback, useMemo, useState} from 'react'
+import {usePathname} from 'next/navigation'
+import {type ReactNode, useCallback, useMemo, useState} from 'react'
 import {getNextTheme} from '../animate-ui/components/buttons/theme-toggler'
 import {ThemeSelection} from '../animate-ui/primitives/effects/theme-toggler'
 
@@ -30,10 +32,16 @@ export interface MenuItem {
   href?: string
   icon: IconName
   external?: boolean
+  className?: ClassName
   fn?: VoidFunction
   type: 'action' | 'link' | 'divider'
 }
 
+interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
+  data?: Profile
+  showTopbar?: boolean
+  children?: ReactNode
+}
 const SAMPLE_PROFILE_DATA: Profile = {
   name: 'Eugene An',
   email: 'eugene@kokonutui.com',
@@ -42,13 +50,6 @@ const SAMPLE_PROFILE_DATA: Profile = {
   subscription: 'PRO',
   model: 'Gemini 2.0 Flash',
 }
-
-interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
-  data?: Profile
-  showTopbar?: boolean
-  children?: ReactNode
-}
-
 export function ProfileDropdown({
   data = SAMPLE_PROFILE_DATA,
   className,
@@ -57,7 +58,9 @@ export function ProfileDropdown({
 }: ProfileDropdownProps) {
   const {theme, setTheme} = useTheme()
   const [isOpen, setIsOpen] = useState(false)
-  const {onSignOut} = useAuthCtx()
+  const {onSignOut, user} = useAuthCtx()
+  const pathname = usePathname()
+  const inProfile = pathname.split('/').pop() === 'profile'
 
   const isDark = useMemo(() => theme === 'dark', [theme])
 
@@ -69,9 +72,9 @@ export function ProfileDropdown({
     () =>
       [
         {
-          label: 'Profile',
-          href: '/account/profile',
-          icon: 'user-profile',
+          label: inProfile ? 'View Profile' : 'Account',
+          href: inProfile ? '/account/profile/preview' : '/account/profile',
+          icon: user?.role === 'user' ? 'user-profile' : 'crown',
           type: 'link',
         },
         {
@@ -93,6 +96,7 @@ export function ProfileDropdown({
           icon: 'settings',
           type: 'link',
         },
+
         {
           label: isDark ? 'Light mode' : 'Dark mode',
           href: '#',
@@ -101,8 +105,18 @@ export function ProfileDropdown({
           type: 'action',
           fn: toggler,
         },
+        {
+          label: `Admin - ${user?.role}`,
+          href: '/admin',
+          icon: 'pawn',
+          external: true,
+          type: 'link',
+          className:
+            'bg-gradient-to-r from-orange-200 via-indigo-300 to-indigo-400 dark:from-orange-300/30 via-indigo-400/50 to-indigo-400/40',
+          disabled: user?.role === 'user',
+        },
       ] as MenuItem[],
-    [data, isDark],
+    [data, isDark, user?.role],
   )
 
   const MenuItemList = useCallback(
@@ -166,7 +180,10 @@ export const LinkMenuItem = (item: MenuItem) => {
     <DropdownMenuItem key={item.label} asChild>
       <Link
         href={item.href ?? '#'}
-        className='flex items-center h-12 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/60 rounded-xl transition-all duration-200 cursor-pointer group'>
+        className={cn(
+          'flex items-center h-12 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/60 rounded-xl transition-all duration-200 cursor-pointer group',
+          item.className,
+        )}>
         <IconLabel icon={item.icon} label={item.label} />
         <ExtraValueItem value={item.value} label={item.label} />
       </Link>
@@ -210,7 +227,7 @@ const IconLabel = ({icon, label}: IconLabelProps) => {
     <div className='flex items-center gap-5 px-1 flex-1'>
       <Icon
         name={icon}
-        className='size-7 text-foreground/40 group-hover:text-foreground/50'
+        className='size-7 text-foreground/60 group-hover:text-foreground/50'
       />
       <span className='capitalize text-base font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight whitespace-nowrap group-hover:text-zinc-950 dark:group-hover:text-zinc-50 transition-colors duration-50'>
         {label}

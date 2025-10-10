@@ -5,17 +5,40 @@ import {cn} from '@/lib/utils'
 
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {ActivationCtxProvider} from '@/ctx/activation'
+import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
+import {opts} from '@/utils/helpers'
 import {usePathname, useRouter} from 'next/navigation'
 import {useCallback} from 'react'
 import {FullActivation} from './_components/full-activation'
 
 export default function Layout({children}: {children: React.ReactNode}) {
+  const {user} = useAuthCtx()
   const {on, toggle} = useToggle()
   const pathname = usePathname()
   const isPreview = pathname.split('/').pop() === 'preview'
   const router = useRouter()
   const back = useCallback(() => router.back(), [router])
+  const ActiveStatus = useCallback(() => {
+    const options = opts(
+      <div className='size-auto aspect-square hidden md:flex items-center justify-center relative'>
+        <div className='absolute bg-white size-4 aspect-square rounded-full' />
+        <Icon
+          name='badge-verified-solid'
+          className='size-[28px] text-primary dark:text-primary-hover relative z-2 drop-shadow'
+        />
+      </div>,
+      <SexyButton
+        onClick={toggle}
+        variant='ghost'
+        className='bg-mac-blue/85 hover:bg-mac-blue dark:bg-mac-teal/60 dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
+        <span className='md:px-2 md:text-lg text-white dark:text-white'>
+          Activate Protap
+        </span>
+      </SexyButton>,
+    )
+    return <>{options.get(!!user?.isActivated)}</>
+  }, [user])
 
   return (
     <div className='bg-background/10 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
@@ -27,14 +50,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
         </div>
       ) : (
         <UserNavbar>
-          <SexyButton
-            onClick={toggle}
-            variant='ghost'
-            className='bg-mac-blue/85 hover:bg-mac-blue dark:bg-mac-teal/60 dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
-            <span className='md:px-2 md:text-lg text-white dark:text-white'>
-              Activate Protap
-            </span>
-          </SexyButton>
+          <ActiveStatus />
         </UserNavbar>
       )}
       <main className='max-w-6xl mx-auto'>

@@ -1,15 +1,8 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
 import {useActivationCtx} from '@/ctx/activation'
 import {onSuccess} from '@/ctx/toast'
-import {NFCData} from '@/hooks/use-nfc'
 import {cn} from '@/lib/utils'
-import {macStr} from '@/utils/macstr'
 import {useCallback} from 'react'
+import {ActivationProgress} from './progress'
 import ActivationTabs from './tab-activation'
 
 interface Props {
@@ -55,36 +48,6 @@ export const FullActivation = ({scrollRef}: Props) => {
     </div>
   )
 }
-
-interface ActivationProgressProps {
-  open: boolean
-  onOpenChange: VoidFunction
-  nfcData: NFCData | null
-  qrcData: string | null
-}
-
-const ActivationProgress = ({
-  open,
-  onOpenChange,
-  nfcData,
-  qrcData,
-}: ActivationProgressProps) => (
-  <Sheet open={open} onOpenChange={onOpenChange}>
-    <SheetHeader>
-      <SheetTitle>Activating</SheetTitle>
-    </SheetHeader>
-
-    <SheetContent
-      side='bottom'
-      className='space-y-4 h-[40lvh] dark:bg-zinc-700 rounded-t-3xl overflow-scroll p-2'>
-      <pre className='text-xs'>
-        {nfcData && JSON.stringify(nfcData, null, 2)}
-      </pre>
-      <pre>{nfcData && macStr(nfcData.serialNumber, 16)}</pre>
-      <span>{qrcData}</span>
-    </SheetContent>
-  </Sheet>
-)
 
 // const Bank = () => (
 //   <>

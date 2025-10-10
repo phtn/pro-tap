@@ -37,7 +37,7 @@ export const SignInContent = () => {
         variant='default'
         leftIcon='github'
         iconStyle='size-8'
-        className='rounded-full md:text-lg'>
+        className='hidden rounded-full md:text-lg'>
         <span className='px-2'>Github</span>
       </SexyButton>
       <SexyButton
@@ -45,7 +45,7 @@ export const SignInContent = () => {
         variant='invert'
         leftIcon='facebook-solid'
         iconStyle='size-8'
-        className='rounded-full md:text-lg bg-primary-hover'>
+        className='hidden rounded-full md:text-lg bg-primary-hover'>
         <span className='px-2'>Facebook</span>
       </SexyButton>
       <SexyButton
@@ -53,7 +53,7 @@ export const SignInContent = () => {
         variant='secondary'
         leftIcon='apple'
         iconStyle='size-8'
-        className='rounded-full md:text-lg'>
+        className='hidden rounded-full md:text-lg'>
         <span className='px-2'>Apple</span>
       </SexyButton>
     </div>

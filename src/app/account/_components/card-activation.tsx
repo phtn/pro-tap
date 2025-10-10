@@ -3,10 +3,8 @@ import {useActivationCtx} from '@/ctx/activation'
 import {onSuccess} from '@/ctx/toast'
 import {useMobile} from '@/hooks/use-mobile'
 import {useNFC, UseNFCOptions} from '@/hooks/use-nfc'
-import {checkCard} from '@/lib/firebase/cards'
-import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {useCallback, useEffect, useState} from 'react'
+import {useEffect} from 'react'
 
 export const CardActivationContent = (props?: UseNFCOptions) => {
   const {toggleOpenProgress, setNfcData} = useActivationCtx()
@@ -23,20 +21,6 @@ export const CardActivationContent = (props?: UseNFCOptions) => {
     // formatRecordData,
     scanDetails,
   } = useNFC(props)
-
-  const [isSimulating, setIsSimulating] = useState(false)
-
-  const handleSimulatedScan = useCallback(async () => {
-    setIsSimulating((prev) => !prev)
-
-    const serialNumberOk = await checkCard('card-x-sim', 'general')
-
-    console.log('Simulating scan...')
-    if (serialNumberOk) {
-      console.log('card is good')
-      // Simulate a scan by dispatching a fake event
-    }
-  }, [])
 
   useEffect(() => {
     if (scanDetails) {
@@ -64,26 +48,6 @@ export const CardActivationContent = (props?: UseNFCOptions) => {
           {isScanning ? 'Scanning nearby NFC' : 'Scan Card'}
         </span>
       </SexyButton>
-      <SexyButton
-        size='lg'
-        variant='dark'
-        className='ml-6 hidden'
-        onClick={handleSimulatedScan}
-        leftIcon='scan-waves'>
-        <span className='px-2'>
-          {isSimulating ? 'Simulating .......' : 'Simulate Scan'}
-        </span>
-      </SexyButton>
-      {isScanning && (
-        <Icon
-          name='iphone-outline'
-          className={cn(
-            'absolute left-1/2 -translate-x-1/3 w-auto h-100 scale-90 fill-transparent aspect-auto opacity-80',
-            'animate-in transition-transform duration-500 delay-500 ease-in-out translate-y-0',
-            {'-translate-y-56': isScanning},
-          )}
-        />
-      )}
     </div>
   )
 }

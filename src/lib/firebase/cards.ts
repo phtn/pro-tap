@@ -1,6 +1,6 @@
-import {NFCData} from '@/hooks/use-nfc'
-import {macStr} from '@/utils/macstr'
-import {User} from 'firebase/auth'
+import { NFCData } from '@/hooks/use-nfc'
+import { macStr } from '@/utils/macstr'
+import { User } from 'firebase/auth'
 import {
   collection,
   CollectionReference,
@@ -8,9 +8,10 @@ import {
   DocumentReference,
   getDoc,
   setDoc,
+  updateDoc,
   writeBatch,
 } from 'firebase/firestore'
-import {db} from '.'
+import { db } from '.'
 
 interface ProtapCardDoc {
   id: string
@@ -25,6 +26,7 @@ interface ProtapCardDoc {
   createdByEmail: string | null
   ownerId: string | null
   isActive: boolean
+  activatedOn: string | null
 }
 
 function cardsCollection(batch: string): CollectionReference<ProtapCardDoc> {
@@ -61,6 +63,7 @@ export async function createCard(
     updatedBy: user.uid,
     isActive: true,
     ownerId: null,
+    activatedOn: null,
   })
   return id
 }
@@ -88,6 +91,7 @@ export async function createQR(
     updatedBy: user.uid,
     isActive: true,
     ownerId: null,
+    activatedOn: null,
   })
   return data.serialNumber
 }
@@ -136,6 +140,7 @@ export async function createBulkQRCodes(
         updatedBy: user.uid,
         isActive: true,
         ownerId: null,
+        activatedOn: null,
       }
 
       batch.set(ref, docData)
@@ -167,8 +172,24 @@ export async function createBulkQRCodes(
 }
 
 export async function checkCard(id: string, grp: string) {
-  // return getDoc(cardDocRef(serialNumber)).then(doc => doc.data())
   const ref = cardDocRef(id, grp)
   const snap = await getDoc(ref)
-  return snap.exists()
+
+  if (!snap.exists()) {
+    return false
+  }
+
+  const data = snap.data()
+  // Check if card exists and is not owned by anyone (ownerId is null)
+  return data.ownerId === null && data.isActive
+}
+
+export async function activateCard(id: string, grp: string, uid: string) {
+  const ref = cardDocRef(id, grp)
+  const docData = {
+    activatedOn: new Date().toISOString(),
+    ownerId: uid,
+  }
+
+  await updateDoc(ref, docData)
 }

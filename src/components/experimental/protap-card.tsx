@@ -1,6 +1,6 @@
 'use client'
 
-import {useToggle} from '@/hooks/use-toggle'
+import { useToggle } from '@/hooks/use-toggle'
 /**
  * @author: @dorian_baffier
  * @description: Card Flip
@@ -11,11 +11,11 @@ import {useToggle} from '@/hooks/use-toggle'
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import {ClassName} from '@/app/types'
-import {Icon, type IconName} from '@/lib/icons'
-import {cn} from '@/lib/utils'
-import {type ReactNode, type Ref} from 'react'
-import {GlassFilter} from '../experimental/glass'
+import { ClassName } from '@/app/types'
+import { Icon, type IconName } from '@/lib/icons'
+import { cn } from '@/lib/utils'
+import { type ReactNode, type Ref } from 'react'
+import { GlassFilter } from '../experimental/glass'
 
 export interface CardFlipProps {
   title?: string
@@ -43,7 +43,7 @@ export function ProtapCard({
   className,
   canFlip = true,
 }: CardFlipProps) {
-  const {on, toggle} = useToggle(false)
+  const { on, toggle } = useToggle(false)
 
   return (
     <div
@@ -52,8 +52,8 @@ export function ProtapCard({
         className,
       )}
       onClick={canFlip ? toggle : undefined}
-      // onMouseEnter={() => setIsFlipped(true)}
-      // onMouseLeave={() => setIsFlipped(false)}
+    // onMouseEnter={() => setIsFlipped(true)}
+    // onMouseLeave={() => setIsFlipped(false)}
     >
       <div
         className={cn(
@@ -63,7 +63,7 @@ export function ProtapCard({
           on ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]',
           '',
         )}>
-        <GlassBorder>
+        <GlassBorder ref={undefined}>
           <div
             id='bf'
             className={cn(
@@ -191,27 +191,6 @@ export function ProtapCard({
         </div>
       </div>
 
-      <style jsx>
-        {`
-          @keyframes scale {
-            0% {
-              transform: scale(2);
-              opacity: 0;
-              box-shadow: 0px 0px 50px rgba(255, 165, 0, 0.5);
-            }
-            50% {
-              transform: translate(0px, -5px) scale(1);
-              opacity: 1;
-              box-shadow: 0px 8px 20px rgba(255, 165, 0, 0.5);
-            }
-            100% {
-              transform: translate(0px, 5px) scale(0.1);
-              opacity: 0;
-              box-shadow: 0px 10px 20px rgba(255, 165, 0, 0);
-            }
-          }
-        `}
-      </style>
     </div>
   )
 }
@@ -221,7 +200,7 @@ interface Props {
   ref?: Ref<HTMLDivElement>
 }
 
-const GlassBorder = ({children, ref}: Props) => {
+const GlassBorder = ({ children, ref }: Props) => {
   return (
     <div
       id='glass-border'

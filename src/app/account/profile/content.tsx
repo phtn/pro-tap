@@ -8,11 +8,9 @@ import {Widget, WidgetHeader} from '@/components/ui/widget'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import {StarsBackground} from '@/components/animate-ui/components/backgrounds/stars'
-import QrViewer from '@/components/experimental/qr-viewer'
-import {ReactMasonryExample} from '@/components/react-bits/react-masonry'
+import {BentoGridStats} from '@/components/experimental/bento-grid'
 import {cn} from '@/lib/utils'
 import {User} from 'firebase/auth'
 import {useTheme} from 'next-themes'
@@ -25,10 +23,8 @@ export const Content = () => {
       <CoverSection user={user} />
       <Spacer />
       <HeaderTitle title='Overview' />
-      <Widgets />
-      <Spacer />
-      <ReactMasonryExample />
-      <QrViewer id='fkjshdgpasdjkfh' grp='dfjaslsd' />
+      <BentoGridStats />
+      {/*<ReactMasonryExample />*/}
     </div>
   )
 }
@@ -40,7 +36,7 @@ interface CoverSectionProps {
 const CoverSection = ({user}: CoverSectionProps) => {
   return (
     <div className='relative'>
-      <div className='h-36 mx-4 md:mx-0 md:h-64 lg:h-72 rounded-4xl overflow-hidden'>
+      <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl md:rounded-t-4xl overflow-hidden'>
         <Image
           // src="https://res.cloudinary.com/dx0heqhhe/image/upload/v1757754913/personalization_pluy38.webp"
           src='https://res.cloudinary.com/dx0heqhhe/image/upload/v1759433575/Screenshot_2025-09-05_at_5.23.47_AM_k6cs9n.png'
@@ -52,9 +48,9 @@ const CoverSection = ({user}: CoverSectionProps) => {
           unoptimized
         />
       </div>
-      <div>
+      <div className='relative'>
         {user && (
-          <div className='absolute border-2 bg-white border-white aspect-square size-20 md:size-28 flex items-center justify-center left-20 -bottom-12 rounded-full shadow-2xl'>
+          <div className='absolute border-2 bg-white border-white aspect-square size-20 md:size-28 flex items-center justify-center left-1/8 -translate-x-1/4 -bottom-12 rounded-full shadow-2xl'>
             <ProAvatar
               photoURL={user.photoURL}
               className='size-full shrink-0'
@@ -72,19 +68,19 @@ interface HeaderProps {
 
 const HeaderTitle = ({title}: HeaderProps) => {
   return (
-    <div className='h-20 px-4'>
+    <div className='flex items-center relative h-20 md:pl-4 pl-8'>
       <TextAnimate
-        type='whipInUp'
         text={title}
-        className='tracking-tighter text-xl font-bold font-space'
+        type='whipInUp'
+        className='tracking-tighter text-2xl font-semibold font-figtree'
         delay={500}
       />
     </div>
   )
 }
 
-const Widgets = () => (
-  <div className='grid grid-cols-12 gap-6 md:h-64 h-fit px-4 md:px-2 lg:px-0 w-full'>
+export const Widgets = () => (
+  <div className='grid grid-cols-12 md:gap-x-6 gap-y-6 md:h-64 h-fit px-4 md:px-2 lg:px-0 w-full'>
     <Widget className='md:col-span-8 col-span-12 md:h-full overflow-hidden'>
       <WidgetHeader
         icon='engagement'
@@ -93,8 +89,8 @@ const Widgets = () => (
       />
       <Visual1 />
     </Widget>
-    <div className='md:col-span-4 col-span-6 md:h-full w-full md:place-content-between flex flex-col'>
-      <Link href='/account/profile/preview'>
+    <div className='md:col-span-4 col-span-12 md:h-full w-full md:place-content-between flex flex-col'>
+      {/*<Link href='/account/profile/preview'>
         <SexyButton
           size='lg'
           leftIcon='eye'
@@ -102,7 +98,7 @@ const Widgets = () => (
           className='w-full'>
           View Profile
         </SexyButton>
-      </Link>
+      </Link>*/}
       <Widget className='align-bottom w-full'>
         <WidgetHeader
           title='Social Media'
@@ -127,7 +123,8 @@ const Widgets = () => (
   </div>
 )
 
-const Spacer = () => <div className='h-30' />
+const Spacer = () => <div className='relative z-20 h-14 w-full' />
+
 const ProfileBackground = () => {
   const {resolvedTheme} = useTheme()
 
@@ -135,8 +132,8 @@ const ProfileBackground = () => {
     <StarsBackground
       starColor={resolvedTheme === 'dark' ? '#FFF' : '#000'}
       className={cn(
-        'absolute inset-0 flex items-center justify-center rounded-xl',
-        'dark:bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)] _bg-[radial-gradient(ellipse_at_bottom,_#f5f5f5_0%,_#fff_100%)]',
+        'absolute z-0 pointer-events-none inset-0 flex items-center justify-center',
+        'dark:bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_60%)] _bg-[radial-gradient(ellipse_at_bottom,_#f5f5f5_0%,_#fff_50%)]',
       )}
     />
   )

@@ -6,7 +6,6 @@ import {LeftPanel} from './left-panel'
 import {RightPanel, SocialLogin} from './right-panel'
 
 export function FullSignIn() {
-  // const { signInWithGoogle, signInWithGithub, user, signOut } = useAuthCtx()
   const {user, onSignOut} = useAuthCtx()
 
   const socialLogins = useMemo(
@@ -29,9 +28,9 @@ export function FullSignIn() {
   )
 
   return (
-    <div className='w-full flex items-center justify-center font-figtree'>
+    <div className='w-full flex items-start justify-center font-figtree'>
       <div className='bg-white md:dark:bg-zinc-800 dark:bg-background  w-full md:rounded-4xl md:shadow-2xl overflow-hidden'>
-        <div className='flex flex-col lg:flex-row min-h-[70lvh]'>
+        <div className='flex flex-col lg:flex-row md:min-h-[70lvh]'>
           <LeftPanel />
           <RightPanel
             user={user}

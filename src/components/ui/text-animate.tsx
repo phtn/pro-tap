@@ -273,7 +273,7 @@ const TextAnimate: FC<Props> = ({
       variants={container}
       initial='hidden'
       animate='visible'
-      className={cn('text-4xl', className)}
+      className={cn('text-4xl text-foreground', className)}
       {...props}>
       {letters.map((letter, index) => (
         <motion.span key={index} variants={child}>

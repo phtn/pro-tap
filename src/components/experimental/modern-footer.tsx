@@ -86,20 +86,6 @@ export function Footer() {
                   Pricing
                 </a>
               </li>
-              <li>
-                <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  About us
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  Contact
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -111,28 +97,14 @@ export function Footer() {
                 <a
                   href='#'
                   className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  Blog
+                  Discourse
                 </a>
               </li>
               <li>
                 <a
                   href='#'
                   className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  Customer Stories
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  About us
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  Contact
+                  Careers
                 </a>
               </li>
             </ul>
@@ -149,13 +121,7 @@ export function Footer() {
                   FAQ
                 </a>
               </li>
-              <li>
-                <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
-                  Help Center
-                </a>
-              </li>
+
               <li>
                 <a
                   href='#'

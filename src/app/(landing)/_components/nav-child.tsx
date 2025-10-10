@@ -4,17 +4,18 @@ import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {ProfileDropdown} from '@/components/kokonutui/profile-dropdown'
 import {NeumorphButton as Button} from '@/components/ui/neumorph'
 import {ProAvatar} from '@/components/ui/pro-avatar'
+import {useAuthCtx} from '@/ctx/auth'
 import {useNavbarCtx} from '@/ctx/navbar'
 import {useMobile} from '@/hooks/use-mobile'
 import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
 import Link from 'next/link'
 import {useCallback} from 'react'
-import {useAuth} from 'reactfire'
 
 export const NavChild = () => {
   const {theme, setTheme} = useNavbarCtx()
   const isMobile = useMobile()
-  const {currentUser: user} = useAuth()
+  const {user} = useAuthCtx()
 
   const handleThemeChange = useCallback(() => {
     setTheme(getNextTheme(theme as ThemeSelection, ['light', 'dark']))
@@ -42,6 +43,18 @@ export const NavChild = () => {
       )}
       {user ? (
         <ProfileDropdown>
+          {user.isActivated ? (
+            <div
+              className={cn(
+                'size-auto md:hidden -right-1 bottom-0 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
+              )}>
+              <div className='absolute bg-white size-3.5 aspect-square rounded-full' />
+              <Icon
+                name='badge-verified-solid'
+                className='size-[22px] text-primary-hover dark:text-primary-hover relative z-2 drop-shadow'
+              />
+            </div>
+          ) : null}
           <ProAvatar
             tiny
             photoURL={user.photoURL}

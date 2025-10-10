@@ -6,7 +6,7 @@ import {Icon} from '@/lib/icons'
 export const LeftPanel = () => {
   const isMobile = useMobile()
   return (
-    <div className='relative lg:w-1/2 h-[25lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between'>
+    <div className='relative lg:w-1/2 h-[25lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col'>
       <div className='absolute w-full h-full md:opacity-100 opacity-30'>
         <Prism
           animationType='3drotate'
@@ -20,10 +20,10 @@ export const LeftPanel = () => {
           glow={1}
         />
       </div>
-      <div className='p-12 relative z-50'>
+      <div className='h-full p-12 relative z-50'>
         {/* Brand Logo */}
         <div className='absolute top-0 left-8 flex items-center text-foreground'>
-          <Icon name='protap' className='size-20 opacity-20' />
+          <Icon name='protap' className='size-20 opacity-40' />
         </div>
 
         {/* Main Content */}

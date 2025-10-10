@@ -34,6 +34,12 @@ interface UserInputData {
   type: string
 }
 
+interface DeactivationReason {
+  reason: string
+  timestamp: number
+  type: 'MANUAL' | 'AUTO'
+}
+
 export interface ProtapUserDoc {
   uid: string
   email: string | null
@@ -52,6 +58,7 @@ export interface ProtapUserDoc {
   isAffiliate: boolean
   userInfo: UserInfo | null
   role: UserRole
+  deactivationReason: DeactivationReason | null
 }
 
 function usersCollection(): CollectionReference<ProtapUserDoc> {
@@ -109,6 +116,7 @@ export async function updateUser(user: User): Promise<void> {
       isAffiliate: false,
       userInfo: null,
       role: 'user',
+      deactivationReason: null,
     }
     await setDoc(ref, data)
     return
@@ -121,4 +129,29 @@ export async function updateUser(user: User): Promise<void> {
 
 export function getUserDocRef(uid: string): DocumentReference<ProtapUserDoc> {
   return accountDocRef(uid)
+}
+
+export function activateUser(
+  uid: string,
+  id: string,
+  serialNumber: string,
+): Promise<void> {
+  const ref = accountDocRef(uid)
+  const ntag = {
+    serialNumber: `${id}:${serialNumber}`,
+    scanTime: new Date().toISOString(),
+    metadata: {id},
+    type: '',
+  }
+  return updateDoc(ref, {
+    isActivated: true,
+    ntag,
+  })
+}
+
+export const deactivateUser = async (uid: string): Promise<void> => {
+  const ref = accountDocRef(uid)
+  await updateDoc(ref, {
+    isActivated: false,
+  })
 }

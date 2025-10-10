@@ -4,6 +4,7 @@ import {TextureSeparator} from '@/components/ui/texture-card'
 import {DialogWindow} from '@/components/ui/window'
 import {useDevtools} from '@/hooks/use-devtools'
 import {useToggle} from '@/hooks/use-toggle'
+import {useWindow} from '@/hooks/use-window'
 import {Icon} from '@/lib/icons'
 import {Tabs} from './_components/tabs'
 
@@ -11,8 +12,10 @@ export const Content = () => {
   const meta = useDevtools()
   // const [open, setOpen] = useState(false);
   const {on, toggle} = useToggle()
+  // const [state, setState] = useState(false)
+  const {open} = useWindow(on, toggle)
   return (
-    <DialogWindow keyCode='k' open={on} setOpen={toggle}>
+    <DialogWindow keyCode='k' open={open} setOpen={toggle}>
       <VCard
         toggle={toggle}
         toolbar={

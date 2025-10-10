@@ -22,12 +22,10 @@ export const CountSelectDrop = ({
     <div className={cn('relative', className)} {...props}>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <div className='group relative p-px'>
-          <DropdownMenuTrigger asChild>
-            <button
-              type='button'
-              className='rounded-full outline-0 cursor-pointer'>
-              {children}
-            </button>
+          <DropdownMenuTrigger
+            asChild
+            className='rounded-full outline-0 cursor-pointer'>
+            {children}
           </DropdownMenuTrigger>
 
           <DropdownMenuContent

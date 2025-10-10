@@ -4,14 +4,18 @@ import {FullActivation} from '@/app/account/_components/full-activation'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {Navbar} from '@/components/ui/navbar'
 import {ActivationCtxProvider} from '@/ctx/activation'
+import {useAuthCtx} from '@/ctx/auth'
 import {useMobile} from '@/hooks/use-mobile'
 import {useToggle} from '@/hooks/use-toggle'
+import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {useEffect, useRef} from 'react'
+import {opts} from '@/utils/helpers'
+import {useCallback, useEffect, useRef} from 'react'
 import {Landing} from '../_components/landing'
 import {NavChild} from '../_components/nav-child'
 
 export const Content = () => {
+  const {user} = useAuthCtx()
   const {on, toggle} = useToggle()
   const isMobile = useMobile()
   const scrollRef = useRef<HTMLDivElement | null>(null)
@@ -65,6 +69,27 @@ export const Content = () => {
     return () => window.clearTimeout(id)
   }, [on, isMobile])
 
+  const NavbarLabel = useCallback(() => {
+    const options = opts(
+      <Icon href='/' name='protap' className='h-28 w-auto' />,
+      <SexyButton
+        variant={isMobile ? 'ghost' : 'ghost'}
+        onClick={toggle}
+        id='activation-trigger'
+        size={isMobile ? 'md' : 'lg'}
+        className='focus-visible:bg-white  rounded-full relative z-100 md:bg-white hover:bg-white dark:bg-mac-gray/60 space-x-1'
+        iconStyle={cn(
+          'text-primary-hover md:text-primary dark:text-mac-teal size-5',
+        )}
+        rightIcon={on ? 'close' : 'zap'}>
+        <span className='md:px-4 px-2 md:text-lg text-primary md:text-foreground dark:text-white'>
+          {on ? 'Select Activation' : 'Launching Soon'}
+        </span>
+      </SexyButton>,
+    )
+    return <>{options.get(!!user?.isActivated)}</>
+  }, [user?.isActivated])
+
   // const inProduction = useMemo(() => env.NODE_ENV === 'production', [])
 
   // const ctaLabel = useMemo(
@@ -74,23 +99,7 @@ export const Content = () => {
 
   return (
     <div className='min-h-screen md:max-w-5xl lg:max-w-6xl mx-auto'>
-      <Navbar
-        label={
-          <SexyButton
-            variant={isMobile ? 'ghost' : 'ghost'}
-            onClick={toggle}
-            id='activation-trigger'
-            size={isMobile ? 'md' : 'lg'}
-            className='focus-visible:bg-white  rounded-full relative z-100 md:bg-white hover:bg-white dark:bg-mac-gray/60 space-x-1'
-            iconStyle={cn(
-              'text-primary-hover md:text-primary dark:text-mac-teal size-5',
-            )}
-            rightIcon={on ? 'close' : 'zap'}>
-            <span className='md:px-4 px-2 md:text-lg text-primary md:text-foreground dark:text-white'>
-              {on ? 'Select Activation' : 'Launching Soon'}
-            </span>
-          </SexyButton>
-        }>
+      <Navbar label={<NavbarLabel />}>
         <NavChild />
       </Navbar>
       <div>

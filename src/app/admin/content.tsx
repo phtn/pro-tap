@@ -240,17 +240,21 @@ const AdminTabs = ({onChange}: BaseTabProps) => {
     const options = opts(
       <NFCScanList list={nfcScans} firestoreReceipt={firestoreReceipt} />,
       <div className=' h-screen overflow-scroll pb-64'>
-        <div className='h-16 border-b border-muted-foreground/20 w-full flex items-center justify-between px-2'>
+        <div className='h-14 bg-slate-200 dark:bg-gray-800/20 w-full flex items-center justify-between px-2'>
           <SexyButton
             variant='ghost'
+            size='sm'
             leftIcon='add'
-            className='flex items-center space-x-2'>
+            className='flex items-center space-x-2 bg-white dark:bg-background'>
             <span className='font-bold font-figtree tracking-tight'>
               New Group
             </span>
           </SexyButton>
           <div className='w-full flex'></div>
-          <SexyButton className='size-10 ' size='sq' variant='ghost'>
+          <SexyButton
+            className='size-9 bg-white dark:bg-background'
+            size='sq'
+            variant='ghost'>
             <Icon name='bullet-list-square' className='size-6' />
           </SexyButton>
         </div>
@@ -305,9 +309,9 @@ const AdminTabs = ({onChange}: BaseTabProps) => {
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                 }}>
-                <div className='fixed top-0 bg-zinc-800/10 flex flex-col w-full '>
-                  <div className='flex items-center justify-between w-full py-3 px-3 md:p-6 h-fit border-b border-zinc-500/20'>
-                    <div className='w-full h-full flex items-center justify-end pr-2'>
+                <div className='fixed top-0 bg-zinc-800/10 dark:bg-zinc-700/10 flex flex-col w-full '>
+                  <div className='flex items-center justify-between w-full py-3 px-3 md:p-6 h-fit border-b border-zinc-500/10'>
+                    <div className='w-full h-full flex items-center justify-end r-2'>
                       <div className='h-full w-full flex flex-col items-end overflow-hidden font-figtree tracking-tight'>
                         <ScanStatus isScanning={isScanning} />
                       </div>

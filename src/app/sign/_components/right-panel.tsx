@@ -19,7 +19,7 @@ const Header = ({title, description, children}: HeaderProps) => {
   return (
     <div className='flex flex-col items-start justify-center w-full py-4 md:space-y-4'>
       <div className='space-y-0 md:space-y-2'>
-        <h2 className='text-lg md:text-2xl dark:text-cyan-100 font-doto font-bold md:font-figtree md:font-bold text-gray-900 md:dark:text-zinc-100 md:tracking-tight'>
+        <h2 className='text-lg md:text-2xl dark:text-cyan-100 font-figtree font-semibold text-gray-900 md:dark:text-zinc-100 tracking-tight'>
           {title}.
         </h2>
         <div

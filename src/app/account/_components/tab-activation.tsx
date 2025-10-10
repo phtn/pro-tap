@@ -71,7 +71,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
           content: <QRCodeActivationContent />,
         },
         {
-          id: 'nxp-ntag213',
+          id: 'ntag',
           title: 'Protap Card',
           label: 'With Protap Card',
           description: 'Scan NTAG Card with your NFC enabled smartphone',

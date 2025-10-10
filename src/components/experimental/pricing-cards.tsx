@@ -64,7 +64,7 @@ export const ModernPricingPage = () => {
       <main className='container mx-auto px-4 py-16'>
         {/* Header */}
         <div className='text-center mb-12'>
-          <h1 className='text-4xl md:text-6xl font-semibold mb-8 bg-gradient-to-r from-teal-400 via-teal-300 to-white bg-clip-text text-transparent -tracking-wider'>
+          <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-8 bg-gradient-to-r from-teal-400 via-teal-300 to-white bg-clip-text text-transparent -tracking-wider'>
             Designed for Flexibility
           </h1>
 

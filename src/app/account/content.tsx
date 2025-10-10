@@ -1,7 +1,6 @@
 'use client'
 
 import {GuidingLight} from '@/components/experimental/guiding-light'
-import QrViewer from '@/components/experimental/qr-viewer'
 import {ActivationCtxProvider} from '@/ctx/activation'
 import {useState} from 'react'
 import {StatusBar} from './_components/statusbar'
@@ -15,10 +14,6 @@ export const Content = () => {
       <div className='h-[86lvh]  w-full flex flex-col items-center'>
         <GuidingLight />
         <StatusBar progressOne={progress} progressTwo={0} />
-
-        <div className='pt-6 size-full border'>
-          <QrViewer id='sddf-' grp='spfao' />
-        </div>
         <div className='pt-6 size-full border'>
           <WidgetGrid />
         </div>
