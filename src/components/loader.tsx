@@ -1,30 +1,28 @@
 'use client'
-import { LogoPro } from '@/components/logo'
-import ConjurSight from '@/components/orb/conjurer'
-import { ScopeBurst } from './experimental/scoped-burst'
-import { useRef } from 'react'
-import { cn } from '@/lib/utils'
+import {GuidingLight} from '@/app/account/_components/guiding-light'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {useRef} from 'react'
 
 interface Props {
-  fullScreen?: boolean;
+  fullScreen?: boolean
 }
-export const Loader = ({ fullScreen = false }: Props) => {
+export const Loader = ({fullScreen = false}: Props) => {
   const root = useRef<HTMLDivElement>(null)
   return (
     <div
       ref={root}
-      className={cn(
-        'w-full p-20 relative flex flex-col items-center justify-center',
-        { 'h-screen': fullScreen }
-      )}
-    >
-      <div className='relative space-y-16 flex flex-col items-center justify-center'>
-        <div className='absolute flex items-center justify-center'>
-          <div className='absolute -top-0.5 -skew-x-[81deg] -translate-y-8 size-32 aspect-square rounded-full border-6 border-gray-800' />
-          <ScopeBurst root={root} shouldAnimate duration={20000} count={4} />
+      className={cn('bg-background flex items-start justify-center lg:p-4', {
+        'h-screen': fullScreen,
+      })}>
+      <GuidingLight />
+      <div className='size-96 flex flex-col items-center justify-center'>
+        <div>
+          <Icon name='protap' className='size-40' />
         </div>
-        <ConjurSight />
-        <LogoPro />
+        <div className='flex items-center md:space-x-4 space-x-2'>
+          <Icon name='spinners-ring' className='size-4' />
+        </div>
       </div>
       {fullScreen && <div className='h-1/3 w-full' />}
     </div>

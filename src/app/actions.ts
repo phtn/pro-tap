@@ -1,13 +1,13 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import {cookies} from 'next/headers'
 
 interface CookieOptions {
-  path?: string;
-  httpOnly?: boolean;
-  sameSite?: boolean | 'lax' | 'strict' | 'none';
-  secure?: boolean;
-  maxAge?: number;
+  path?: string
+  httpOnly?: boolean
+  sameSite?: boolean | 'lax' | 'strict' | 'none'
+  secure?: boolean
+  maxAge?: number
 }
 
 type CookieType =
@@ -21,22 +21,26 @@ type CookieType =
   | 'protapCode'
   | 'protapUserId'
   | 'protapUserEmail'
+  | 'nfcData'
+  | 'qrcData'
 
 type ValuesMap = {
-  theme: string;
-  session: { token: string };
-  language: string;
-  soundEnabled: boolean;
-  darkMode: boolean;
-  favorites: string[];
-  devServer?: string;
-  protapCode?: string;
-  protapUserId?: string;
-  protapUserEmail?: string;
+  theme: string
+  session: {token: string}
+  language: string
+  soundEnabled: boolean
+  darkMode: boolean
+  favorites: string[]
+  devServer?: string
+  protapCode?: string
+  protapUserId?: string
+  protapUserEmail?: string
+  nfcData?: string
+  qrcData?: string
 }
 
 interface Expiry {
-  expires?: Date;
+  expires?: Date
 }
 
 const cookieNameMap: Record<CookieType, string> = {
@@ -50,6 +54,8 @@ const cookieNameMap: Record<CookieType, string> = {
   protapCode: 'protap-code',
   protapUserId: 'protap-user-id',
   protapUserEmail: 'protap-user-email',
+  nfcData: 'nfc-data',
+  qrcData: 'qrc-data',
 }
 
 const defaults: CookieOptions = {
@@ -75,17 +81,17 @@ const cookieExpiryMap: Partial<Record<CookieType, number>> = {
 export const setCookie = async <T extends CookieType>(
   type: T,
   values: ValuesMap[T],
-  options?: Partial<CookieOptions & Expiry>
+  options?: Partial<CookieOptions & Expiry>,
 ) => {
   const name = cookieNameMap[type]
   const store = await cookies()
   const value = JSON.stringify(values)
   const maxAge = options?.maxAge ?? cookieExpiryMap[type] ?? defaults.maxAge
-  store.set(name, value, { ...defaults, maxAge, ...options })
+  store.set(name, value, {...defaults, maxAge, ...options})
 }
 
 export const getCookie = async <T extends CookieType>(
-  type: T
+  type: T,
 ): Promise<ValuesMap[T] | undefined> => {
   const name = cookieNameMap[type]
   const store = await cookies()

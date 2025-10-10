@@ -14,7 +14,7 @@ export const Content = () => {
     let serverTimer: NodeJS.Timeout | undefined
     let appTimer: NodeJS.Timeout | undefined
     if (typeof window !== 'undefined') {
-      onSuccess('re-up secure server online.')
+      onSuccess('Network Secure')
 
       serverTimer = setTimeout(() => {
         setState('Redirecting ...')

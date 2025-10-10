@@ -1,19 +1,21 @@
-'us</div>e client'
+'use client'
 
-import {useNFC, type NFCData} from '@/hooks/use-nfc' // Adjust path as needed
-import {Icon} from '@/lib/icons'
+import { useNFC, type NFCData } from '@/hooks/use-nfc' // Adjust path as needed
+import { Icon } from '@/lib/icons'
 import React from 'react'
 
 interface NFCScannerProps {
   onScan?: (data: NFCData) => void
   onError?: (error: string) => void
   maxHistorySize?: number
+  autoStop?: boolean
 }
 
 const NFCScanner: React.FC<NFCScannerProps> = ({
   onScan,
   onError,
   maxHistorySize = 10,
+  autoStop = true,
 }) => {
   const {
     lastScan,
@@ -29,6 +31,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
     onScan,
     onError,
     maxHistorySize,
+    autoStop,
   })
 
   if (isLoading) {

@@ -1,28 +1,13 @@
 'use client'
 
-import { useAuthCtx } from '@/ctx/auth'
-import { useMemo } from 'react'
-import { LeftPanel } from './left-panel'
-import { RightPanel, SocialLogin } from './right-panel'
+import {useAuthCtx} from '@/ctx/auth'
+import {useMemo} from 'react'
+import {LeftPanel} from './left-panel'
+import {RightPanel, SocialLogin} from './right-panel'
 
 export function FullSignIn() {
-  const { signInWithGoogle, signInWithGithub, user, signOut } = useAuthCtx()
-
-  const handleGoogle = async () => {
-    try {
-      await signInWithGoogle()
-    } catch (e: unknown) {
-      console.error(e)
-    }
-  }
-
-  const handleGithub = async () => {
-    try {
-      await signInWithGithub()
-    } catch (e: unknown) {
-      console.error(e)
-    }
-  }
+  // const { signInWithGoogle, signInWithGithub, user, signOut } = useAuthCtx()
+  const {user, onSignOut} = useAuthCtx()
 
   const socialLogins = useMemo(
     () =>
@@ -31,25 +16,16 @@ export function FullSignIn() {
           id: 'google',
           name: 'Google',
           icon: 'google',
-          fn: handleGoogle,
           disabled: false,
         },
         {
           id: 'github',
           name: 'GitHub',
           icon: 'github',
-          fn: handleGithub,
-          // disabled: true,
-        },
-        {
-          id: 'apple',
-          name: 'Apple',
-          icon: 'apple',
-          fn: handleGoogle,
-          disabled: true,
+          disabled: false,
         },
       ] as Array<SocialLogin>,
-    []
+    [],
   )
 
   return (
@@ -59,7 +35,7 @@ export function FullSignIn() {
           <LeftPanel />
           <RightPanel
             user={user}
-            signOut={signOut}
+            signOut={onSignOut}
             socialLogins={socialLogins}
           />
         </div>

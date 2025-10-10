@@ -1,4 +1,4 @@
-import { Toaster, toast } from 'react-hot-toast'
+import {Toaster, toast} from 'react-hot-toast'
 
 export const onSuccess = (msg: string) => toast.success(msg)
 export const onInfo = (msg: string) =>
@@ -13,6 +13,10 @@ export const onInfo = (msg: string) =>
   })
 export const onWarn = (msg: string) =>
   toast(msg, {
+    iconTheme: {
+      primary: '#10b981',
+      secondary: '#d1fae5',
+    },
     style: {
       padding: '8px 12px',
       backgroundColor: '#18181b',
@@ -31,7 +35,7 @@ export const Toasts = () => {
     <Toaster
       gutter={10}
       toastOptions={{
-        position: 'top-center',
+        position: 'bottom-center',
         duration: 4000,
         success: {
           style: {

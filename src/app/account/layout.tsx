@@ -4,6 +4,7 @@ import {useToggle} from '@/hooks/use-toggle'
 import {cn} from '@/lib/utils'
 
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
+import {ActivationCtxProvider} from '@/ctx/activation'
 import {Icon} from '@/lib/icons'
 import {usePathname, useRouter} from 'next/navigation'
 import {useCallback} from 'react'
@@ -41,10 +42,12 @@ export default function Layout({children}: {children: React.ReactNode}) {
           className={cn(
             'overflow-hidden',
             'transition-all duration-500 ease-in-out',
-            `${on ? 'max-h-[70lvh] translate-y-10' : 'max-h-0'}`,
+            `${on ? 'max-h-[90lvh] md:max-h-[90lvh] translate-y-10' : 'max-h-0'}`,
           )}>
-          <div className='h-[70lvh] md:pb-40 md:w-6xl relative border-zinc-600'>
-            <FullActivation />
+          <div className='h-[90lvh] md:h-[90lvh] md:w-6xl relative border-zinc-600'>
+            <ActivationCtxProvider>
+              <FullActivation />
+            </ActivationCtxProvider>
           </div>
         </div>
         {children}

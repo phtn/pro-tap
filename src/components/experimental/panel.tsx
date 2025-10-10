@@ -1,4 +1,5 @@
 import {AnimatePresence, motion} from 'motion/react'
+import {ReactNode} from 'react'
 import {
   FloatingPanelBody,
   FloatingPanelCloseButton,
@@ -8,7 +9,13 @@ import {
   FloatingPanelTrigger,
 } from '../ui/floating-panel'
 
-export const ColorPickerFloatingPanel = () => {
+interface ColorPickerFloatingPanelProps {
+  children?: ReactNode
+}
+
+export const ColorPickerFloatingPanel = ({
+  children,
+}: ColorPickerFloatingPanelProps) => {
   const colors = [
     '#FF5733',
     '#33FF57',
@@ -21,8 +28,8 @@ export const ColorPickerFloatingPanel = () => {
     <FloatingPanelRoot>
       <FloatingPanelTrigger
         title='Choose Color'
-        className='flex items-center space-x-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors'>
-        <span>Choose Color</span>
+        className='p-0 h-fit w-full bg-transparent'>
+        {children}
       </FloatingPanelTrigger>
       <FloatingPanelContent className='w-64'>
         <FloatingPanelBody>

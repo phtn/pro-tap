@@ -46,7 +46,7 @@ export default function ListItem({items, className, onClick}: Props) {
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
-            className='bg-smooth-1000/10 /10 pointer-events-none absolute inset-0 z-10 bg-blend-luminosity backdrop-blur-xl'
+            className='pointer-events-none absolute inset-0 z-10 bg-blend-luminosity backdrop-blur-xl'
           />
         ) : null}
       </AnimatePresence>
@@ -55,7 +55,7 @@ export default function ListItem({items, className, onClick}: Props) {
           <>
             <div className='group absolute inset-0 z-10 grid place-items-center'>
               <motion.div
-                className='bg-background flex h-fit w-[90%] cursor-pointer flex-col items-start gap-4 overflow-hidden border p-4 shadow-xs'
+                className='border border-background/20 flex h-fit w-full cursor-pointer flex-col items-start gap-4 overflow-hidden p-4 shadow-xs'
                 ref={ref}
                 layoutId={`workItem-${activeItem.value}`}
                 style={{borderRadius: 12}}>
@@ -63,7 +63,7 @@ export default function ListItem({items, className, onClick}: Props) {
                   <motion.div layoutId={`workItemLogo-${activeItem.value}`}>
                     <Icon
                       name={activeItem.icon}
-                      className='text-pink-500 size-6'
+                      className='dark:text-pink-100 size-6'
                     />
                   </motion.div>
                   <div className='flex grow items-center justify-between'>

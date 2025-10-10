@@ -1,14 +1,14 @@
+import {Button} from '@/components/ui/button'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {motion} from 'motion/react'
 import Image from 'next/image'
-import { motion } from 'motion/react'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/lib/icons'
-import { cn } from '@/lib/utils'
 
 interface ProfileDetailScreenProps {
-  onNext: VoidFunction;
-  onPrev: VoidFunction;
-  onBack: VoidFunction;
-  onSendMessage: VoidFunction;
+  onNext: VoidFunction
+  onPrev: VoidFunction
+  onBack: VoidFunction
+  onSendMessage: VoidFunction
 }
 
 export const ProfileDetailScreen = ({
@@ -29,12 +29,12 @@ export const ProfileDetailScreen = ({
       endorsements: 89,
     },
     skills: [
-      { name: 'TypeScript', level: 95 },
-      { name: 'Rust', level: 90 },
-      { name: 'Go', level: 88 },
-      { name: 'Zig', level: 85 },
-      { name: 'Elixir', level: 78 },
-      { name: 'C', level: 75 },
+      {name: 'TypeScript', level: 95},
+      {name: 'Rust', level: 90},
+      {name: 'Go', level: 88},
+      {name: 'Zig', level: 85},
+      {name: 'Elixir', level: 78},
+      {name: 'C', level: 75},
     ],
     experience: [
       {
@@ -57,11 +57,10 @@ export const ProfileDetailScreen = ({
       {/* Top Bar */}
       <div className='absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-4 bg-gradient-to-b from-black/50 to-black backdrop-blur-lg'>
         <Button
-          size='icon'
+          size='sq'
           variant='ghost'
           onClick={onBack}
-          className='rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50'
-        >
+          className='rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50'>
           <Icon
             name='chevron-right'
             className='size-6 aspect-square rotate-180'
@@ -69,11 +68,10 @@ export const ProfileDetailScreen = ({
         </Button>
         <div className='text-white/80 text-sm font-medium'>Profile Details</div>
         <Button
-          size='icon'
+          size='sq'
           variant='ghost'
           onClick={onNext}
-          className='rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50'
-        >
+          className='rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50'>
           <Icon name='chevron-right' className='size-6 aspect-square' />
         </Button>
       </div>
@@ -82,11 +80,10 @@ export const ProfileDetailScreen = ({
       <div className='flex-1 bg-black text-white overflow-y-scroll'>
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className='relative pt-20 pb-6 px-6 bg-gradient-to-b from-gray-900 to-black'
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5}}
+          className='relative pt-20 pb-6 px-6 bg-gradient-to-b from-gray-900 to-black'>
           <div className='flex items-center space-x-4 mb-4'>
             <div className='relative'>
               <Image
@@ -141,11 +138,10 @@ export const ProfileDetailScreen = ({
 
         {/* Bio Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className='p-6 border-y border-slate-500/30'
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5, delay: 0.1}}
+          className='p-6 border-y border-slate-500/30'>
           <h2 className='font-semibold text-slate-200 mb-4 font-space tracking-tight'>
             About
           </h2>
@@ -156,11 +152,10 @@ export const ProfileDetailScreen = ({
 
         {/* Skills Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className='p-6 border-b border-slate-500/30'
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5, delay: 0.2}}
+          className='p-6 border-b border-slate-500/30'>
           <h2 className='font-semibold text-slate-200 mb-4 font-space tracking-tight'>
             Skills
           </h2>
@@ -174,22 +169,22 @@ export const ProfileDetailScreen = ({
                 <div className='w-full bg-gradient-to-r from-slate-400 via-slate-500 to-slate-600 rounded-full h-1.5 relative'>
                   <motion.div
                     className='absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-emerald-400 to-progress-end z-0'
-                    style={{ filter: 'blur(8px)' }} // Apply blur directly for the glow effect
-                    initial={{ width: 0 }}
-                    animate={{ width: `${skill.level}%` }}
-                    transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+                    style={{filter: 'blur(8px)'}} // Apply blur directly for the glow effect
+                    initial={{width: 0}}
+                    animate={{width: `${skill.level}%`}}
+                    transition={{duration: 0.8, delay: 0.3 + index * 0.1}}
                   />
                   <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${skill.level}%` }}
-                    transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+                    initial={{width: 0}}
+                    animate={{width: `${skill.level}%`}}
+                    transition={{duration: 0.8, delay: 0.3 + index * 0.1}}
                     className={cn(
                       'h-1.5 rounded-full bg-gradient-to-r',
                       skill.level >= 90
                         ? 'from-emerald-400 to-progress-end'
                         : skill.level >= 80
                           ? 'from-sky-300 to-sky-100'
-                          : 'from-orange-300 to-orange-100'
+                          : 'from-orange-300 to-orange-100',
                     )}
                   />
                 </div>
@@ -200,11 +195,10 @@ export const ProfileDetailScreen = ({
 
         {/* Experience Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className='p-6 border-0 border-slate-500/50'
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5, delay: 0.3}}
+          className='p-6 border-0 border-slate-500/50'>
           <h2 className='font-semibold text-slate-200 mb-4 font-space tracking-tight'>
             Experience
           </h2>
@@ -234,23 +228,20 @@ export const ProfileDetailScreen = ({
 
         {/* Action Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className='px-6 pb-8 pt-6 space-y-3 font-space'
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5, delay: 0.4}}
+          className='px-6 pb-8 pt-6 space-y-3 font-space'>
           <Button
             size='lg'
-            className='w-full bg-teal-500 hover:bg-teal-600 text-white'
-          >
+            className='w-full bg-teal-500 hover:bg-teal-600 text-white'>
             Connect
           </Button>
           <Button
             size='lg'
             onClick={onSendMessage}
             variant='outline'
-            className='w-full border-gray-700 text-slate-700 hover:text-teal-300 hover:bg-gray-700'
-          >
+            className='w-full border-gray-700 text-slate-700 hover:text-teal-300 hover:bg-gray-700'>
             Send Message
           </Button>
         </motion.div>

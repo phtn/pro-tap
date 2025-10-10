@@ -1,6 +1,9 @@
 import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
+  experimental: {
+    reactCompiler: true,
+  },
   allowedDevOrigins: [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -21,17 +24,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          // Ensure outgoing requests use a safer referrer policy than "unsafe-url"
-          {key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin'},
-        ],
-      },
-    ]
   },
 }
 

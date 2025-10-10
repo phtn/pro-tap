@@ -28,7 +28,7 @@ export const VisualContent = () => {
       </div>
       <div
         onClick={toggle}
-        className='absolute top-0 size-full flex items-center justify-center'>
+        className='absolute -top-6 size-full flex items-center justify-center'>
         <ProtapCard />
       </div>
     </div>

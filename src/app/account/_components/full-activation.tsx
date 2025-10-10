@@ -1,6 +1,14 @@
-// import {useToggle} from '@/hooks/use-toggle'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import {useActivationCtx} from '@/ctx/activation'
+import {onSuccess} from '@/ctx/toast'
+import {NFCData} from '@/hooks/use-nfc'
 import {cn} from '@/lib/utils'
-// import {useRouter} from 'next/navigation'
+import {macStr} from '@/utils/macstr'
 import {useCallback} from 'react'
 import ActivationTabs from './tab-activation'
 
@@ -15,9 +23,12 @@ export const FullActivation = ({scrollRef}: Props) => {
   // const handleGetProtap = useCallback(() => {
   //   router.push('/pricing')
   // }, [router])
+  //
+
+  const {openProgress, toggleOpenProgress, nfcData} = useActivationCtx()
 
   const onNFCScan = useCallback(() => {
-    console.log('Scanning NFC...')
+    onSuccess('Scanned NFC Successfully')
   }, [])
   const onNFCError = useCallback(() => {
     console.log('Scanning NFC...')
@@ -26,18 +37,54 @@ export const FullActivation = ({scrollRef}: Props) => {
     <div
       ref={scrollRef}
       className={cn(
-        ' md:space-x-28 overflow-hidden shadow-lg md:dark:bg-background',
-        'bg-gradient-to-l md:from-zinc-300/90 md:via-zinc-300/20 md:to-zinc-300/90',
-        'md:dark:from-teal-100/80  md:dark:from-35% md:dark:via-neutral-200/10 md:dark:to-teal-100/90 md:dark:to-75% md:dark:backdrop-blur-lg',
-        'dark:border border-zinc-400 dark:border-zinc-950 md:rounded-[6.5rem]',
-        'grid grid-cols-1 md:grid-cols-2 h-full w-full',
+        ' overflow-hidden shadow-lg md:dark:bg-background',
+        // 'bg-gradient-to-l md:from-zinc-300/90 md:via-zinc-300/20 md:to-zinc-300/90',
+        // 'md:dark:from-teal-100/80  md:dark:from-35% md:dark:via-neutral-200/10 md:dark:to-teal-100/90 md:dark:to-75% md:dark:backdrop-blur-lg',
+        'dark:border-none border-zinc-400 dark:border-zinc-950 md:rounded-[6.5rem]',
+        'grid grid-cols-1 h-full w-full',
       )}>
-      <div className='h-[85vh] p-4 border border-zinc-500'>
+      <div className='h-[85vh] md:h-[70vh] px-4 pb-4 md:px-0'>
         <ActivationTabs nfcProps={{onScan: onNFCScan, onError: onNFCError}} />
       </div>
+      <ActivationProgress
+        open={openProgress}
+        onOpenChange={toggleOpenProgress}
+        nfcData={nfcData}
+        qrcData={null}
+      />
     </div>
   )
 }
+
+interface ActivationProgressProps {
+  open: boolean
+  onOpenChange: VoidFunction
+  nfcData: NFCData | null
+  qrcData: string | null
+}
+
+const ActivationProgress = ({
+  open,
+  onOpenChange,
+  nfcData,
+  qrcData,
+}: ActivationProgressProps) => (
+  <Sheet open={open} onOpenChange={onOpenChange}>
+    <SheetHeader>
+      <SheetTitle>Activating</SheetTitle>
+    </SheetHeader>
+
+    <SheetContent
+      side='bottom'
+      className='space-y-4 h-[40lvh] dark:bg-zinc-700 rounded-t-3xl overflow-scroll p-2'>
+      <pre className='text-xs'>
+        {nfcData && JSON.stringify(nfcData, null, 2)}
+      </pre>
+      <pre>{nfcData && macStr(nfcData.serialNumber, 16)}</pre>
+      <span>{qrcData}</span>
+    </SheetContent>
+  </Sheet>
+)
 
 // const Bank = () => (
 //   <>

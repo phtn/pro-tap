@@ -1,25 +1,49 @@
-import {VoidPromise} from '@/app/types'
-import {useCallback, useEffect, useRef, useState} from 'react'
+import { VoidPromise } from '@/app/types'
+import { onWarn } from '@/ctx/toast'
+import { macStr } from '@/utils/macstr'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 // NFC Web API TypeScript definitions
-interface NDEFMessage {
-  records: NDEFRecord[]
-}
-
-interface NDEFRecord {
+// Reading types (from NDEFReadingEvent)
+interface NDEFRecordRead {
   recordType: string
   mediaType?: string
   id?: string
-  data?: BufferSource
+  data?: DataView | BufferSource | string | unknown
   encoding?: string
   lang?: string
 }
 
+interface NDEFMessage {
+  records: NDEFRecordRead[]
+}
+
+// Writing types (for ndef.write)
+interface NDEFRecordInit {
+  recordType: string
+  mediaType?: string
+  id?: string
+  data?:
+  | string
+  | BufferSource
+  | DataView
+  | { records: NDEFRecordInit[] }
+  | unknown
+  encoding?: string
+  lang?: string
+}
+
+interface NDEFMessageInit {
+  records: NDEFRecordInit[]
+}
+
+type NDEFMessageSource = string | BufferSource | NDEFMessageInit
+
 interface NDEFReader extends EventTarget {
-  scan(options?: {signal?: AbortSignal}): Promise<void>
+  scan(options?: { signal?: AbortSignal }): Promise<void>
   write(
-    message: string | BufferSource | NDEFMessage,
-    options?: {overwrite?: boolean; signal?: AbortSignal},
+    message: NDEFMessageSource,
+    options?: { overwrite?: boolean; signal?: AbortSignal },
   ): Promise<void>
   addEventListener(
     type: 'reading',
@@ -45,7 +69,7 @@ interface NDEFReadingEvent extends Event {
 declare global {
   interface Window {
     NDEFReader: {
-      new (): NDEFReader
+      new(): NDEFReader
     }
   }
 }
@@ -65,6 +89,7 @@ export interface UseNFCOptions {
   onScan?: (data: NFCData) => void
   onError?: (error: string) => void
   maxHistorySize?: number
+  autoStop?: boolean
 }
 
 export interface UseNFCReturn {
@@ -78,10 +103,24 @@ export interface UseNFCReturn {
   clearHistory: VoidFunction
   formatRecordData: (record: NFCData['records'][0]) => string
   isLoading: boolean
+
+  // Write APIs
+  writeToTag: VoidPromise
+  writeSmartPoster: VoidPromise
+  makeReadOnly: VoidPromise
+
+  // UI state for writing
+  messages: string[]
+  writeText: string
+  writeUrl: string
+  posterTitle: string
+  posterUrl: string
+  posterAction: string
+  status: string
 }
 
 export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
-  const {onScan, onError, maxHistorySize = 10} = options
+  const { onScan, onError, maxHistorySize = 1000, autoStop = true } = options
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isScanning, setIsScanning] = useState<boolean>(false)
@@ -92,6 +131,13 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
   const nfcReaderRef = useRef<NDEFReader | null>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
   const autoStoppedRef = useRef<boolean>(false)
+  const [messages, setMessages] = useState<string[]>([])
+  const [writeText, setWriteText] = useState<string>('')
+  const [writeUrl, setWriteUrl] = useState('')
+  const [posterTitle, setPosterTitle] = useState('Protap Activation')
+  const [posterUrl, setPosterUrl] = useState('https://protap.ph/activate/')
+  const [posterAction, setPosterAction] = useState<string>('exec')
+  const [status, setStatus] = useState<string>('Ready')
 
   // Check NFC support on mount
   useEffect(() => {
@@ -140,14 +186,30 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
 
   const handleNFCReading = useCallback(
     (event: NDEFReadingEvent): void => {
-      const {serialNumber, message} = event
+      const { serialNumber, message } = event
 
       const records = message.records.map((record): NFCData['records'][0] => {
         let data = ''
 
-        if (record.data) {
-          const decoder = new TextDecoder(record.encoding || 'utf-8')
-          data = decoder.decode(record.data)
+        if (record.data !== undefined) {
+          const maybeData = record.data
+          const isArrayBuffer = maybeData instanceof ArrayBuffer
+          const isView = ArrayBuffer.isView(maybeData as unknown)
+          if (isArrayBuffer || isView) {
+            const decoder = new TextDecoder(
+              (record.encoding as string) || 'utf-8',
+            )
+            data = decoder.decode(maybeData as BufferSource)
+          } else if (typeof maybeData === 'string') {
+            data = maybeData
+          } else {
+            try {
+              data = JSON.stringify(maybeData as unknown)
+            } catch {
+              onWarn('Unsupported record data')
+              data = '[Unsupported record data]'
+            }
+          }
         }
 
         return {
@@ -172,20 +234,25 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
         onScan(nfcData)
       }
 
-      // Auto-stop scanning after a successful read
-      autoStoppedRef.current = true
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-        abortControllerRef.current = null
+      // Auto-stop scanning after a successful read if configured
+      if (autoStop) {
+        autoStoppedRef.current = true
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort()
+          abortControllerRef.current = null
+        }
+        if (nfcReaderRef.current) {
+          nfcReaderRef.current.removeEventListener('reading', handleNFCReading)
+          nfcReaderRef.current.removeEventListener(
+            'readingerror',
+            handleNFCError,
+          )
+          nfcReaderRef.current = null
+        }
+        setIsScanning(false)
       }
-      if (nfcReaderRef.current) {
-        nfcReaderRef.current.removeEventListener('reading', handleNFCReading)
-        nfcReaderRef.current.removeEventListener('readingerror', handleNFCError)
-        nfcReaderRef.current = null
-      }
-      setIsScanning(false)
     },
-    [onScan, maxHistorySize, handleNFCError],
+    [onScan, maxHistorySize, handleNFCError, autoStop],
   )
 
   const startScanning = useCallback(async (): Promise<void> => {
@@ -204,11 +271,12 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
       nfcReaderRef.current = reader
       abortControllerRef.current = controller
       setIsScanning(true)
+      autoStoppedRef.current = false
 
       reader.addEventListener('reading', handleNFCReading)
       reader.addEventListener('readingerror', handleNFCError)
 
-      await reader.scan({signal: controller.signal})
+      await reader.scan({ signal: controller.signal })
     } catch (error: unknown) {
       let errorMessage = 'Failed to start NFC scanning: Unknown error'
 
@@ -288,6 +356,173 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
     [],
   )
 
+  const writeToTag = async (): Promise<void> => {
+    if (!('NDEFReader' in window)) {
+      setStatus('NFC not supported')
+      return
+    }
+
+    if (!writeText && !writeUrl) {
+      setStatus('Please enter text or URL to write')
+      return
+    }
+
+    try {
+      const ndef = new window.NDEFReader()
+      const records: { recordType: string; data: string }[] = []
+
+      if (writeText) {
+        records.push({ recordType: 'text', data: writeText })
+      }
+
+      if (writeUrl) {
+        records.push({ recordType: 'url', data: writeUrl })
+      }
+
+      setStatus('Hold an NFC tag near your device to write...')
+
+      await ndef.write({ records })
+
+      setStatus('✅ Successfully wrote to NFC tag!')
+      setMessages((prev) => [
+        `✍️ Wrote: ${writeText ? `Text: "${writeText}"` : ''} ${writeUrl ? `URL: "${writeUrl}"` : ''}`,
+        ...prev,
+      ])
+      setWriteText('')
+      setWriteUrl('')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          setStatus('Write cancelled - no tag was detected')
+        } else if (error.name === 'NotAllowedError') {
+          setStatus('NFC permission denied')
+        } else if (error.name === 'NotSupportedError') {
+          setStatus('Tag is not writable or incompatible')
+        } else {
+          setStatus(`Write error: ${error.message}`)
+        }
+      } else {
+        setStatus('Unknown write error occurred')
+      }
+    }
+  }
+
+  const writeSmartPoster = async (serialNumber?: string): Promise<void> => {
+    if (!('NDEFReader' in window)) {
+      setStatus('NFC not supported')
+      return
+    }
+
+    if (!posterUrl) {
+      setStatus('Please enter a URL for the Smart Poster')
+      return
+    }
+
+    try {
+      const ndef = new window.NDEFReader()
+
+      // Create the Smart Poster payload with nested records
+      const smartPosterRecords: Array<{
+        recordType: string
+        data: string
+        lang?: string
+      }> = [{ recordType: 'url', data: posterUrl + '?id=' + (serialNumber ? serialNumber.toString() : macStr('id')) }]
+
+      if (posterTitle) {
+        smartPosterRecords.push({
+          recordType: 'text',
+          data: posterTitle,
+          lang: 'en',
+        })
+      }
+
+      // Action record: 0x00 = exec (default), 0x01 = save, 0x02 = edit
+      const actionByte =
+        posterAction === 'save'
+          ? '\x01'
+          : posterAction === 'edit'
+            ? '\x02'
+            : '\x00'
+      smartPosterRecords.push({
+        recordType: ':act',
+        data: actionByte,
+      })
+
+      setStatus('Hold an NFC tag near your device to write Smart Poster...')
+
+      await ndef.write({
+        records: [
+          {
+            recordType: 'smart-poster',
+            data: { records: smartPosterRecords },
+          },
+        ],
+      })
+
+      setStatus('✅ Successfully wrote Smart Poster to NFC tag!')
+      setMessages((prev) => [
+        `📋 Wrote Smart Poster: "${posterTitle || 'No title'}" → ${posterUrl} (${posterAction})`,
+        ...prev,
+      ])
+      setPosterTitle('')
+      setPosterUrl('')
+      setPosterAction('')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          setStatus('Write cancelled - no tag was detected')
+        } else if (error.name === 'NotAllowedError') {
+          setStatus('NFC permission denied')
+        } else if (error.name === 'NotSupportedError') {
+          setStatus('Tag is not writable or incompatible')
+        } else {
+          setStatus(`Write error: ${error.message}`)
+        }
+      } else {
+        setStatus('Unknown write error occurred')
+      }
+    }
+  }
+
+  const makeReadOnly = async (): Promise<void> => {
+    if (!('NDEFReader' in window)) {
+      setStatus('NFC not supported')
+      return
+    }
+
+    if (
+      !window.confirm('This will make the tag READ-ONLY permanently. Continue?')
+    ) {
+      return
+    }
+
+    try {
+      const ndef = new window.NDEFReader()
+      const records: { recordType: string; data: string }[] = []
+
+      if (writeText) {
+        records.push({ recordType: 'text', data: writeText })
+      }
+
+      if (writeUrl) {
+        records.push({ recordType: 'url', data: writeUrl })
+      }
+
+      setStatus('Hold an NFC tag to make it read-only...')
+
+      await ndef.write({ records }, { overwrite: false })
+
+      setStatus('✅ Tag is now read-only!')
+      setMessages((prev) => ['🔒 Made tag read-only', ...prev])
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setStatus(`Error: ${error.message}`)
+      } else {
+        setStatus('Unknown error occurred')
+      }
+    }
+  }
+
   useEffect(() => {
     if (scanDetails) {
       console.log(JSON.stringify(scanDetails, null, 2))
@@ -305,6 +540,16 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
     clearHistory,
     startScanning,
     formatRecordData,
+    writeToTag,
+    writeSmartPoster,
+    makeReadOnly,
+    messages,
+    writeText,
+    writeUrl,
+    posterTitle,
+    posterUrl,
+    posterAction,
+    status,
   }
 }
 

@@ -4,10 +4,11 @@ import {
   initializeApp,
   type FirebaseOptions,
 } from 'firebase/app'
-import {connectAuthEmulator, getAuth} from 'firebase/auth'
-import {connectFirestoreEmulator, getFirestore} from 'firebase/firestore'
+import {getAuth} from 'firebase/auth'
+import {getFirestore} from 'firebase/firestore'
+import {getStorage} from 'firebase/storage'
 
-const config: FirebaseOptions = {
+export const config: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_APIKEY,
   authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
   projectId: process.env.NEXT_PUBLIC_PROJECTID,
@@ -18,14 +19,17 @@ const config: FirebaseOptions = {
 }
 
 const app = getApps().length ? getApp() : initializeApp(config)
-export const auth = getAuth(app)
-export const db = getFirestore(app)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const storage = getStorage(app)
+
+export {app, auth, db, storage}
 
 // Running on localhost to connect to emulators
-const FIRESTORE_EMULATOR_PORT = 8080 // Default port for Firestore
-const AUTH_EMULATOR_PORT = 9099 // Default port for Auth
+// const FIRESTORE_EMULATOR_PORT = 8080 // Default port for Firestore
+// const AUTH_EMULATOR_PORT = 9099 // Default port for Auth
 
-if (process.env.NODE_ENV === 'development') {
-  connectFirestoreEmulator(db, '127.0.0.1', FIRESTORE_EMULATOR_PORT)
-  connectAuthEmulator(auth, `http://127.0.0.1:${AUTH_EMULATOR_PORT}`)
-}
+// if (process.env.NODE_ENV === 'development') {
+//   connectFirestoreEmulator(db, '127.0.0.1', FIRESTORE_EMULATOR_PORT, {})
+//   connectAuthEmulator(auth, `http://127.0.0.1:${AUTH_EMULATOR_PORT}`)
+// }

@@ -72,24 +72,23 @@ export default function ShimmerText({
       controls.start({
         backgroundPosition:
           variant === 'chatgpt'
-            ? ['100% center', '-200% center']
-            : ['200% center', '-200% center'],
+            ? ['100% center', '-300% center']
+            : ['300% center', '-300% center'],
         transition: {
-          duration: duration ?? (variant === 'chatgpt' ? 1.65 : 2.5),
+          duration: duration ?? (variant === 'chatgpt' ? 18.65 : 19.5),
           ease: (ease ??
             (variant === 'chatgpt'
-              ? [0.4, 0.0, 0.2, 1.4]
+              ? [0.8, 0.0, 0.2, 1.4]
               : 'linear')) as Transition['ease'],
           repeat: loop ? Number.POSITIVE_INFINITY : 0,
-          repeatDelay: 3,
-          delay: 3,
+          repeatDelay: 1,
         },
       })
     } else {
       controls.stop()
       controls.set({
         backgroundPosition:
-          variant === 'chatgpt' ? '200% center' : '200% center',
+          variant === 'chatgpt' ? '300% center' : '300% center',
       })
     }
   }, [
@@ -119,7 +118,7 @@ export default function ShimmerText({
         : `bg-gradient-to-r ${variant === 'chatgpt' ? darkChatgpt : darkDefault}`
 
   const bgLengthClass =
-    variant === 'chatgpt' ? 'bg-[length:300%_100%]' : 'bg-[length:200%_100%]'
+    variant === 'chatgpt' ? 'bg-[length:400%_200%]' : 'bg-[length:200%_400%]'
 
   return (
     <div className='flex items-center justify-center'>
@@ -127,7 +126,7 @@ export default function ShimmerText({
         className='relative py-2 overflow-hidden'
         initial={{opacity: 0, y: 0}}
         animate={{opacity: 1, y: 0}}
-        transition={{duration: 1.25}}>
+        transition={{duration: 18.5}}>
         <motion.h1
           className={cn(
             'text-3xl font-semibold tracking-tight bg-clip-text text-transparent',
@@ -137,7 +136,7 @@ export default function ShimmerText({
           )}
           initial={{
             backgroundPosition:
-              variant === 'chatgpt' ? '300% center' : '100% center',
+              variant === 'chatgpt' ? '400% center' : '100% center',
           }}
           animate={controls}
           onHoverStart={playOnHover ? () => setIsHovered(true) : undefined}

@@ -1,12 +1,12 @@
-import { Prism } from '@/components/react-bits/prism'
-import { TextTrain } from '@/components/ui/text-train'
-import { useMobile } from '@/hooks/use-mobile'
-import { Icon } from '@/lib/icons'
+import {Prism} from '@/components/react-bits/prism'
+import {TextTrain} from '@/components/ui/text-train'
+import {useMobile} from '@/hooks/use-mobile'
+import {Icon} from '@/lib/icons'
 
 export const LeftPanel = () => {
   const isMobile = useMobile()
   return (
-    <div className='relative lg:w-1/2 h-[75lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between'>
+    <div className='relative lg:w-1/2 h-[25lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col justify-between'>
       <div className='absolute w-full h-full md:opacity-100 opacity-30'>
         <Prism
           animationType='3drotate'

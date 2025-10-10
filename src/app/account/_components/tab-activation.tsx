@@ -5,14 +5,9 @@ import {UseNFCOptions} from '@/hooks/use-nfc'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {AnimatePresence, motion} from 'motion/react'
-import {
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from 'react'
+import {useMemo, useRef, useState, type KeyboardEvent} from 'react'
 import {CardActivationContent} from './card-activation'
+import {QRCodeActivationContent} from './qr-activation'
 
 interface ActivationItem {
   icon: IconName
@@ -20,7 +15,7 @@ interface ActivationItem {
   description?: string
 }
 
-interface BaseTabProps {
+export interface BaseTabProps {
   items?: TabItem[]
   defaultTabId?: string
   className?: string
@@ -66,21 +61,24 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
       [
         {
           id: 'qrcode',
-          title: 'QR Code Activation',
+          title: 'QR Code',
+          label: 'With QR Code',
           description:
             'Scan QR Code with your smartphone camera or upload an image',
           color: 'bg-zinc-500 hover:bg-zinc-600',
           icon: 'qrcode-scan',
-          iconStyle: 'text-white size-24',
-          content: <div>QR Code Content</div>,
+          iconStyle: 'text-white md:size-54 size-36 translate-y-6',
+          content: <QRCodeActivationContent />,
         },
         {
           id: 'nxp-ntag213',
-          title: 'NTAG Card',
+          title: 'Protap Card',
+          label: 'With Protap Card',
           description: 'Scan NTAG Card with your NFC enabled smartphone',
           color: 'bg-neutral-300 hover:bg-neutral-500',
           icon: 'card-scan',
-          iconStyle: 'size-64',
+          iconStyle:
+            'absolute md:size-96 size-64 top-20 md:top-24 left-1/2 -translate-x-1/2',
           content: <CardActivationContent />,
         },
       ] as (TabItem & ActivationItem)[],
@@ -89,39 +87,12 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
 
   const [selected, setSelected] = useState<string>('qrcode')
   const [direction, setDirection] = useState(0)
-  const [dimensions, setDimensions] = useState({width: 0, left: 0})
 
   // Reference for the selected button
   const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Update dimensions whenever selected tab changes or on mount
-  useLayoutEffect(() => {
-    const updateDimensions = () => {
-      const selectedButton = buttonRefs.current.get(selected)
-      const container = containerRef.current
-
-      if (selectedButton && container) {
-        const rect = selectedButton.getBoundingClientRect()
-        const containerRect = container.getBoundingClientRect()
-
-        setDimensions({
-          width: rect.width,
-          left: rect.left - containerRect.left,
-        })
-      }
-    }
-
-    // Initial update
-    requestAnimationFrame(() => {
-      updateDimensions()
-    })
-
-    // Update on resize
-    window.addEventListener('resize', updateDimensions)
-    return () => window.removeEventListener('resize', updateDimensions)
-  }, [selected])
-
   const handleTabClick = (tabId: string) => {
     const currentIndex = activationTabs.findIndex((tab) => tab.id === selected)
     const newIndex = activationTabs.findIndex((tab) => tab.id === tabId)
@@ -145,8 +116,8 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
   return (
     <div className='flex flex-col h-full w-full'>
       {/* Card Content Area */}
-      <div className='flex-1 mb-4 relative bg-indigo-400/5'>
-        <div className='md:rounded-3xl w-full min-h-full relative overflow-hidden'>
+      <div className='flex-1 mb-8 md:mb-4 relative'>
+        <div className='md:rounded-3xl w-full h-full relative overflow-hidden'>
           <div className='absolute inset-0'>
             <AnimatePresence
               initial={false}
@@ -160,14 +131,20 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                 animate='center'
                 exit='exit'
                 transition={transition as any}
-                className='absolute bg-red-400 p-4 inset-0 w-full will-change-transform'
+                className='absolute p-0 inset-0 w-full will-change-transform'
                 style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                 }}>
-                <div className='relative'>
-                  <div className='bg-zinc-400 relative p-6 space-y-6 h-full flex flex-col'>
-                    <div className='flex h-full items-center justify-center space-x-4'>
+                <div className='relative h-full'>
+                  <div className='bg-zinc-800/20 rounded-4xl md:rounded-2xl relative p-6 md:p-16 h-full flex flex-col overflow-hidden font-figtree'>
+                    <h2 className='opacity-80 md:text-base text-sm'>
+                      Account Activation
+                    </h2>
+                    <h3 className='text-2xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>
+                      {selectedItem?.title}
+                    </h3>
+                    <div className='flex h-full w-full items-center justify-center'>
                       {selectedItem && (
                         <Icon
                           name={selectedItem.icon}
@@ -175,9 +152,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                         />
                       )}
                     </div>
-                    <h3 className='text-2xl h-full font-semibold tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>
-                      {selectedItem?.title}
-                    </h3>
+
                     <div className='relative flex flex-1'>
                       {selectedItem?.content}
                     </div>
@@ -191,33 +166,15 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
 
       {/* Bottom Toolbar */}
       <div
-        ref={containerRef}
         role='tablist'
+        ref={containerRef}
         aria-label='Smooth tabs'
         className={cn(
-          'flex items-center justify-between gap-1 my-4 mt-auto relative',
+          'flex items-center justify-between gap-1 my-6 relative',
           'dark:bg-transparent w-full mx-auto',
           'transition-all duration-200',
           className,
         )}>
-        {/* Sliding Background */}
-        <motion.div
-          className={cn('absolute  z-[1]', selectedItem?.color)}
-          initial={false}
-          animate={{
-            width: dimensions.width - 14,
-            x: dimensions.left + 8,
-            opacity: 1,
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 380,
-            damping: 30,
-          }}
-          exit={{opacity: 0}}
-          style={{height: 'calc(100% - 6px)', top: '4px'}}
-        />
-
         <div className='grid grid-cols-2 w-full gap-4 relative z-[2]'>
           {activationTabs.map((tab) => {
             const isSelected = selected === tab.id
@@ -245,10 +202,10 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                   'truncate w-full',
                   'inset-shadow-[0_1px_rgb(237_237_237)]/20',
                   isSelected
-                    ? 'text-accent bg-slate-500 dark:bg-slate-400 dark:hover:bg-slate-500/50'
-                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                    ? 'text-accent bg-slate-500 dark:bg-slate-500/95 dark:hover:bg-slate-500/80'
+                    : 'border-muted-foreground/50 hover:bg-muted/80 hover:text-foreground',
                 )}>
-                <span className='truncate'>{tab.title}</span>
+                <span className='truncate'>{tab.label}</span>
               </SexyButton>
             )
           })}

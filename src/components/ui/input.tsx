@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import {cn} from '@/lib/utils'
 
-function Input ({ className, type, ...props }: React.ComponentProps<'input'>) {
+function Input({className, type, ...props}: React.ComponentProps<'input'>) {
   return (
     <input
       type={type}
@@ -18,11 +18,11 @@ function Input ({ className, type, ...props }: React.ComponentProps<'input'>) {
         'focus-visible:border-ring dark:focus-visible:ring-cyan-100/60 focus-visible:ring-ring/40 focus-visible:ring-[3px]',
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         '',
-        className
+        className,
       )}
       {...props}
     />
   )
 }
 
-export { Input }
+export {Input}

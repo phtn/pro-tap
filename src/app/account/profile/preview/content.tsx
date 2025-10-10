@@ -46,7 +46,8 @@ export const Content = () => {
         <SexyButton
           disabled={onUploader}
           onClick={toggleUploader}
-          className=''></SexyButton>
+          className=''
+        />
       </div>
     </main>
   )

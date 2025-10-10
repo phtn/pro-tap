@@ -24,6 +24,7 @@ import {
 export interface TabItem {
   id: string
   title: string
+  label?: string
   icon?: IconName
   content?: ReactNode
   cardContent?: ReactNode

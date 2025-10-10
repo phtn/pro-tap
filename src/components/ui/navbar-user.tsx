@@ -1,11 +1,11 @@
-import {useAuthCtx} from '@/ctx/auth'
 import {NavbarCtxProvider} from '@/ctx/navbar'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import Link from 'next/link'
 import {memo, type ReactNode, useCallback, useId, useMemo} from 'react'
+import {useAuth} from 'reactfire'
+import {SexyButton} from '../experimental/sexy-button-variants'
 import {ProfileDropdown} from '../kokonutui/profile-dropdown'
-import {Button} from './button'
 import {ProAvatar} from './pro-avatar'
 import TextAnimate from './text-animate'
 
@@ -19,7 +19,7 @@ interface EssentialButton {
   onClick?: () => void
 }
 const Nav = ({children, extra}: NavProps) => {
-  const {user} = useAuthCtx()
+  const {currentUser: user} = useAuth()
 
   const essentialButtons = useMemo(
     () =>
@@ -39,13 +39,13 @@ const Nav = ({children, extra}: NavProps) => {
         const id = useId()
         return (
           <Link key={id} href={button.href}>
-            <Button
+            <SexyButton
+              size='sq'
               id={id}
-              variant='secondary'
-              size='icon'
+              variant='ghost'
               onClick={button.onClick}>
               <Icon name={button.icon} className='size-6' />
-            </Button>
+            </SexyButton>
           </Link>
         )
       }),
@@ -58,7 +58,9 @@ const Nav = ({children, extra}: NavProps) => {
         'h-[8lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-6xl mx-auto px-4',
       )}>
       <div className='flex items-center space-x-5'>
-        <Link href='/account' className='flex items-center gap-8 lg:px-0'>
+        <Link
+          href='/account'
+          className='hidden md:flex items-center gap-8 lg:px-0'>
           <TextAnimate
             text={`${user.displayName}`}
             type='whipInUp'
@@ -84,8 +86,10 @@ const Nav = ({children, extra}: NavProps) => {
   )
 }
 
-export const UserNavbar = memo(({children}: NavProps) => (
-  <NavbarCtxProvider>
-    <Nav>{children}</Nav>
-  </NavbarCtxProvider>
-))
+export const UserNavbar = memo(({children}: NavProps) => {
+  return (
+    <NavbarCtxProvider>
+      <Nav>{children}</Nav>
+    </NavbarCtxProvider>
+  )
+})

@@ -62,5 +62,11 @@ service cloud.firestore {
         // Delete only your own doc
         allow delete: if isSelf(uid);
     }
+
+    // Cards collection - requires authentication for all operations
+    match /protap/cards/batch/{id} {
+        // Allow authenticated users to read (checkCard) and write (createCard)
+        allow read, write: if isSignedIn();
+    }
   }
 }

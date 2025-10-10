@@ -34,11 +34,13 @@ const Nav = ({children, hideOnMobile, label}: NavbarProps) => {
   )
 }
 export const Navbar = memo(
-  ({children, hideOnMobile = false, label}: NavbarProps) => (
-    <NavbarCtxProvider>
-      <Nav hideOnMobile={hideOnMobile} label={label}>
-        {children}
-      </Nav>
-    </NavbarCtxProvider>
-  ),
+  ({children, hideOnMobile = false, label}: NavbarProps) => {
+    return (
+      <NavbarCtxProvider>
+        <Nav hideOnMobile={hideOnMobile} label={label}>
+          {children}
+        </Nav>
+      </NavbarCtxProvider>
+    )
+  },
 )

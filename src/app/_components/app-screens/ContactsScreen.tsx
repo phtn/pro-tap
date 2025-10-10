@@ -1,18 +1,18 @@
-import { motion } from 'motion/react'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/lib/icons'
+import {Button} from '@/components/ui/button'
+import {Icon} from '@/lib/icons'
+import {motion} from 'motion/react'
 
 interface ContactsScreenProps {
-  onNext: () => void;
-  onPrev: () => void;
+  onNext: () => void
+  onPrev: () => void
 }
 
-export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
+export const ContactsScreen = ({onNext, onPrev}: ContactsScreenProps) => {
   const contacts = [
-    { name: 'Alice Johnson', role: 'Designer', status: 'online' },
-    { name: 'Bob Smith', role: 'Developer', status: 'away' },
-    { name: 'Carol Davis', role: 'Manager', status: 'offline' },
-    { name: 'David Wilson', role: 'Analyst', status: 'online' },
+    {name: 'Alice Johnson', role: 'Designer', status: 'online'},
+    {name: 'Bob Smith', role: 'Developer', status: 'away'},
+    {name: 'Carol Davis', role: 'Manager', status: 'offline'},
+    {name: 'David Wilson', role: 'Analyst', status: 'online'},
   ]
 
   return (
@@ -20,11 +20,10 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
       {/* Top Bar */}
       <div className='absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-4'>
         <Button
-          size='icon'
+          size='sq'
           variant='ghost'
           onClick={onPrev}
-          className='rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50'
-        >
+          className='rounded-full bg-white/20 text-white hover:bg-primary/20 hover:text-yellow-50'>
           <Icon
             name='chevron-right'
             className='size-6 aspect-square rotate-180'
@@ -32,11 +31,10 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
         </Button>
         <div className='text-white/60 text-sm'>Contacts</div>
         <Button
-          size='icon'
+          size='sq'
           variant='ghost'
           onClick={onNext}
-          className='rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50'
-        >
+          className='rounded-full bg-white/20 text-white/80 hover:bg-primary/20 hover:text-yellow-50'>
           <Icon name='chevron-right' className='size-6 aspect-square' />
         </Button>
       </div>
@@ -44,10 +42,9 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
       {/* Content */}
       <div className='flex-1 bg-black text-white p-6 pt-20'>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5}}>
           <h2 className='text-2xl font-semibold font-space tracking-tight mb-6'>
             Contacts
           </h2>
@@ -56,11 +53,10 @@ export const ContactsScreen = ({ onNext, onPrev }: ContactsScreenProps) => {
             {contacts.map((contact, index) => (
               <motion.div
                 key={contact.name}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className='flex items-center justify-between p-4 bg-slate-500/40 rounded-lg'
-              >
+                initial={{opacity: 0, x: -20}}
+                animate={{opacity: 1, x: 0}}
+                transition={{duration: 0.3, delay: index * 0.1}}
+                className='flex items-center justify-between p-4 bg-slate-500/40 rounded-lg'>
                 <div className='flex items-center space-x-3'>
                   <div className='w-10 h-10 bg-gradient-to-br from-teal-500 to-purple-200 rounded-full flex items-center justify-center'>
                     <span className='text-foreground text-xl font-medium font-space'>

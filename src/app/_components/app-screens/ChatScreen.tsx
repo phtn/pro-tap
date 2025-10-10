@@ -1,23 +1,23 @@
-import { useState } from 'react'
-import { motion } from 'motion/react'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/lib/icons'
+import {Button} from '@/components/ui/button'
+import {Icon} from '@/lib/icons'
+import {motion} from 'motion/react'
 import Image from 'next/image'
+import {useState} from 'react'
 
 interface ChatScreenProps {
-  onNext: () => void;
-  onPrev: () => void;
-  onBack: () => void;
+  onNext: () => void
+  onPrev: () => void
+  onBack: () => void
 }
 
 interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'contact';
-  timestamp: string;
+  id: string
+  text: string
+  sender: 'user' | 'contact'
+  timestamp: string
 }
 
-export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
+export const ChatScreen = ({onNext, onBack}: ChatScreenProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -75,11 +75,10 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
       <div className='absolute top-0 left-0 right-0 z-10 bg-gray-950 border-b border-gray-600/40'>
         <div className='flex items-center justify-between p-4'>
           <Button
-            size='icon'
+            size='sq'
             variant='ghost'
             onClick={onBack}
-            className='rounded-full bg-white/10 text-white hover:bg-white/20'
-          >
+            className='rounded-full bg-white/10 text-white hover:bg-white/20'>
             <Icon
               name='chevron-right'
               className='size-6 aspect-square rotate-180'
@@ -106,11 +105,10 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
           </div>
 
           <Button
-            size='icon'
+            size='sq'
             variant='ghost'
             onClick={onNext}
-            className='rounded-full bg-white/10 text-white hover:bg-white/20'
-          >
+            className='rounded-full bg-white/10 text-white hover:bg-white/20'>
             <Icon name='chevron-right' className='size-6 aspect-square' />
           </Button>
         </div>
@@ -122,28 +120,24 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
           {messages.map((message, index) => (
             <motion.div
               key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.3, delay: index * 0.1}}
+              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-[80%] ${message.sender === 'user' ? 'order-2' : 'order-1'}`}
-              >
+                className={`max-w-[80%] ${message.sender === 'user' ? 'order-2' : 'order-1'}`}>
                 <div
                   className={`px-4 py-2 rounded-2xl ${
                     message.sender === 'user'
                       ? 'bg-indigo-500 text-white rounded-br-md'
                       : 'bg-slate-700 text-white rounded-bl-md'
-                  }`}
-                >
+                  }`}>
                   <p className='text-sm'>{message.text}</p>
                 </div>
                 <div
                   className={`text-xs text-gray-400 mt-1 ${
                     message.sender === 'user' ? 'text-right' : 'text-left'
-                  }`}
-                >
+                  }`}>
                   {message.timestamp}
                 </div>
               </div>
@@ -166,11 +160,10 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
 
       {/* Message Input */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className='absolute bottom-0 left-0 right-0 bg-gray-950 border-t rounded-t-3xl border-gray-700 p-4'
-      >
+        initial={{opacity: 0, y: 20}}
+        animate={{opacity: 1, y: 0}}
+        transition={{duration: 0.5, delay: 0.4}}
+        className='absolute bottom-0 left-0 right-0 bg-gray-950 border-t rounded-t-3xl border-gray-700 p-4'>
         <div className='flex items-center space-x-3'>
           <div className='flex-1 relative'>
             <input
@@ -182,20 +175,18 @@ export const ChatScreen = ({ onNext, onBack }: ChatScreenProps) => {
               className='w-full bg-gray-800 text-white rounded-full px-4 py-2 pr-12 text-sm  focus:border-blue-500 focus:outline-none'
             />
             <Button
-              size='icon'
+              size='sq'
               variant='ghost'
-              className='absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-gray-700'
-            >
+              className='absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-gray-700'>
               <Icon name='paperclip' className='w-4 h-4' />
             </Button>
           </div>
 
           <Button
-            size='icon'
+            size='sq'
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}
-            className='rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-300'
-          >
+            className='rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-300'>
             <Icon name='arrow-up' className='size-5 aspect-square' />
           </Button>
         </div>

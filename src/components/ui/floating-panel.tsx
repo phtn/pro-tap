@@ -119,11 +119,7 @@ export function FloatingPanelTrigger({
     <motion.button
       ref={triggerRef}
       layoutId={`floating-panel-trigger-${uniqueId}`}
-      className={cn(
-        'flex h-9 items-center border border-zinc-950/10 bg-white px-3 text-zinc-950 dark:border-zinc-50/10 dark:bg-zinc-700 dark:text-zinc-50',
-        className,
-      )}
-      style={{borderRadius: 8}}
+      className={cn(className)}
       onClick={handleClick}
       whileHover={{scale: 1.05}}
       whileTap={{scale: 0.95}}
@@ -201,15 +197,15 @@ export function FloatingPanelContent({
             style={{
               borderRadius: 12,
               left: triggerRect ? triggerRect.left : '50%',
-              top: triggerRect ? triggerRect.bottom + 8 : '50%',
-              transformOrigin: 'top left',
+              top: triggerRect ? triggerRect.bottom : '50%',
+              transformOrigin: 'top center',
             }}
+            exit='hidden'
+            role='dialog'
             initial='hidden'
             animate='visible'
-            exit='hidden'
-            variants={variants}
-            role='dialog'
             aria-modal='true'
+            variants={variants}
             aria-labelledby={`floating-panel-title-${uniqueId}`}>
             <FloatingPanelTitle>{title}</FloatingPanelTitle>
             {children}

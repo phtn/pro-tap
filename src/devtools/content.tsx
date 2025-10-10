@@ -1,16 +1,16 @@
 'use client'
-import { FooterProps, VCard } from '@/components/experimental/v-card'
-import { TextureSeparator } from '@/components/ui/texture-card'
-import { DialogWindow } from '@/components/ui/window'
-import { useDevtools } from '@/hooks/use-devtools'
-import { useToggle } from '@/hooks/use-toggle'
-import { Icon } from '@/lib/icons'
-import { Tabs } from './_components/tabs'
+import {FooterProps, VCard} from '@/components/experimental/v-card'
+import {TextureSeparator} from '@/components/ui/texture-card'
+import {DialogWindow} from '@/components/ui/window'
+import {useDevtools} from '@/hooks/use-devtools'
+import {useToggle} from '@/hooks/use-toggle'
+import {Icon} from '@/lib/icons'
+import {Tabs} from './_components/tabs'
 
 export const Content = () => {
   const meta = useDevtools()
   // const [open, setOpen] = useState(false);
-  const { on, toggle } = useToggle()
+  const {on, toggle} = useToggle()
   return (
     <DialogWindow keyCode='k' open={on} setOpen={toggle}>
       <VCard
@@ -23,8 +23,7 @@ export const Content = () => {
             </div>
           </>
         }
-        footer={<Footer meta={meta} />}
-      >
+        footer={<Footer meta={meta} />}>
         <Tabs />
       </VCard>
     </DialogWindow>
@@ -32,11 +31,11 @@ export const Content = () => {
 }
 
 interface ServerInfo {
-  ip: string | null;
-  port: string | null;
+  ip: string | null
+  port: string | null
 }
 
-const Footer = ({ meta }: FooterProps<ServerInfo>) => {
+const Footer = ({meta}: FooterProps<ServerInfo>) => {
   return (
     <div className='dark:bg-neutral-800 bg-stone-800 pt-px rounded-b-[20px] overflow-hidden w-full'>
       <TextureSeparator className='border-t-neutral-600 border-b-neutral-900/5' />

@@ -4,17 +4,17 @@ import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {ProfileDropdown} from '@/components/kokonutui/profile-dropdown'
 import {NeumorphButton as Button} from '@/components/ui/neumorph'
 import {ProAvatar} from '@/components/ui/pro-avatar'
-import {useAuthCtx} from '@/ctx/auth'
 import {useNavbarCtx} from '@/ctx/navbar'
 import {useMobile} from '@/hooks/use-mobile'
 import {Icon} from '@/lib/icons'
 import Link from 'next/link'
 import {useCallback} from 'react'
+import {useAuth} from 'reactfire'
 
 export const NavChild = () => {
   const {theme, setTheme} = useNavbarCtx()
   const isMobile = useMobile()
-  const {user} = useAuthCtx()
+  const {currentUser: user} = useAuth()
 
   const handleThemeChange = useCallback(() => {
     setTheme(getNextTheme(theme as ThemeSelection, ['light', 'dark']))
@@ -23,7 +23,7 @@ export const NavChild = () => {
   return (
     <div className='flex items-center px-4 md:px-0 space-x-1 md:space-x-4'>
       {user ? (
-        <span className='font-figtree tracking-tight text-sm opacity-80'>
+        <span className='hidden md:flex font-figtree tracking-tight text-sm opacity-80'>
           {user.displayName}
         </span>
       ) : (
@@ -32,7 +32,7 @@ export const NavChild = () => {
             variant='ghost'
             id='activation-trigger'
             size={isMobile ? 'md' : 'lg'}
-            className='hidden rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
+            className='rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/20 space-x-1'
             iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5'>
             <span className='md:px-4 md:text-lg text-white md:text-foreground dark:text-white'>
               Sign in

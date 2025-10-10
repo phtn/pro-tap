@@ -1,5 +1,5 @@
-import { createEnv } from '@t3-oss/env-nextjs'
-import { z } from 'zod'
+import {createEnv} from '@t3-oss/env-nextjs'
+import {z} from 'zod'
 
 export const env = createEnv({
   server: {
@@ -14,6 +14,8 @@ export const env = createEnv({
     // RESEND
     RESEND_API: z.string(),
     RESEND_FROM: z.string(),
+    UPSTASH_REDIS_REST_URL: z.string(),
+    UPSTASH_REDIS_REST_TOKEN: z.string(),
   },
 
   client: {
@@ -62,6 +64,9 @@ export const env = createEnv({
     // RESEND
     RESEND_API: process.env.RESEND_API,
     RESEND_FROM: process.env.RESEND_FROM,
+
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

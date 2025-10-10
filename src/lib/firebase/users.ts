@@ -1,6 +1,8 @@
 'use client'
 
+import {UserRole} from '@/ctx/auth/types'
 import {db} from '@/lib/firebase'
+import {UserInfo} from '@/schema/user-account'
 import type {User} from 'firebase/auth'
 import {
   collection,
@@ -48,6 +50,8 @@ export interface ProtapUserDoc {
   loyaltyPoints: number
   isMerchant: boolean
   isAffiliate: boolean
+  userInfo: UserInfo | null
+  role: UserRole
 }
 
 function usersCollection(): CollectionReference<ProtapUserDoc> {
@@ -58,6 +62,17 @@ function usersCollection(): CollectionReference<ProtapUserDoc> {
 
 function accountDocRef(uid: string): DocumentReference<ProtapUserDoc> {
   return doc(usersCollection(), uid) as DocumentReference<ProtapUserDoc>
+}
+
+export const getUser = async (uid: string): Promise<ProtapUserDoc | null> => {
+  const ref = accountDocRef(uid)
+  const snap = await getDoc(ref)
+
+  if (!snap.exists()) {
+    return null
+  }
+
+  return snap.data()
 }
 
 export async function updateUser(user: User): Promise<void> {
@@ -92,6 +107,8 @@ export async function updateUser(user: User): Promise<void> {
       loyaltyPoints: 0,
       isMerchant: false,
       isAffiliate: false,
+      userInfo: null,
+      role: 'user',
     }
     await setDoc(ref, data)
     return

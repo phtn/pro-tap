@@ -476,8 +476,8 @@ interface AccountSettings {
   subscriptionEndDate?: Date
 }
 
-// Main User Schema
-export interface User extends BaseEntity {
+// Main UserInfo Schema
+export interface UserInfo extends BaseEntity {
   // Basic Information
   firstName: string
   lastName: string

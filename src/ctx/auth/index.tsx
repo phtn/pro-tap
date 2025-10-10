@@ -1,104 +1,106 @@
 'use client'
 
-import { auth } from '@/lib/firebase'
-import { updateUser } from '@/lib/firebase/users'
+import {VoidPromise} from '@/app/types'
+import {auth} from '@/lib/firebase'
+import {getUser} from '@/lib/firebase/users'
 import {
-  GithubAuthProvider,
   GoogleAuthProvider,
-  User,
-  UserCredential,
-  onAuthStateChanged,
+  onIdTokenChanged,
   signInWithPopup,
-  signOut as firebaseSignOut,
+  signOut,
+  type User,
 } from 'firebase/auth'
-import { useRouter } from 'next/navigation'
-import {
-  createContext,
-  useMemo,
-  useContext,
-  type ReactNode,
-  useEffect,
-  useState,
-  useCallback,
-} from 'react'
+import React, {createContext, useContext, useEffect, useState} from 'react'
+import {useSigninCheck} from 'reactfire'
+import type {AuthUser} from './types'
 
-interface AuthProviderProps {
-  children: ReactNode;
+interface AuthContextType {
+  user: AuthUser | null
+  loading: boolean
+  signInWithGoogle?: VoidPromise
+  onSignOut?: VoidPromise
 }
 
-interface AuthCtxValues {
-  user: User | null;
-  signInWithGoogle: () => Promise<UserCredential>;
-  signInWithGithub: () => Promise<UserCredential>;
-  signOut: () => Promise<void>;
-}
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+  signInWithGoogle: undefined,
+  onSignOut: undefined,
+})
 
-const AuthCtx = createContext<AuthCtxValues | null>(null)
+export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<AuthUser | null>(null)
 
-const AuthCtxProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null)
-  const router = useRouter()
-
-  const setAuthCookie = useCallback((isAuthed: boolean): void => {
-    if (typeof document === 'undefined') return
-    const secure =
-      typeof window !== 'undefined' && window.location.protocol === 'https:'
-    if (isAuthed) {
-      document.cookie = `protap_auth=1; Max-Age=${60 * 60 * 24 * 30}; Path=/; SameSite=Lax${secure ? '; Secure' : ''}`
-    } else {
-      document.cookie = `protap_auth=; Max-Age=0; Path=/; SameSite=Lax${secure ? '; Secure' : ''}`
+  const onSignOut = async () => {
+    try {
+      await signOut(auth)
+      setUser(null)
+    } catch (error) {
+      console.error('Error signing out:', error)
     }
-  }, [])
+  }
+
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider()
+    try {
+      await signInWithPopup(auth, provider)
+    } catch (error) {
+      console.error('Error signing in with Google:', error)
+    }
+  }
+
+  const {status, data: signInCheckResult} = useSigninCheck()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u)
-      setAuthCookie(Boolean(u))
-      if (u) {
-        updateUser(u).catch((err) => {
-          if (process.env.NODE_ENV !== 'production') {
-            console.error('updateUser failed', err)
+    if (status === 'success' && signInCheckResult.user) {
+      const firebaseUser = signInCheckResult.user
+      getUser(firebaseUser.uid).then((userProfile) => {
+        const authUser: AuthUser = {
+          ...firebaseUser,
+          role: userProfile?.role || 'user',
+        }
+        setUser(authUser)
+      })
+    } else if (status === 'success' && !signInCheckResult.user) {
+      setUser(null)
+    }
+  }, [status, signInCheckResult])
+
+  useEffect(() => {
+    const unsubscribe = onIdTokenChanged(
+      auth,
+      async (firebaseUser: User | null) => {
+        if (firebaseUser) {
+          // When token changes, we update the custom claim 'role'.
+          await firebaseUser.getIdToken(true)
+          const userProfile = await getUser(firebaseUser.uid)
+          const authUser: AuthUser = {
+            ...firebaseUser,
+            role: userProfile?.role || 'user',
           }
-        })
-      }
-    })
+          setUser(authUser)
+        } else {
+          setUser(null)
+        }
+      },
+    )
+
     return () => unsubscribe()
-  }, [setAuthCookie])
-
-  const signInWithGoogle = useCallback((): Promise<UserCredential> => {
-    const provider = new GoogleAuthProvider()
-    provider.setCustomParameters({ prompt: 'select_account' })
-    return signInWithPopup(auth, provider)
   }, [])
 
-  const signInWithGithub = useCallback((): Promise<UserCredential> => {
-    const provider = new GithubAuthProvider()
-    return signInWithPopup(auth, provider)
-  }, [])
-
-  const signOut = useCallback(async (): Promise<void> => {
-    await firebaseSignOut(auth)
-    setAuthCookie(false)
-    setUser(null)
-    router.push('/alpha')
-  }, [setAuthCookie, router])
-
-  const value = useMemo(
-    () => ({
-      user,
-      signInWithGoogle,
-      signInWithGithub,
-      signOut,
-    }),
-    [user, signInWithGoogle, signInWithGithub, signOut]
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading: status === 'loading',
+        signInWithGoogle,
+        onSignOut,
+      }}>
+      {children}
+    </AuthContext.Provider>
   )
-  return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>
 }
 
-const useAuthCtx = () => {
-  const ctx = useContext(AuthCtx)
-  if (!ctx) throw new Error('AuthCtxProvider is missing')
-  return ctx
-}
-
-export { AuthCtx, AuthCtxProvider, useAuthCtx }
+export const useAuthCtx = () => useContext(AuthContext)

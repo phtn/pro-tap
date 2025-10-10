@@ -11,7 +11,7 @@ type SexyButtonVariant =
   | 'ghost'
   | 'dark'
   | 'invert'
-type SexyButtonSize = 'sm' | 'md' | 'lg'
+type SexyButtonSize = 'sq' | 'sm' | 'md' | 'lg'
 
 interface SexyButtonProps extends HTMLMotionProps<'button'> {
   children?: ReactNode
@@ -28,10 +28,10 @@ interface SexyButtonProps extends HTMLMotionProps<'button'> {
 
 const base =
   'relative inline-flex items-center justify-center font-figtree font-semibold tracking-tighter rounded-[11.5px] border-[0.5px] overflow-visible whitespace-nowrap cursor-pointer ' +
-  'ring-offset-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-300 ' +
+  'ring-offset-blue-300 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-300' +
   'backdrop-blur-xs shadow-sm hover:shadow-sm transition-all duration-300 active:scale-96 active:shadow-xs ' +
   'inset-shadow-[0_1px_rgb(237_237_237)] dark:inset-shadow-[0_1px_rgb(100_100_100)]' +
-  '[&_svg]:pointer-events-none [&_svg]:shrink-0 group'
+  '[&_svg]:pointer-events-none [&_svg]:shrink-0 group m-1'
 
 const variantClasses: Record<SexyButtonVariant, string> = {
   default: cn(
@@ -93,8 +93,9 @@ const variantClasses: Record<SexyButtonVariant, string> = {
 
 const sizeClasses: Record<SexyButtonSize, string> = {
   sm: 'h-9 px-3 text-sm rounded-[10px] [&_svg]:size-4 gap-1.5',
-  md: 'h-10 md:h-12 px-4 text-base [&_svg]:size-4 gap-2',
-  lg: 'h-14 md:h-14 px-6 text-base [&_svg]:size-5 gap-2.5',
+  md: 'h-10 md:h-12 px-4 text-base [&_svg]:size-4 rounded-[11.5px] w-fit',
+  lg: 'h-14 md:h-14 px-6 text-base [&_svg]:size-5 gap-2.5 rounded-[11.5px]',
+  sq: 'size-12 aspect-square',
 }
 
 export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(

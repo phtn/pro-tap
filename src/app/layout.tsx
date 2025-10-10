@@ -1,7 +1,4 @@
-import {ThemeHotkey} from '@/components/theme-hotkey'
-import {ThemeProvider} from '@/components/theme-provider'
-import {AuthCtxProvider} from '@/ctx/auth'
-import {Toasts} from '@/ctx/toast'
+import {ProvidersCtxProvider} from '@/ctx/providers'
 import Devtools from '@/devtools'
 import type {Metadata} from 'next'
 import {
@@ -41,7 +38,6 @@ export const metadata: Metadata = {
   description: 'for ProTap',
   icons: ['/re-up-icon.svg'],
   referrer: 'strict-origin-when-cross-origin',
-  themeColor: '#eeeeee',
 }
 
 export default function RootLayout({
@@ -51,24 +47,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body>
-        <ThemeProvider
-          enableSystem
-          attribute='class'
-          enableColorScheme
-          defaultTheme='system'
-          disableTransitionOnChange>
-          <AuthCtxProvider>
-            <div
-              className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
-              {children}
-
-              <ThemeHotkey />
-              <Devtools />
-            </div>
-            <Toasts />
-          </AuthCtxProvider>
-        </ThemeProvider>
+      <body
+        className={`${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
+        <Devtools />
       </body>
     </html>
   )

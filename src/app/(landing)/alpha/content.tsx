@@ -3,6 +3,7 @@
 import {FullActivation} from '@/app/account/_components/full-activation'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {Navbar} from '@/components/ui/navbar'
+import {ActivationCtxProvider} from '@/ctx/activation'
 import {useMobile} from '@/hooks/use-mobile'
 import {useToggle} from '@/hooks/use-toggle'
 import {cn} from '@/lib/utils'
@@ -11,7 +12,7 @@ import {Landing} from '../_components/landing'
 import {NavChild} from '../_components/nav-child'
 
 export const Content = () => {
-  const {on} = useToggle()
+  const {on, toggle} = useToggle()
   const isMobile = useMobile()
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -76,15 +77,17 @@ export const Content = () => {
       <Navbar
         label={
           <SexyButton
-            variant='ghost'
-            onClick={undefined}
+            variant={isMobile ? 'ghost' : 'ghost'}
+            onClick={toggle}
             id='activation-trigger'
             size={isMobile ? 'md' : 'lg'}
-            className='rounded-full relative z-100 bg-zinc-800 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
-            iconStyle='text-primary-hover md:text-mac-blue dark:text-mac-teal size-5 -rotate-[45deg]'
+            className='rounded-full relative z-100 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
+            iconStyle={cn(
+              'text-primary-hover md:text-mac-blue dark:text-mac-teal size-5',
+            )}
             rightIcon={on ? 'close' : 'arrow-right'}>
-            <span className='md:px-4 md:text-lg text-white md:text-foreground dark:text-white'>
-              {on ? 'Select Activation Method' : 'Launching Soon'}
+            <span className='md:px-4 px-2 md:text-lg text-mac-blue md:text-foreground dark:text-white'>
+              {on ? 'Select Activation' : 'Soon'}
             </span>
           </SexyButton>
         }>
@@ -95,10 +98,12 @@ export const Content = () => {
           className={cn(
             'overflow-hidden',
             'transition-all duration-500 ease-in-out',
-            `${on ? 'max-h-screen md:translate-y-12' : 'max-h-0'}`,
+            `${on ? 'max-h-screen md:max-h-220 md:translate-y-12' : 'max-h-0'}`,
           )}>
-          <div className='h-[90lvh] md:px-2 md:pb-10 md:h-160 md:w-6xl relative overflow-clip'>
-            <FullActivation scrollRef={scrollRef} />
+          <div className='h-screen pb-4 md:px-2 md:pb-4 md:h-220 md:w-6xl relative overflow-clip'>
+            <ActivationCtxProvider>
+              <FullActivation scrollRef={scrollRef} />
+            </ActivationCtxProvider>
           </div>
         </div>
 
