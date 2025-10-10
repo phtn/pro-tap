@@ -81,13 +81,13 @@ export const Content = () => {
             onClick={toggle}
             id='activation-trigger'
             size={isMobile ? 'md' : 'lg'}
-            className='rounded-full relative z-100 hover:bg-zinc-900 md:bg-white md:hover:bg-white dark:bg-mac-gray/60 space-x-1'
+            className='focus-visible:bg-white  rounded-full relative z-100 md:bg-white hover:bg-white dark:bg-mac-gray/60 space-x-1'
             iconStyle={cn(
-              'text-primary-hover md:text-mac-blue dark:text-mac-teal size-5',
+              'text-primary-hover md:text-primary dark:text-mac-teal size-5',
             )}
-            rightIcon={on ? 'close' : 'arrow-right'}>
-            <span className='md:px-4 px-2 md:text-lg text-mac-blue md:text-foreground dark:text-white'>
-              {on ? 'Select Activation' : 'Soon'}
+            rightIcon={on ? 'close' : 'zap'}>
+            <span className='md:px-4 px-2 md:text-lg text-primary md:text-foreground dark:text-white'>
+              {on ? 'Select Activation' : 'Launching Soon'}
             </span>
           </SexyButton>
         }>
