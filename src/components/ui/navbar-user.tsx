@@ -63,7 +63,10 @@ const Nav = ({children, extra}: NavProps) => {
   )
 
   return user ? (
-    <nav className={cn()}>
+    <nav
+      className={cn(
+        'max-w-6xl mx-auto flex items-center justify-between h-16',
+      )}>
       <div
         className={cn('flex items-center space-x-5', {
           'space-x-3': user.isActivated,
@@ -79,7 +82,7 @@ const Nav = ({children, extra}: NavProps) => {
         </Link>
         {children}
       </div>
-      <div className='relative h-12 flex items-center space-x-2 md:space-x-6'>
+      <div className='relative h-12 flex items-center justify-between space-x-2 md:space-x-6'>
         <div
           className={cn(
             'size-auto md:hidden -right-1.5 -bottom-0.5 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',

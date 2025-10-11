@@ -7,25 +7,23 @@ import {
 } from '@/components/ui/sheet'
 import { useAuthCtx } from '@/ctx/auth'
 import { onError } from '@/ctx/toast'
-import { NFCData } from '@/hooks/use-nfc'
 import { activateCard, checkCard } from '@/lib/firebase/cards'
 import { activateUser } from '@/lib/firebase/users'
-import { macStr } from '@/utils/macstr'
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-interface ActivationProgressProps {
+interface QRActivationProgressProps {
   open: boolean
   onOpenChange: VoidFunction
-  nfcData: NFCData | null
+  qrcData: string | null
 }
 
-export const ActivationProgress = ({
+export const QRActivationProgress = ({
   open,
   onOpenChange,
-  nfcData,
-}: ActivationProgressProps) => {
+  qrcData,
+}: QRActivationProgressProps) => {
   const { user } = useAuthCtx()
   const router = useRouter()
 
@@ -36,31 +34,41 @@ export const ActivationProgress = ({
   const [error, setError] = useState<string | null>(null)
 
   const performActivation = useCallback(async () => {
-    if (!nfcData || !user || isLoading) return
+    if (!qrcData || !user || isLoading) return
 
     setIsLoading(true)
     setError(null)
 
     try {
+      // Parse QR data to extract ID and group
+      let cardId: string
+      let grp: string = 'general'
+
+      try {
+        const url = new URL(qrcData)
+        cardId = url.searchParams.get('id') || ''
+        grp = url.searchParams.get('grp') || 'general'
+      } catch (error) {
+        // If QR data isn't a valid URL, assume it's just the ID
+        cardId = qrcData
+        grp = 'general'
+      }
+
       // Step 1: Verify card exists and ownerId is null
-      const cardId = macStr(nfcData.serialNumber)
-      const cardExists = await checkCard(cardId, 'general')
+      const cardExists = await checkCard(cardId, grp)
 
       if (!cardExists) {
         throw new Error('Card not found or already activated')
       }
 
       setIsVerified(true)
-      // onSuccess('Card verified successfully')
 
       // Step 2: Activate user
-      await activateUser(user.uid, cardId, nfcData.serialNumber)
+      await activateUser(user.uid, cardId, cardId)
       setIsActivated(true)
-      // onSuccess('User activated successfully')
 
       // Step 3: Activate card
-      await activateCard(cardId, 'general', user.uid)
-      // onSuccess('Card activated successfully')
+      await activateCard(cardId, grp, user.uid)
 
       // Step 4: Complete activation
       setIsCompleted(true)
@@ -69,17 +77,17 @@ export const ActivationProgress = ({
         err instanceof Error ? err.message : 'Activation failed'
       setError(errorMessage)
       onError(errorMessage)
-      console.error('Activation error:', err)
+      console.error('QR Activation error:', err)
     } finally {
       setIsLoading(false)
     }
-  }, [nfcData, user, isLoading])
+  }, [qrcData, user, isLoading])
 
   useEffect(() => {
-    if (open && nfcData && user && !isCompleted && !isLoading) {
+    if (open && qrcData && user && !isCompleted && !isLoading) {
       performActivation()
     }
-  }, [open, nfcData, user, isCompleted, isLoading, performActivation])
+  }, [open, qrcData, user, isCompleted, isLoading, performActivation])
 
   useEffect(() => {
     if (isCompleted && user) {
@@ -99,7 +107,7 @@ export const ActivationProgress = ({
         side='bottom'
         className='space-y-4 h-[55lvh] dark:bg-zinc-700 rounded-t-3xl overflow-scroll p-2'>
         <div className='p-6 border-b flex justify-center'>
-          <NtagId serialNumber={nfcData?.serialNumber} />
+          <QRCodeId qrcData={qrcData} />
         </div>
 
         <div className='h-fit w-full flex items-center justify-center'>
@@ -121,9 +129,9 @@ export const ActivationProgress = ({
                 Try Again
               </button>
             </div>
-          ) : nfcData?.serialNumber && user ? (
-            <Verifier
-              code={macStr(nfcData?.serialNumber) ?? null}
+          ) : qrcData && user ? (
+            <QRVerifier
+              qrcData={qrcData}
               isActivated={isActivated}
               isCompleted={isCompleted}
               isVerified={isVerified}
@@ -134,11 +142,23 @@ export const ActivationProgress = ({
     </Sheet>
   )
 }
-interface NtagCodeProps {
-  serialNumber?: string
+
+interface QRCodeIdProps {
+  qrcData: string | null
 }
 
-export const NtagId = ({ serialNumber }: NtagCodeProps) => {
+export const QRCodeId = ({ qrcData }: QRCodeIdProps) => {
+  const getQRId = (data: string): string => {
+    try {
+      const url = new URL(data)
+      return url.searchParams.get('id') || data
+    } catch (error) {
+      return data
+    }
+  }
+
+  const qrId = qrcData ? getQRId(qrcData) : ''
+
   return (
     <div className='md:w-80 w-40 flex items-center justify-end overflow-hidden'>
       <AnimatePresence mode='wait'>
@@ -149,9 +169,43 @@ export const NtagId = ({ serialNumber }: NtagCodeProps) => {
           exit={{ width: 0 }}
           transition={{ visualDuration: 0.5, type: 'spring', bounce: 0.15 }}
           className='capitalize font-doto text-base lg:text-2xl font-bold tracking-widest whitespace-nowrap text-foreground'>
-          {serialNumber && macStr(serialNumber)}
+          {qrId}
         </motion.span>
       </AnimatePresence>
     </div>
+  )
+}
+
+interface QRVerifierProps {
+  qrcData: string
+  isActivated: boolean
+  isCompleted: boolean
+  isVerified: boolean
+}
+
+export const QRVerifier = ({
+  qrcData,
+  isActivated,
+  isCompleted,
+  isVerified,
+}: QRVerifierProps) => {
+  const getQRId = (data: string): string => {
+    try {
+      const url = new URL(data)
+      return url.searchParams.get('id') || data
+    } catch (error) {
+      return data
+    }
+  }
+
+  const qrId = getQRId(qrcData)
+
+  return (
+    <Verifier
+      code={qrId}
+      isActivated={isActivated}
+      isCompleted={isCompleted}
+      isVerified={isVerified}
+    />
   )
 }

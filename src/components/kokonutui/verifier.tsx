@@ -349,6 +349,3 @@ const Y = () => {
     </motion.div>
   )
 }
-// interface Props {
-//   isCompleted: boolean;
-// }

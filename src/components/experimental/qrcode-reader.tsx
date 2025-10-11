@@ -2,15 +2,19 @@
 
 import type React from 'react'
 
-import {Button} from '@/components/ui/button'
-import {Card, CardContent} from '@/components/ui/card'
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
-import {Icon} from '@/lib/icons'
-import {Html5Qrcode} from 'html5-qrcode'
-import {useEffect, useRef, useState} from 'react'
-import {SexyButton} from './sexy-button-variants'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Icon } from '@/lib/icons'
+import { Html5Qrcode } from 'html5-qrcode'
+import { useEffect, useRef, useState } from 'react'
+import { SexyButton } from './sexy-button-variants'
 
-export function QRCodeReader() {
+interface QRCodeReaderProps {
+  onScan?: (data: string) => void
+}
+
+export function QRCodeReader({ onScan }: QRCodeReaderProps) {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
   const [qrResult, setQrResult] = useState<string>('')
   const [isCameraActive, setIsCameraActive] = useState(false)
@@ -42,13 +46,14 @@ export function QRCodeReader() {
       }
 
       await html5QrCodeRef.current.start(
-        {facingMode: 'environment'},
+        { facingMode: 'environment' },
         {
           fps: 10,
-          qrbox: {width: 250, height: 250},
+          qrbox: { width: 250, height: 250 },
         },
         async (decodedText) => {
           setQrResult(decodedText)
+          onScan?.(decodedText)
           await stopCamera()
         },
         (errorMessage) => {
@@ -88,6 +93,7 @@ export function QRCodeReader() {
       const decodedText = await html5QrCodeRef.current.scanFile(file, true)
       console.log('[v0] QR Code detected from image:', decodedText)
       setQrResult(decodedText)
+      onScan?.(decodedText)
     } catch (err) {
       console.error('[v0] QR detection error:', err)
       setError(

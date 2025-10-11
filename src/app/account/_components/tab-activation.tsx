@@ -1,5 +1,4 @@
 import {type ClassName} from '@/app/types'
-import {QRCodeReader} from '@/components/experimental/qrcode-reader'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {type TabItem} from '@/components/kokonutui/smooth-tab'
 import {UseNFCOptions} from '@/hooks/use-nfc'
@@ -8,6 +7,7 @@ import {cn} from '@/lib/utils'
 import {AnimatePresence, motion} from 'motion/react'
 import {useMemo, useRef, useState, type KeyboardEvent} from 'react'
 import {CardActivationContent} from './card-activation'
+import {QRCodeActivationContent} from './qr-activation'
 
 interface ActivationItem {
   icon: IconName
@@ -68,7 +68,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
           color: 'bg-zinc-500 hover:bg-zinc-600',
           icon: 'qrcode-scan',
           iconStyle: 'text-white md:size-54 size-36 translate-y-6',
-          content: <QRCodeReader />,
+          content: <QRCodeActivationContent />,
         },
         {
           id: 'ntag',
@@ -144,7 +144,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                     <h3 className='text-2xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>
                       {selectedItem?.title}
                     </h3>
-                    <div className='hidden _flex h-full w-full items-center justify-center'>
+                    <div className='flex h-full w-full items-center justify-center'>
                       {selectedItem && (
                         <Icon
                           name={selectedItem.icon}

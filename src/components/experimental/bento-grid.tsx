@@ -3,7 +3,7 @@ import {ClassName} from '@/app/types'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {motion} from 'motion/react'
-import {ReactNode} from 'react'
+import {ReactNode, useMemo} from 'react'
 import {BentoGrid, BentoGridItem} from '../ui/bento-grid'
 
 export const BentoGridStats = () => {
@@ -94,6 +94,7 @@ const SkeletonTwo = () => {
     },
   }
   const arr = new Array(6).fill(0)
+  const width = useMemo(() => Math.random() * (100 - 40) + 40, [])
   return (
     <motion.div
       initial='initial'
@@ -105,7 +106,7 @@ const SkeletonTwo = () => {
           key={'skelenton-two' + i}
           variants={variants}
           style={{
-            maxWidth: Math.random() * (100 - 40) + 40 + '%',
+            maxWidth: width + '%',
           }}
           className='flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-neutral-100 dark:bg-black w-full h-4'></motion.div>
       ))}
@@ -171,33 +172,39 @@ const SkeletonFour = () => {
       <motion.div
         variants={first}
         className='h-full w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <Icon name='nfc' className='rounded-full size-12' />
-        <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          NFC Business Card
+        <Icon name='nfc' className='rounded-full size-8 md:size-12' />
+        <p className='sm:text-sm text-xs text-center font-light md:font-semibold text-neutral-500 mt-4'>
+          my NFC Card
         </p>
-        <p className='border border-teal-500 bg-teal-100 dark:bg-teal-900/20 text-teal-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+        <p className='border border-teal-500 bg-teal-100 dark:bg-teal-900/20 text-teal-600 text-xs rounded-full px-1 md:px-2 md:py-0.5 mt-4'>
           Active
         </p>
       </motion.div>
       <motion.div className='h-full relative z-20 w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <Icon name='qrcode-scan' className='rounded-full size-14 text-white' />
+        <Icon
+          name='qrcode-scan'
+          className='rounded-full size-10 md:size-12 text-white'
+        />
 
-        <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          Your QR Code
+        <p className='sm:text-sm text-xs text-center font-light md:font-semibold text-neutral-500 mt-4'>
+          QR Code
         </p>
-        <p className='border border-amber-500 bg-amber-100 dark:bg-amber-900/20 text-amber-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+        <p className='border border-amber-500 bg-amber-100 dark:bg-amber-900/20 text-amber-600 text-xs rounded-full px-1 md:px-2 md:py-0.5 mt-4'>
           Not Active
         </p>
       </motion.div>
       <motion.div
         variants={second}
         className='h-full w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <Icon name='shield-checkmark' className='rounded-full size-14 ' />
+        <Icon
+          name='shield-checkmark'
+          className='rounded-full size-8 md:size-14 '
+        />
 
-        <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
+        <p className='sm:text-sm text-xs text-center font-light md:font-semibold text-neutral-500 mt-4'>
           Personal Accident Insurance
         </p>
-        <p className='border border-orange-500 bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+        <p className='border border-orange-500 bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-xs rounded-full px-1 md:px-2 md:py-0.5 mt-4'>
           Not Active
         </p>
       </motion.div>

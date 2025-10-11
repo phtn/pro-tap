@@ -113,7 +113,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
               },
             }}>
             {/*<CurrentLogo className='size-14 max-w-[80%] max-h-[80%] object-contain' />*/}
-            <Icon name={currenLogo} className='size-7 md:size-14 opacity-60' />
+            <Icon name={currenLogo} className='size-7 md:size-12 opacity-60' />
           </motion.div>
         </AnimatePresence>
       </motion.div>
