@@ -1,14 +1,8 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-  CSSProperties,
-} from 'react'
-import './profile-card.css'
+import {Icon} from '@/lib/icons'
 import Image from 'next/image'
-import { Icon } from '@/lib/icons'
-import { SexyButton } from '../experimental/sexy-button-variants'
+import {CSSProperties, useCallback, useEffect, useMemo, useRef} from 'react'
+import {SexyButton} from '../experimental/sexy-button-variants'
+import './profile-card.css'
 
 const DEFAULT_BEHIND_GRADIENT =
   'radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)'
@@ -35,31 +29,31 @@ const adjust = (
   fromMin: number,
   fromMax: number,
   toMin: number,
-  toMax: number
+  toMax: number,
 ) => round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin))
 
 const easeInOutCubic = (x: number) =>
   x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
 
 interface Props {
-  avatarUrl: string;
-  iconUrl: string;
-  grainUrl: string;
-  behindGradient: string;
-  innerGradient: string;
-  showBehindGradient: boolean;
-  className: string;
-  enableTilt: boolean;
-  enableMobileTilt: boolean;
-  mobileTiltSensitivity: number;
-  miniAvatarUrl: string;
-  name: string;
-  title: string;
-  handle: string;
-  status: string;
-  contactText: string;
-  showUserInfo: boolean;
-  onContactClick: VoidFunction;
+  avatarUrl: string
+  iconUrl: string
+  grainUrl: string
+  behindGradient: string
+  innerGradient: string
+  showBehindGradient: boolean
+  className: string
+  enableTilt: boolean
+  enableMobileTilt: boolean
+  mobileTiltSensitivity: number
+  miniAvatarUrl: string
+  name: string
+  title: string
+  handle: string
+  status: string
+  contactText: string
+  showUserInfo: boolean
+  onContactClick: VoidFunction
 }
 
 export const ProfileCard = ({
@@ -94,7 +88,7 @@ export const ProfileCard = ({
       offsetX: number,
       offsetY: number,
       card: HTMLElement,
-      wrap: HTMLElement
+      wrap: HTMLElement,
     ) => {
       const width = card.clientWidth
       const height = card.clientHeight
@@ -127,7 +121,7 @@ export const ProfileCard = ({
       startX: number,
       startY: number,
       card: HTMLElement,
-      wrap: HTMLElement
+      wrap: HTMLElement,
     ) => {
       const startTime = performance.now()
       const targetX = wrap.clientWidth / 2
@@ -175,10 +169,10 @@ export const ProfileCard = ({
         event.clientX - rect.left,
         event.clientY - rect.top,
         card,
-        wrap
+        wrap,
       )
     },
-    [animationHandlers]
+    [animationHandlers],
   )
 
   const handlePointerEnter = useCallback(() => {
@@ -204,12 +198,12 @@ export const ProfileCard = ({
         event.offsetX,
         event.offsetY,
         card,
-        wrap
+        wrap,
       )
       wrap.classList.remove('active')
       card.classList.remove('active')
     },
-    [animationHandlers]
+    [animationHandlers],
   )
 
   const handleDeviceOrientation = useCallback(
@@ -219,18 +213,18 @@ export const ProfileCard = ({
 
       if (!card || !wrap || !animationHandlers) return
 
-      const { beta, gamma } = event
+      const {beta, gamma} = event
       if (!beta || !gamma) return
 
       animationHandlers.updateCardTransform(
         card.clientHeight / 2 + gamma * mobileTiltSensitivity,
         card.clientWidth / 2 +
-        (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
+          (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
         card,
-        wrap
+        wrap,
       )
     },
-    [animationHandlers, mobileTiltSensitivity]
+    [animationHandlers, mobileTiltSensitivity],
   )
 
   useEffect(() => {
@@ -250,8 +244,8 @@ export const ProfileCard = ({
       if (!enableMobileTilt || window.location.protocol !== 'https:') return
       const w = window as unknown as {
         DeviceOrientationEvent?: {
-          requestPermission?: () => Promise<'granted' | 'denied' | 'prompt'>;
-        };
+          requestPermission?: () => Promise<'granted' | 'denied' | 'prompt'>
+        }
       }
       if (typeof w.DeviceOrientationEvent?.requestPermission === 'function') {
         w.DeviceOrientationEvent.requestPermission()
@@ -259,7 +253,7 @@ export const ProfileCard = ({
             if (state === 'granted') {
               window.addEventListener(
                 'deviceorientation',
-                deviceOrientationHandler
+                deviceOrientationHandler,
               )
             }
           })
@@ -283,7 +277,7 @@ export const ProfileCard = ({
       initialX,
       initialY,
       card,
-      wrap
+      wrap,
     )
 
     return () => {
@@ -313,34 +307,31 @@ export const ProfileCard = ({
         : 'none',
       '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
     }),
-    [iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient]
+    [iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient],
   )
-
 
   return (
     <div
       ref={wrapRef}
       className={`pc-card-wrapper ${className}`.trim()}
-      style={cardStyle as CSSProperties}
-    >
+      style={cardStyle as CSSProperties}>
       <UserInfo handle={handle} name={name} title='' />
-      <section ref={cardRef} className='pc-card scale-120'>
+      <section ref={cardRef} className='pc-card scale-100'>
         <div className='pc-inside'>
-          <div className='pc-shine' />
-          <div className='pc-glare' />
+          {/*<div className='pc-shine' />*/}
+          {/*<div className='pc-glare' />*/}
 
           <div className='pc-content pc-avatar-content relative'>
             <Image
               width={0}
               height={0}
+              unoptimized
               src={avatarUrl}
               className='avatar'
-              unoptimized
               alt={`${name ?? 'User'} avatar`}
-              loading='lazy'
             />
             {showUserInfo && (
-              <div className='absolute bottom-10 left-0 w-full px-6'>
+              <div className='absolute bottom-10 left-0 w-full px-2'>
                 <div className=''>
                   <div className=''>{status}</div>
                 </div>
@@ -359,7 +350,7 @@ export const ProfileCard = ({
 
           <div className='pc-content'>
             <div className='pc-details'>
-              <h3 className='tracking-tighter'>{name}</h3>
+              <h3 className='tracking-tighter font-figtree'>{name}</h3>
               <p>{title}</p>
             </div>
           </div>
@@ -370,20 +361,20 @@ export const ProfileCard = ({
 }
 
 interface UserInfoProps {
-  name: string;
-  title: string;
-  handle: string;
+  name: string
+  title: string
+  handle: string
 }
 
-const UserInfo = ({ name, title, handle }: UserInfoProps) => {
+const UserInfo = ({name, title, handle}: UserInfoProps) => {
   return (
-    <div className='absolute bottom-0 z-50 left-0 w-full px-6'>
-      <div className='w-full h-32 bg-slate-300/30 backdrop-blur-lg px-4 rounded-3xl'>
-        <div className='h-12 flex items-center text-lg px-2 font-bold'>
-          <span className='font-extrabold'>@</span>
+    <div className='absolute bottom-0 z-50 left-0 w-full'>
+      <div className='w-full h-20 bg-slate-300/30 backdrop-blur-lg rounded-b-3xl'>
+        <div className='h-10 flex items-center text-sm px-2'>
+          <span className='font-medium'>@</span>
           {handle}
         </div>
-        <div className='flex items-center justify-around'>
+        <div className='flex items-center justify-around p-2'>
           <SexyButton className='relative z-100'>
             <Icon
               name='badge-verified-solid'
@@ -400,7 +391,7 @@ const UserInfo = ({ name, title, handle }: UserInfoProps) => {
           <SexyButton className='relative z-100'>
             <Icon name='globe-solid' className='scale-[1.75]' />
           </SexyButton>
-          <SexyButton leftIcon='content-share-solid' className='relative z-100'>
+          {/*<SexyButton leftIcon='content-share-solid' className='relative z-100'>
             <span className='translate-x-4 tracking-tight'>Follow</span>
           </SexyButton>
           <SexyButton className='relative z-100'>
@@ -408,7 +399,7 @@ const UserInfo = ({ name, title, handle }: UserInfoProps) => {
           </SexyButton>
           <SexyButton className='relative z-100'>
             <Icon name='heart-light' className='scale-[1.75]' />
-          </SexyButton>
+          </SexyButton>*/}
         </div>
       </div>
     </div>

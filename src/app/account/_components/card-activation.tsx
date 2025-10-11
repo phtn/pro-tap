@@ -1,13 +1,13 @@
-import {SexyButton} from '@/components/experimental/sexy-button-variants'
-import {useActivationCtx} from '@/ctx/activation'
-import {onSuccess} from '@/ctx/toast'
-import {useMobile} from '@/hooks/use-mobile'
-import {useNFC, UseNFCOptions} from '@/hooks/use-nfc'
-import {cn} from '@/lib/utils'
-import {useEffect} from 'react'
+import { SexyButton } from '@/components/experimental/sexy-button-variants'
+import { useActivationCtx } from '@/ctx/activation'
+import { onSuccess } from '@/ctx/toast'
+import { useMobile } from '@/hooks/use-mobile'
+import { useNFC, UseNFCOptions } from '@/hooks/use-nfc'
+import { cn } from '@/lib/utils'
+import { useEffect } from 'react'
 
 export const CardActivationContent = (props?: UseNFCOptions) => {
-  const {toggleOpenProgress, setNfcData} = useActivationCtx()
+  const { toggleOpenProgress, setNfcData } = useActivationCtx()
   const isMobile = useMobile()
   const {
     isLoading,
@@ -28,7 +28,7 @@ export const CardActivationContent = (props?: UseNFCOptions) => {
       setNfcData(scanDetails)
       toggleOpenProgress()
     }
-  }, [scanDetails, toggleOpenProgress])
+  }, [scanDetails, toggleOpenProgress, setNfcData])
 
   return (
     <div className='relative z-10 h-40 md:h-10 w-full flex items-center justify-center'>

@@ -75,7 +75,7 @@ export default function ShimmerText({
             ? ['100% center', '-300% center']
             : ['300% center', '-300% center'],
         transition: {
-          duration: duration ?? (variant === 'chatgpt' ? 18.65 : 19.5),
+          duration: duration ?? (variant === 'chatgpt' ? 4.65 : 6.5),
           ease: (ease ??
             (variant === 'chatgpt'
               ? [0.8, 0.0, 0.2, 1.4]
@@ -104,7 +104,7 @@ export default function ShimmerText({
   const isInteractive = playOnClick || playOnHover
 
   const lightDefault = 'from-sky-100 via-white via-50% to-orange-50'
-  const darkDefault = 'from-white via-neutral-500 to-white'
+  const darkDefault = 'from-white via-neutral-700 to-white'
   const lightChatgpt =
     'dark:from-zinc-700 dark:via-zinc-400 dark:to-zinc-600 from-zinc-200 via-zinc-400 to-zinc-200'
   const darkChatgpt =
@@ -126,7 +126,7 @@ export default function ShimmerText({
         className='relative py-2 overflow-hidden'
         initial={{opacity: 0, y: 0}}
         animate={{opacity: 1, y: 0}}
-        transition={{duration: 18.5}}>
+        transition={{duration: 4.5}}>
         <motion.h1
           className={cn(
             'text-3xl font-semibold tracking-tight bg-clip-text text-transparent',

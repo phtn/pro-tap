@@ -1,6 +1,8 @@
+import { useActivationCtx } from '@/ctx/activation'
 import { onSuccess } from '@/ctx/toast'
 import { cn } from '@/lib/utils'
 import { useCallback } from 'react'
+import { ActivationProgress } from './progress'
 import ActivationTabs from './tab-activation'
 
 interface Props {
@@ -15,6 +17,8 @@ export const FullActivation = ({ scrollRef }: Props) => {
   //   router.push('/pricing')
   // }, [router])
   //
+
+  const { openProgress, toggleOpenProgress, nfcData } = useActivationCtx()
 
   const onNFCScan = useCallback(() => {
     onSuccess('Scanned NFC Successfully')
@@ -35,6 +39,11 @@ export const FullActivation = ({ scrollRef }: Props) => {
       <div className='h-[85vh] md:h-[70vh] px-4 pb-4 md:px-0'>
         <ActivationTabs nfcProps={{ onScan: onNFCScan, onError: onNFCError }} />
       </div>
+      <ActivationProgress
+        open={openProgress}
+        onOpenChange={toggleOpenProgress}
+        nfcData={nfcData}
+      />
     </div>
   )
 }

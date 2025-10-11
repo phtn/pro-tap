@@ -17,8 +17,10 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const {on, toggle} = useToggle()
   const pathname = usePathname()
   const isPreview = pathname.split('/').pop() === 'preview'
+  const isActivated = pathname.split('/').pop() === 'activated'
   const router = useRouter()
   const back = useCallback(() => router.back(), [router])
+
   const ActiveStatus = useCallback(() => {
     const options = opts(
       <div className='size-auto aspect-square hidden md:flex items-center justify-center relative'>
@@ -49,9 +51,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           </button>
         </div>
       ) : (
-        <UserNavbar>
-          <ActiveStatus />
-        </UserNavbar>
+        <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
       )}
       <main className='max-w-6xl mx-auto'>
         <div

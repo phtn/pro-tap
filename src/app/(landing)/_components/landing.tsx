@@ -86,7 +86,7 @@ export const Landing = () => {
         </TextAnimate>
       </div>
       <div className='px-4 md:max-w-3xl'>
-        <div className='md:p-2 w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-[30px] border-2 dark:border-pink-400/30 border-zinc-400 flex justify-between overflow-hidden shadow-md'>
+        <div className='md:p-2 w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-[30px] border-2 dark:border-pink-500/30 border-zinc-400 flex justify-between overflow-hidden shadow-md'>
           <div className='p-4 h-full '>
             <h3 className='text-2xl md:text-3xl lg:text-4xl font-figtree font-medium tracking-tighter flex space-x-1 md:space-x-2'>
               <span>Personalized</span>
@@ -122,7 +122,7 @@ export const Landing = () => {
               name='zap-solid'
               className='absolute -top-4 -right-4 dark:text-orange-200 text-orange-300 size-14 -rotate-8 drop-shadow-xl'
             />
-            <div className='border-b border-zinc-300 pb-2 w-full flex text-3xl md:text-4xl font-figtree tracking-tight'>
+            <div className='border-b-4 border-zinc-300 dark:border-zinc-600/60 pb-2 w-full flex text-3xl md:text-4xl font-figtree tracking-tight'>
               <span className='opacity-40 font-light'>protap.ph/u/</span>
               <div className='w-23 overflow-visible'>
                 <TextFlip
@@ -155,7 +155,7 @@ export const Landing = () => {
               </div>
             </div>
             <div className='text-sm h-10 md:text-base opacity-80 flex items-center justify-center'>
-              <span>Create a shareable link to your content.</span>
+              <span>Create a shareable link to your profile.</span>
             </div>
             <div className='h-16 flex items-center justify-center w-full'>
               <SexyButton
@@ -175,14 +175,14 @@ export const Landing = () => {
         <div className='p-2 w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-[30px] border-2 dark:border-sky-400/20 border-zinc-400 flex justify-between overflow-hidden'>
           <div className='p-4 h-full '>
             <h3 className='text-2xl md:text-3xl lg:text-4xl font-figtree font-medium tracking-tighter flex space-x-1 md:space-x-2'>
-              <span>Social Network</span>
+              <span>Professional</span>
               <Icon
                 name='globe-solid'
                 className='size-4 md:size-5 text-slate-500'
               />
             </h3>
             <p className='text-lg md:text-xl lg:text-3xl tracking-tighter opacity-80 font-sans'>
-              Hub
+              Network Hub
             </p>
             <ul className='text-xs mt-4'>
               <li>Share profiles</li>

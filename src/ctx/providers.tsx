@@ -1,11 +1,12 @@
 'use client'
 
-import {ThemeHotkey} from '@/components/theme-hotkey'
-import {FirebaseProvider} from '@/lib/firebase/provider'
-import {ThemeProvider} from 'next-themes'
-import {createContext, useContext, type ReactNode} from 'react'
-import {AuthProvider} from './auth'
-import {Toasts} from './toast'
+import { ThemeHotkey } from '@/components/theme-hotkey'
+import { FirebaseProvider } from '@/lib/firebase/provider'
+import { ThemeProvider } from 'next-themes'
+import { createContext, useContext, type ReactNode } from 'react'
+import { AuthProvider } from './auth'
+import { ActivationCtxProvider } from './activation'
+import { Toasts } from './toast'
 
 interface ProvidersProviderProps {
   children: ReactNode
@@ -17,26 +18,28 @@ interface ProvidersCtxValues {
 
 const ProvidersCtx = createContext<ProvidersCtxValues | null>(null)
 
-const ProvidersCtxProvider = ({children}: ProvidersProviderProps) => {
+const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
   return (
     <ProvidersCtx value={null}>
       <FirebaseProvider>
         <AuthProvider>
-          <ThemeProvider
-            enableSystem
-            attribute='class'
-            enableColorScheme
-            defaultTheme='system'
-            disableTransitionOnChange>
-            <div
-              className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
-              {children}
+          <ActivationCtxProvider>
+            <ThemeProvider
+              enableSystem
+              attribute='class'
+              enableColorScheme
+              defaultTheme='system'
+              disableTransitionOnChange>
+              <div
+                className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
+                {children}
 
-              <ThemeHotkey />
-            </div>
+                <ThemeHotkey />
+              </div>
 
-            <Toasts />
-          </ThemeProvider>
+              <Toasts />
+            </ThemeProvider>
+          </ActivationCtxProvider>
         </AuthProvider>
       </FirebaseProvider>
     </ProvidersCtx>
@@ -49,4 +52,4 @@ const useProvidersCtx = () => {
   return ctx
 }
 
-export {ProvidersCtx, ProvidersCtxProvider, useProvidersCtx}
+export { ProvidersCtx, ProvidersCtxProvider, useProvidersCtx }

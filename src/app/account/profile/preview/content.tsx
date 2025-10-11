@@ -33,7 +33,7 @@ export const Content = () => {
         showUserInfo={false}
         onContactClick={() => console.log('')}
       />
-      <div className='size-96 bg-amber-50'>
+      <div className='hidden size-96 bg-amber-50'>
         {user && (
           <ProfilePictureUploader
             user={user}
@@ -42,7 +42,7 @@ export const Content = () => {
           />
         )}
       </div>
-      <div>
+      <div className='hidden'>
         <SexyButton
           disabled={onUploader}
           onClick={toggleUploader}

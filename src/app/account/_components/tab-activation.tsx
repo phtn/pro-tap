@@ -67,7 +67,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
             'Scan QR Code with your smartphone camera or upload an image',
           color: 'bg-zinc-500 hover:bg-zinc-600',
           icon: 'qrcode-scan',
-          iconStyle: 'text-white md:size-54 size-36 translate-y-6',
+          iconStyle: 'text-white md:size-24 size-16 translate-y-6',
           content: <QRCodeActivationContent />,
         },
         {
