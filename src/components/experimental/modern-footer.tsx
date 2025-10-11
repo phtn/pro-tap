@@ -2,16 +2,23 @@ import {Icon} from '@/lib/icons'
 
 export function Footer() {
   return (
-    <footer className='pt-12 pb-28 bg-zinc-200 dark:bg-zinc-800/40'>
-      <div className='container mx-auto px-4'>
+    <footer className='pt-12 pb-28 bg-zinc-800 dark:bg-zinc-800/40 rounded-t-2xl'>
+      <div className='container mx-auto px-4 font-figtree'>
         <div className='grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-12'>
           {/* Brand Section */}
           <div className='font-figtree'>
-            <Icon name='protap' className='h-20 w-auto' />
-            <p className='text-gray-400 mb-2'>Digital Insurance Platforms</p>
+            <div className='h-10 flex items-center overflow-hidden'>
+              <Icon
+                name='protap'
+                className='text-zinc-200 md:h-36 h-20 w-auto'
+              />
+            </div>
+            <p className='opacity-70 text-zinc-200 tracking-wider font-space mb-2'>
+              Digital Insurance
+            </p>
             <a
               href='mailto:support@pxgen.com'
-              className='text-white hover:text-purple-400 transition-colors'>
+              className='text-primary-hover text-xs hover:text-purple-400 transition-colors'>
               support@protap.ph
             </a>
 
@@ -69,7 +76,7 @@ export function Footer() {
           </div>
 
           {/* Company Links */}
-          <div>
+          <div className='text-zinc-300'>
             <h4 className='font-semibold mb-4'>Company</h4>
             <ul className='space-y-3'>
               <li>
@@ -90,7 +97,7 @@ export function Footer() {
           </div>
 
           {/* Resource Links */}
-          <div>
+          <div className='text-zinc-300'>
             <h4 className='font-semibold mb-4'>Resource</h4>
             <ul className='space-y-3'>
               <li>
@@ -111,7 +118,7 @@ export function Footer() {
           </div>
 
           {/* Help Links */}
-          <div>
+          <div className='text-zinc-300'>
             <h4 className='font-semibold mb-4'>Help</h4>
             <ul className='space-y-3'>
               <li>

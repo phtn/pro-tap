@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { Command } from 'lucide-react'
+import {Button} from '@/components/ui/button'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
 
 /**
  * @author: @dorian_baffier
@@ -12,12 +12,12 @@ import { Command } from 'lucide-react'
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-export default function CommandButton ({
+export default function CommandButton({
   className,
   children,
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }) {
   return (
     <Button
@@ -31,17 +31,17 @@ export default function CommandButton ({
         'hover:border-zinc-300 dark:hover:border-zinc-700',
         'transition-all duration-300 ease-out',
         'inline-flex items-center justify-center',
-        className
-      )}
-    >
-      <Command
+        className,
+      )}>
+      <Icon
+        name='split-vertical'
         className={cn(
           'w-4 h-4',
           'text-zinc-600 dark:text-zinc-400',
           'transition-all duration-300',
           'group-hover:scale-110',
           'group-hover:rotate-[-4deg]',
-          'group-active:scale-95'
+          'group-active:scale-95',
         )}
       />
       <span className='text-sm text-zinc-600 dark:text-zinc-400'>
@@ -54,7 +54,7 @@ export default function CommandButton ({
           'translate-x-[-100%]',
           'group-hover:translate-x-[100%]',
           'transition-transform duration-500',
-          'ease-out'
+          'ease-out',
         )}
       />
     </Button>

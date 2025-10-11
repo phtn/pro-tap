@@ -17,16 +17,8 @@ import Google from '@/components/kokonutui/gemini'
 import MistralAI from '@/components/kokonutui/mistral'
 import OpenAI from '@/components/kokonutui/open-ai'
 import OpenAIDark from '@/components/kokonutui/open-ai-dark'
+import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {
-  ArrowUpRight,
-  CheckCircle2,
-  Clock,
-  Mic,
-  Plus,
-  Sparkles,
-  Zap,
-} from 'lucide-react'
 import {motion, useMotionValue, useTransform, type Variants} from 'motion/react'
 import Link from 'next/link'
 import {useEffect, useRef, useState} from 'react'
@@ -164,7 +156,10 @@ const SpotlightFeature = ({items}: {items: string[]}) => {
           animate={{opacity: 1, x: 0}}
           transition={{delay: 0.1 * index}}
           className='flex items-center gap-2'>
-          <CheckCircle2 className='h-4 w-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0' />
+          <Icon
+            name='heart-light'
+            className='h-4 w-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0'
+          />
           <span className='text-sm text-neutral-700 dark:text-neutral-300'>
             {item}
           </span>
@@ -279,7 +274,10 @@ const IconsFeature = () => {
       </motion.div>
       <motion.div className='flex flex-col items-center gap-2 p-3 rounded-xl bg-gradient-to-b from-neutral-100/80 to-neutral-100 dark:from-neutral-800/80 dark:to-neutral-800 border border-neutral-200/50 dark:border-neutral-700/50 group transition-all duration-300 hover:border-neutral-300 dark:hover:border-neutral-600'>
         <div className='relative w-8 h-8 flex items-center justify-center'>
-          <Plus className='w-6 h-6 text-neutral-600 dark:text-neutral-400 transition-transform ' />
+          <Icon
+            name='add'
+            className='w-6 h-6 text-neutral-600 dark:text-neutral-400 transition-transform '
+          />
         </div>
         <span className='text-xs font-medium text-center text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-neutral-200'>
           More
@@ -403,12 +401,14 @@ const MetricsFeature = ({
           transition={{delay: 0.15 * index}}>
           <div className='flex justify-between items-center text-sm'>
             <div className='text-neutral-700 dark:text-neutral-300 font-medium flex items-center gap-1.5'>
-              {metric.label === 'Uptime' && <Clock className='w-3.5 h-3.5' />}
+              {metric.label === 'Uptime' && (
+                <Icon name='history' className='w-3.5 h-3.5' />
+              )}
               {metric.label === 'Response time' && (
-                <Zap className='w-3.5 h-3.5' />
+                <Icon name='zap' className='w-3.5 h-3.5' />
               )}
               {metric.label === 'Cost reduction' && (
-                <Sparkles className='w-3.5 h-3.5' />
+                <Icon name='zap' className='w-3.5 h-3.5' />
               )}
               {metric.label}
             </div>
@@ -515,7 +515,10 @@ function AIInputVoice() {
               style={{animationDuration: '3s'}}
             />
           ) : (
-            <Mic className='w-6 h-6 text-black/70 dark:text-white/70' />
+            <Icon
+              name='soundwave'
+              className='w-6 h-6 text-black/70 dark:text-white/70'
+            />
           )}
         </button>
 
@@ -627,7 +630,7 @@ const BentoCard = ({item}: {item: BentoItem}) => {
                 {item.title}
               </h3>
               <div className='text-neutral-400 dark:text-neutral-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
-                <ArrowUpRight className='h-5 w-5' />
+                <Icon name='arrow-right' className='h-5 w-5' />
               </div>
             </div>
 

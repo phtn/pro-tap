@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { Sparkles, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import {Button} from '@/components/ui/button'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {motion, useAnimation} from 'framer-motion'
+import {useEffect} from 'react'
 
 export const Card = () => {
   const controls = useAnimation()
@@ -12,10 +12,7 @@ export const Card = () => {
 
   useEffect(() => {
     // Animate the width of the progress bar to the target percentage
-    controls.start(
-      { width: `${progress}%` },
-      { duration: 1.5, ease: 'easeOut' }
-    )
+    controls.start({width: `${progress}%`}, {duration: 1.5, ease: 'easeOut'})
   }, [controls, progress])
 
   return (
@@ -24,7 +21,7 @@ export const Card = () => {
         {/* Header Section */}
         <div className='flex items-center justify-between mb-4'>
           <div className='flex items-center space-x-2 text-white'>
-            <Sparkles className='w-5 h-5 text-gray-400' />
+            <Icon name='secure' className='w-5 h-5 text-gray-400' />
             <h2 className='text-lg font-semibold'>Project Progress</h2>
           </div>
           {/* Button for "Onboarding prototype" with updated styling */}
@@ -40,15 +37,15 @@ export const Card = () => {
             {/* Glow layer - positioned behind the main bar */}
             <motion.div
               className='absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-progress-start to-progress-end z-0'
-              style={{ filter: 'blur(10px)' }} // Apply blur directly for the glow effect
-              initial={{ width: 0 }}
+              style={{filter: 'blur(10px)'}} // Apply blur directly for the glow effect
+              initial={{width: 0}}
               animate={controls}
-              transition={{ duration: 1.5, ease: 'easeOut' }}
+              transition={{duration: 1.5, ease: 'easeOut'}}
             />
             {/* Actual progress bar - on top of the glow */}
             <motion.div
               className='absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-progress-start to-progress-end z-10'
-              initial={{ width: 0 }}
+              initial={{width: 0}}
               animate={controls}
             />
             <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-white z-20'>
@@ -71,9 +68,8 @@ export const Card = () => {
         <div className='flex justify-end'>
           <Button
             variant='ghost'
-            className='text-gray-300 hover:bg-gray-700 hover:text-white rounded-full px-4 py-2'
-          >
-            More details <ArrowRight className='ml-2 w-4 h-4' />
+            className='text-gray-300 hover:bg-gray-700 hover:text-white rounded-full px-4 py-2'>
+            More details <Icon name='arrow-right' className='ml-2 w-4 h-4' />
           </Button>
         </div>
       </div>
@@ -82,19 +78,13 @@ export const Card = () => {
 }
 
 interface InfoCardProps {
-  doc: string;
-  title: string;
-  status: string;
-  value: number;
-  extra?: string;
+  doc: string
+  title: string
+  status: string
+  value: number
+  extra?: string
 }
-export const InfoCard = ({
-  doc,
-  title,
-  status,
-  value,
-  extra,
-}: InfoCardProps) => {
+export const InfoCard = ({doc, title, status, value, extra}: InfoCardProps) => {
   return (
     <div className='flex items-center min-w-2xs h-40 overflow-hidden justify-center'>
       <div className='w-full max-w-sm bg-gradient-to-r from-slate-600 via-slate-500 to-slate-500 rounded-lg p-4 border border-muted-foreground/50 shadow-xs'>
@@ -121,7 +111,7 @@ export const InfoCard = ({
           <div
             className={cn(
               'size-2.5 aspect-square flex-shrink-0 drop-shadow-xs rounded-full bg-sky-500',
-              { 'bg-red-500': value < 50, 'bg-orange-300': value < 70 }
+              {'bg-red-500': value < 50, 'bg-orange-300': value < 70},
             )}
           />
           <span className='ml-2 text-base'>{status}</span>
@@ -141,9 +131,9 @@ export const GlassCard = () => {
     <div
       className='relative flex items-center justify-center min-h-screen bg-cover bg-center p-4'
       style={{
-        backgroundImage: 'url(\'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-07-06%20at%209.58.45%E2%80%AFAM-UeYXVFVPAtFva91a8myP0eRL9TjpBN.png\')',
-      }}
-    >
+        backgroundImage:
+          "url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-07-06%20at%209.58.45%E2%80%AFAM-UeYXVFVPAtFva91a8myP0eRL9TjpBN.png')",
+      }}>
       {/* Outer container for the stacked cards */}
       <div className='relative w-88 h-[380px]'>
         {/* Bottom Card (larger, slightly more translucent) */}
@@ -158,8 +148,7 @@ export const GlassCard = () => {
           className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                      w-80 h-80 p-6 rounded-3xl overflow-hidden
                      bg-gray-900 bg-opacity-30 backdrop-filter backdrop-blur-lg backdrop-brightness-75
-                     border border-white border-opacity-20 shadow-lg flex flex-col'
-        >
+                     border border-white border-opacity-20 shadow-lg flex flex-col'>
           {/* Top Section: Money Left */}
           <div className='mb-6'>
             <p className='text-sm text-gray-300 uppercase tracking-wide mb-2'>
@@ -181,8 +170,7 @@ export const GlassCard = () => {
                   x1='0%'
                   y1='0%'
                   x2='100%'
-                  y2='0%'
-                >
+                  y2='0%'>
                   <stop offset='0%' stopColor='#FF6B6B' /> {/* Red */}
                   <stop offset='50%' stopColor='#FFD166' />{' '}
                   {/* Orange/Yellow */}

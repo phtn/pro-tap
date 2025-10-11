@@ -10,9 +10,9 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { Mic } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { cn } from '@/lib/utils'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {useEffect, useState} from 'react'
 
 export default function AIVoice() {
   const [submitted, setSubmitted] = useState(false)
@@ -47,8 +47,8 @@ export default function AIVoice() {
   }
 
   /**
-     * Remove that, only used for demo
-     */
+   * Remove that, only used for demo
+   */
   useEffect(() => {
     if (!isDemo) return
 
@@ -85,21 +85,21 @@ export default function AIVoice() {
             'group w-16 h-16 rounded-xl flex items-center justify-center transition-colors',
             submitted
               ? 'bg-none'
-              : 'bg-none hover:bg-black/5 dark:hover:bg-white/5'
+              : 'bg-none hover:bg-black/5 dark:hover:bg-white/5',
           )}
           type='button'
-          onClick={handleClick}
-        >
-          {submitted
-            ? (
-              <div
-                className='w-6 h-6 rounded-sm animate-spin bg-black  dark:bg-white cursor-pointer pointer-events-auto'
-                style={{ animationDuration: '3s' }}
-              />
-            )
-            : (
-              <Mic className='w-6 h-6 text-black/90 dark:text-white/90' />
-            )}
+          onClick={handleClick}>
+          {submitted ? (
+            <div
+              className='w-6 h-6 rounded-sm animate-spin bg-black  dark:bg-white cursor-pointer pointer-events-auto'
+              style={{animationDuration: '3s'}}
+            />
+          ) : (
+            <Icon
+              name='soundwave'
+              className='w-6 h-6 text-black/90 dark:text-white/90'
+            />
+          )}
         </button>
 
         <span
@@ -107,9 +107,8 @@ export default function AIVoice() {
             'font-mono text-sm transition-opacity duration-300',
             submitted
               ? 'text-black/70 dark:text-white/70'
-              : 'text-black/30 dark:text-white/30'
-          )}
-        >
+              : 'text-black/30 dark:text-white/30',
+          )}>
           {formatTime(time)}
         </span>
 
@@ -121,14 +120,14 @@ export default function AIVoice() {
                 'w-0.5 rounded-full transition-all duration-300',
                 submitted
                   ? 'bg-black/50 dark:bg-white/50 animate-pulse'
-                  : 'bg-black/10 dark:bg-white/10 h-1'
+                  : 'bg-black/10 dark:bg-white/10 h-1',
               )}
               style={
                 submitted && isClient
                   ? {
-                    height: `${20 + Math.random() * 80}%`,
-                    animationDelay: `${i * 0.05}s`,
-                  }
+                      height: `${20 + Math.random() * 80}%`,
+                      animationDelay: `${i * 0.05}s`,
+                    }
                   : undefined
               }
             />

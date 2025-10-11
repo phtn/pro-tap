@@ -12,7 +12,7 @@
 
 import * as React from 'react'
 
-import { Button } from '@/components/ui/button'
+import {Button} from '@/components/ui/button'
 import {
   Drawer,
   DrawerClose,
@@ -23,17 +23,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import {Icon} from '@/lib/icons'
+import {motion} from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'motion/react'
-import { Fingerprint } from 'lucide-react'
 
 interface PriceTagProps {
-  price: number;
-  discountedPrice: number;
+  price: number
+  discountedPrice: number
 }
 
-function PriceTag ({ price, discountedPrice }: PriceTagProps) {
+function PriceTag({price, discountedPrice}: PriceTagProps) {
   return (
     <div className='flex items-center justify-around gap-4 max-w-fit mx-auto'>
       <div className='flex items-baseline gap-2'>
@@ -57,14 +57,14 @@ function PriceTag ({ price, discountedPrice }: PriceTagProps) {
 }
 
 interface DrawerDemoProps extends React.HTMLAttributes<HTMLDivElement> {
-  title?: string;
-  description?: string;
-  primaryButtonText?: string;
-  secondaryButtonText?: string;
-  onPrimaryAction?: () => void;
-  onSecondaryAction?: () => void;
-  price?: number;
-  discountedPrice?: number;
+  title?: string
+  description?: string
+  primaryButtonText?: string
+  secondaryButtonText?: string
+  onPrimaryAction?: () => void
+  onSecondaryAction?: () => void
+  price?: number
+  discountedPrice?: number
 }
 
 const drawerVariants = {
@@ -115,7 +115,7 @@ const itemVariants = {
   },
 }
 
-export default function SmoothDrawer ({
+export default function SmoothDrawer({
   title = 'KokonutUI - Pro',
   description = '100+ collection of UI Components and templates built for React, Next.js, and Tailwind CSS. Spend no time on design and focus on shipping.',
   primaryButtonText = 'Buy Now',
@@ -138,8 +138,7 @@ export default function SmoothDrawer ({
           variants={drawerVariants as any}
           initial='hidden'
           animate='visible'
-          className='mx-auto w-full max-w-[340px] space-y-6'
-        >
+          className='mx-auto w-full max-w-[340px] space-y-6'>
           <motion.div variants={itemVariants as any}>
             <DrawerHeader className='px-0 space-y-2.5'>
               <DrawerTitle className='text-2xl font-semibold flex items-center gap-2.5 tracking-tighter'>
@@ -174,10 +173,7 @@ export default function SmoothDrawer ({
           </motion.div>
 
           <motion.div variants={itemVariants as any}>
-            <PriceTag
-              price={price}
-              discountedPrice={discountedPrice}
-            />
+            <PriceTag price={price} discountedPrice={discountedPrice} />
           </motion.div>
 
           <motion.div variants={itemVariants as any}>
@@ -186,8 +182,8 @@ export default function SmoothDrawer ({
                 <Link
                   href='https://kokonutui.pro/#pricing'
                   target='_blank'
-                  className='group w-full relative overflow-hidden inline-flex items-center justify-center h-11 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 dark:from-rose-600 dark:to-pink-600 text-white text-sm font-semibold tracking-wide shadow-lg shadow-rose-500/20 transition-all duration-500 hover:shadow-xl hover:shadow-rose-500/30 hover:from-rose-600 hover:to-pink-600 dark:hover:from-rose-500 dark:hover:to-pink-500' rel='noreferrer'
-                >
+                  className='group w-full relative overflow-hidden inline-flex items-center justify-center h-11 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 dark:from-rose-600 dark:to-pink-600 text-white text-sm font-semibold tracking-wide shadow-lg shadow-rose-500/20 transition-all duration-500 hover:shadow-xl hover:shadow-rose-500/30 hover:from-rose-600 hover:to-pink-600 dark:hover:from-rose-500 dark:hover:to-pink-500'
+                  rel='noreferrer'>
                   <motion.span
                     className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%]'
                     whileHover={{
@@ -200,11 +196,10 @@ export default function SmoothDrawer ({
                     }}
                   />
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className='relative flex items-center gap-2 tracking-tighter'
-                  >
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    transition={{duration: 0.3}}
+                    className='relative flex items-center gap-2 tracking-tighter'>
                     {primaryButtonText}
                     <motion.div
                       animate={{
@@ -216,9 +211,8 @@ export default function SmoothDrawer ({
                         ease: 'easeInOut',
                         repeat: Number.POSITIVE_INFINITY,
                         repeatDelay: 1,
-                      }}
-                    >
-                      <Fingerprint className='w-4 h-4' />
+                      }}>
+                      <Icon name='qr-code' className='w-4 h-4' />
                     </motion.div>
                   </motion.div>
                 </Link>
@@ -227,8 +221,7 @@ export default function SmoothDrawer ({
                 <Button
                   variant='outline'
                   onClick={handleSecondaryClick}
-                  className='w-full h-11 rounded-xl border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-sm font-semibold transition-colors tracking-tighter'
-                >
+                  className='w-full h-11 rounded-xl border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-sm font-semibold transition-colors tracking-tighter'>
                   {secondaryButtonText}
                 </Button>
               </DrawerClose>

@@ -1,5 +1,5 @@
-import { VerifiedIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
 import Link from 'next/link'
 
 /**
@@ -13,25 +13,25 @@ import Link from 'next/link'
  */
 
 interface ReplyProps {
-  authorName: string;
-  authorHandle: string;
-  authorImage: string;
-  content: string;
-  isVerified?: boolean;
-  timestamp: string;
+  authorName: string
+  authorHandle: string
+  authorImage: string
+  content: string
+  isVerified?: boolean
+  timestamp: string
 }
 
 interface TweetCardProps {
-  authorName: string;
-  authorHandle: string;
-  authorImage: string;
-  content: string[];
-  isVerified?: boolean;
-  timestamp: string;
-  reply?: ReplyProps;
+  authorName: string
+  authorHandle: string
+  authorImage: string
+  content: string[]
+  isVerified?: boolean
+  timestamp: string
+  reply?: ReplyProps
 }
 
-export default function TweetCard ({
+export default function TweetCard({
   authorName = 'Dorian',
   authorHandle = 'dorian_baffier',
   authorImage = 'https://pbs.twimg.com/profile_images/1854916060807675904/KtBJsyWr_400x400.jpg',
@@ -47,7 +47,7 @@ export default function TweetCard ({
     authorName: 'shadcn',
     authorHandle: 'shadcn',
     authorImage:
-            'https://pbs.twimg.com/profile_images/1593304942210478080/TUYae5z7_400x400.jpg',
+      'https://pbs.twimg.com/profile_images/1593304942210478080/TUYae5z7_400x400.jpg',
     content: 'Awesome.',
     isVerified: true,
     timestamp: 'Jan 18',
@@ -56,8 +56,8 @@ export default function TweetCard ({
   return (
     <Link
       href='https://x.com/dorian_baffier/status/1880291036410572934'
-      target='_blank' rel='noreferrer'
-    >
+      target='_blank'
+      rel='noreferrer'>
       <div
         className={cn(
           'w-full min-w-[400px] md:min-w-[500px] max-w-xl p-1.5 rounded-2xl relative isolate overflow-hidden',
@@ -66,9 +66,8 @@ export default function TweetCard ({
           'backdrop-blur-xl backdrop-saturate-[180%]',
           'border border-black/10 dark:border-white/10',
           'shadow-[0_8px_16px_rgb(0_0_0_/_0.15)] dark:shadow-[0_8px_16px_rgb(0_0_0_/_0.25)]',
-          'will-change-transform translate-z-0'
-        )}
-      >
+          'will-change-transform translate-z-0',
+        )}>
         <div
           className={cn(
             'w-full p-5 rounded-xl relative',
@@ -79,9 +78,8 @@ export default function TweetCard ({
             'shadow-xs',
             'will-change-transform translate-z-0',
             'before:absolute before:inset-0 before:bg-linear-to-br before:from-black/[0.02] before:to-black/[0.01] dark:before:from-white/[0.03] dark:before:to-white/[0.01] before:opacity-0 before:transition-opacity before:pointer-events-none',
-            'hover:before:opacity-100'
-          )}
-        >
+            'hover:before:opacity-100',
+          )}>
           <div className='flex gap-3'>
             <div className='shrink-0'>
               <div className='h-10 w-10 rounded-full overflow-hidden'>
@@ -101,7 +99,10 @@ export default function TweetCard ({
                       {authorName}
                     </span>
                     {isVerified && (
-                      <VerifiedIcon className='h-4 w-4 text-blue-400' />
+                      <Icon
+                        name='badge-verified-solid'
+                        className='h-4 w-4 text-blue-400'
+                      />
                     )}
                   </div>
                   <span className='text-black dark:text-white/60 text-sm'>
@@ -110,16 +111,14 @@ export default function TweetCard ({
                 </div>
                 <button
                   type='button'
-                  className='h-8 w-8 text-black dark:text-white/80 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-lg p-1 flex items-center justify-center'
-                >
+                  className='h-8 w-8 text-black dark:text-white/80 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-lg p-1 flex items-center justify-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     width='1200'
                     height='1227'
                     fill='none'
                     viewBox='0 0 1200 1227'
-                    className='w-4 h-4'
-                  >
+                    className='w-4 h-4'>
                     <title>X</title>
                     <path
                       fill='currentColor'
@@ -135,8 +134,7 @@ export default function TweetCard ({
             {content.map((item, index) => (
               <p
                 key={index}
-                className='text-black dark:text-white/90 text-base'
-              >
+                className='text-black dark:text-white/90 text-base'>
                 {item}
               </p>
             ))}
@@ -163,7 +161,10 @@ export default function TweetCard ({
                       {reply.authorName}
                     </span>
                     {reply.isVerified && (
-                      <VerifiedIcon className='h-4 w-4 text-blue-400' />
+                      <Icon
+                        name='badge-verified-solid'
+                        className='h-4 w-4 text-blue-400'
+                      />
                     )}
                     <span className='text-black dark:text-white/60 text-sm'>
                       @{reply.authorHandle}

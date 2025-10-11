@@ -3,17 +3,12 @@
 import type React from 'react'
 
 import {Button} from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import {Card, CardContent} from '@/components/ui/card'
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
 import {Icon} from '@/lib/icons'
 import {Html5Qrcode} from 'html5-qrcode'
 import {useEffect, useRef, useState} from 'react'
+import {SexyButton} from './sexy-button-variants'
 
 export function QRCodeReader() {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
@@ -123,16 +118,12 @@ export function QRCodeReader() {
   }, [activeTab])
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Scan QR Code</CardTitle>
-        <CardDescription>Choose a method to read your QR code</CardDescription>
-      </CardHeader>
+    <Card className='w-full'>
       <CardContent>
         <Tabs
           value={activeTab}
           onValueChange={(v) => setActiveTab(v as 'camera' | 'upload')}>
-          <TabsList className='grid w-full grid-cols-2'>
+          <TabsList className='grid w-full grid-cols-2 h-12'>
             <TabsTrigger value='camera' className='flex items-center gap-2'>
               <Icon name='camera' className='h-4 w-4' />
               Camera
@@ -144,7 +135,7 @@ export function QRCodeReader() {
           </TabsList>
 
           <TabsContent value='camera' className='space-y-4'>
-            <div className='relative aspect-video bg-muted rounded-lg overflow-hidden'>
+            <div className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
               {!isCameraActive && !qrResult && (
                 <div className='absolute inset-0 flex items-center justify-center z-10'>
                   <div className='text-center space-y-4'>
@@ -158,15 +149,18 @@ export function QRCodeReader() {
                   </div>
                 </div>
               )}
-              <div id='qr-reader' className='w-full' />
+              <div id='qr-reader' className='w-full h-full aspect-square' />
             </div>
 
             <div className='flex gap-2'>
               {!isCameraActive && !qrResult && (
-                <Button onClick={startCamera} className='flex-1'>
-                  <Icon name='camera' className='mr-2 h-4 w-4' />
-                  Start Camera
-                </Button>
+                <SexyButton
+                  size='lg'
+                  leftIcon='camera'
+                  onClick={startCamera}
+                  className='flex-1 flex'>
+                  <span>Start Camera</span>
+                </SexyButton>
               )}
               {isCameraActive && (
                 <Button
@@ -183,7 +177,7 @@ export function QRCodeReader() {
           <TabsContent value='upload' className='space-y-4'>
             <div id='qr-reader-upload' className='hidden' />
 
-            <div className='relative aspect-video bg-muted rounded-lg overflow-hidden border-2 border-dashed border-border'>
+            <div className='relative aspect-video rounded-lg overflow-hidden border-2 border-dashed border-border'>
               {uploadedImage ? (
                 <img
                   src={uploadedImage || '/placeholder.svg'}

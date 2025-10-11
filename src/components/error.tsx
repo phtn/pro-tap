@@ -1,8 +1,7 @@
 'use client'
 
-import {Icon} from '@/lib/icons'
+import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {AlertTriangle, FileX, Info, Server, Wifi} from 'lucide-react'
 import {useCallback, useMemo} from 'react'
 import {SexyButton} from './experimental/sexy-button-variants'
 import ListItem from './smoothui/ui/list-item'
@@ -15,7 +14,7 @@ interface ErrorProps {
 
 interface ErrorInsight {
   category: string
-  icon: React.ComponentType<{className?: string}>
+  icon: IconName
   description: string
   suggestion: string
   color: string
@@ -33,7 +32,7 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
     ) {
       return {
         category: 'Network Error',
-        icon: Wifi,
+        icon: 'soundwave',
         description: 'Unable to connect to the server or load resources.',
         suggestion: 'Check your internet connection and try again.',
         color: 'text-blue-500',
@@ -43,7 +42,7 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
     if (message.includes('404') || message.includes('not found')) {
       return {
         category: 'Page Not Found',
-        icon: FileX,
+        icon: 'feedline',
         description: "The requested page or resource doesn't exist.",
         suggestion: 'Verify the URL or navigate back to a known page.',
         color: 'text-orange-500',
@@ -53,7 +52,7 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
     if (message.includes('500') || message.includes('server error')) {
       return {
         category: 'Server Error',
-        icon: Server,
+        icon: 'server',
         description: 'Something went wrong on our end.',
         suggestion: 'This is usually temporary. Please try again in a moment.',
         color: 'text-red-500',
@@ -63,7 +62,7 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
     if (name.includes('typeerror') || message.includes('undefined')) {
       return {
         category: 'Application Error',
-        icon: AlertTriangle,
+        icon: 'alert-triangle',
         description: 'An unexpected error occurred in the application.',
         suggestion:
           'Try refreshing the page or contact support if the issue persists.',
@@ -73,7 +72,7 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
 
     return {
       category: 'Unknown Error',
-      icon: Info,
+      icon: 'add',
       description: 'An unexpected error has occurred.',
       suggestion: 'Please try again or contact support for assistance.',
       color: 'text-gray-500',
@@ -89,7 +88,6 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
     [reset],
   )
 
-  const IconComponent = errorInsight.icon
   // "dark:bg-origin/40 dark:border-zinc-800 dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)]",
   return (
     <div className='max-w-7xl mx-auto p-6'>
@@ -103,7 +101,10 @@ export function ErrorComp({error, reset, name}: ErrorProps) {
         <div className='flex items-start justify-between mb-4'>
           <div className='flex items-center space-x-3'>
             <div className='p-2 rounded-lg bg-red-100 dark:bg-red-900/0'>
-              <IconComponent className={`size-4 ${errorInsight.color}`} />
+              <Icon
+                name={errorInsight.icon}
+                className={`size-4 ${errorInsight.color}`}
+              />
             </div>
             <div>
               <h1 className='text-xl font-semibold text-neutral-900 dark:text-neutral-100'>

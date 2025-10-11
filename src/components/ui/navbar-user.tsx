@@ -40,7 +40,7 @@ const Nav = ({children, extra}: NavProps) => {
 
   const EssentialButtons = useCallback(
     () => (
-      <div className='flex items-center md:space-x-4 space-x-2'>
+      <div className='flex items-center md:space-x-8 space-x-2'>
         {essentialButtons.map((button) => {
           const id = useId()
           return (
@@ -63,10 +63,7 @@ const Nav = ({children, extra}: NavProps) => {
   )
 
   return user ? (
-    <nav
-      className={cn(
-        'h-[8lvh] md:h-[12lvh] border-b border-zinc-800/0 flex items-center justify-between w-full md:max-w-6xl mx-auto px-4',
-      )}>
+    <nav className={cn()}>
       <div
         className={cn('flex items-center space-x-5', {
           'space-x-3': user.isActivated,
@@ -82,7 +79,7 @@ const Nav = ({children, extra}: NavProps) => {
         </Link>
         {children}
       </div>
-      <div className='relative h-12 flex items-center space-x-2 md:space-x-4'>
+      <div className='relative h-12 flex items-center space-x-2 md:space-x-6'>
         <div
           className={cn(
             'size-auto md:hidden -right-1.5 -bottom-0.5 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',

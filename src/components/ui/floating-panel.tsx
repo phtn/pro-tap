@@ -1,6 +1,5 @@
 'use client'
 
-import {ArrowLeftIcon} from 'lucide-react'
 import {AnimatePresence, MotionConfig, Variants, motion} from 'motion/react'
 import React, {
   createContext,
@@ -11,6 +10,7 @@ import React, {
   useState,
 } from 'react'
 
+import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 
 const TRANSITION = {
@@ -396,7 +396,11 @@ export function FloatingPanelCloseButton({
       aria-label='Close floating panel'
       whileHover={{scale: 1.1}}
       whileTap={{scale: 0.9}}>
-      <ArrowLeftIcon size={16} className='text-zinc-900 dark:text-zinc-100' />
+      <Icon
+        name='arrow-left'
+        size={16}
+        className='text-zinc-900 dark:text-zinc-100'
+      />
     </motion.button>
   )
 }

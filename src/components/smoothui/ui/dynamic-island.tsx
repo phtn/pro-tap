@@ -1,17 +1,6 @@
 'use client'
 
-import {
-  Bell,
-  CloudLightning,
-  Music2,
-  Pause,
-  Phone,
-  Play,
-  SkipBack,
-  SkipForward,
-  Thermometer,
-  Timer as TimerIcon,
-} from 'lucide-react'
+import {Icon, IconName} from '@/lib/icons'
 import {AnimatePresence, motion} from 'motion/react'
 import {ReactNode, useMemo, useState} from 'react'
 
@@ -24,6 +13,17 @@ import {ReactNode, useMemo, useState} from 'react'
 //   'idle-timer': { scale: 1.2, y: 5, bounce: 0.3 },
 //   'idle-ring': { scale: 1.1, y: 3, bounce: 0.5 },
 // } as const
+interface IconItem {
+  key: string
+  icon: IconName
+}
+const icons: IconItem[] = [
+  {key: 'idle', icon: 'heart-light'},
+  {key: 'ring', icon: 'spinners-ring'},
+  {key: 'timer', icon: 'history'},
+  {key: 'notification', icon: 'bell'},
+  {key: 'music', icon: 'soundwave'},
+]
 
 const BOUNCE_VARIANTS = {
   idle: 0.1,
@@ -72,7 +72,7 @@ const DefaultIdle = () => {
           animate={{opacity: 1, scale: 1}}
           exit={{opacity: 0, scale: 0.8}}
           className='text-foreground'>
-          <CloudLightning className='h-5 w-5 text-white' />
+          <Icon name='zap' className='h-5 w-5 text-white' />
         </motion.div>
       </AnimatePresence>
 
@@ -83,7 +83,7 @@ const DefaultIdle = () => {
             animate={{opacity: 1, width: 'auto'}}
             exit={{opacity: 0, width: 0}}
             className='flex items-center gap-1 overflow-hidden text-white'>
-            <Thermometer className='h-3 w-3' />
+            <Icon name='paperclip' className='h-3 w-3' />
             <span className='pointer-events-none text-xs whitespace-nowrap text-white'>
               12°C
             </span>
@@ -98,7 +98,7 @@ const DefaultIdle = () => {
 const DefaultRing = () => {
   return (
     <div className='text-foreground flex w-64 items-center gap-3 overflow-hidden px-4 py-2'>
-      <Phone className='h-5 w-5 text-green-500' />
+      <Icon name='phone-accept' className='h-3 w-3' />
       <div className='flex-1'>
         <p className='pointer-events-none text-sm font-medium text-white'>
           Incoming Call
@@ -125,7 +125,7 @@ const DefaultTimer = () => {
 
   return (
     <div className='text-foreground flex w-64 items-center gap-3 overflow-hidden px-4 py-2'>
-      <TimerIcon className='h-5 w-5 text-amber-500' />
+      <Icon name='history' className='h-5 w-5 text-amber-500' />
       <div className='flex-1'>
         <p className='pointer-events-none text-sm font-medium text-white'>
           {time}s remaining
@@ -146,7 +146,7 @@ const DefaultTimer = () => {
 // Notification Component
 const Notification = () => (
   <div className='text-foreground flex w-64 items-center gap-3 overflow-hidden px-4 py-2'>
-    <Bell className='h-5 w-5 text-yellow-400' />
+    <Icon name='bell' className='h-5 w-5 text-yellow-400' />
     <div className='flex-1'>
       <p className='pointer-events-none text-sm font-medium text-white'>
         New Message
@@ -166,7 +166,7 @@ const MusicPlayer = () => {
   const [playing, setPlaying] = useState(true)
   return (
     <div className='text-foreground flex w-72 items-center gap-3 overflow-hidden px-4 py-2'>
-      <Music2 className='h-5 w-5 text-pink-500' />
+      <Icon name='soundwave' className='h-5 w-5 text-pink-500' />
       <div className='min-w-0 flex-1'>
         <p className='pointer-events-none truncate text-sm font-medium text-white'>
           Lofi Chill Beats
@@ -178,21 +178,21 @@ const MusicPlayer = () => {
       <button
         onClick={() => setPlaying(false)}
         className='rounded-full p-1 hover:bg-white/30'>
-        <SkipBack className='h-4 w-4 text-white' />
+        <Icon name='chevron-left' className='h-4 w-4 text-white' />
       </button>
       <button
         onClick={() => setPlaying((p) => !p)}
         className='rounded-full p-1 hover:bg-white/30'>
         {playing ? (
-          <Pause className='h-4 w-4 text-white' />
+          <Icon name='pause-solid' className='h-4 w-4 text-white' />
         ) : (
-          <Play className='h-4 w-4 text-white' />
+          <Icon name='play' className='h-4 w-4 text-white' />
         )}
       </button>
       <button
         onClick={() => setPlaying(true)}
         className='rounded-full p-1 hover:bg-white/30'>
-        <SkipForward className='h-4 w-4 text-white' />
+        <Icon name='chevron-right' className='h-4 w-4 text-white' />
       </button>
     </div>
   )
@@ -285,13 +285,7 @@ export default function DynamicIsland({
         </motion.div>
 
         <div className='bg-background absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 justify-center gap-1 rounded-full border p-1'>
-          {[
-            {key: 'idle', icon: <CloudLightning className='size-3' />},
-            {key: 'ring', icon: <Phone className='size-3' />},
-            {key: 'timer', icon: <TimerIcon className='size-3' />},
-            {key: 'notification', icon: <Bell className='size-3' />},
-            {key: 'music', icon: <Music2 className='size-3' />},
-          ].map(({key, icon}) => (
+          {icons.map(({key, icon}) => (
             <button
               type='button'
               className='bg-primary flex size-8 cursor-pointer items-center justify-center rounded-full border px-2'

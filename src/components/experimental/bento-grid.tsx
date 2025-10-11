@@ -1,13 +1,9 @@
 'use client'
+import {ClassName} from '@/app/types'
+import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {
-  IconBoxAlignRightFilled,
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-  IconTableColumn,
-} from '@tabler/icons-react'
 import {motion} from 'motion/react'
+import {ReactNode} from 'react'
 import {BentoGrid, BentoGridItem} from '../ui/bento-grid'
 
 export const BentoGridStats = () => {
@@ -175,50 +171,34 @@ const SkeletonFour = () => {
       <motion.div
         variants={first}
         className='h-full w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <img
-          src='https://pbs.twimg.com/profile_images/1417752099488636931/cs2R59eW_400x400.jpg'
-          alt='avatar'
-          height='100'
-          width='100'
-          className='rounded-full h-10 w-10'
-        />
+        <Icon name='nfc' className='rounded-full size-12' />
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          Just code in Vanilla Javascript
+          NFC Business Card
         </p>
-        <p className='border border-red-500 bg-red-100 dark:bg-red-900/20 text-red-600 text-xs rounded-full px-2 py-0.5 mt-4'>
-          Delusional
+        <p className='border border-teal-500 bg-teal-100 dark:bg-teal-900/20 text-teal-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+          Active
         </p>
       </motion.div>
       <motion.div className='h-full relative z-20 w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <img
-          src='https://pbs.twimg.com/profile_images/1417752099488636931/cs2R59eW_400x400.jpg'
-          alt='avatar'
-          height='100'
-          width='100'
-          className='rounded-full h-10 w-10'
-        />
+        <Icon name='qrcode-scan' className='rounded-full size-14 text-white' />
+
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          Tailwind CSS is cool, you know
+          Your QR Code
         </p>
-        <p className='border border-green-500 bg-green-100 dark:bg-green-900/20 text-green-600 text-xs rounded-full px-2 py-0.5 mt-4'>
-          Sensible
+        <p className='border border-amber-500 bg-amber-100 dark:bg-amber-900/20 text-amber-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+          Not Active
         </p>
       </motion.div>
       <motion.div
         variants={second}
         className='h-full w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
-        <img
-          src='https://pbs.twimg.com/profile_images/1417752099488636931/cs2R59eW_400x400.jpg'
-          alt='avatar'
-          height='100'
-          width='100'
-          className='rounded-full h-10 w-10'
-        />
+        <Icon name='shield-checkmark' className='rounded-full size-14 ' />
+
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          I love angular, RSC, and Redux.
+          Personal Accident Insurance
         </p>
         <p className='border border-orange-500 bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-xs rounded-full px-2 py-0.5 mt-4'>
-          Helpless
+          Not Active
         </p>
       </motion.div>
     </motion.div>
@@ -257,18 +237,16 @@ const SkeletonFive = () => {
       className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2'>
       <motion.div
         variants={variants}
-        className='flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2  items-start space-x-2 bg-white dark:bg-black'>
-        <img
-          src='https://pbs.twimg.com/profile_images/1417752099488636931/cs2R59eW_400x400.jpg'
-          alt='avatar'
+        className='flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-white dark:bg-black'>
+        <Icon
+          name='feedline'
           height='100'
           width='100'
-          className='rounded-full h-10 w-10'
+          className='rounded-full size-10 text-cyan-500'
         />
-        <p className='text-xs text-neutral-500'>
-          There are a lot of cool framerworks out there like React, Angular,
-          Vue, Svelte that can make your life ....
-        </p>
+        <h4 className='text-lg text-neutral-500 tracking-tight font-figtree font-bold'>
+          Recents Updates
+        </h4>
       </motion.div>
       <motion.div
         variants={variantsSecond}
@@ -279,61 +257,55 @@ const SkeletonFive = () => {
     </motion.div>
   )
 }
-const items = [
+
+interface BentoHeader {
+  title: string
+  description: ReactNode
+  header: ReactNode
+  className?: ClassName
+  icon: IconName
+}
+
+const items: BentoHeader[] = [
   {
-    title: 'AI Content Generation',
+    title: 'Quicklinks',
+    description: <span className='text-sm'>Essentials overview.</span>,
+    header: <SkeletonFour />,
+    className: 'md:col-span-2',
+    icon: 'link',
+  },
+  {
+    title: 'Rewards',
+    description: <span className='text-sm'>Get Cashbacks.</span>,
+    header: <SkeletonThree />,
+    className: 'md:col-span-1',
+    icon: 'coin',
+  },
+  {
+    title: 'Engagements',
     description: (
       <span className='text-sm'>
-        Experience the power of AI in generating unique content.
+        View account performance and user interactions.
       </span>
     ),
     header: <SkeletonOne />,
     className: 'md:col-span-1',
-    icon: <IconClipboardCopy className='h-4 w-4 text-neutral-500' />,
+    icon: 'settings',
   },
   {
-    title: 'Automated Proofreading',
-    description: (
-      <span className='text-sm'>
-        Let AI handle the proofreading of your documents.
-      </span>
-    ),
+    title: 'Automated',
+    description: <span className='text-sm'></span>,
     header: <SkeletonTwo />,
     className: 'md:col-span-1',
-    icon: <IconFileBroken className='h-4 w-4 text-neutral-500' />,
+    icon: 'sign-pen',
   },
   {
-    title: 'Contextual Suggestions',
+    title: 'Get the latest news!',
     description: (
-      <span className='text-sm'>
-        Get AI-powered suggestions based on your writing context.
-      </span>
-    ),
-    header: <SkeletonThree />,
-    className: 'md:col-span-1',
-    icon: <IconSignature className='h-4 w-4 text-neutral-500' />,
-  },
-  {
-    title: 'Sentiment Analysis',
-    description: (
-      <span className='text-sm'>
-        Understand the sentiment of your text with AI analysis.
-      </span>
-    ),
-    header: <SkeletonFour />,
-    className: 'md:col-span-2',
-    icon: <IconTableColumn className='h-4 w-4 text-neutral-500' />,
-  },
-
-  {
-    title: 'Text Summarization',
-    description: (
-      <span className='text-sm'>
-        Summarize your lengthy documents with AI technology.
-      </span>
+      <span className='text-sm'>Summarized or full length, you decide.</span>
     ),
     header: <SkeletonFive />,
     className: 'md:col-span-1',
-    icon: <IconBoxAlignRightFilled className='h-4 w-4 text-neutral-500' />,
+    icon: 'zap',
   },
 ]

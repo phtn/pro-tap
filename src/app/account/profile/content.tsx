@@ -24,6 +24,7 @@ export const Content = () => {
       <Spacer />
       <HeaderTitle title='Overview' />
       <BentoGridStats />
+      <Spacer />
       {/*<ReactMasonryExample />*/}
     </div>
   )

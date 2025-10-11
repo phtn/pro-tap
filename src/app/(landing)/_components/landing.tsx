@@ -47,7 +47,7 @@ export const Landing = () => {
   }, [isMobile])
 
   return (
-    <main className='overflow-y-scroll md:overflow-visible h-screen'>
+    <main className='overflow-y-scroll md:overflow-auto h-screen'>
       <Intro />
       <div className='h-[36lvh] md:h-[55lvh] grid lg:grid-cols-2 gap-12 w-full items-center'>
         <Hero />
@@ -85,8 +85,8 @@ export const Landing = () => {
           Discover
         </TextAnimate>
       </div>
-      <div className='px-4'>
-        <div className='w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-4xl border-2 dark:border-pink-400/30 border-zinc-400 flex justify-between overflow-hidden shadow-md'>
+      <div className='px-4 md:max-w-3xl'>
+        <div className='md:p-2 w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-[30px] border-2 dark:border-pink-400/30 border-zinc-400 flex justify-between overflow-hidden shadow-md'>
           <div className='p-4 h-full '>
             <h3 className='text-2xl md:text-3xl lg:text-4xl font-figtree font-medium tracking-tighter flex space-x-1 md:space-x-2'>
               <span>Personalized</span>
@@ -111,7 +111,7 @@ export const Landing = () => {
             unoptimized
             width={200}
             height={200}
-            className='drop-shadow-2xl'
+            className='drop-shadow-2xl h-auto aspect-auto'
           />
         </div>
       </div>
@@ -171,8 +171,8 @@ export const Landing = () => {
       </div>
 
       {/**/}
-      <div className='px-4'>
-        <div className='w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-4xl border-2 dark:border-sky-400/20 border-zinc-400 flex justify-between overflow-hidden'>
+      <div className='px-4 md:max-w-3xl'>
+        <div className='p-2 w-full bg-zinc-200 dark:bg-zinc-800/40 rounded-[30px] border-2 dark:border-sky-400/20 border-zinc-400 flex justify-between overflow-hidden'>
           <div className='p-4 h-full '>
             <h3 className='text-2xl md:text-3xl lg:text-4xl font-figtree font-medium tracking-tighter flex space-x-1 md:space-x-2'>
               <span>Social Network</span>
@@ -197,7 +197,7 @@ export const Landing = () => {
             unoptimized
             width={200}
             height={200}
-            className='drop-shadow-2xl'
+            className='drop-shadow-2xl h-auto aspect-auto'
           />
         </div>
       </div>
@@ -211,6 +211,7 @@ export const Landing = () => {
         <LogoCarousel columnCount={isMobile ? 4 : 5} />
       </div>
       <Footer />
+      <div className='h-10'></div>
     </main>
   )
 }

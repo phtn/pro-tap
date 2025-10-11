@@ -12,21 +12,14 @@
 
 import {Input} from '@/components/ui/input'
 import useDebounce from '@/hooks/use-debounce'
-import {Icon} from '@/lib/icons'
-import {
-  AudioLines,
-  BarChart2,
-  LayoutGrid,
-  PlaneTakeoff,
-  Video,
-} from 'lucide-react'
+import {Icon, type IconName} from '@/lib/icons'
 import {AnimatePresence, motion} from 'motion/react'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 
 interface Action {
   id: string
   label: string
-  icon: React.ReactNode
+  icon: IconName
   description?: string
   short?: string
   end?: string
@@ -71,11 +64,11 @@ const ANIMATION_VARIANTS = {
   },
 } as const
 
-const allActionsSample = [
+const allActionsSample: Action[] = [
   {
     id: '1',
     label: 'Book tickets',
-    icon: <PlaneTakeoff className='h-4 w-4 text-blue-500' />,
+    icon: 'add',
     description: 'Operator',
     short: '⌘K',
     end: 'Agent',
@@ -83,7 +76,7 @@ const allActionsSample = [
   {
     id: '2',
     label: 'Summarize',
-    icon: <BarChart2 className='h-4 w-4 text-orange-500' />,
+    icon: 'add',
     description: 'gpt-5',
     short: '⌘cmd+p',
     end: 'Command',
@@ -91,7 +84,7 @@ const allActionsSample = [
   {
     id: '3',
     label: 'Screen Studio',
-    icon: <Video className='h-4 w-4 text-purple-500' />,
+    icon: 'add',
     description: 'Claude 4.1',
     short: '',
     end: 'Application',
@@ -99,7 +92,7 @@ const allActionsSample = [
   {
     id: '4',
     label: 'Talk to Jarvis',
-    icon: <AudioLines className='h-4 w-4 text-green-500' />,
+    icon: 'soundwave',
     description: 'gpt-5 voice',
     short: '',
     end: 'Active',
@@ -107,7 +100,7 @@ const allActionsSample = [
   {
     id: '5',
     label: 'Kokonut UI - Pro',
-    icon: <LayoutGrid className='h-4 w-4 text-blue-500' />,
+    icon: 'add',
     description: 'Components',
     short: '',
     end: 'Link',
