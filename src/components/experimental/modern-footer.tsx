@@ -2,7 +2,7 @@ import {Icon} from '@/lib/icons'
 
 export function Footer() {
   return (
-    <footer className='pt-12 pb-28 bg-zinc-800 dark:bg-zinc-800/40 rounded-t-2xl'>
+    <footer className='pt-12 pb-28 dark:bg-gray-900/20 bg-zinc-800 rounded-t-2xl'>
       <div className='container mx-auto px-4 font-figtree'>
         <div className='grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-12'>
           {/* Brand Section */}

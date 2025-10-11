@@ -1,5 +1,6 @@
 import {type VoidPromise} from '@/app/types'
 import {Button} from '@/components/ui/button'
+import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import {type IconName} from '@/lib/icons/types'
 import {cn} from '@/lib/utils'
@@ -48,6 +49,7 @@ interface SocialLoginProps {
 }
 
 const SocialLogins = ({data}: SocialLoginProps) => {
+  const {loading} = useAuthCtx()
   return (
     <div className='space-y-14 md:space-y-8'>
       <div className='select-none relative'>
@@ -66,9 +68,9 @@ const SocialLogins = ({data}: SocialLoginProps) => {
             key={id}
             onClick={fn}
             variant='outline'
-            disabled={disabled}
+            disabled={disabled || loading}
             className='h-14 dark:bg-zinc-200 border-gray-200 dark:hover:bg-zinc-100 hover:border-gray-300 dark:text-background/80'>
-            <Icon name={icon} />
+            <Icon name={loading ? 'spinners-ring' : icon} />
           </Button>
         ))}
       </div>

@@ -25,7 +25,7 @@ export const SignInContent = () => {
         disabled={loading}
         onClick={signInWithGoogle}
         variant='default'
-        leftIcon='google'
+        leftIcon={loading ? 'spinners-ring' : 'google'}
         iconStyle='size-8'
         className='rounded-full md:text-lg'>
         <span className='px-2'>Google</span>

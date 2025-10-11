@@ -30,7 +30,7 @@ const Nav = ({children, extra}: NavProps) => {
           onClick: () => {},
         },
         {
-          href: '/account',
+          href: '/',
           icon: 'bell',
           onClick: () => {},
         },
@@ -40,7 +40,7 @@ const Nav = ({children, extra}: NavProps) => {
 
   const EssentialButtons = useCallback(
     () => (
-      <div className='flex items-center md:space-x-8 space-x-2'>
+      <div className='flex items-center md:space-x-8 space-x-4'>
         {essentialButtons.map((button) => {
           const id = useId()
           return (
