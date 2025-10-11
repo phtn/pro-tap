@@ -1,9 +1,9 @@
 'use client'
 
-import {UserRole} from '@/ctx/auth/types'
-import {db} from '@/lib/firebase'
-import {UserInfo} from '@/schema/user-account'
-import type {User} from 'firebase/auth'
+import { UserRole } from '@/ctx/auth/types'
+import { db } from '@/lib/firebase'
+import { UserInfo } from '@/schema/user-account'
+import type { User } from 'firebase/auth'
 import {
   collection,
   doc,
@@ -82,43 +82,49 @@ export const getUser = async (uid: string): Promise<ProtapUserDoc | null> => {
   return snap.data()
 }
 
+export async function createUser(user: User): Promise<void> {
+  const ref = accountDocRef(user.uid)
+  const data: ProtapUserDoc = {
+    uid: user.uid,
+    email: user.email ?? null,
+    displayName: user.displayName ?? null,
+    photoURL: user.photoURL ?? null,
+    providerIds: user.providerData.map((p) => p.providerId),
+    createdAt: serverTimestamp() as ServerTime,
+    lastLogin: serverTimestamp() as ServerTime,
+    isActivated: false,
+    ntag: {
+      serialNumber: '',
+      scanTime: null,
+      metadata: {},
+      type: '',
+    },
+    userInputData: {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      birthdate: null,
+      type: '',
+    },
+    userType: 'INDIVIDUAL',
+    purchaseType: '',
+    loyaltyPoints: 0,
+    isMerchant: false,
+    isAffiliate: false,
+    userInfo: null,
+    role: 'user',
+    deactivationReason: null,
+  }
+  await setDoc(ref, data)
+}
+
 export async function updateUser(user: User): Promise<void> {
   const ref = accountDocRef(user.uid)
   const snap = await getDoc(ref)
 
   if (!snap.exists()) {
-    const data: ProtapUserDoc = {
-      uid: user.uid,
-      email: user.email ?? null,
-      displayName: user.displayName ?? null,
-      photoURL: user.photoURL ?? null,
-      providerIds: user.providerData.map((p) => p.providerId),
-      createdAt: serverTimestamp() as ServerTime,
-      lastLogin: serverTimestamp() as ServerTime,
-      isActivated: false,
-      ntag: {
-        serialNumber: '',
-        scanTime: null,
-        metadata: {},
-        type: '',
-      },
-      userInputData: {
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        birthdate: null,
-        type: '',
-      },
-      userType: 'INDIVIDUAL',
-      purchaseType: '',
-      loyaltyPoints: 0,
-      isMerchant: false,
-      isAffiliate: false,
-      userInfo: null,
-      role: 'user',
-      deactivationReason: null,
-    }
-    await setDoc(ref, data)
+    // For backwards compatibility, create user if doesn't exist
+    await createUser(user)
     return
   }
 
@@ -140,7 +146,7 @@ export function activateUser(
   const ntag = {
     serialNumber: `${id}:${serialNumber}`,
     scanTime: new Date().toISOString(),
-    metadata: {id},
+    metadata: { id },
     type: '',
   }
   return updateDoc(ref, {

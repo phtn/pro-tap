@@ -2,7 +2,7 @@
 
 import {VoidPromise} from '@/app/types'
 import {auth} from '@/lib/firebase'
-import {getUser} from '@/lib/firebase/users'
+import {createUser, getUser} from '@/lib/firebase/users'
 import {
   GoogleAuthProvider,
   onIdTokenChanged,
@@ -36,8 +36,10 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
     try {
       await signOut(auth)
       setUser(null)
-      router.push('/sign')
+      setLoading(false)
+      router.push('/')
     } catch (error) {
+      setLoading(false)
       console.error('Error signing out:', error)
     }
   }
@@ -60,7 +62,12 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
     if (status === 'success' && signInCheckResult.user) {
       setLoading(false)
       const firebaseUser = signInCheckResult.user
-      getUser(firebaseUser.uid).then((userProfile) => {
+      getUser(firebaseUser.uid).then(async (userProfile) => {
+        // Create user profile if it doesn't exist
+        if (!userProfile) {
+          await createUser(firebaseUser)
+        }
+
         const authUser: AuthUser = {
           ...firebaseUser,
           // Spread userProfile with null coalescing for required properties
@@ -131,6 +138,12 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
           // When token changes, we update the custom claim 'role'.
           await firebaseUser.getIdToken(true)
           const userProfile = await getUser(firebaseUser.uid)
+
+          // Create user profile if it doesn't exist
+          if (!userProfile) {
+            await createUser(firebaseUser)
+          }
+
           const authUser: AuthUser = {
             ...firebaseUser,
             // Spread userProfile with null coalescing for required properties

@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://protap.com/sitemap.xml
+
+# Disallow admin and account pages from being crawled (they require authentication)
+Disallow: /admin
+Disallow: /account
+Disallow: /api
+
+# Allow sign-in and pricing pages
+Allow: /sign
+Allow: /pricing
+Allow: /alpha
