@@ -95,21 +95,21 @@ export class ProfileService {
     uid: string,
     data: ProfileFormData,
   ): Promise<void> {
-    const docRef = doc(db, 'users', uid)
-
-    await updateDoc(docRef, {
+    await updateDoc(accountDocRef(uid), {
       ...data,
-      updatedAt: new Date().toISOString(),
+      updatedAt: serverTimestamp(),
+    }).catch((error) => {
+      console.error('Error updating profile:', error)
     })
   }
 
   // Publish profile
   static async publishProfile(uid: string, publish: boolean): Promise<void> {
-    const docRef = doc(db, 'users', uid)
-
-    await updateDoc(docRef, {
+    await updateDoc(accountDocRef(uid), {
       isPublished: publish,
       updatedAt: new Date().toISOString(),
+    }).catch((error) => {
+      console.error('Error publishing profile:', error)
     })
   }
 
@@ -121,9 +121,7 @@ export class ProfileService {
       throw new Error('Username is already taken')
     }
 
-    const docRef = doc(db, 'users', uid)
-
-    await updateDoc(docRef, {
+    await updateDoc(accountDocRef(uid), {
       username: newUsername.toLowerCase(),
       updatedAt: new Date().toISOString(),
     })

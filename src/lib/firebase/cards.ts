@@ -203,3 +203,9 @@ export const getAllCards = async (collection = 'general') => {
   const cards = querySnapshot.docs.map((doc) => doc.data())
   return cards
 }
+export const getAllCards_ = async (collection = 'general') => {
+  // const q = query(cardsCollection(collection), where('ownerId', '!=', null))
+  const querySnapshot = await getDocs(cardsCollection(collection))
+  const cards = querySnapshot.docs.map((doc) => doc.data())
+  return cards
+}

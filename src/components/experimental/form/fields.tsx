@@ -43,7 +43,7 @@ export const TextField = (item: TextFieldConfig) => (
       onChange={(e) => item.validators?.onChange(e.target.value as string)}
       value={item.value}
       placeholder={item.placeholder}
-      className='w-full md:text-base px-4 py-2 h-13 rounded-xl dark:border-origin/50'
+      className='w-full md:text-base px-4 py-2 h-16 rounded-xl dark:border-origin/50'
     />
   </div>
 )
@@ -85,7 +85,7 @@ export const SelectField = (item: SelectFieldConfig) => {
           <HyperList
             data={item.options}
             component={SelectFieldItem}
-            itemStyle='border-b last:border-none'
+            itemStyle='border-b border-origin last:border-none'
             keyId='value'
           />
         </SelectContent>

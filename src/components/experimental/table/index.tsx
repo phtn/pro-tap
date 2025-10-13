@@ -177,14 +177,14 @@ export const DataTable = <T,>({
   return (
     <div
       className={cn(
-        'p-8 flex w-full overflow-hidden gap-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]',
+        'text-foreground flex w-full overflow-hidden gap-x-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]',
         create || edit ? 'xl:max-w-[58vw]' : 'xl:max-w-[100vw]',
       )}>
-      <HyperCard className=' h-fit pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
+      <HyperCard className='rounded-none h-fit pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
         {/* Filters */}
-        <div className='px-3 flex flex-wrap items-center justify-between'>
-          <div className='flex items-center gap-4'>
-            <h2 className='text-2xl font-bold font-sans tracking-tighter'>
+        <div className='px-3 -mb-3 md:mb-0 flex items-center justify-between'>
+          <div className='flex items-center gap-2 md:gap-4'>
+            <h2 className='text-lg md:text-2xl font-bold font-sans tracking-tighter'>
               {title}
             </h2>
             <Search col={filterCol} />
@@ -203,13 +203,13 @@ export const DataTable = <T,>({
             <Button
               variant='secondary'
               className={cn(
-                'ml-auto bg-background/30 translate-x-0 transition-transform duration-200 ease-in-out',
+                'ml-auto bg-background/30 translate-x-0 transition-transform duration-200 ease-in-out md:aspect-auto aspect-square',
                 {
                   'translate-x-40': create || edit,
                 },
               )}>
               <Icon name='download' className='size-4 opacity-60' />
-              <span className='font-sans inline-flex items-center gap-2'>
+              <span className='font-sans md:inline-flex items-center gap-2 hidden'>
                 Export
               </span>
             </Button>
@@ -217,19 +217,19 @@ export const DataTable = <T,>({
         </div>
 
         {/* Table */}
-        <div className='bg-transparent overflow-auto'>
+        <div className='bg-transparent h-[calc(100vh-200px)] md:h-[calc(100vh-124px)] overflow-auto'>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className='hover:bg-sidebar-border/60 bg-sidebar-border border-0'>
+                  className='hover:bg-sidebar-border/60 bg-origin/20 border-0'>
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead
                         key={header.id}
                         style={{width: `${header.getSize()}px`}}
-                        className='h-10 font-semibold text-xs border-b-[0.5px]'>
+                        className='md:h-10 h-8 font-normal text-sm border-b-[0.5px] dark:text-zinc-400'>
                         <ColumnSort flexRender={flexRender} header={header} />
                       </TableHead>
                     )
@@ -272,7 +272,7 @@ const renderRow = <T,>(
       key={row.id}
       data-state={row.getIsSelected() && 'selected'}
       className={cn(
-        'h-14 overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background',
+        'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background/40',
         'transition-colors duration-50',
         {
           // Apply editing styles - same as hover but persistent

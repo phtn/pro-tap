@@ -67,7 +67,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
             'Scan QR Code with your smartphone camera or upload an image',
           color: 'bg-zinc-500 hover:bg-zinc-600',
           icon: 'qrcode-scan',
-          iconStyle: 'text-white md:size-24 size-16 translate-y-6',
+          iconStyle: 'hidden text-white md:size-24 size-16 translate-y-6',
           content: <QRCodeActivationContent />,
         },
         {
@@ -116,7 +116,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
   return (
     <div className='flex flex-col h-full w-full'>
       {/* Card Content Area */}
-      <div className='flex-1 mb-8 md:mb-4 relative'>
+      <div className='flex-1 md:mb-8 mb-2 relative'>
         <div className='md:rounded-3xl w-full h-full relative overflow-hidden'>
           <div className='absolute inset-0'>
             <AnimatePresence
@@ -137,11 +137,11 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                   WebkitBackfaceVisibility: 'hidden',
                 }}>
                 <div className='relative h-full'>
-                  <div className='bg-zinc-800/20 rounded-4xl md:rounded-2xl relative p-6 md:p-16 h-full flex flex-col overflow-hidden font-figtree'>
-                    <h2 className='opacity-80 md:text-base text-sm'>
+                  <div className='bg-origin/25 rounded-4xl md:rounded-2xl relative p-5 md:p-16 h-full flex flex-col overflow-hidden font-figtree'>
+                    <h2 className='opacity-80 md:text-base text-xs'>
                       Account Activation
                     </h2>
-                    <h3 className='text-2xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>
+                    <h3 className='text-lg md:text-2xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>
                       {selectedItem?.title}
                     </h3>
                     <div className='flex h-full w-full items-center justify-center'>
@@ -153,9 +153,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                       )}
                     </div>
 
-                    <div className='relative flex flex-1'>
-                      {selectedItem?.content}
-                    </div>
+                    <div className='flex flex-1'>{selectedItem?.content}</div>
                   </div>
                 </div>
               </motion.div>
@@ -175,7 +173,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
           'transition-all duration-200',
           className,
         )}>
-        <div className='grid grid-cols-2 w-full gap-4 relative z-[2]'>
+        <div className='flex justify-center w-full md:px-12 gap-4 relative z-[2]'>
           {activationTabs.map((tab) => {
             const isSelected = selected === tab.id
             return (
@@ -199,7 +197,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                   'relative flex items-center justify-center px-0 py-1',
                   'md:text-lg transition-all duration-300',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  'truncate w-full',
+                  'truncate w-full md:max-w-[160px]',
                   'inset-shadow-[0_1px_rgb(237_237_237)]/20',
                   isSelected
                     ? 'text-accent bg-slate-500 dark:bg-slate-500/95 dark:hover:bg-slate-500/80'

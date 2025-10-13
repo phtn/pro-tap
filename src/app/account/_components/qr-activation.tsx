@@ -1,39 +1,42 @@
 'use client'
 
-import { useAuthCtx } from '@/ctx/auth'
-import { onSuccess } from '@/ctx/toast'
-import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { useToggle } from '@/hooks/use-toggle'
-import { QRCodeReader } from '@/components/experimental/qrcode-reader'
-import { QRActivationProgress } from './qr-progress'
+import {QRCodeReader} from '@/components/experimental/qrcode-reader'
+import {useAuthCtx} from '@/ctx/auth'
+import {onSuccess} from '@/ctx/toast'
+import {useToggle} from '@/hooks/use-toggle'
+import {useRouter} from 'next/navigation'
+import {useCallback, useEffect, useState} from 'react'
+import {QRActivationProgress} from './qr-progress'
 
 export const QRCodeActivationContent = () => {
-  const { user, loading } = useAuthCtx()
+  const {user, loading} = useAuthCtx()
   const router = useRouter()
   const [qrScanned, setQrScanned] = useState<string | null>(null)
-  const { on: openProgress, toggle: toggleOpenProgress } = useToggle()
+  const {on: openProgress, toggle: toggleOpenProgress} = useToggle()
 
-  const handleQRScan = useCallback((qrData: string) => {
-    setQrScanned(qrData)
-    onSuccess('QR Code scanned successfully')
+  const handleQRScan = useCallback(
+    (qrData: string) => {
+      setQrScanned(qrData)
+      onSuccess('QR Code scanned successfully')
 
-    // If user is not authenticated, store QR data and redirect to sign in
-    if (!user) {
-      // Store QR data in session storage for after authentication
-      sessionStorage.setItem('pendingQRData', qrData)
-      router.push('/sign')
-      return
-    }
+      // If user is not authenticated, store QR data and redirect to sign in
+      if (!user) {
+        // Store QR data in session storage for after authentication
+        sessionStorage.setItem('pendingQRData', qrData)
+        router.push('/sign')
+        return
+      }
 
-    // If user is authenticated but not activated, proceed with activation
-    if (user && !user.isActivated) {
-      toggleOpenProgress()
-    } else if (user && user.isActivated) {
-      // If user is already activated, redirect to add service page
-      router.push('/account/add-service')
-    }
-  }, [user, toggleOpenProgress, router])
+      // If user is authenticated but not activated, proceed with activation
+      if (user && !user.isActivated) {
+        toggleOpenProgress()
+      } else if (user && user.isActivated) {
+        // If user is already activated, redirect to add service page
+        router.push('/account/add-service')
+      }
+    },
+    [user, toggleOpenProgress, router],
+  )
 
   // Handle case where user signs in after scanning QR
   useEffect(() => {
@@ -66,11 +69,12 @@ export const QRCodeActivationContent = () => {
   }, [user, loading, qrScanned, toggleOpenProgress, router])
 
   return (
-    <div className="space-y-4">
+    <div className='md:min-w-[400px] min-w-[340px] md:p-8 absolute left-1/2 -translate-x-1/2 md:top-0 top-18'>
       <QRCodeReader onScan={handleQRScan} />
       {qrScanned && (
-        <div className="text-center text-sm text-muted-foreground">
-          QR Code scanned. {user ? 'Processing activation...' : 'Please sign in to continue.'}
+        <div className='text-center text-sm text-muted-foreground'>
+          QR Code scanned.{' '}
+          {user ? 'Processing activation...' : 'Please sign in to continue.'}
         </div>
       )}
 

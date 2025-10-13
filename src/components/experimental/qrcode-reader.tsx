@@ -2,19 +2,19 @@
 
 import type React from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Icon } from '@/lib/icons'
-import { Html5Qrcode } from 'html5-qrcode'
-import { useEffect, useRef, useState } from 'react'
-import { SexyButton } from './sexy-button-variants'
+import {Button} from '@/components/ui/button'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
+import {Icon} from '@/lib/icons'
+import {Html5Qrcode} from 'html5-qrcode'
+import {useEffect, useRef, useState} from 'react'
+import {HyperCard} from './card/hyper-card'
+import {SexyButton} from './sexy-button-variants'
 
 interface QRCodeReaderProps {
   onScan?: (data: string) => void
 }
 
-export function QRCodeReader({ onScan }: QRCodeReaderProps) {
+export function QRCodeReader({onScan}: QRCodeReaderProps) {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
   const [qrResult, setQrResult] = useState<string>('')
   const [isCameraActive, setIsCameraActive] = useState(false)
@@ -46,10 +46,10 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
       }
 
       await html5QrCodeRef.current.start(
-        { facingMode: 'environment' },
+        {facingMode: 'environment'},
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 },
+          qrbox: {width: 250, height: 250},
         },
         async (decodedText) => {
           setQrResult(decodedText)
@@ -124,128 +124,132 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
   }, [activeTab])
 
   return (
-    <Card className='w-full'>
-      <CardContent>
-        <Tabs
-          value={activeTab}
-          onValueChange={(v) => setActiveTab(v as 'camera' | 'upload')}>
-          <TabsList className='grid w-full grid-cols-2 h-12'>
-            <TabsTrigger value='camera' className='flex items-center gap-2'>
-              <Icon name='camera' className='h-4 w-4' />
-              Camera
-            </TabsTrigger>
-            <TabsTrigger value='upload' className='flex items-center gap-2'>
-              <Icon name='upload' className='h-4 w-4' />
-              Upload
-            </TabsTrigger>
-          </TabsList>
+    <HyperCard className='p-2 rounded-[1.75rem]'>
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => setActiveTab(v as 'camera' | 'upload')}>
+        <TabsList className='rounded-[1.25rem] grid w-full grid-cols-2 h-16 bg-origin/60'>
+          <TabsTrigger
+            value='camera'
+            className='flex items-center gap-2 h-14 rounded-2xl'>
+            <Icon name='camera' className='size-4' />
+            Camera
+          </TabsTrigger>
+          <TabsTrigger
+            value='upload'
+            className='flex items-center gap-2 h-14 rounded-2xl'>
+            <Icon name='upload' className='size-4' />
+            Upload
+          </TabsTrigger>
+        </TabsList>
 
-          <TabsContent value='camera' className='space-y-4'>
-            <div className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
-              {!isCameraActive && !qrResult && (
-                <div className='absolute inset-0 flex items-center justify-center z-10'>
-                  <div className='text-center space-y-4'>
-                    <Icon
-                      name='camera'
-                      className='h-16 w-16 mx-auto text-muted-foreground'
-                    />
-                    <p className='text-sm text-muted-foreground'>
-                      Click the button below to start scanning
-                    </p>
-                  </div>
+        <TabsContent value='camera' className='space-y-4'>
+          <div className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
+            {!isCameraActive && !qrResult && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <div className='text-center space-y-4'>
+                  <Icon
+                    name='qrcode-scan'
+                    className='size-36 mx-auto text-white'
+                  />
+                  <p className='text-sm text-muted-foreground'>
+                    Use device camera to scan your QR code
+                  </p>
                 </div>
-              )}
-              <div id='qr-reader' className='w-full h-full aspect-square' />
-            </div>
-
-            <div className='flex gap-2'>
-              {!isCameraActive && !qrResult && (
-                <SexyButton
-                  size='lg'
-                  leftIcon='camera'
-                  onClick={startCamera}
-                  className='flex-1 flex'>
-                  <span>Start Camera</span>
-                </SexyButton>
-              )}
-              {isCameraActive && (
-                <Button
-                  onClick={stopCamera}
-                  variant='destructive'
-                  className='flex-1'>
-                  <Icon name='close' className='mr-2 h-4 w-4' />
-                  Stop Camera
-                </Button>
-              )}
-            </div>
-          </TabsContent>
-
-          <TabsContent value='upload' className='space-y-4'>
-            <div id='qr-reader-upload' className='hidden' />
-
-            <div className='relative aspect-video rounded-lg overflow-hidden border-2 border-dashed border-border'>
-              {uploadedImage ? (
-                <img
-                  src={uploadedImage || '/placeholder.svg'}
-                  alt='Uploaded QR code'
-                  className='w-full h-full object-contain'
-                />
-              ) : (
-                <div className='absolute inset-0 flex items-center justify-center'>
-                  <div className='text-center space-y-4'>
-                    <Icon
-                      name='upload'
-                      className='h-16 w-16 mx-auto text-muted-foreground'
-                    />
-                    <p className='text-sm text-muted-foreground'>
-                      Upload an image containing a QR code
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <input
-              ref={fileInputRef}
-              type='file'
-              accept='image/*'
-              onChange={handleFileUpload}
-              className='hidden'
-            />
-            <Button
-              onClick={() => fileInputRef.current?.click()}
-              className='w-full'>
-              <Icon name='upload' className='mr-2 h-4 w-4' />
-              Choose Image
-            </Button>
-          </TabsContent>
-        </Tabs>
-
-        {error && (
-          <div className='mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg'>
-            <p className='text-sm text-destructive'>{error}</p>
-          </div>
-        )}
-
-        {qrResult && (
-          <div className='mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg'>
-            <div className='flex items-start gap-3'>
-              <Icon
-                name='check'
-                className='h-5 w-5 text-primary mt-0.5 flex-shrink-0'
-              />
-              <div className='flex-1 min-w-0'>
-                <p className='text-sm font-medium text-foreground mb-1'>
-                  QR Code Detected
-                </p>
-                <p className='text-sm text-muted-foreground break-all'>
-                  {qrResult}
-                </p>
               </div>
+            )}
+            <div id='qr-reader' className='w-full h-full aspect-square' />
+          </div>
+
+          <div className='flex gap-2'>
+            {!isCameraActive && !qrResult && (
+              <SexyButton
+                size='lg'
+                variant='dark'
+                leftIcon='camera'
+                onClick={startCamera}
+                className='flex-1 flex'>
+                <span>Start Camera</span>
+              </SexyButton>
+            )}
+            {isCameraActive && (
+              <Button
+                onClick={stopCamera}
+                variant='destructive'
+                className='flex-1'>
+                <Icon name='close' className='mr-2 h-4 w-4' />
+                Stop Camera
+              </Button>
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value='upload' className='space-y-4'>
+          <div id='qr-reader-upload' className='hidden' />
+
+          <div className='relative aspect-square bg-origin/10 rounded-3xl overflow-hidden border-2 border-dashed border-border'>
+            {uploadedImage ? (
+              <img
+                src={uploadedImage || '/placeholder.svg'}
+                alt='Uploaded QR code'
+                className='w-full h-full object-contain'
+              />
+            ) : (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <div className='text-center space-y-4'>
+                  <Icon
+                    name='image-upload'
+                    className='size-36 mx-auto opacity-60'
+                  />
+                  <p className='text-sm text-muted-foreground'>
+                    Upload an image containing a QR code
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <input
+            type='file'
+            accept='image/*'
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            className='hidden'
+          />
+          <Button
+            size='lg'
+            className='w-full h-14 rounded-[1.25rem]'
+            onClick={() => fileInputRef.current?.click()}>
+            <Icon name='qr-code' className='mr-2 size-4 text-white' />
+            <span className='md:text-lg text-white'>Choose Image</span>
+          </Button>
+        </TabsContent>
+      </Tabs>
+
+      {error && (
+        <div className='mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg'>
+          <p className='text-sm text-destructive'>{error}</p>
+        </div>
+      )}
+
+      {qrResult && (
+        <div className='mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg'>
+          <div className='flex items-start gap-3'>
+            <Icon
+              name='check'
+              className='h-5 w-5 text-primary mt-0.5 flex-shrink-0'
+            />
+            <div className='flex-1 min-w-0'>
+              <p className='text-sm font-medium text-foreground mb-1'>
+                QR Code Detected
+              </p>
+              <p className='text-sm text-muted-foreground break-all'>
+                {qrResult}
+              </p>
             </div>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      )}
+    </HyperCard>
   )
 }

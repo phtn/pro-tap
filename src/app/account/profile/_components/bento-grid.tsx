@@ -1,14 +1,106 @@
 'use client'
+import {getUserProfile} from '@/app/actions'
 import {ClassName} from '@/app/types'
-import {useAuthCtx} from '@/ctx/auth'
 import {Icon, type IconName} from '@/lib/icons'
+import {getBestImageSource} from '@/lib/image-cache'
 import {cn} from '@/lib/utils'
 import {motion} from 'motion/react'
-import {ReactNode, useMemo} from 'react'
+import {ReactNode, useEffect, useMemo, useState} from 'react'
 import {BentoGrid, BentoGridItem} from '../../../../components/ui/bento-grid'
 import {DitherPhoto, ImageDither} from './dither-photo'
 
+interface BentoHeader {
+  title: string
+  description: ReactNode
+  href?: string
+  header: ReactNode
+  icon: IconName
+  className?: ClassName
+  activeIcon?: IconName
+  pro?: boolean
+}
+
 export const BentoGridStats = () => {
+  const [imageSource, setImageSource] = useState<string>('')
+
+  useEffect(() => {
+    const loadCachedImage = async () => {
+      try {
+        const cachedProfile = await getUserProfile()
+        const bestImageSource = cachedProfile
+          ? getBestImageSource(cachedProfile)
+          : null
+        setImageSource(bestImageSource || '')
+        console.log(bestImageSource)
+      } catch (error) {
+        console.error('Error loading cached image:', error)
+        setImageSource('')
+      }
+    }
+
+    loadCachedImage().catch(console.error)
+  }, [])
+
+  const items = useMemo(
+    () =>
+      [
+        {
+          title: '',
+          description: <span className='text-sm'></span>,
+          header: <SkeletonFour />,
+          className: 'md:col-span-2 border-none dark:bg-transparent',
+          icon: 'link',
+        },
+        {
+          title: 'Profile Editor',
+          description: (
+            <span className='text-sm'>Customize your public profile.</span>
+          ),
+          header: <ProfileEditor image={imageSource} />,
+          className:
+            'md:col-span-1 bg-white/60 md:dark:bg-dark-origin dark:bg-transparent dark:border-dark-origin backdrop-blur-md',
+          icon: 'check',
+          activeIcon: 'arrow-up',
+          pro: true,
+          href: '/account/profile/editor',
+        },
+        {
+          title: 'Connections',
+          description: (
+            <span className='text-sm'>
+              View your followers and user interactions.
+            </span>
+          ),
+          header: <SkeletonOne />,
+          className: 'md:col-span-1 bg-indigo-200/20',
+          icon: 'settings',
+          pro: true,
+        },
+        {
+          title: 'Affiliate Account',
+          description: (
+            <span className='text-sm'>Manage your affiliate account.</span>
+          ),
+          header: <SkeletonTwo />,
+          className: 'md:col-span-1 bg-sky-200/20',
+          icon: 'sign-pen',
+          pro: true,
+        },
+        {
+          title: 'Merchant Account',
+          description: (
+            <span className='text-sm'>
+              Summarized or full length, you decide.
+            </span>
+          ),
+          header: <MerchantAccount />,
+          className: 'md:col-span-1 bg-teal-200/20',
+          icon: 'zap',
+          pro: true,
+        },
+      ] as BentoHeader[],
+    [],
+  )
   return (
     <BentoGrid className='relative max-w-6xl mx-auto md:auto-rows-[20rem]'>
       {items.map((item, i) => (
@@ -114,9 +206,10 @@ const SkeletonTwo = () => {
     </motion.div>
   )
 }
-const ProfileEditor = () => {
-  const {user} = useAuthCtx()
-
+interface ProfileEditorProps {
+  image: string
+}
+const ProfileEditor = ({image}: ProfileEditorProps) => {
   const variants = {
     initial: {
       backgroundPosition: '0 50%',
@@ -142,7 +235,7 @@ const ProfileEditor = () => {
         backgroundSize: '500% 500%',
       }}>
       <motion.div className='relative h-full w-full rounded-lg flex items-center overflow-hidden'>
-        <ImageDither image={user?.photoURL ?? null} />
+        <ImageDither image={image} />
         <DitherPhoto />
       </motion.div>
     </motion.div>
@@ -225,69 +318,3 @@ const MerchantAccount = () => {
       className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2'></motion.div>
   )
 }
-
-interface BentoHeader {
-  title: string
-  description: ReactNode
-  href?: string
-  header: ReactNode
-  icon: IconName
-  className?: ClassName
-  activeIcon?: IconName
-  pro?: boolean
-}
-
-const items: BentoHeader[] = [
-  {
-    title: '',
-    description: <span className='text-sm'></span>,
-    header: <SkeletonFour />,
-    className: 'md:col-span-2 border-none dark:bg-transparent',
-    icon: 'link',
-  },
-  {
-    title: 'Profile Editor',
-    description: (
-      <span className='text-sm'>Customize your public profile.</span>
-    ),
-    header: <ProfileEditor />,
-    className:
-      'md:col-span-1 bg-white/60 md:dark:bg-dark-origin dark:bg-transparent dark:border-dark-origin backdrop-blur-md',
-    icon: 'check',
-    activeIcon: 'arrow-up',
-    pro: true,
-    href: '/account/profile/editor',
-  },
-  {
-    title: 'Connections',
-    description: (
-      <span className='text-sm'>
-        View your followers and user interactions.
-      </span>
-    ),
-    header: <SkeletonOne />,
-    className: 'md:col-span-1 bg-indigo-200/20',
-    icon: 'settings',
-    pro: true,
-  },
-  {
-    title: 'Affiliate Account',
-    description: (
-      <span className='text-sm'>Manage your affiliate account.</span>
-    ),
-    header: <SkeletonTwo />,
-    className: 'md:col-span-1 bg-sky-200/20',
-    icon: 'sign-pen',
-    pro: true,
-  },
-  {
-    title: 'Merchant Account',
-    description: (
-      <span className='text-sm'>Summarized or full length, you decide.</span>
-    ),
-    header: <MerchantAccount />,
-    className: 'md:col-span-1 bg-teal-200/20',
-    icon: 'zap',
-    pro: true,
-  },
-]

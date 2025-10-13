@@ -1,8 +1,8 @@
-import {VoidPromise} from '@/app/types'
-import {ProAvatar} from '@/components/ui/pro-avatar'
-import {Icon} from '@/lib/icons'
-import {DropdownMenuSeparator} from '@radix-ui/react-dropdown-menu'
-import {User} from 'firebase/auth'
+import { VoidPromise } from '@/app/types'
+import { ProAvatar } from '@/components/ui/pro-avatar'
+import { Icon } from '@/lib/icons'
+import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu'
+import { User } from 'firebase/auth'
 import Link from 'next/link'
 
 export interface SignInCardProps {
@@ -10,7 +10,7 @@ export interface SignInCardProps {
   signOut?: VoidPromise
 }
 
-export const AuthedCard = ({user, signOut}: SignInCardProps) => {
+export const AuthedCard = ({ user, signOut }: SignInCardProps) => {
   return (
     <div className='w-96 h-[24rem] px-3 py-3.5 font-figtree font-semibold bg-white dark:bg-zinc-900/95 backdrop-blur-sm border-[0.33px] border-zinc-300 dark:border-zinc-800/60 rounded-3xl shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20 overflow-hidden'>
       <div className='left-0 top-8 absolute size-full font-figtree flex flex-col space-y-12 items-center justify-start text-zinc-600 dark:text-zinc-400 z-100'>
@@ -23,7 +23,7 @@ export const AuthedCard = ({user, signOut}: SignInCardProps) => {
           <Link
             href='/account/profile'
             className='flex items-center min-w-3xs space-x-4 bg-zinc-500/15 dark:bg-zinc-500/60 backdrop-blur-md pl-3 pr-6 py-3 rounded-full'>
-            {user && user.photoURL && <ProAvatar photoURL={user.photoURL} />}
+            {user && user.photoURL && <ProAvatar photoURL={user.photoURL} isActivated={false} />}
             <span className='font-medium tracking-tight dark:text-zinc-300'>
               {user?.displayName}
             </span>

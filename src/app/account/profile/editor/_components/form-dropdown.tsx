@@ -1,6 +1,7 @@
 'use client'
 
 import {type ClassName} from '@/app/types'
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +11,7 @@ import {
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import Link from 'next/link'
-import {
-  Dispatch,
-  type ReactNode,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
+import {type ReactNode, useCallback, useMemo, useState} from 'react'
 
 interface Editor {
   name: string
@@ -41,7 +35,6 @@ interface EditorDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   data?: Editor
   showTopbar?: boolean
   children?: ReactNode
-  setCurrentForm: Dispatch<SetStateAction<'biodata' | 'social' | 'profile'>>
 }
 const SAMPLE_PROFILE_DATA: Editor = {
   name: 'Elon Musk',
@@ -54,11 +47,12 @@ export function EditorDropdown({
   data = SAMPLE_PROFILE_DATA,
   className,
   children,
-  setCurrentForm,
   ...props
 }: EditorDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
-
+  const [currentForm, setCurrentForm] = useState<
+    'biodata' | 'social' | 'profile'
+  >('biodata')
   const handleItemClick =
     (currentForm: 'biodata' | 'social' | 'profile') => () => {
       setCurrentForm(currentForm)
@@ -109,13 +103,12 @@ export function EditorDropdown({
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <div className='group relative p-px'>
           <DropdownMenuTrigger asChild>
-            <button
-              type='button'
-              className='rounded-full outline-0 cursor-pointer'
-              // className="flex items-center gap-16 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 hover:shadow-sm transition-all duration-200 focus:outline-none"
-            >
-              {children}
-            </button>
+            <SexyButton
+              onClick={handleItemClick(currentForm)}
+              rightIcon='chevron-down'
+              className='capitalize'>
+              {currentForm}
+            </SexyButton>
           </DropdownMenuTrigger>
 
           {/* Bending line indicator on the right */}

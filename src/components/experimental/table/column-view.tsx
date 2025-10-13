@@ -16,9 +16,11 @@ export const ColumnView = <T,>({cols}: Props<T>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='secondary' className='select-none font-sans'>
-          <Icon name='eye' className='size-5 opacity-60' />
-          <span>View</span>
+        <Button
+          variant='secondary'
+          className='select-none font-sans md:aspect-auto aspect-square'>
+          <Icon name='eye' className='size-4 opacity-60' />
+          <span className='hidden md:flex'>View</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start' className='bg-dark-origin'>

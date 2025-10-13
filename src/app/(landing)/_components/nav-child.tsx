@@ -8,7 +8,6 @@ import {useAuthCtx} from '@/ctx/auth'
 import {useNavbarCtx} from '@/ctx/navbar'
 import {useMobile} from '@/hooks/use-mobile'
 import {Icon} from '@/lib/icons'
-import {cn} from '@/lib/utils'
 import Link from 'next/link'
 import {useCallback} from 'react'
 
@@ -22,7 +21,7 @@ export const NavChild = () => {
   }, [theme])
 
   return (
-    <div className='flex items-center px-4 md:px-0 space-x-1 md:space-x-4'>
+    <div className='flex items-center pl-1 md:px-0 space-x-1 md:space-x-4'>
       {user ? (
         <span className='hidden md:flex font-figtree tracking-tight text-sm opacity-80'>
           {user.displayName}
@@ -43,21 +42,10 @@ export const NavChild = () => {
       )}
       {user ? (
         <ProfileDropdown>
-          {user.isActivated ? (
-            <div
-              className={cn(
-                'size-auto md:hidden -right-1 bottom-0 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
-              )}>
-              <div className='absolute bg-white size-3.5 aspect-square rounded-full' />
-              <Icon
-                name='badge-verified-solid'
-                className='size-[22px] text-primary-hover dark:text-primary-hover relative z-2 drop-shadow'
-              />
-            </div>
-          ) : null}
           <ProAvatar
             tiny
             photoURL={user.photoURL}
+            isActivated={user.isActivated}
             className=' hover:border-primary border-[1.5px]'
           />
         </ProfileDropdown>

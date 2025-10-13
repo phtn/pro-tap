@@ -6,14 +6,14 @@ import {Icon} from '@/lib/icons'
 export const LeftPanel = () => {
   const isMobile = useMobile()
   return (
-    <div className='relative lg:w-1/2 h-[25lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col'>
+    <div className='relative lg:w-full h-screen md:h-[74lvh] overflow-hidden bg-gradient-to-br from-orange-200/0 via-amber-50/0 to-cyan-100/0 flex flex-col'>
       <div className='absolute w-full h-full md:opacity-100 opacity-30'>
         <Prism
           animationType='3drotate'
-          timeScale={0.2}
+          timeScale={0.001}
           height={isMobile ? 4.8 : 4.8}
           baseWidth={5.0}
-          scale={3.6}
+          scale={1}
           hueShift={0.1}
           colorFrequency={1}
           noise={0.1}
@@ -22,13 +22,13 @@ export const LeftPanel = () => {
       </div>
       <div className='h-full p-12 relative z-50'>
         {/* Brand Logo */}
-        <div className='absolute top-0 left-8 flex items-center text-foreground'>
-          <Icon name='protap' className='size-20 opacity-40' />
+        <div className='md:hidden absolute top-0 left-8 flex items-center text-foreground'>
+          <Icon name='protap' className='size-20 opacity-80' />
         </div>
 
         {/* Main Content */}
         <div className='flex flex-col space-y-6'>
-          <div className='pt-12 md:pt-20 space-y-1 md:space-y-3 flex flex-col justify-center items-center'>
+          <div className='hidden _flex flex-col justify-center items-center pt-12 md:pt-20 space-y-1 md:space-y-3'>
             <div className='block'>
               <TextTrain
                 words={[

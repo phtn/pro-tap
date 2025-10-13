@@ -5,11 +5,17 @@ import {Avatar, AvatarFallback, AvatarImage} from './avatar'
 
 interface Props {
   photoURL: string | null
+  isActivated: boolean
   className?: ClassName
   tiny?: boolean
 }
 
-export const ProAvatar = ({photoURL, className, tiny = false}: Props) => {
+export const ProAvatar = ({
+  photoURL,
+  isActivated,
+  className,
+  tiny = false,
+}: Props) => {
   return photoURL ? (
     <Avatar
       className={cn(
@@ -26,8 +32,40 @@ export const ProAvatar = ({photoURL, className, tiny = false}: Props) => {
           {'h-10 w-auto': tiny},
         )}
       />
+      <VerifiedBadge isActivated={isActivated} />
     </Avatar>
   ) : (
     <Icon name='user-profile' />
   )
 }
+
+const VerifiedBadge = ({isActivated}: {isActivated: boolean}) => {
+  return isActivated ? (
+    <div
+      className={cn(
+        'size-auto md:hidden -right-1.5 -bottom-0.5 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
+      )}>
+      <div className='absolute bg-white size-3 aspect-square rounded-full' />
+      <Icon
+        name='badge-verified-solid'
+        className='size-[22px] text-primary-hover dark:text-primary-hover relative z-2 drop-shadow'
+      />
+    </div>
+  ) : null
+}
+
+/*
+<div
+              className={cn(
+                'size-auto md:hidden -right-1.5 -bottom-0.5 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
+                {
+                  'hidden ': !user.isActivated,
+                },
+              )}>
+              <div className='absolute bg-white size-3 aspect-square rounded-full' />
+              <Icon
+                name='badge-verified-solid'
+                className='size-[22px] text-primary-hover dark:text-primary-hover relative z-2 drop-shadow'
+              />
+            </div>
+*/

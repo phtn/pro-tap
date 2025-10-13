@@ -14,7 +14,7 @@ export default function AddServicePage() {
     }
 
     if (!user.isActivated) {
-      return router.push('/account')
+      return router.push('/account/profile')
     }
   }, [user, router])
 

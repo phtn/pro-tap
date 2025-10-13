@@ -1,8 +1,9 @@
 import {type ClassName} from '@/app/types'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {opts} from '@/utils/helpers'
 import {HTMLMotionProps, motion} from 'motion/react'
-import {forwardRef, type ReactNode} from 'react'
+import {forwardRef, useCallback, type ReactNode} from 'react'
 
 type SexyButtonVariant =
   | 'default'
@@ -116,6 +117,16 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
     },
     ref,
   ) => {
+    const RightIcon = useCallback(() => {
+      const options = opts(
+        <Icon
+          name={rightIcon as IconName}
+          className={cn('ml-1.5 -mr-0.5 shrink-0', iconStyle)}
+        />,
+        null,
+      )
+      return <>{options.get(!!rightIcon)}</>
+    }, [rightIcon, iconStyle])
     return (
       <motion.button
         onClick={props.onClick}
@@ -166,7 +177,7 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
               <span className='sr-only'>Loading</span>
             </>
           ) : (
-            <>
+            <div className='flex items-center space-x-2 '>
               {leftIcon ? (
                 <Icon
                   name={leftIcon}
@@ -174,13 +185,8 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
                 />
               ) : null}
               <span>{children}</span>
-              {rightIcon ? (
-                <Icon
-                  name={rightIcon}
-                  className={cn('ml-1.5 -mr-0.5', iconStyle)}
-                />
-              ) : null}
-            </>
+              <RightIcon />
+            </div>
           )}
         </span>
       </motion.button>

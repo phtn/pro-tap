@@ -733,9 +733,43 @@ export const icons = {
     viewBox: `0 0 24 24`,
     set: `proicons`,
   },
+  'text-edit': {
+    symbol: `<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.25 14.25l1.875-4.403m0 0h6.75m-6.75 0l2.873-6.748a.536.536 0 0 1 1.004 0l2.873 6.748m0 0l.575 1.349m.886 9.49a2.5 2.5 0 0 0 1.219-.673l5.454-5.45a2.526 2.526 0 1 0-3.57-3.573l-5.453 5.452c-.335.336-.569.76-.674 1.222l-.536 2.354a1.007 1.007 0 0 0 1.206 1.206z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  highlighter: {
+    symbol: `<path fill="currentColor" d="M20.25 6.25v-3.5H3.75v3.5a3.5 3.5 0 0 0 3.5 3.5h9.5a3.5 3.5 0 0 0 3.5-3.5m-4 7.5h-8.5v5.663a1.3 1.3 0 0 0 1.733 1.226l5.433-1.918a2 2 0 0 0 1.334-1.886z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  user: {
+    symbol: `<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><circle cx="12" cy="8.196" r="4.446"></circle><path d="M19.608 20.25a7.608 7.608 0 0 0-15.216 0"></path></g>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  'slash-bold': {
+    symbol: `<path fill-rule="evenodd" clip-rule="evenodd" d="M18.1818 0H5.81818C2.60489 0 0 2.60489 0 5.81818V18.1818C0 21.3951 2.60489 24 5.81818 24H18.1818C21.3951 24 24 21.3951 24 18.1818V5.81818C24 2.60489 21.3951 0 18.1818 0ZM9.36263 19.7164L16.6062 5.22648C16.8789 4.68103 16.6577 4.01781 16.1123 3.74514C15.5668 3.47247 14.9036 3.69359 14.6309 4.23904L7.38738 18.7289C7.11471 19.2744 7.33584 19.9376 7.88129 20.2103C8.42674 20.4829 9.08996 20.2618 9.36263 19.7164Z" fill="currentColor"/>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  images: {
+    symbold: `<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m17.603 18.25l.107-.002l-.085-.096l-3.052-3.644m3.03 3.742h.647a3 3 0 0 0 2.952-2.465m-3.599 2.465H8.75a3 3 0 0 1-3-3v-.583m8.824-.159l-2.943-3.513a1.823 1.823 0 0 0-2.796 0l-3.084 3.672m8.822-.159l.195-.237l1.196-1.429a1.823 1.823 0 0 1 2.803.008l2.435 2.935M5.751 14.667V5.75a3 3 0 0 1 3-3h9.499a3 3 0 0 1 3 3v9.5q0 .274-.048.535"></path><circle cx="16.318" cy="7.682" r="1.368" fill="currentColor"></circle><path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M2.75 6.75v8.5a6 6 0 0 0 6 6h8.5"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  'image-upload': {
+    symbol: `<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="m3 16l4.47-4.47a1.81 1.81 0 0 1 2.56 0L14 15.5m1.5 1.5L14 15.5m7 .5l-2.47-2.47a1.81 1.81 0 0 0-2.56 0L14 15.5"></path><path d="M12 2.5c-4.23 0-6.345 0-7.747 1.198q-.3.256-.555.555C2.5 5.655 2.5 7.77 2.5 12s0 6.345 1.198 7.747q.256.3.555.555C5.655 21.5 7.77 21.5 12 21.5s6.345 0 7.747-1.198q.3-.256.555-.555C21.5 18.345 21.5 16.23 21.5 12m-6-6.5c.59-.607 2.16-3 3-3s2.41 2.393 3 3m-3-2.5v6.5"></path></g>`,
+    viewBox: `0 0 24 24`,
+    set: `hugeicons`,
+  },
 }
 
 /*
+
+
+
+
 
 
 

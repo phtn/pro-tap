@@ -1,20 +1,24 @@
-import { ModernInput } from '@/components/ui/input'
-import { Icon } from '@/lib/icons'
-import { cn } from '@/lib/utils'
-import { Column } from '@tanstack/react-table'
-import { useId, useRef, useEffect } from 'react'
+import {ModernInput} from '@/components/ui/input'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {Column} from '@tanstack/react-table'
+import {useEffect, useId, useRef} from 'react'
 
 interface Props<T> {
   col: Column<T, unknown>
 }
-export const Search = <T,>({ col }: Props<T>) => {
-  const { getFilterValue } = col
+export const Search = <T,>({col}: Props<T>) => {
+  const {getFilterValue} = col
   const inputRef = useRef<HTMLInputElement>(null)
   const id = useId()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === '/' && inputRef.current && document.activeElement !== inputRef.current) {
+      if (
+        event.key === '/' &&
+        inputRef.current &&
+        document.activeElement !== inputRef.current
+      ) {
         event.preventDefault()
         inputRef.current.focus()
       }
@@ -30,7 +34,7 @@ export const Search = <T,>({ col }: Props<T>) => {
         id={`input-${id}`}
         ref={inputRef}
         className={cn(
-          'peer min-w-60 ps-3 rounded-lg',
+          'peer md:h-10 dark:bg-background/40 w-40 md:min-w-60 ps-3 rounded-lg border-none',
           '',
           Boolean(getFilterValue()) && 'pe-10',
         )}
@@ -41,11 +45,11 @@ export const Search = <T,>({ col }: Props<T>) => {
         inputMode='text'
         aria-label='Search'
       />
-      <div className='text-foreground/80 pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-1.5 peer-disabled:opacity-50'>
+      <div className='text-foreground/80 pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 peer-disabled:opacity-50'>
         <Icon
-          name='slash'
+          name='slash-bold'
           aria-hidden='true'
-          className='size-7 opacity-50 text-muted-foreground'
+          className='size-6 md:opacity-20 opacity-0'
         />
       </div>
       {Boolean(col?.getFilterValue()) && (

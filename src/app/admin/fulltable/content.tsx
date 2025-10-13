@@ -81,7 +81,7 @@ export const Content = () => {
   return (
     data && (
       <DataTable
-        title='All Data Everything'
+        title='All'
         data={data}
         create={false}
         edit={false}

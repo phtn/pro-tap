@@ -86,19 +86,19 @@ interface RightPanelProps {
 
 export const RightPanel = ({socialLogins, user, signOut}: RightPanelProps) => {
   return (
-    <div className='lg:w-1/2 px-6 md:p-12 flex flex-col justify-center'>
+    <div className='px-6 md:p-12 flex flex-col justify-center'>
       <div
         className={cn(
-          'space-y-20 flex flex-col items-center w-full md:h-[64lvh] h-[74lvh]',
+          'space-y-10 flex flex-col items-center w-full md:h-[64lvh]',
           {
             'space-y-4 md:px-10 md:pt-10 pt-3 rounded-r-3xl': user,
           },
         )}>
-        <Header
+        {/*<Header
           title={user ? 'Authenticated' : 'Sign in to your account'}
           description=''>
           {user ? '' : 'Personalize your web presence!'}
-        </Header>
+        </Header>*/}
         {user ? (
           <AuthedCard user={user} signOut={signOut} />
         ) : (

@@ -1,22 +1,22 @@
 'use client'
 
-import {SexyButton} from '@/components/experimental/sexy-button-variants'
-import {ProAvatar} from '@/components/ui/pro-avatar'
+import { SexyButton } from '@/components/experimental/sexy-button-variants'
+import { ProAvatar } from '@/components/ui/pro-avatar'
 import TextAnimate from '@/components/ui/text-animate'
-import {Visual1} from '@/components/ui/visual-1'
-import {Widget, WidgetHeader} from '@/components/ui/widget'
-import {useAuthCtx} from '@/ctx/auth'
-import {Icon} from '@/lib/icons'
+import { Visual1 } from '@/components/ui/visual-1'
+import { Widget, WidgetHeader } from '@/components/ui/widget'
+import { useAuthCtx } from '@/ctx/auth'
+import { Icon } from '@/lib/icons'
 import Image from 'next/image'
 
-import {BentoGridStats} from '@/app/account/profile/_components/bento-grid'
-import {StarsBackground} from '@/components/animate-ui/components/backgrounds/stars'
-import {AuthUser} from '@/ctx/auth/types'
-import {cn} from '@/lib/utils'
-import {useTheme} from 'next-themes'
+import { BentoGridStats } from '@/app/account/profile/_components/bento-grid'
+import { StarsBackground } from '@/components/animate-ui/components/backgrounds/stars'
+import { AuthUser } from '@/ctx/auth/types'
+import { cn } from '@/lib/utils'
+import { useTheme } from 'next-themes'
 
 export const Content = () => {
-  const {user} = useAuthCtx()
+  const { user } = useAuthCtx()
   return (
     <div className='relative block'>
       <ProfileBackground />
@@ -34,7 +34,7 @@ interface CoverSectionProps {
   user: AuthUser | null
 }
 
-const CoverSection = ({user}: CoverSectionProps) => {
+const CoverSection = ({ user }: CoverSectionProps) => {
   return (
     <div className='relative'>
       <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl md:rounded-t-4xl overflow-hidden'>
@@ -54,6 +54,7 @@ const CoverSection = ({user}: CoverSectionProps) => {
           <div className='absolute border-2 bg-white border-white aspect-square size-20 md:size-28 flex items-center justify-center left-1/8 -translate-x-1/4 -bottom-12 rounded-full shadow-2xl'>
             <ProAvatar
               photoURL={user.photoURL}
+              isActivated={user.isActivated}
               className='size-full shrink-0'
             />
           </div>
@@ -67,7 +68,7 @@ interface HeaderProps {
   title: string
 }
 
-const HeaderTitle = ({title}: HeaderProps) => {
+const HeaderTitle = ({ title }: HeaderProps) => {
   return (
     <div className='flex items-center relative h-20 md:pl-4 pl-8'>
       <TextAnimate
@@ -127,7 +128,7 @@ export const Widgets = () => (
 const Spacer = () => <div className='relative z-20 h-14 w-full' />
 
 const ProfileBackground = () => {
-  const {resolvedTheme} = useTheme()
+  const { resolvedTheme } = useTheme()
 
   return (
     <StarsBackground

@@ -23,9 +23,9 @@ export const Filter = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='secondary' className='relative'>
+        <Button variant='secondary' className='relative aspect-square'>
           <Icon name='add' className='size-4 opacity-60' />
-          <span className='capitalize'>filter</span>
+          <span className='capitalize hidden md:flex'>filter</span>
           {selected.length > 0 && (
             <Badge className='absolute rounded-full -top-2.5 left-full size-5 -translate-x-1/2 aspect-square px-1 text-white font-space'>
               {selected.length > 99 ? '99+' : selected.length}

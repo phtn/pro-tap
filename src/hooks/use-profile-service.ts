@@ -89,8 +89,7 @@ export const useProfileService = (uid?: string) => {
     }
 
     try {
-      // console.log(JSON.stringify(validated.data, null, 2))
-      // await ProfileService.updateProfile(uid, validated.data)
+      await ProfileService.updateProfile(uid, validated.data)
       setFormMessage('Profile saved successfully!')
       await loadProfile()
     } catch (error) {

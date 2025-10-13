@@ -1,6 +1,6 @@
 'use server'
 
-import {cookies} from 'next/headers'
+import { cookies } from 'next/headers'
 
 interface CookieOptions {
   path?: string
@@ -21,12 +21,13 @@ type CookieType =
   | 'protapCode'
   | 'protapUserId'
   | 'protapUserEmail'
+  | 'protapUserProfile'
   | 'nfcData'
   | 'qrcData'
 
 type ValuesMap = {
   theme: string
-  session: {token: string}
+  session: { token: string }
   language: string
   soundEnabled: boolean
   darkMode: boolean
@@ -35,6 +36,19 @@ type ValuesMap = {
   protapCode?: string
   protapUserId?: string
   protapUserEmail?: string
+  protapUserProfile?: {
+    uid: string
+    email: string | null
+    displayName: string | null
+    photoURL: string | null
+    photoData?: string | null // base64 encoded image data
+    role: string
+    isActivated: boolean
+    userType: string
+    loyaltyPoints: number
+    isMerchant: boolean
+    isAffiliate: boolean
+  }
   nfcData?: string
   qrcData?: string
 }
@@ -54,6 +68,7 @@ const cookieNameMap: Record<CookieType, string> = {
   protapCode: 'protap-code',
   protapUserId: 'protap-user-id',
   protapUserEmail: 'protap-user-email',
+  protapUserProfile: 'protap-user-profile',
   nfcData: 'nfc-data',
   qrcData: 'qrc-data',
 }
@@ -70,6 +85,7 @@ const cookieExpiryMap: Partial<Record<CookieType, number>> = {
   session: 60 * 60 * 24 * 7, // 7 days
   theme: 60 * 60 * 24 * 365, // 1 year
   darkMode: 60 * 60 * 24 * 30, // 30 days
+  protapUserProfile: 60 * 60 * 24 * 7, // 7 days
 }
 
 /**
@@ -87,7 +103,7 @@ export const setCookie = async <T extends CookieType>(
   const store = await cookies()
   const value = JSON.stringify(values)
   const maxAge = options?.maxAge ?? cookieExpiryMap[type] ?? defaults.maxAge
-  store.set(name, value, {...defaults, maxAge, ...options})
+  store.set(name, value, { ...defaults, maxAge, ...options })
 }
 
 export const getCookie = async <T extends CookieType>(
@@ -112,3 +128,55 @@ export const deleteCookie = async (type: CookieType) => {
   const store = await cookies()
   store.delete(name)
 }
+
+/**
+ * @name setUserProfile
+ * @description Cache user profile data to avoid fetching on every page route
+ */
+export const setUserProfile = async (userProfile: ValuesMap['protapUserProfile']) => {
+  await setCookie('protapUserProfile', userProfile)
+}
+
+/**
+ * @name getUserProfile
+ * @description Retrieve cached user profile data
+ */
+export const getUserProfile = async (): Promise<ValuesMap['protapUserProfile'] | undefined> => {
+  return await getCookie('protapUserProfile')
+}
+
+/**
+ * @name clearUserProfile
+ * @description Clear cached user profile data (useful on sign out)
+ */
+export const clearUserProfile = async () => {
+  await deleteCookie('protapUserProfile')
+}
+
+/**
+ * @name downloadAndCacheImage
+ * @description Download image from URL and cache as base64 data
+ */
+export const downloadAndCacheImage = async (imageUrl: string): Promise<string | null> => {
+  try {
+    const response = await fetch(imageUrl)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${response.status}`)
+    }
+
+    const blob = await response.blob()
+    return new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const base64 = reader.result as string
+        resolve(base64)
+      }
+      reader.onerror = () => resolve(null)
+      reader.readAsDataURL(blob)
+    })
+  } catch (error) {
+    console.error('Error downloading image:', error)
+    return null
+  }
+}
+

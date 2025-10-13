@@ -5,35 +5,53 @@ import {IFAQ} from '@/app/types/landing'
 import {siteDetails} from './site-details'
 
 import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
 import {SmartIntro} from './smart-intro'
 
 export const FAQ = () => {
   return (
     <section id='faq' className='py-16 lg:py-20 px-2 w-full'>
       <div className='flex flex-col gap-10'>
-        <div className='px-2 md:px-4'>
+        <div className='px-2'>
           <SmartIntro />
         </div>
 
-        <div className='w-full lg:max-w-2xl group'>
+        <div className='w-full md:max-w-2xl lg:max-w-full group'>
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className=' first:border-t border-b group-hover:border-transparent border-zinc-300 hover:border-gray-200 last:border-b-0 md:hover:rounded-xl font-figtree'>
+              className=' first:border-t border-b group-hover:border-transparent border-origin/60 hover:border-origin/80 last:border-b-0 font-figtree'>
               <Disclosure>
                 {({open}) => (
                   <div>
-                    <DisclosureButton className='font-figtree flex hover:bg-white transition-all hover:rounded-xl duration-300 items-center justify-between cursor-pointer w-full px-4 py-6 md:py-8 text-lg text-left'>
-                      <span className='text-xl font-semibold tracking-tighter'>
+                    <DisclosureButton
+                      className={cn(
+                        'font-figtree w-full flex items-center justify-between cursor-pointer px-4 py-6 md:py-8 text-lg text-left',
+                        ' hover:bg-origin/50',
+                        ' transition-all duration-50',
+                        {'bg-origin/20': open},
+                      )}>
+                      <span
+                        className={cn(
+                          'text-xl font-semibold tracking-tighter',
+                          {'text-orange-200': open},
+                        )}>
                         {faq.question}
                       </span>
                       {open ? (
-                        <Icon name='add' className='w-5 h-5 text-secondary' />
+                        <Icon
+                          name='close'
+                          className='w-5 h-5 text-orange-300'
+                        />
                       ) : (
-                        <Icon name='add' className='w-5 h-5 text-secondary' />
+                        <Icon name='add' className='w-5 h-5 text-primary' />
                       )}
                     </DisclosureButton>
-                    <DisclosurePanel className='px-4 py-4 text-foreground-accent leading-8'>
+                    <DisclosurePanel
+                      className={cn(
+                        'px-4 py-4 text-foreground-accent leading-8',
+                        {'bg-origin/20': open},
+                      )}>
                       {faq.answer}
                     </DisclosurePanel>
                   </div>

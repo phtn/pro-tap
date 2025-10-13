@@ -44,11 +44,9 @@ export const Paginator = ({
       <div className='flex items-center px-4'>
         <Label
           htmlFor={id}
-          className='max-sm:sr-only space-x-2 font-mono text-muted-foreground tracking-tight'>
-          <span className='font-semibold rounded-sm bg-muted dark:bg-zinc-400/10 py-0.5 px-2'>
-            {rowCount}
-          </span>
-          <span>items</span>
+          className='max-sm:sr-only space-x-2 font-figtree tracking-tight'>
+          <span className='font-semibold text-base'>{rowCount}</span>
+          <span className='opacity-80'>items</span>
         </Label>
         <Select value={state.pageSize.toString()} onValueChange={setPageSize}>
           <SelectTrigger id={id} className='w-fit whitespace-nowrap'>
@@ -85,9 +83,10 @@ export const Paginator = ({
           <PaginationContent>
             <PaginationItem>
               <Button
-                variant='secondary'
+                variant='outline'
                 onClick={pageControl.gotoNext}
                 disabled={pageControl.disabledNext}
+                className='aspect-square size-8 p-0 aria-disabled:pointer-events-none aria-disabled:text-muted-foreground/50 border-none hover:bg-muted/50 dark:bg-card/64 dark:hover:bg-card/80 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.04),0_1px_1px_rgba(0,0,0,0.05),0_2px_2px_rgba(0,0,0,0.05),0_2px_4px_rgba(0,0,0,0.05)] dark:inset-shadow-[0_1px_rgb(255_255_255/0.15)]'
                 aria-label='Go to next page'>
                 <Icon name='chevron-right' className='size-4' />
               </Button>
