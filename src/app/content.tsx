@@ -21,7 +21,7 @@ export const Content = () => {
       }, 8000)
       appTimer = setTimeout(() => {
         router.push('/alpha')
-      }, 5000)
+      }, 1000)
     }
 
     return () => {

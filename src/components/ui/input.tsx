@@ -1,8 +1,7 @@
-import * as React from 'react'
-
 import {cn} from '@/lib/utils'
+import {type ComponentProps, forwardRef} from 'react'
 
-function Input({className, type, ...props}: React.ComponentProps<'input'>) {
+function Input({className, type, ...props}: ComponentProps<'input'>) {
   return (
     <input
       type={type}
@@ -25,4 +24,20 @@ function Input({className, type, ...props}: React.ComponentProps<'input'>) {
   )
 }
 
-export {Input}
+const ModernInput = forwardRef<HTMLInputElement, ComponentProps<'input'>>(
+  ({className, type, ...props}, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          'flex h-10 w-full rounded-lg border border-zinc-300/0 dark:border-zinc-700 bg-background dark:bg-background/20 px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground/80 placeholder:tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-100/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          className,
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  },
+)
+
+export {Input, ModernInput}

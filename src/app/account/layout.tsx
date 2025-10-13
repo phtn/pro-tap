@@ -4,7 +4,6 @@ import {useToggle} from '@/hooks/use-toggle'
 import {cn} from '@/lib/utils'
 
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
-import {ActivationCtxProvider} from '@/ctx/activation'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import {opts} from '@/utils/helpers'
@@ -61,9 +60,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             `${on ? 'max-h-[90lvh] md:max-h-[90lvh] translate-y-10' : 'max-h-0'}`,
           )}>
           <div className='h-[90lvh] md:h-[90lvh] md:w-6xl relative border-zinc-600'>
-            <ActivationCtxProvider>
-              <FullActivation />
-            </ActivationCtxProvider>
+            <FullActivation />
           </div>
         </div>
         {children}

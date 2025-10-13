@@ -23,7 +23,6 @@ interface Profile {
   email: string
   avatar: string
   subscription?: string
-  model?: string
 }
 
 export interface MenuItem {
@@ -43,12 +42,11 @@ interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
 }
 const SAMPLE_PROFILE_DATA: Profile = {
-  name: 'Eugene An',
-  email: 'eugene@kokonutui.com',
+  name: 'Elon Musk',
+  email: 'elon@x.com',
   avatar:
     'https://ferf1mheo22r9ira.public.blob.vercel-storage.com/profile-mjss82WnWBRO86MHHGxvJ2TVZuyrDv.jpeg',
   subscription: 'PRO',
-  model: 'Gemini 2.0 Flash',
 }
 export function ProfileDropdown({
   data = SAMPLE_PROFILE_DATA,
@@ -152,7 +150,8 @@ export function ProfileDropdown({
 
           <DropdownMenuContent
             align='end'
-            sideOffset={12}
+            alignOffset={-1}
+            sideOffset={6}
             className='relative z-[80] w-72 px-3 py-3.5 font-figtree font-semibold bg-white dark:bg-zinc-800/95 backdrop-blur-sm border-[0.33px] border-zinc-300 dark:border-zinc-800/60 rounded-3xl shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20
                     data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-top-right'>
             <MenuItemList />

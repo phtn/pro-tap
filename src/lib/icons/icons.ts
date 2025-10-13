@@ -708,6 +708,31 @@ export const icons = {
     viewBox: '0 0 16 16',
     set: 'octicon',
   },
+  back: {
+    symbol: `<path fill="currentColor" d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `lets-icons`,
+  },
+  slash: {
+    symbol: `<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect width="16.5" height="16.5" x="3.75" y="3.75" rx="4"></rect><path d="m14.5 7l-5 10"></path></g>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  'chevron-up': {
+    symbol: `<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4.75 14.25l6.19-6.19a1.5 1.5 0 0 1 2.12 0l6.19 6.19"></path>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  save: {
+    symbol: `<g fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.33 18.5H7.375q-.09 0-.178-.005q-.098.005-.197.005A4.25 4.25 0 0 1 7 10a.445.445 0 0 0 .431-.334a5.502 5.502 0 0 1 10.793.634"></path><path fill="currentColor" fill-rule="evenodd" d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11m.5 8.455a.5.5 0 0 1-1 0v-4.703l-1.564 1.564a.5.5 0 0 1-.707-.707l2.417-2.418a.5.5 0 0 1 .708 0l2.417 2.418a.5.5 0 0 1-.707.707L18 15.752z" clip-rule="evenodd"></path></g>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
+  draw: {
+    symbol: `<g fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m5.719 16.25l1.92-4.404m0 0h6.91m-6.91 0l2.94-6.747a.553.553 0 0 1 1.029 0l2.941 6.747m0 0l.337.774"></path><path fill="currentColor" d="M15.586 20.936a2.5 2.5 0 0 0 1.219-.673l5.454-5.45a2.526 2.526 0 1 0-3.57-3.573l-5.453 5.452c-.335.336-.569.76-.674 1.222l-.536 2.354a1.007 1.007 0 0 0 1.206 1.206z"></path><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 19.687l.568.234c.638.263 1.364.175 1.956-.18c.69-.411 1.649-.915 2.483-1.1c.583-.13 1.243.199 1.091.776c-.17.642-.69 1.396-.192 1.745c.75.525 5.031-.818 5.031-.818"></path></g>`,
+    viewBox: `0 0 24 24`,
+    set: `proicons`,
+  },
 }
 
 /*

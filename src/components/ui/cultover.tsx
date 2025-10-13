@@ -1,5 +1,6 @@
 'use client'
 
+import {AnimatePresence, MotionConfig, Transition, motion} from 'motion/react'
 import React, {
   createContext,
   useContext,
@@ -8,16 +9,11 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import {
-  AnimatePresence,
-  MotionConfig,
-  Transition,
-  motion,
-} from 'motion/react'
-import { createPortal } from 'react-dom'
+import {createPortal} from 'react-dom'
 
-import { cn } from '@/lib/utils'
-import { Icon } from '@/lib/icons'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {Slot} from '@radix-ui/react-slot'
 
 const TRANSITION: Transition = {
   type: 'spring',
@@ -25,9 +21,9 @@ const TRANSITION: Transition = {
   visualDuration: 0.3,
 }
 
-function useClickOutside (
+function useClickOutside(
   ref: React.RefObject<HTMLElement | null>,
-  handler: () => void
+  handler: () => void,
 ) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,19 +40,19 @@ function useClickOutside (
 }
 
 interface CPopoverContextType {
-  isOpen: boolean;
-  openCPopover: () => void;
-  closeCPopover: () => void;
-  uniqueId: string;
-  note: string;
-  setNote: (note: string) => void;
+  isOpen: boolean
+  openCPopover: () => void
+  closeCPopover: () => void
+  uniqueId: string
+  note: string
+  setNote: (note: string) => void
 }
 
 const CPopoverContext = createContext<CPopoverContextType | undefined>(
-  undefined
+  undefined,
 )
 
-function useCPopover () {
+function useCPopover() {
   const context = useContext(CPopoverContext)
   if (!context) {
     throw new Error('useCPopover must be used within a CPopoverProvider')
@@ -64,7 +60,7 @@ function useCPopover () {
   return context
 }
 
-function useCPopoverLogic () {
+function useCPopoverLogic() {
   const uniqueId = useId()
   const [isOpen, setIsOpen] = useState(false)
   const [note, setNote] = useState('')
@@ -75,15 +71,15 @@ function useCPopoverLogic () {
     setNote('')
   }
 
-  return { isOpen, openCPopover, closeCPopover, uniqueId, note, setNote }
+  return {isOpen, openCPopover, closeCPopover, uniqueId, note, setNote}
 }
 
 interface CPopoverRootProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }
 
-export function CPopoverRoot ({ children, className }: CPopoverRootProps) {
+export function CPopoverRoot({children, className}: CPopoverRootProps) {
   const popoverLogic = useCPopoverLogic()
 
   return (
@@ -92,9 +88,8 @@ export function CPopoverRoot ({ children, className }: CPopoverRootProps) {
         <div
           className={cn(
             'relative flex items-center justify-center isolate',
-            className
-          )}
-        >
+            className,
+          )}>
           {children}
         </div>
       </MotionConfig>
@@ -103,14 +98,21 @@ export function CPopoverRoot ({ children, className }: CPopoverRootProps) {
 }
 
 interface CPopoverTriggerProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
+  asChild?: boolean
 }
 
-export function CPopoverTrigger ({ children, className }: CPopoverTriggerProps) {
-  const { openCPopover, uniqueId, isOpen } = useCPopover()
+export function CPopoverTrigger({
+  children,
+  className,
+  asChild,
+}: CPopoverTriggerProps) {
+  const {openCPopover, uniqueId, isOpen} = useCPopover()
 
-  return (
+  return asChild ? (
+    <Slot />
+  ) : (
     <motion.button
       key='button'
       layoutId={`popover-${uniqueId}`}
@@ -118,12 +120,11 @@ export function CPopoverTrigger ({ children, className }: CPopoverTriggerProps) 
         'flex rounded-xl h-9 items-center border border-zinc-950/10 bg-white px-3 text-zinc-950 dark:border-zinc-50/10 dark:bg-zinc-700 dark:text-zinc-50',
         // Prevent trigger from intercepting clicks when popover is open
         isOpen ? 'pointer-events-none' : '',
-        className
+        className,
       )}
       aria-expanded={isOpen}
       aria-controls={`popover-panel-${uniqueId}`}
-      onClick={openCPopover}
-    >
+      onClick={openCPopover}>
       <motion.span layoutId={`popover-label-${uniqueId}`} className='text-sm'>
         {children}
       </motion.span>
@@ -132,12 +133,13 @@ export function CPopoverTrigger ({ children, className }: CPopoverTriggerProps) 
 }
 
 interface CPopoverContentProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
+  align?: 'start' | 'end'
 }
 
-export function CPopoverContent ({ children, className }: CPopoverContentProps) {
-  const { isOpen, closeCPopover, uniqueId } = useCPopover()
+export function CPopoverContent({children, className}: CPopoverContentProps) {
+  const {isOpen, closeCPopover, uniqueId} = useCPopover()
   const formContainerRef = useRef<HTMLDivElement>(null)
 
   useClickOutside(formContainerRef, closeCPopover)
@@ -156,60 +158,62 @@ export function CPopoverContent ({ children, className }: CPopoverContentProps) 
     }
   }, [closeCPopover])
 
-  return createPortal(
-    <AnimatePresence>
-      {isOpen && (
-        <div className='fixed inset-0 z-[1000]'>
-          <div
-            className='absolute inset-0 bg-black/40 backdrop-blur-[1px] pointer-events-auto'
-            onMouseDown={(e) => {
-              e.stopPropagation()
-              closeCPopover()
-            }}
-            onClick={(e) => e.stopPropagation()}
-            aria-hidden='true'
-          />
-          <motion.div
-            ref={formContainerRef}
-            layoutId={`popover-${uniqueId}`}
-            id={`popover-panel-${uniqueId}`}
-            role='dialog'
-            aria-modal='true'
-            onMouseDown={(e) => e.stopPropagation()}
-            onClick={(e) => e.stopPropagation()}
-            className={cn(
-              'absolute left-1/3 top-1/2 -translate-x-1/2 -translate-y-1/2',
-              'h-[200px] w-[364px] overflow-hidden border border-zinc-950/10',
-              // Use opaque backgrounds to avoid see-through content
-              'bg-white outline-none dark:bg-zinc-700',
-              'shadow-lg rounded-xl pointer-events-auto',
-              className
-            )}
-            style={{
-              borderRadius: 12,
-            }}
-          >
-            {children}
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>,
-    document.body
+  return (
+    document &&
+    createPortal(
+      <AnimatePresence>
+        {isOpen && (
+          <div className='fixed inset-0 z-[1000]'>
+            <div
+              className='absolute inset-0 bg-black/40 backdrop-blur-[1px] pointer-events-auto'
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                closeCPopover()
+              }}
+              onClick={(e) => e.stopPropagation()}
+              aria-hidden='true'
+            />
+            <motion.div
+              ref={formContainerRef}
+              layoutId={`popover-${uniqueId}`}
+              id={`popover-panel-${uniqueId}`}
+              role='dialog'
+              aria-modal='true'
+              onMouseDown={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+              className={cn(
+                'absolute left-1/3 top-1/2 -translate-x-1/2 -translate-y-1/2',
+                'h-[200px] w-[364px] overflow-hidden border border-zinc-950/10',
+                // Use opaque backgrounds to avoid see-through content
+                'bg-white outline-none dark:bg-zinc-700',
+                'shadow-lg rounded-xl pointer-events-auto',
+                className,
+              )}
+              style={{
+                borderRadius: 12,
+              }}>
+              {children}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>,
+      document.body,
+    )
   )
 }
 
 interface CPopoverFormProps {
-  children: React.ReactNode;
-  onSubmit?: (note: string) => void;
-  className?: string;
+  children: React.ReactNode
+  onSubmit?: (note: string) => void
+  className?: string
 }
 
-export function CPopoverForm ({
+export function CPopoverForm({
   children,
   onSubmit,
   className,
 }: CPopoverFormProps) {
-  const { note, closeCPopover } = useCPopover()
+  const {note, closeCPopover} = useCPopover()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -220,20 +224,19 @@ export function CPopoverForm ({
   return (
     <form
       className={cn('flex h-full flex-col', className)}
-      onSubmit={handleSubmit}
-    >
+      onSubmit={handleSubmit}>
       {children}
     </form>
   )
 }
 
 interface CPopoverLabelProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }
 
-export function CPopoverLabel ({ children, className }: CPopoverLabelProps) {
-  const { uniqueId, note } = useCPopover()
+export function CPopoverLabel({children, className}: CPopoverLabelProps) {
+  const {uniqueId, note} = useCPopover()
 
   return (
     <motion.span
@@ -244,26 +247,25 @@ export function CPopoverLabel ({ children, className }: CPopoverLabelProps) {
       }}
       className={cn(
         'absolute left-4 top-3 select-none text-sm text-zinc-500 dark:text-zinc-400',
-        className
-      )}
-    >
+        className,
+      )}>
       {children}
     </motion.span>
   )
 }
 
 interface CPopoverTextareaProps {
-  className?: string;
+  className?: string
 }
 
-export function CPopoverTextarea ({ className }: CPopoverTextareaProps) {
-  const { note, setNote } = useCPopover()
+export function CPopoverTextarea({className}: CPopoverTextareaProps) {
+  const {note, setNote} = useCPopover()
 
   return (
     <textarea
       className={cn(
         'h-full w-full resize-none rounded-md bg-transparent px-4 py-3 text-sm outline-none',
-        className
+        className,
       )}
       autoFocus
       value={note}
@@ -273,107 +275,102 @@ export function CPopoverTextarea ({ className }: CPopoverTextareaProps) {
 }
 
 interface CPopoverFooterProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }
 
-export function CPopoverFooter ({ children, className }: CPopoverFooterProps) {
+export function CPopoverFooter({children, className}: CPopoverFooterProps) {
   return (
     <div
       key='close'
-      className={cn('flex justify-between px-4 py-3', className)}
-    >
+      className={cn('flex justify-between px-4 py-3', className)}>
       {children}
     </div>
   )
 }
 
 interface CPopoverCloseButtonProps {
-  className?: string;
+  className?: string
 }
 
-export function CPopoverCloseButton ({ className }: CPopoverCloseButtonProps) {
-  const { closeCPopover } = useCPopover()
+export function CPopoverCloseButton({className}: CPopoverCloseButtonProps) {
+  const {closeCPopover} = useCPopover()
 
   return (
     <button
       type='button'
       className={cn('flex items-center', className)}
       onClick={closeCPopover}
-      aria-label='Close popover'
-    >
+      aria-label='Close popover'>
       <Icon name='add' className='rotate-45 text-zinc-900 dark:text-zinc-100' />
     </button>
   )
 }
 
 interface CPopoverSubmitButtonProps {
-  className?: string;
+  className?: string
 }
 
-export function CPopoverSubmitButton ({ className }: CPopoverSubmitButtonProps) {
+export function CPopoverSubmitButton({className}: CPopoverSubmitButtonProps) {
   return (
     <button
       className={cn(
         'relative ml-1 flex h-8 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] dark:border-zinc-50/10 dark:text-zinc-50 dark:hover:bg-zinc-800',
-        className
+        className,
       )}
       type='submit'
-      aria-label='Submit note'
-    >
+      aria-label='Submit note'>
       Submit
     </button>
   )
 }
 
-export function CPopoverHeader ({
+export function CPopoverHeader({
   children,
   className,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <div
       className={cn(
         'px-4 py-2 font-semibold text-zinc-900 dark:text-zinc-100',
-        className
-      )}
-    >
+        className,
+      )}>
       {children}
     </div>
   )
 }
 
-export function CPopoverBody ({
+export function CPopoverBody({
   children,
   className,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) {
   return <div className={cn('p-4', className)}>{children}</div>
 }
 
 // New component: CPopoverButton
-export function CPopoverButton ({
+export function CPopoverButton({
   children,
   onClick,
   className,
 }: {
-  children: React.ReactNode;
-  onClick?: VoidFunction;
-  className?: string;
+  children: React.ReactNode
+  onClick?: VoidFunction
+  className?: string
 }) {
   return (
     <button
       type='button'
       className={cn(
         'flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm hover:bg-zinc-100 dark:hover:bg-zinc-700',
-        className
+        className,
       )}
-      onClick={onClick}
-    >
+      onClick={onClick}>
       {children}
     </button>
   )

@@ -9,10 +9,10 @@ import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import Image from 'next/image'
 
+import {BentoGridStats} from '@/app/account/profile/_components/bento-grid'
 import {StarsBackground} from '@/components/animate-ui/components/backgrounds/stars'
-import {BentoGridStats} from '@/components/experimental/bento-grid'
+import {AuthUser} from '@/ctx/auth/types'
 import {cn} from '@/lib/utils'
-import {User} from 'firebase/auth'
 import {useTheme} from 'next-themes'
 
 export const Content = () => {
@@ -31,7 +31,7 @@ export const Content = () => {
 }
 
 interface CoverSectionProps {
-  user: User | null
+  user: AuthUser | null
 }
 
 const CoverSection = ({user}: CoverSectionProps) => {

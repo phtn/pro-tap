@@ -1,0 +1,113 @@
+import {HyperList} from '@/components/list'
+import {ModernInput} from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {FieldOption, SelectFieldConfig, TextFieldConfig} from './schema'
+
+export const TextField = (item: TextFieldConfig) => (
+  <div className='relative'>
+    <div className='flex items-center'>
+      <div className='ps-1 mb-2 font-figtree flex items-center space-x-2 text-xs md:text-base'>
+        <label className='block font-bold tracking-tight whitespace-nowrap'>
+          {item.label}
+        </label>
+        {item.helperText && (
+          <div className='flex items-center space-x-2'>
+            <Icon
+              name='play-solid'
+              className={cn('size-3 md:size-4 opacity-30', {
+                'text-red-400 opacity-100': item.required,
+              })}
+            />
+            <span className='opacity-80'>{item.helperText}</span>
+          </div>
+        )}
+        {item.error && (
+          <span className='text-right text-xs text-mac-red'> {item.error}</span>
+        )}
+      </div>
+    </div>
+    <ModernInput
+      type={item.type}
+      name={item.name}
+      autoComplete={item.autoComplete}
+      required={item.required}
+      defaultValue={item.defaultValue}
+      onChange={(e) => item.validators?.onChange(e.target.value as string)}
+      value={item.value}
+      placeholder={item.placeholder}
+      className='w-full md:text-base px-4 py-2 h-13 rounded-xl dark:border-origin/50'
+    />
+  </div>
+)
+
+export const SelectField = (item: SelectFieldConfig) => {
+  return (
+    <div className='relative pb-2'>
+      <div className='flex items-center'>
+        <div className='ps-1 mb-2 font-figtree flex items-center space-x-2 text-xs md:text-base'>
+          <label className='block font-bold tracking-tight whitespace-nowrap'>
+            {item.label}
+          </label>
+          {item.helperText && (
+            <div className='flex items-center space-x-2'>
+              <Icon
+                name='play-solid'
+                className={cn('size-3 md:size-4 opacity-40', {
+                  'text-red-400 opacity-100': item.required,
+                })}
+              />
+              <span className='opacity-60'>{item.helperText}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      <Select
+        name={item.name}
+        defaultValue={item.defaultValue}
+        onValueChange={(value) => item.validators?.onChange(value)}>
+        <SelectTrigger
+          size='default'
+          className='h-fit py-7 cursor-pointer rounded-2xl dark:bg-background/20 bg-background  border-[0.33px] dark:border-gray-500/50 outline-none text-left w-full'>
+          <SelectValue
+            placeholder={item.placeholder ?? 'Select an option'}
+            className='text-neutral-200 h-full placeholder:text-base'
+          />
+        </SelectTrigger>
+        <SelectContent className='rounded-2xl border-gray-400 [&_*[role=option]]:ps-3 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-4'>
+          <HyperList
+            data={item.options}
+            component={SelectFieldItem}
+            itemStyle='border-b last:border-none'
+            keyId='value'
+          />
+        </SelectContent>
+      </Select>
+    </div>
+  )
+}
+
+const SelectFieldItem = ({value, icon, label, description}: FieldOption) => (
+  <SelectItem
+    value={value}
+    className='h-20 font-semibold font-quick cursor-pointer focus:text-panel'>
+    <div className='flex items-center px-2 gap-x-4'>
+      <Icon name={icon} className='' />
+      <div className='flex flex-col justify-start'>
+        <span className='block text-[14px] tracking-tight font-bold'>
+          {label}
+        </span>
+        <span className='block text-[12px] font-sans font-normal opacity-60'>
+          {description}
+        </span>
+      </div>
+    </div>
+  </SelectItem>
+)

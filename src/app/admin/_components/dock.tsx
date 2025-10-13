@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/tooltip'
 import {Icon, IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+
 interface DockData {
   tabs: {
     id: string
@@ -59,7 +60,7 @@ const Separator = ({className, orientation = 'horizontal'}: SeparatorProps) => (
 )
 
 interface AdminDockProps {
-  tabClick: (tabId: string) => () => void
+  back: VoidFunction
   selected: string
   startFn: VoidFunction
   haltFn: VoidFunction
@@ -68,7 +69,7 @@ interface AdminDockProps {
 }
 
 export const AdminDock = ({
-  tabClick,
+  back,
   selected,
   startFn,
   haltFn,
@@ -77,9 +78,9 @@ export const AdminDock = ({
 }: AdminDockProps) => {
   const dockData: DockData = {
     tabs: [
-      {id: 'qrcode', icon: 'qr-code-bold', label: 'QR Code'},
-      {id: 'ntag', icon: 'nfc', label: 'NFC Card'},
-      {id: 'list', icon: 'bullet-list-square', label: 'View list'},
+      {id: 'back', icon: 'back', label: 'Dashboard'},
+      // {id: 'ntag', icon: 'nfc', label: 'NFC Card'},
+      // {id: 'list', icon: 'bullet-list-square', label: 'View list'},
     ],
     toolbar: {
       main: {
@@ -117,7 +118,7 @@ export const AdminDock = ({
                   <Button
                     id={item.id}
                     variant='ghost'
-                    onClick={tabClick(item.id)}
+                    onClick={back}
                     aria-label={item.label}
                     className={cn(
                       buttonVariants({variant: 'ghost', size: 'sq'}),
@@ -165,7 +166,7 @@ export const AdminDock = ({
                 </TooltipTrigger>
                 <TooltipContent className='md:flex hidden'>
                   <p className='dark:text-white capitalize text-base tracking-tight font-semibold font-figtree'>
-                    {main.name}
+                    {name}
                   </p>
                 </TooltipContent>
               </Tooltip>

@@ -1,19 +1,22 @@
-import { NFCData } from '@/hooks/use-nfc'
-import { macStr } from '@/utils/macstr'
-import { User } from 'firebase/auth'
+import {NFCData} from '@/hooks/use-nfc'
+import {macStr} from '@/utils/macstr'
+import {User} from 'firebase/auth'
 import {
   collection,
   CollectionReference,
   doc,
   DocumentReference,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore'
-import { db } from '.'
+import {db} from '.'
 
-interface ProtapCardDoc {
+export interface ProtapCardDoc {
   id: string
   serialNumber: string
   nfcData?: NFCData
@@ -192,4 +195,11 @@ export async function activateCard(id: string, grp: string, uid: string) {
   }
 
   await updateDoc(ref, docData)
+}
+
+export const getAllCards = async (collection = 'general') => {
+  const q = query(cardsCollection(collection), where('ownerId', '!=', null))
+  const querySnapshot = await getDocs(q)
+  const cards = querySnapshot.docs.map((doc) => doc.data())
+  return cards
 }

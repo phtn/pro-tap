@@ -1,5 +1,5 @@
-import { ProtapUserDoc } from '@/lib/firebase/users'
-import { User } from 'firebase/auth'
+import {ProtapUserDoc, UserBioData} from '@/lib/firebase/types/user'
+import {User} from 'firebase/auth'
 
 export type UserRole = 'admin' | 'manager' | 'user' | 'dev'
 
@@ -19,8 +19,12 @@ export interface AuthUser extends User {
   email: string | null
   photoURL: string | null
   providerIds: string[]
-  createdAt: import('firebase/firestore').FieldValue | import('firebase/firestore').Timestamp
-  lastLogin: import('firebase/firestore').FieldValue | import('firebase/firestore').Timestamp
+  createdAt:
+    | import('firebase/firestore').FieldValue
+    | import('firebase/firestore').Timestamp
+  lastLogin:
+    | import('firebase/firestore').FieldValue
+    | import('firebase/firestore').Timestamp
   isActivated: boolean
   ntag: {
     serialNumber: string
@@ -28,13 +32,7 @@ export interface AuthUser extends User {
     metadata?: Record<string, string>
     type: string
   }
-  userInputData: {
-    firstName: string
-    middleName: string
-    lastName: string
-    birthdate: Date | null
-    type: string
-  }
+  userBioData: UserBioData
   userType: 'INDIVIDUAL' | 'FLEET' | 'ORGANIZATION'
   purchaseType: string
   loyaltyPoints: number
@@ -43,4 +41,4 @@ export interface AuthUser extends User {
   userInfo: import('@/schema/user-account').UserInfo | null
 }
 
-export interface UserData extends ProtapUserDoc { }
+export interface UserData extends ProtapUserDoc {}

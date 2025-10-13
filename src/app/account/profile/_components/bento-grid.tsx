@@ -1,10 +1,12 @@
 'use client'
 import {ClassName} from '@/app/types'
+import {useAuthCtx} from '@/ctx/auth'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {motion} from 'motion/react'
 import {ReactNode, useMemo} from 'react'
-import {BentoGrid, BentoGridItem} from '../ui/bento-grid'
+import {BentoGrid, BentoGridItem} from '../../../../components/ui/bento-grid'
+import {DitherPhoto, ImageDither} from './dither-photo'
 
 export const BentoGridStats = () => {
   return (
@@ -12,11 +14,14 @@ export const BentoGridStats = () => {
       {items.map((item, i) => (
         <BentoGridItem
           key={i}
+          href={item.href}
           title={item.title}
           description={item.description}
           header={item.header}
           className={cn('[&>p:text-lg]', item.className)}
           icon={item.icon}
+          activeIcon={item.activeIcon}
+          pro={item.pro}
         />
       ))}
     </BentoGrid>
@@ -93,8 +98,7 @@ const SkeletonTwo = () => {
       },
     },
   }
-  const arr = new Array(6).fill(0)
-  const width = useMemo(() => Math.random() * (100 - 40) + 40, [])
+  const arr = useMemo(() => new Array(6).fill(0), [])
   return (
     <motion.div
       initial='initial'
@@ -105,15 +109,14 @@ const SkeletonTwo = () => {
         <motion.div
           key={'skelenton-two' + i}
           variants={variants}
-          style={{
-            maxWidth: width + '%',
-          }}
-          className='flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-neutral-100 dark:bg-black w-full h-4'></motion.div>
+          className='max-w-12 flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-neutral-100 dark:bg-black w-full h-4'></motion.div>
       ))}
     </motion.div>
   )
 }
-const SkeletonThree = () => {
+const ProfileEditor = () => {
+  const {user} = useAuthCtx()
+
   const variants = {
     initial: {
       backgroundPosition: '0 50%',
@@ -132,13 +135,16 @@ const SkeletonThree = () => {
         repeat: Infinity,
         repeatType: 'reverse',
       }}
-      className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] rounded-lg bg-dot-black/[0.2] flex-col space-y-2'
+      className='flex flex-1 w-full h-full md:min-h-[6rem] min-h-[12rem] dark:bg-dot-white/[0.2] rounded-lg bg-dot-black/[0.2] flex-col space-y-2'
       style={{
         background:
           'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-        backgroundSize: '400% 400%',
+        backgroundSize: '500% 500%',
       }}>
-      <motion.div className='h-full w-full rounded-lg'></motion.div>
+      <motion.div className='relative h-full w-full rounded-lg flex items-center overflow-hidden'>
+        <ImageDither image={user?.photoURL ?? null} />
+        <DitherPhoto />
+      </motion.div>
     </motion.div>
   )
 }
@@ -211,108 +217,77 @@ const SkeletonFour = () => {
     </motion.div>
   )
 }
-const SkeletonFive = () => {
-  const variants = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: 10,
-      rotate: 5,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  }
-  const variantsSecond = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: -10,
-      rotate: -5,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  }
-
+const MerchantAccount = () => {
   return (
     <motion.div
       initial='initial'
       whileHover='animate'
-      className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2'>
-      <motion.div
-        variants={variants}
-        className='flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-white dark:bg-black'>
-        <Icon
-          name='feedline'
-          height='100'
-          width='100'
-          className='rounded-full size-10 text-cyan-500'
-        />
-        <h4 className='text-lg text-neutral-500 tracking-tight font-figtree font-bold'>
-          Recents Updates
-        </h4>
-      </motion.div>
-      <motion.div
-        variants={variantsSecond}
-        className='flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white dark:bg-black'>
-        <p className='text-xs text-neutral-500'>Use PHP.</p>
-        <div className='h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 shrink-0' />
-      </motion.div>
-    </motion.div>
+      className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2'></motion.div>
   )
 }
 
 interface BentoHeader {
   title: string
   description: ReactNode
+  href?: string
   header: ReactNode
-  className?: ClassName
   icon: IconName
+  className?: ClassName
+  activeIcon?: IconName
+  pro?: boolean
 }
 
 const items: BentoHeader[] = [
   {
-    title: 'Quicklinks',
-    description: <span className='text-sm'>Essentials overview.</span>,
+    title: '',
+    description: <span className='text-sm'></span>,
     header: <SkeletonFour />,
-    className: 'md:col-span-2',
+    className: 'md:col-span-2 border-none dark:bg-transparent',
     icon: 'link',
   },
   {
-    title: 'Rewards',
-    description: <span className='text-sm'>Get Cashbacks.</span>,
-    header: <SkeletonThree />,
-    className: 'md:col-span-1',
-    icon: 'coin',
+    title: 'Profile Editor',
+    description: (
+      <span className='text-sm'>Customize your public profile.</span>
+    ),
+    header: <ProfileEditor />,
+    className:
+      'md:col-span-1 bg-white/60 md:dark:bg-dark-origin dark:bg-transparent dark:border-dark-origin backdrop-blur-md',
+    icon: 'check',
+    activeIcon: 'arrow-up',
+    pro: true,
+    href: '/account/profile/editor',
   },
   {
-    title: 'Engagements',
+    title: 'Connections',
     description: (
       <span className='text-sm'>
-        View account performance and user interactions.
+        View your followers and user interactions.
       </span>
     ),
     header: <SkeletonOne />,
-    className: 'md:col-span-1',
+    className: 'md:col-span-1 bg-indigo-200/20',
     icon: 'settings',
+    pro: true,
   },
   {
-    title: 'Automated',
-    description: <span className='text-sm'></span>,
+    title: 'Affiliate Account',
+    description: (
+      <span className='text-sm'>Manage your affiliate account.</span>
+    ),
     header: <SkeletonTwo />,
-    className: 'md:col-span-1',
+    className: 'md:col-span-1 bg-sky-200/20',
     icon: 'sign-pen',
+    pro: true,
   },
   {
-    title: 'Get the latest news!',
+    title: 'Merchant Account',
     description: (
       <span className='text-sm'>Summarized or full length, you decide.</span>
     ),
-    header: <SkeletonFive />,
-    className: 'md:col-span-1',
+    header: <MerchantAccount />,
+    className: 'md:col-span-1 bg-teal-200/20',
     icon: 'zap',
+    pro: true,
   },
 ]

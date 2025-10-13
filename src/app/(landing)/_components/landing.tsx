@@ -50,7 +50,7 @@ export const Landing = () => {
   return (
     <main className='overflow-y-scroll md:overflow-auto h-screen'>
       <Intro />
-      <div className='h-[36lvh] md:h-[55lvh] grid lg:grid-cols-2 gap-12 w-full items-center'>
+      <div className='h-[38lvh] md:h-[55lvh] grid lg:grid-cols-2 gap-12 w-full items-center'>
         <Hero />
         <VisualContent />
       </div>

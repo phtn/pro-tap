@@ -1,9 +1,7 @@
 'use client'
 
-import { UserRole } from '@/ctx/auth/types'
-import { db } from '@/lib/firebase'
-import { UserInfo } from '@/schema/user-account'
-import type { User } from 'firebase/auth'
+import {db} from '@/lib/firebase'
+import type {User} from 'firebase/auth'
 import {
   collection,
   doc,
@@ -13,53 +11,8 @@ import {
   updateDoc,
   type CollectionReference,
   type DocumentReference,
-  type FieldValue,
-  type Timestamp,
 } from 'firebase/firestore'
-
-type ServerTime = FieldValue | Timestamp
-
-interface NTag {
-  serialNumber: string
-  scanTime: number | null
-  metadata?: Record<string, string>
-  type: string
-}
-
-interface UserInputData {
-  firstName: string
-  middleName: string
-  lastName: string
-  birthdate: Date | null
-  type: string
-}
-
-interface DeactivationReason {
-  reason: string
-  timestamp: number
-  type: 'MANUAL' | 'AUTO'
-}
-
-export interface ProtapUserDoc {
-  uid: string
-  email: string | null
-  displayName: string | null
-  photoURL: string | null
-  providerIds: string[]
-  createdAt: ServerTime
-  lastLogin: ServerTime
-  isActivated: boolean
-  ntag: NTag
-  userInputData: UserInputData
-  userType: 'INDIVIDUAL' | 'FLEET' | 'ORGANIZATION'
-  purchaseType: string
-  loyaltyPoints: number
-  isMerchant: boolean
-  isAffiliate: boolean
-  userInfo: UserInfo | null
-  role: UserRole
-  deactivationReason: DeactivationReason | null
-}
+import {ProtapUserDoc, ServerTime} from './types/user'
 
 function usersCollection(): CollectionReference<ProtapUserDoc> {
   const protapCol = collection(db, 'protap')
@@ -89,8 +42,16 @@ export async function createUser(user: User): Promise<void> {
     email: user.email ?? null,
     displayName: user.displayName ?? null,
     photoURL: user.photoURL ?? null,
+    avatar: null,
+    firstName: null,
+    middleName: null,
+    lastName: null,
+    gender: null,
+    theme: 'auto',
+    bio: null,
     providerIds: user.providerData.map((p) => p.providerId),
     createdAt: serverTimestamp() as ServerTime,
+    updatedAt: serverTimestamp() as ServerTime,
     lastLogin: serverTimestamp() as ServerTime,
     isActivated: false,
     ntag: {
@@ -99,12 +60,11 @@ export async function createUser(user: User): Promise<void> {
       metadata: {},
       type: '',
     },
-    userInputData: {
+    userBioData: {
       firstName: '',
       middleName: '',
       lastName: '',
-      birthdate: null,
-      type: '',
+      gender: null,
     },
     userType: 'INDIVIDUAL',
     purchaseType: '',
@@ -114,6 +74,8 @@ export async function createUser(user: User): Promise<void> {
     userInfo: null,
     role: 'user',
     deactivationReason: null,
+    username: null,
+    isPublished: false,
   }
   await setDoc(ref, data)
 }
@@ -146,7 +108,7 @@ export function activateUser(
   const ntag = {
     serialNumber: `${id}:${serialNumber}`,
     scanTime: new Date().toISOString(),
-    metadata: { id },
+    metadata: {id},
     type: '',
   }
   return updateDoc(ref, {

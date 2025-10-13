@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
       await signInWithPopup(auth, provider)
       setLoading(false)
     } catch (error) {
-      console.error('Error signi?? in with Google:', error)
+      console.error('Error signin?? in with Google:', error)
       setLoading(false)
     }
   }
@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                 lastLogin: userProfile.lastLogin,
                 isActivated: userProfile.isActivated,
                 ntag: userProfile.ntag,
-                userInputData: userProfile.userInputData,
+                userBioData: userProfile.userBioData,
                 userType: userProfile.userType,
                 purchaseType: userProfile.purchaseType,
                 loyaltyPoints: userProfile.loyaltyPoints,
@@ -107,12 +107,11 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                   metadata: {},
                   type: '',
                 },
-                userInputData: {
-                  firstName: '',
-                  middleName: '',
-                  lastName: '',
-                  birthdate: null,
-                  type: '',
+                userBioData: {
+                  firstName: null,
+                  middleName: null,
+                  lastName: null,
+                  gender: null,
                 },
                 userType: 'INDIVIDUAL' as const,
                 purchaseType: '',
@@ -158,7 +157,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                   lastLogin: userProfile.lastLogin,
                   isActivated: userProfile.isActivated,
                   ntag: userProfile.ntag,
-                  userInputData: userProfile.userInputData,
+                  userBioData: userProfile.userBioData,
                   userType: userProfile.userType,
                   purchaseType: userProfile.purchaseType,
                   loyaltyPoints: userProfile.loyaltyPoints,
@@ -183,12 +182,11 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                     metadata: {},
                     type: '',
                   },
-                  userInputData: {
-                    firstName: '',
-                    middleName: '',
-                    lastName: '',
-                    birthdate: null,
-                    type: '',
+                  userBioData: {
+                    firstName: null,
+                    middleName: null,
+                    lastName: null,
+                    gender: null,
                   },
                   userType: 'INDIVIDUAL' as const,
                   purchaseType: '',

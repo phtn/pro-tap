@@ -68,5 +68,13 @@ service cloud.firestore {
         // Allow authenticated users to read (checkCard) and write (createCard)
         allow read, write: if isSignedIn();
     }
+    match /protap/cards/general/{id} {
+            // Allow authenticated users to read (checkCard) and write (createCard)
+            allow read, write: if isSignedIn();
+        }
+        match /protap/cards/{batch}/{id} {
+                    // Allow authenticated users to read (checkCard) and write (createCard)
+                    allow read, write: if isSignedIn();
+                }
   }
 }
