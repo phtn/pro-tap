@@ -168,13 +168,13 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
         ref={containerRef}
         aria-label='Smooth tabs'
         className={cn(
-          'absolute bottom-0',
-          'flex items-center justify-between gap-1 my-6',
-          'dark:bg-transparent w-full mx-auto',
+          'absolute bottom-20',
+          'flex items-center justify-center gap-1 my-6',
+          'dark:bg-transparent  md:w-full w-full',
           'transition-all duration-200',
           className,
         )}>
-        <div className='flex justify-center w-full md:px-12 gap-4 relative z-[2]'>
+        <div className='flex justify-center w-full md:px-12 gap-1 md:gap-4 relative z-[2]'>
           {activationTabs.map((tab) => {
             const isSelected = selected === tab.id
             return (
@@ -198,7 +198,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                   'relative flex items-center justify-center px-0 py-1',
                   'md:text-lg transition-all duration-300',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  'truncate w-full md:max-w-[160px]',
+                  'truncate md:max-w-[160px] md:w-full w-[180px]  bg-white',
                   'inset-shadow-[0_1px_rgb(237_237_237)]/20',
                   isSelected
                     ? 'text-accent bg-slate-500 dark:bg-slate-500/95 dark:hover:bg-slate-500/80'
