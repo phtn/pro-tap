@@ -17,7 +17,7 @@ export default function ProfileView({profile}: ProfileViewProps) {
           <div className='flex justify-center mb-6'>
             <div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200'>
               <Image
-                src={profile.avatar}
+                src={`/images/sam-editor.png`}
                 alt={profile.displayName ?? 'display-name'}
                 fill
                 className='object-cover'

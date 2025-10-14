@@ -2,20 +2,16 @@
 
 import {useCallback, useEffect, useState} from 'react'
 
+import {Button} from '@/components/ui/button'
 import {
   Cropper,
   CropperCropArea,
   CropperDescription,
   CropperImage,
 } from '@/components/ui/cropper'
-import {Slider} from '@/components/ui/slider'
-import {SexyButton} from './experimental/sexy-button-variants'
 
 // Define type for pixel crop area
 type Area = {x: number; y: number; width: number; height: number}
-
-const ORIGINAL_IMAGE_URL =
-  'https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/cropper-08_wneftq.jpg'
 
 // --- Start: Copied Helper Functions ---
 const createImage = (url: string): Promise<HTMLImageElement> =>
@@ -70,10 +66,12 @@ async function getCroppedImg(
     return null
   }
 }
+// --- End: Copied Helper Functions ---
 
-export const ImageCropper = () => {
-  const [zoom, setZoom] = useState(1.4)
+const ORIGINAL_IMAGE_URL =
+  'https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/cropper-10_k24zxk.jpg'
 
+export default function Component() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null)
 
@@ -133,54 +131,49 @@ export const ImageCropper = () => {
 
   return (
     <div className='flex flex-col items-center gap-2'>
-      <div className='relative flex w-full flex-col gap-4'>
+      <div className='flex w-full flex-col gap-4 md:flex-row'>
         <Cropper
-          className='h-60 bg-origin/80'
+          className='h-64 md:flex-1'
           image={ORIGINAL_IMAGE_URL}
-          zoom={zoom}
-          onCropChange={handleCropChange}
-          onZoomChange={setZoom}>
+          onCropChange={handleCropChange}>
           <CropperDescription />
           <CropperImage />
-          <CropperCropArea className='border-teal-400' />
+          <CropperCropArea />
         </Cropper>
-        <div className='mx-auto flex w-full max-w-80 items-center gap-1'>
-          <Slider
-            defaultValue={[1]}
-            value={[zoom]}
-            min={1}
-            max={3}
-            step={0.1}
-            onValueChange={(value) => setZoom(value[0])}
-            aria-label='Zoom slider'
-          />
-          <output className='block w-10 shrink-0 text-right text-sm font-medium tabular-nums'>
-            {parseFloat(zoom.toFixed(1))}x
-          </output>
+        <div className='flex w-26 flex-col gap-4'>
+          <Button onClick={handleCrop} disabled={!croppedAreaPixels}>
+            Crop preview
+          </Button>
+          {/* Display Area */}
+          <div className='aspect-square w-full shrink-0 overflow-hidden rounded-lg border'>
+            {croppedImageUrl ? (
+              <img
+                src={croppedImageUrl}
+                alt='Cropped result'
+                className='h-full w-full object-cover'
+              />
+            ) : (
+              <div className='flex h-full w-full items-center justify-center bg-muted p-2 text-center text-xs text-muted-foreground/80'>
+                Image preview
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className='relative flex w-full'>
-        {/*<AnimatePresence mode='popLayout'>*/}
-        <div className='aspect-square size-24 overflow-hidden rounded-full'>
-          {croppedImageUrl && (
-            <img
-              src={croppedImageUrl}
-              alt='Cropped result'
-              className='h-full w-full object-cover'
-              width={200}
-              height={200}
-            />
-          )}
-        </div>
-        {/*</AnimatePresence>*/}
-        <SexyButton
-          onClick={handleCrop}
-          disabled={!croppedAreaPixels}
-          variant='dark'>
-          Crop preview
-        </SexyButton>
-      </div>
+      <p
+        aria-live='polite'
+        role='region'
+        className='mt-2 text-xs text-muted-foreground'>
+        Cropper with image preview ∙{' '}
+        <a
+          href='https://github.com/origin-space/image-cropper'
+          className='underline hover:text-foreground'
+          target='_blank'
+          rel='noopener noreferrer'>
+          API
+        </a>
+      </p>
     </div>
   )
 }

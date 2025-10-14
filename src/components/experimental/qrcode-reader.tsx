@@ -2,19 +2,19 @@
 
 import type React from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Icon } from '@/lib/icons'
-import { Html5Qrcode } from 'html5-qrcode'
-import { useEffect, useRef, useState } from 'react'
-import { HyperCard } from './card/hyper-card'
-import { SexyButton } from './sexy-button-variants'
+import {Button} from '@/components/ui/button'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
+import {Icon} from '@/lib/icons'
+import {Html5Qrcode} from 'html5-qrcode'
+import {useEffect, useRef, useState} from 'react'
+import {HyperCard} from './card/hyper-card'
+import {SexyButton} from './sexy-button-variants'
 
 interface QRCodeReaderProps {
   onScan?: (data: string) => void
 }
 
-export function QRCodeReader({ onScan }: QRCodeReaderProps) {
+export function QRCodeReader({onScan}: QRCodeReaderProps) {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
   const [qrResult, setQrResult] = useState<string>('')
   const [isCameraActive, setIsCameraActive] = useState(false)
@@ -43,12 +43,14 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
 
       // Check if we're in a secure context (HTTPS required for camera)
       if (!window.isSecureContext) {
-        setError('Camera access requires HTTPS. Please access this site over a secure connection.')
+        setError(
+          'Camera access requires HTTPS. Please access this site over a secure connection.',
+        )
         return
       }
 
       // Small delay to ensure DOM element is properly mounted
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise((resolve) => setTimeout(resolve, 100))
 
       // Ensure the element exists before creating Html5Qrcode instance
       const element = document.getElementById('qr-reader')
@@ -63,10 +65,10 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
 
       // Request camera permission through the start method
       await html5QrCodeRef.current.start(
-        { facingMode: 'environment' },
+        {facingMode: 'environment'},
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 },
+          qrbox: {width: 250, height: 250},
         },
         async (decodedText) => {
           setQrResult(decodedText)
@@ -83,13 +85,15 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
       console.error('[v0] Camera error:', err)
       if (err instanceof Error) {
         if (err.name === 'NotAllowedError') {
-          setError('Camera permission denied. To fix this:\n\n1. Click the camera icon in your browser\'s address bar\n2. Select "Allow" for camera access\n3. Refresh this page and try again')
+          setError(
+            'Camera permission denied. To fix this:\n\n1. Click the camera icon in your browser\'s address bar\n2. Select "Allow" for camera access\n3. Refresh this page and try again',
+          )
         } else if (err.name === 'NotFoundError') {
           setError('No camera found. Please check your device.')
         } else if (err.name === 'NotReadableError') {
           setError('Camera is already in use by another application.')
         } else if (err.name === 'OverconstrainedError') {
-          setError('Camera doesn\'t support the required settings.')
+          setError("Camera doesn't support the required settings.")
         } else {
           setError(`Camera error: ${err.message}`)
         }
@@ -175,7 +179,7 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value='camera' className='space-y-4'>
+        <TabsContent value='camera' className='space-y-2'>
           <div className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
             {!isCameraActive && !qrResult && (
               <div className='absolute inset-0 flex items-center justify-center'>
@@ -216,7 +220,7 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
           </div>
         </TabsContent>
 
-        <TabsContent value='upload' className='space-y-4'>
+        <TabsContent value='upload' className='space-y-2'>
           <div id='qr-reader-upload' className='hidden' />
 
           <div className='relative aspect-square bg-origin/10 rounded-3xl overflow-hidden border-2 border-dashed border-border'>
@@ -259,13 +263,13 @@ export function QRCodeReader({ onScan }: QRCodeReaderProps) {
       </Tabs>
 
       {error && (
-        <div className='mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg'>
-          <p className='text-sm text-destructive'>{error}</p>
+        <div className='-mt-3 mx-2 py-2 px-4 bg-destructive/60 md:bg-destructive/70 dark:md:bg-destructive border border-destructive/20 rounded-lg'>
+          <p className='text-sm text-white font-medium font-figtree'>{error}</p>
         </div>
       )}
 
       {qrResult && (
-        <div className='mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg'>
+        <div className='-mt-3 mx-2 px-2 py-4 bg-primary/10 border border-primary/20 rounded-lg'>
           <div className='flex items-start gap-3'>
             <Icon
               name='check'

@@ -69,7 +69,7 @@ export const QRCodeActivationContent = () => {
   }, [user, loading, qrScanned, toggleOpenProgress, router])
 
   return (
-    <div className='md:min-w-[400px] min-w-[340px] md:p-8 absolute left-1/2 -translate-x-1/2 md:top-0 top-18'>
+    <div className='md:min-w-[360px] min-w-[320px] md:p-8 absolute left-1/2 -translate-x-1/2 md:top-0 top-18'>
       <QRCodeReader onScan={handleQRScan} />
       {qrScanned && (
         <div className='text-center text-sm text-muted-foreground'>

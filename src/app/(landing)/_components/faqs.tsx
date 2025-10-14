@@ -33,15 +33,15 @@ export const FAQ = () => {
                       )}>
                       <span
                         className={cn(
-                          'text-xl font-semibold tracking-tighter',
-                          {'text-orange-200': open},
+                          'text-lg md:text-xl font-semibold tracking-tighter',
+                          {'dark:text-orange-200 text-orange-400': open},
                         )}>
                         {faq.question}
                       </span>
                       {open ? (
                         <Icon
                           name='close'
-                          className='w-5 h-5 text-orange-300'
+                          className='w-5 h-5 dark:text-orange-300 text-orange-400'
                         />
                       ) : (
                         <Icon name='add' className='w-5 h-5 text-primary' />

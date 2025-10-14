@@ -130,7 +130,7 @@ const Header = ({title, subtext}: HeaderProps) => {
         name='draw'
         className='size-6 md:size-8 dark:text-orange-200 text-orange-300 drop-shadow-xs'
       />
-      <h1 className='text-lg md:text-2xl font-bold text-gray-900 dark:text-white tracking-tighter font-figtree space-x-1'>
+      <h1 className='text-xl md:text-2xl font-bold text-gray-900 dark:text-white tracking-tighter font-figtree space-x-1'>
         <span className=''>{title}</span>
         <span className='space-x-1.5 md:space-x-2 font-light'>{subtext}</span>
       </h1>
@@ -147,7 +147,7 @@ interface CardListProps {
 const CardList = ({title, list, renderFn}: CardListProps) => {
   return (
     <div>
-      <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-60'>
+      <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-50'>
         {title}
       </h2>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 max-w-5xl'>

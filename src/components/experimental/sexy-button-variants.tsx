@@ -169,7 +169,6 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
           </div>
         )}
 
-        {/* Content */}
         <span className='relative z-50 inline-flex items-center dark:drop-shadow-xs'>
           {isLoading ? (
             <>
@@ -177,7 +176,7 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
               <span className='sr-only'>Loading</span>
             </>
           ) : (
-            <div className='flex items-center space-x-2 '>
+            <div className={cn('flex items-center space-x-1')}>
               {leftIcon ? (
                 <Icon
                   name={leftIcon}

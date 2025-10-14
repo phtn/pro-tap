@@ -114,9 +114,9 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
   const selectedItem = activationTabs.find((tab) => tab.id === selected)
 
   return (
-    <div className='flex flex-col h-full w-full'>
+    <div className='relative flex flex-col h-full w-full'>
       {/* Card Content Area */}
-      <div className='flex-1 md:mb-8 mb-2 relative'>
+      <div className='flex-1 md:mb-4 mb-2 relative'>
         <div className='md:rounded-3xl w-full h-full relative overflow-hidden'>
           <div className='absolute inset-0'>
             <AnimatePresence
@@ -168,19 +168,19 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
         ref={containerRef}
         aria-label='Smooth tabs'
         className={cn(
-          'absolute bottom-20',
-          'flex items-center justify-center gap-1 my-6',
-          'dark:bg-transparent  md:w-full w-full',
+          'absolute -bottom-20 bg-amber-200/20',
+          ' w-full flex items-center md:justify-center py-2',
+          'dark:bg-transparent',
           'transition-all duration-200',
           className,
         )}>
-        <div className='flex justify-center w-full md:px-12 gap-1 md:gap-4 relative z-[2]'>
+        <div className='flex items-center justify-center w-full border md:px-12 md:gap-4 relative z-[2]'>
           {activationTabs.map((tab) => {
             const isSelected = selected === tab.id
             return (
               <SexyButton
                 size='lg'
-                variant='ghost'
+                variant={isSelected ? 'primary' : 'secondary'}
                 key={tab.id}
                 ref={(el) => {
                   if (el) buttonRefs.current.set(tab.id, el)
@@ -194,16 +194,7 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
                 tabIndex={isSelected ? 0 : -1}
                 onClick={() => handleTabClick(tab.id)}
                 onKeyDown={(e) => handleKeyDown(e, tab.id)}
-                className={cn(
-                  'relative flex items-center justify-center px-0 py-1',
-                  'md:text-lg transition-all duration-300',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  'truncate md:max-w-[160px] md:w-full w-[180px]  bg-white',
-                  'inset-shadow-[0_1px_rgb(237_237_237)]/20',
-                  isSelected
-                    ? 'text-accent bg-slate-500 dark:bg-slate-500/95 dark:hover:bg-slate-500/80'
-                    : 'border-muted-foreground/50 hover:bg-muted/80 hover:text-foreground',
-                )}>
+                className='w-full'>
                 <span className='truncate'>{tab.label}</span>
               </SexyButton>
             )

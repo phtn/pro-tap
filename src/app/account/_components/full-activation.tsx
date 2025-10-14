@@ -36,7 +36,7 @@ export const FullActivation = ({scrollRef}: Props) => {
         'dark:border-none border-zinc-400 dark:border-zinc-950 md:rounded-[6.5rem]',
         'grid grid-cols-1 h-full w-full',
       )}>
-      <div className='h-[91vh] md:h-[80lvh] md:max-h-[600px] px-4 md:pb-4 md:px-0'>
+      <div className='h-[80vh] md:h-[70lvh] md:max-h-[600px] px-4 md:pb-4 md:px-0'>
         <ActivationTabs nfcProps={{onScan: onNFCScan, onError: onNFCError}} />
       </div>
       <ActivationProgress

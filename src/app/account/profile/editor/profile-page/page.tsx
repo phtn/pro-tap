@@ -7,20 +7,17 @@ import {
   profileInitialValues,
 } from '@/components/experimental/form/schema'
 import {useAppForm} from '@/components/experimental/form/utils'
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
+import {ImageCropper} from '@/components/image-cropper'
 import {HyperList} from '@/components/list'
 import {ScrollArea} from '@/components/ui/scroll-area'
 import {useAuthCtx} from '@/ctx/auth'
 import {useProfileService} from '@/hooks/use-profile-service'
+import {useToggle} from '@/hooks/use-toggle'
 import {ProfileFormData} from '@/lib/firebase/types/user'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {
-  useActionState,
-  useCallback,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react'
+import {useActionState, useCallback, useEffect, useTransition} from 'react'
 import ProfileView from '../../_components/profile-preview'
 
 export default function ProfilePageEditor() {
@@ -30,7 +27,7 @@ export default function ProfilePageEditor() {
     user?.uid,
   )
 
-  const [isPreview, setIsPreview] = useState(false)
+  const {on: isPreview, toggle: togglePreview} = useToggle(false)
 
   const form = useAppForm({
     defaultValues: formData ?? profileInitialValues,
@@ -53,21 +50,6 @@ export default function ProfilePageEditor() {
         theme: formData.theme,
         isPublished: formData.isPublished,
       }
-
-  if (isPreview) {
-    return (
-      <div>
-        <div className='fixed top-4 right-4 z-50 flex gap-2'>
-          <button
-            onClick={() => setIsPreview(false)}
-            className='px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700'>
-            Exit Preview
-          </button>
-        </div>
-        <ProfileView profile={previewProfile} />
-      </div>
-    )
-  }
 
   const [, action, pending] = useActionState(handleSave, profileInitialValues)
   const [isPending, startTransition] = useTransition()
@@ -149,18 +131,35 @@ export default function ProfilePageEditor() {
     [form, pending, isPending],
   )
 
+  if (isPreview) {
+    return (
+      <div>
+        <div className='fixed top-20 right-4 z-50 flex gap-2'>
+          <SexyButton onClick={togglePreview} className=''>
+            Exit Preview
+          </SexyButton>
+        </div>
+        <ProfileView profile={previewProfile} />
+      </div>
+    )
+  }
+
   return (
     <div className='h-[calc(100vh-48px)] overflow-hidden'>
       <ScrollArea className='max-w-4xl rounded-4xl md:py-8'>
         <div className='w-full h-fit bg-origin/40 px-4 py-4 md:py-8'>
           <div className='mb-2 flex items-center justify-between'>
             <h1 className='flex items-center text-base md:text-2xl font-bold tracking-tight px-2'>
-              <Icon name='user' className='size-6 shrink-0 mr-1 md:mr-1' />
+              <Icon name='sign-pen' className='size-6 shrink-0 mr-1 md:mr-1' />
               <span>Profile Page</span>
             </h1>
+            <SexyButton leftIcon='eye' className='' onClick={togglePreview}>
+              Preview
+            </SexyButton>
           </div>
           <div className='h-1 md:h-2 w-full rounded-full bg-origin/40' />
 
+          <ImageCropper />
           <div
             className={cn(
               `border mb-3 md:mb-4 px-2 md:px-4 flex items-center w-full h-7 md:h-12 text-xs md:text-sm lg:text-base rounded-lg md:rounded-xl bg-green-100 text-green-700 tracking-tight font-figtree md:font-medium`,
@@ -180,7 +179,7 @@ export default function ProfilePageEditor() {
               {fieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
-                  data={group.fields.slice(0, 5)}
+                  data={group.fields.slice(0, 1)}
                   component={renderField}
                   container='space-y-4 md:space-y-8'
                   itemStyle='px-1'
