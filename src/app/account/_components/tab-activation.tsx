@@ -168,7 +168,8 @@ export default function ActivationTabs({className, onChange, nfcProps}: Props) {
         ref={containerRef}
         aria-label='Smooth tabs'
         className={cn(
-          'flex items-center justify-between gap-1 my-6 relative',
+          'absolute bottom-0',
+          'flex items-center justify-between gap-1 my-6',
           'dark:bg-transparent w-full mx-auto',
           'transition-all duration-200',
           className,

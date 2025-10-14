@@ -2,19 +2,19 @@
 
 import type React from 'react'
 
-import {Button} from '@/components/ui/button'
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
-import {Icon} from '@/lib/icons'
-import {Html5Qrcode} from 'html5-qrcode'
-import {useEffect, useRef, useState} from 'react'
-import {HyperCard} from './card/hyper-card'
-import {SexyButton} from './sexy-button-variants'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Icon } from '@/lib/icons'
+import { Html5Qrcode } from 'html5-qrcode'
+import { useEffect, useRef, useState } from 'react'
+import { HyperCard } from './card/hyper-card'
+import { SexyButton } from './sexy-button-variants'
 
 interface QRCodeReaderProps {
   onScan?: (data: string) => void
 }
 
-export function QRCodeReader({onScan}: QRCodeReaderProps) {
+export function QRCodeReader({ onScan }: QRCodeReaderProps) {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
   const [qrResult, setQrResult] = useState<string>('')
   const [isCameraActive, setIsCameraActive] = useState(false)
@@ -41,15 +41,32 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
       setError('')
       setQrResult('')
 
+      // Check if we're in a secure context (HTTPS required for camera)
+      if (!window.isSecureContext) {
+        setError('Camera access requires HTTPS. Please access this site over a secure connection.')
+        return
+      }
+
+      // Small delay to ensure DOM element is properly mounted
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      // Ensure the element exists before creating Html5Qrcode instance
+      const element = document.getElementById('qr-reader')
+      if (!element) {
+        setError('Camera element not found. Please try again.')
+        return
+      }
+
       if (!html5QrCodeRef.current) {
         html5QrCodeRef.current = new Html5Qrcode('qr-reader')
       }
 
+      // Request camera permission through the start method
       await html5QrCodeRef.current.start(
-        {facingMode: 'environment'},
+        { facingMode: 'environment' },
         {
           fps: 10,
-          qrbox: {width: 250, height: 250},
+          qrbox: { width: 250, height: 250 },
         },
         async (decodedText) => {
           setQrResult(decodedText)
@@ -58,12 +75,27 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
         },
         (errorMessage) => {
           // Ignore scanning errors (they happen continuously while scanning)
+          console.log('[v0] Scanning error:', errorMessage)
         },
       )
       setIsCameraActive(true)
     } catch (err) {
-      setError('Unable to access camera. Please check permissions.')
       console.error('[v0] Camera error:', err)
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          setError('Camera permission denied. To fix this:\n\n1. Click the camera icon in your browser\'s address bar\n2. Select "Allow" for camera access\n3. Refresh this page and try again')
+        } else if (err.name === 'NotFoundError') {
+          setError('No camera found. Please check your device.')
+        } else if (err.name === 'NotReadableError') {
+          setError('Camera is already in use by another application.')
+        } else if (err.name === 'OverconstrainedError') {
+          setError('Camera doesn\'t support the required settings.')
+        } else {
+          setError(`Camera error: ${err.message}`)
+        }
+      } else {
+        setError('Unable to access camera. Please check permissions.')
+      }
     }
   }
 

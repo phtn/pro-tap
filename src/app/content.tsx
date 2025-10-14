@@ -1,6 +1,5 @@
 'use client'
 
-import {onSuccess} from '@/ctx/toast'
 import {Icon} from '@/lib/icons'
 import {useRouter} from 'next/navigation'
 import {useEffect, useState} from 'react'
@@ -14,8 +13,6 @@ export const Content = () => {
     let serverTimer: NodeJS.Timeout | undefined
     let appTimer: NodeJS.Timeout | undefined
     if (typeof window !== 'undefined') {
-      onSuccess('Network Secure')
-
       serverTimer = setTimeout(() => {
         setState('Redirecting ...')
       }, 8000)

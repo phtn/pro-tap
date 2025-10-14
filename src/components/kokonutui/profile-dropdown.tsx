@@ -34,6 +34,7 @@ export interface MenuItem {
   className?: ClassName
   fn?: VoidFunction
   type: 'action' | 'link' | 'divider'
+  disabled?: boolean
 }
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -74,25 +75,30 @@ export function ProfileDropdown({
           href: inProfile ? '/account/profile/preview' : '/account/profile',
           icon: user?.role === 'user' ? 'user-profile' : 'crown',
           type: 'link',
+          disabled: false,
+        },
+        {
+          label: 'Chats',
+          value: data.subscription,
+          href: '#',
+          icon: 'chat',
+          type: 'link',
+          disabled: false,
         },
         {
           label: 'Affiliate',
           href: '#',
           icon: 'play',
           type: 'link',
+          disabled: false,
         },
-        {
-          label: 'Messages',
-          value: data.subscription,
-          href: '#',
-          icon: 'chat',
-          type: 'link',
-        },
+
         {
           label: 'Settings',
           href: '/account/settings',
           icon: 'settings',
           type: 'link',
+          disabled: false,
         },
 
         {
@@ -102,6 +108,7 @@ export function ProfileDropdown({
           external: true,
           type: 'action',
           fn: toggler,
+          disabled: false,
         },
         {
           label: `Admin - ${user?.role}`,
@@ -120,13 +127,15 @@ export function ProfileDropdown({
   const MenuItemList = useCallback(
     () => (
       <div className='space-y-1.5'>
-        {menuItems.map((item) =>
-          item.type === 'link' ? (
-            <LinkMenuItem key={item.label} {...item} />
-          ) : (
-            <ActionMenuItem key={item.label} {...item} />
-          ),
-        )}
+        {menuItems
+          .filter((item) => !item.disabled)
+          .map((item) =>
+            item.type === 'link' ? (
+              <LinkMenuItem key={item.label} {...item} />
+            ) : (
+              <ActionMenuItem key={item.label} {...item} />
+            ),
+          )}
       </div>
     ),
     [menuItems],

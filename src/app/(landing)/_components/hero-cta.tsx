@@ -11,11 +11,11 @@ export const HeroCTA = () => {
   }, [router])
 
   return (
-    <div className='h-full space-y-14 px-6 md:px-0 flex flex-col justify-center'>
+    <div className='h-full space-y-14 px-6 md:px-0 opacity-0 md:opacity-100 flex flex-col justify-center'>
       <div className='space-y-12'>
         <div className='font-bold leading-4'>
           <div className='flex items-center justify-start w-64 h-16'>
-            <Icon name='protap' className='h-48 w-auto' />
+            <Icon name='protap' className='md:h-48 w-auto' />
           </div>
           <TextAnimate
             type='whipInUp'

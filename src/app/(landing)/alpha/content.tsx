@@ -83,7 +83,7 @@ export const Content = () => {
         )}
         rightIcon={on ? 'close' : 'zap'}>
         <span className='md:px-4 px-2 md:text-lg text-primary md:text-foreground dark:text-white'>
-          {on ? 'Select Activation' : 'Launching Soon'}
+          {on ? 'Select Activation' : 'Activate Account'}
         </span>
       </SexyButton>,
     )

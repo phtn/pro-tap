@@ -23,7 +23,7 @@ import {
 } from 'react'
 import ProfileView from '../../_components/profile-preview'
 
-export default function BioDataPage() {
+export default function SocialLinksEditor() {
   const {user} = useAuthCtx()
 
   const {profile, formData, formMessage, handleSave} = useProfileService(
@@ -156,7 +156,7 @@ export default function BioDataPage() {
           <div className='mb-2 flex items-center justify-between'>
             <h1 className='flex items-center text-base md:text-2xl font-bold tracking-tight px-2'>
               <Icon name='user' className='size-6 shrink-0 mr-1 md:mr-1' />
-              <span>Biodata</span>
+              <span>Social Media Links</span>
             </h1>
           </div>
           <div className='h-1 md:h-2 w-full rounded-full bg-origin/40' />
