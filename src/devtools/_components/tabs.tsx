@@ -1,9 +1,9 @@
-import SmoothTab from '@/components/kokonutui/smooth-tab'
+import {DevTabs} from './dev-tabs'
 
 export const Tabs = () => {
   return (
     <div>
-      <SmoothTab />
+      <DevTabs />
     </div>
   )
 }

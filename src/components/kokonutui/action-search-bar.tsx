@@ -67,43 +67,27 @@ const ANIMATION_VARIANTS = {
 const allActionsSample: Action[] = [
   {
     id: '1',
-    label: 'Book tickets',
+    label: 'Individual',
     icon: 'add',
-    description: 'Operator',
+    description: 'single',
     short: '⌘K',
     end: 'Agent',
   },
   {
     id: '2',
-    label: 'Summarize',
+    label: 'Limited Edition',
     icon: 'add',
-    description: 'gpt-5',
-    short: '⌘cmd+p',
+    description: 'single',
+    short: '⌘',
     end: 'Command',
   },
   {
     id: '3',
-    label: 'Screen Studio',
+    label: 'Fleet',
     icon: 'add',
-    description: 'Claude 4.1',
+    description: 'group',
     short: '',
     end: 'Application',
-  },
-  {
-    id: '4',
-    label: 'Talk to Jarvis',
-    icon: 'soundwave',
-    description: 'gpt-5 voice',
-    short: '',
-    end: 'Active',
-  },
-  {
-    id: '5',
-    label: 'Kokonut UI - Pro',
-    icon: 'add',
-    description: 'Components',
-    short: '',
-    end: 'Link',
   },
 ]
 
@@ -203,13 +187,13 @@ export function ActionInput({
   }, [])
 
   return (
-    <div className='w-full max-w-xl mx-auto'>
+    <div className='absolute w-full max-w-xl mx-auto'>
       <div className='relative flex flex-col justify-start items-center'>
-        <div className='sticky w-full max-w-sm top-0 z-10 '>
+        <div className='sticky w-full max-w-sm top-10 z-10 '>
           <div className='relative'>
             <Input
               type='text'
-              placeholder="What's up?"
+              placeholder='Select Series'
               value={query}
               onChange={handleInputChange}
               onFocus={handleFocus}
@@ -227,7 +211,7 @@ export function ActionInput({
               autoComplete='off'
               className='pl-3 h-9 text-sm focus-visible:ring-offset-0'
             />
-            <div className='absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4'>
+            <div className='absolute right-3 top-16 -translate-y-1/2 h-4 w-4'>
               <AnimatePresence mode='popLayout'>
                 {query.length > 0 ? (
                   <motion.div
@@ -259,11 +243,11 @@ export function ActionInput({
           </div>
         </div>
 
-        <div className='w-full max-w-sm'>
+        <div className='top-16 relative w-full max-w-sm'>
           <AnimatePresence>
             {isFocused && result && !selectedAction && (
               <motion.div
-                className='w-full border rounded-md shadow-xs overflow-hidden dark:border-gray-800 bg-white dark:bg-black mt-1'
+                className='w-full border rounded-md shadow-xs overflow-hidden dark:border-gray-800 bg-white dark:bg-black mt-5'
                 variants={ANIMATION_VARIANTS.container}
                 role='listbox'
                 aria-label='Search results'
@@ -289,9 +273,11 @@ export function ActionInput({
                       }>
                       <div className='flex items-center gap-2 justify-between'>
                         <div className='flex items-center gap-2'>
-                          <span className='text-gray-500' aria-hidden='true'>
-                            {action.icon}
-                          </span>
+                          <Icon
+                            name={action.icon}
+                            className='text-gray-500'
+                            aria-hidden='true'
+                          />
                           <span className='text-sm font-medium text-gray-900 dark:text-gray-100'>
                             {action.label}
                           </span>

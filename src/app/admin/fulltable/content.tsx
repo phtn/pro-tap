@@ -7,24 +7,34 @@ import {
   textCell,
 } from '@/components/experimental/table/cells'
 import {ColumnConfig} from '@/components/experimental/table/create-columns'
+import {useMobile} from '@/hooks/use-mobile'
 import {getAllCards, ProtapCardDoc} from '@/lib/firebase/cards'
 import {format} from 'date-fns'
+import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useState} from 'react'
+import {AdminDock, DockItems} from '../_components/dock'
 
 export const Content = () => {
+  const isMobile = useMobile()
+  const router = useRouter()
   const [data, setData] = useState<ProtapCardDoc[]>()
+  const [loading, setLoading] = useState(false)
 
   const getData = useCallback(async () => {
+    setLoading(true)
     const response = await getAllCards('general')
     if (response) {
       setData(response)
-      console.log(response[0])
+      setLoading(false)
     }
   }, [getAllCards])
 
   useEffect(() => {
     if (!data) {
-      getData().catch(console.error)
+      getData().catch((e) => {
+        console.error(e)
+        setLoading(false)
+      })
     }
   }, [data, getData])
 
@@ -78,18 +88,45 @@ export const Content = () => {
     },
   ]
 
+  const dockItems: DockItems = {
+    nav: [{id: 'back', icon: 'back', fn: router.back, label: 'Dashboard'}],
+    toolbar: [
+      {
+        name: 'clear list',
+        fn: loading ? () => {} : () => console.log('Clearing list...'),
+        icon: 'split-vertical',
+        style: loading ? 'text-zinc-800' : 'text-zinc-500',
+      },
+    ],
+    options: [
+      {
+        name: 'options',
+        fn: () => {},
+        icon: 'split-vertical',
+        style: 'text-slate-300 dark:text-slate-600',
+      },
+    ],
+  }
+
   return (
-    data && (
-      <DataTable
-        title='All'
-        data={data}
-        create={false}
-        edit={false}
-        editingRowId={null}
-        toggleForm={() => {}}
-        toggleEditForm={() => {}}
-        columnConfigs={columnConfigs}
-      />
-    )
+    <div>
+      {data && (
+        <DataTable
+          title='All'
+          data={data}
+          create={false}
+          edit={false}
+          editingRowId={null}
+          toggleForm={() => {}}
+          toggleEditForm={() => {}}
+          columnConfigs={columnConfigs}
+        />
+      )}
+      {isMobile && (
+        <div className='fixed md:bottom-20 bottom-8 w-full'>
+          <AdminDock dockItems={dockItems} />
+        </div>
+      )}
+    </div>
   )
 }

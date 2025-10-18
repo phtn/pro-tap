@@ -44,8 +44,8 @@ export function ImageDither({image}: ImageDitherProps) {
       size={2.4}
       colorSteps={2}
       image={
-        image ??
-        'https://workers.paper.design/file-assets/01K56VPQEXA37YGGD0GZACCRY2/01K7CX1J1FEF3BH72DTEPCR8CE.png'
+        // 'https://github.com/phtn.jpg'
+        'https://pbs.twimg.com/profile_images/1967632846325272576/12zsDVQj_400x400.jpg'
       }
       scale={1}
       fit='cover'

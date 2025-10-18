@@ -1,6 +1,6 @@
-import {NFCData} from '@/hooks/use-nfc'
-import {macStr} from '@/utils/macstr'
-import {User} from 'firebase/auth'
+import { NFCData } from '@/hooks/use-nfc'
+import { macStr } from '@/utils/macstr'
+import { User } from 'firebase/auth'
 import {
   collection,
   CollectionReference,
@@ -14,7 +14,7 @@ import {
   where,
   writeBatch,
 } from 'firebase/firestore'
-import {db} from '.'
+import { db } from '.'
 
 export interface ProtapCardDoc {
   id: string
@@ -32,14 +32,14 @@ export interface ProtapCardDoc {
   activatedOn: string | null
 }
 
-function cardsCollection(batch: string): CollectionReference<ProtapCardDoc> {
+function cardsCollection(col: string): CollectionReference<ProtapCardDoc> {
   const protapCol = collection(db, 'protap')
   const cardsDoc = doc(protapCol, 'cards')
-  return collection(cardsDoc, batch) as CollectionReference<ProtapCardDoc>
+  return collection(cardsDoc, col) as CollectionReference<ProtapCardDoc>
 }
 
-function cardDocRef(id: string, grp: string): DocumentReference<ProtapCardDoc> {
-  return doc(cardsCollection(grp), id) as DocumentReference<ProtapCardDoc>
+function cardDocRef(id: string, col: string): DocumentReference<ProtapCardDoc> {
+  return doc(cardsCollection(col), id) as DocumentReference<ProtapCardDoc>
 }
 
 export async function createCard(
@@ -101,11 +101,14 @@ export async function createQR(
 
 export async function createBulkQRCodes(
   count: number,
-  grp = 'general',
+  series: string,
+  group: string,
+  batch: string,
   user: User,
   onProgress?: (progress: number) => void,
 ): Promise<string[]> {
-  const batch = writeBatch(db)
+  const col = 'general'
+  const countBatch = writeBatch(db)
   const timestamp = new Date().toISOString()
   const baseTime = Date.now().toString(12)
   const createdIds: string[] = []
@@ -123,13 +126,13 @@ export async function createBulkQRCodes(
         records: [
           {
             recordType: 'url',
-            data: `https://protap.ph/activation/?id=${serialNumber}&grp=${grp}`,
+            data: `https://protap.ph/api/verify/?id=${serialNumber}&series=${series}&group=${group}&batch=${batch}`,
           },
         ],
         timestamp: new Date(),
       }
 
-      const ref = cardDocRef(serialNumber, grp)
+      const ref = cardDocRef(serialNumber, col)
       const docData = {
         id: serialNumber,
         qrcData: null,
@@ -141,18 +144,21 @@ export async function createBulkQRCodes(
         createdByEmail: user.email,
         updatedAt: timestamp,
         updatedBy: user.uid,
+        series,
+        group,
+        batch,
         isActive: true,
         ownerId: null,
         activatedOn: null,
       }
 
-      batch.set(ref, docData)
+      countBatch.set(ref, docData)
       createdIds.push(serialNumber)
     }
 
     try {
       // Commit current batch
-      await batch.commit()
+      await countBatch.commit()
 
       // Report progress
       const progress = Math.min(
@@ -174,8 +180,8 @@ export async function createBulkQRCodes(
   return createdIds
 }
 
-export async function checkCard(id: string, grp: string) {
-  const ref = cardDocRef(id, grp)
+export async function checkCard(id: string, col: string) {
+  const ref = cardDocRef(id, col)
   const snap = await getDoc(ref)
 
   if (!snap.exists()) {
@@ -208,4 +214,30 @@ export const getAllCards_ = async (collection = 'general') => {
   const querySnapshot = await getDocs(cardsCollection(collection))
   const cards = querySnapshot.docs.map((doc) => doc.data())
   return cards
+}
+
+export const deleteInactiveCards = async (
+  collection = 'general',
+  onProgress?: (progress: number) => void,
+) => {
+  const q = query(cardsCollection(collection), where('ownerId', '==', null))
+  const querySnapshot = await getDocs(q)
+  const cards = querySnapshot.docs.map((doc) => doc.id)
+
+  const batchSize = 500
+  const count = cards.length
+
+  for (let i = 0; i < count; i += batchSize) {
+    const batchIds = cards.slice(i, i + batchSize)
+    const batchRefs = batchIds.map((id) => cardDocRef(id, collection))
+
+    const batch = writeBatch(db)
+    batchRefs.forEach((ref) => batch.delete(ref))
+
+    await batch.commit()
+
+    // Report progress
+    const progress = Math.min(100, Math.round(((i + batchSize) / count) * 100))
+    onProgress?.(progress)
+  }
 }

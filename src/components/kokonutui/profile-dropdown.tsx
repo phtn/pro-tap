@@ -59,7 +59,10 @@ export function ProfileDropdown({
   const [isOpen, setIsOpen] = useState(false)
   const {onSignOut, user} = useAuthCtx()
   const pathname = usePathname()
-  const inProfile = pathname.split('/').pop() === 'profile'
+  const inProfile = useMemo(
+    () => pathname.split('/').pop() === 'profile',
+    [pathname],
+  )
 
   const isDark = useMemo(() => theme === 'dark', [theme])
 
@@ -121,7 +124,7 @@ export function ProfileDropdown({
           disabled: user?.role === 'user',
         },
       ] as MenuItem[],
-    [data, isDark, user?.role],
+    [data, isDark, user?.role, inProfile],
   )
 
   const MenuItemList = useCallback(

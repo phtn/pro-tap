@@ -30,8 +30,9 @@ export const CountSelectDrop = ({
 
           <DropdownMenuContent
             align='end'
-            sideOffset={14}
-            className='w-14 px-3 py-3.5 font-figtree font-semibold bg-white dark:bg-zinc-800/6r backdrop-blur-sm border-[0.33px] border-zinc-400/40 dark:border-zinc-800/40 rounded-3xl shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20
+            sideOffset={12}
+            alignOffset={-16}
+            className='w-14 px-3 py-3.5 z-80 font-figtree font-semibold bg-white dark:bg-zinc-800/60 backdrop-blur-sm border-[0.33px] border-zinc-400/40 dark:border-zinc-800/40 rounded-3xl shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20
                           data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-top-right'>
             <RangeSliderWithInput setSelectedValue={setSelectedQuantity} />
           </DropdownMenuContent>

@@ -1,0 +1,72 @@
+'use client'
+import {QRCodeSVG} from '@/components/experimental/qr-viewer'
+import {Card} from '@/components/ui/card'
+import {Icon} from '@/lib/icons'
+
+interface CardItemProps {
+  id: string
+  series: string
+  group: string
+  batch: string
+  viewFn: VoidFunction
+}
+
+export const CardItem = ({id, series, group, batch, viewFn}: CardItemProps) => {
+  return (
+    <div className='flex justify-center items-center lg:justify-end'>
+      <Card className='relative rounded-3xl dark:bg-origin w-full p-3 shadow-md'>
+        <div key={id} className='flex items-center gap-4 p-3'>
+          {/* Icon */}
+          {id && series && batch && (
+            <QRCodeSVG
+              className='size-[160px]'
+              options={{
+                content: `https://protap.ph/api/activation/?id=${id}&series=${series}&batch=${batch}`,
+                width: 160,
+                height: 160,
+              }}
+            />
+          )}
+
+          {/* Company Info */}
+          <div className='space-y-2.5'>
+            <div className='flex-1 min-w-0'>
+              <div className='font-semibold text-foreground'>{id}</div>
+              <div className='text-xs text-muted-foreground'>ID</div>
+            </div>
+            <div className='flex-1 min-w-0'>
+              <div className='font-semibold text-foreground capitalize font-figtree'>
+                {series}
+              </div>
+              <div className='text-xs uppercase opacity-50 font-figtree'>
+                series
+              </div>
+            </div>
+            <div className='flex-1 min-w-0'>
+              <div className='font-semibold text-foreground uppercase font-figtree'>
+                {group}
+              </div>
+              <div className='text-xs uppercase opacity-50 font-figtree'>
+                group
+              </div>
+            </div>
+            <div className='flex-1 min-w-0'>
+              <div className='font-semibold text-foreground capitalize font-figtree'>
+                {batch}
+              </div>
+              <div className='text-xs uppercase opacity-50 font-figtree'>
+                batch
+              </div>
+            </div>
+          </div>
+        </div>
+        <Icon
+          id={`view-${id}`}
+          name='eye'
+          className='z-50 absolute top-6 right-6 size-6 active:scale-90 transition-all duration-300 opacity-80 hover:opacity-100 cursor-pointer text-teal-500'
+          onClick={viewFn}
+        />
+      </Card>
+    </div>
+  )
+}

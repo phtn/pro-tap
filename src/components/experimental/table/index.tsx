@@ -182,8 +182,8 @@ export const DataTable = <T,>({
       )}>
       <HyperCard className='rounded-none h-fit pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
         {/* Filters */}
-        <div className='px-3 -mb-3 md:mb-0 flex items-center justify-between'>
-          <div className='flex items-center gap-2 md:gap-4'>
+        <div className='px-2 md:px-3 -mb-3 md:mb-0 flex items-center justify-between'>
+          <div className='flex items-center gap-4 md:gap-4'>
             <h2 className='text-lg md:text-2xl font-bold font-sans tracking-tighter'>
               {title}
             </h2>
@@ -229,7 +229,7 @@ export const DataTable = <T,>({
                       <TableHead
                         key={header.id}
                         style={{width: `${header.getSize()}px`}}
-                        className='md:h-10 h-8 font-normal text-sm border-b-[0.5px] dark:text-zinc-400'>
+                        className='md:h-10 h-8 font-normal font-space text-xs md:text-sm border-b-[0.5px] dark:text-zinc-400'>
                         <ColumnSort flexRender={flexRender} header={header} />
                       </TableHead>
                     )
@@ -272,7 +272,7 @@ const renderRow = <T,>(
       key={row.id}
       data-state={row.getIsSelected() && 'selected'}
       className={cn(
-        'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background/40',
+        'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background/40 border-b-origin/40',
         'transition-colors duration-50',
         {
           // Apply editing styles - same as hover but persistent

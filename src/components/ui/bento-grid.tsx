@@ -58,7 +58,7 @@ export const BentoGridItem = ({
         <div className='transition duration-300 w-full ease-in-out group-hover/bento:translate-x-2'>
           <div className='flex items-center w-full space-x-2 text-xl md:text-2xl tracking-tighter leading-5 font-sans font-bold text-neutral-600 dark:text-neutral-200'>
             <span>{title}</span>
-            <span className='mb-2.5'>{pro && <ExtraValue value='pro' />}</span>
+            <span className='mb-2'>{pro && <ExtraValue value='pro' />}</span>
             {/*<div className='border border-teal-500/0 bg-orange-100 px-1.5 rounded-full text-sm font-figtree dark:text-teal-400 text-foreground font-normal tracking-tight'>
               Activation Required
             </div>*/}

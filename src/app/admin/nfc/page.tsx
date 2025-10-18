@@ -5,8 +5,8 @@ import {useNFC} from '@/hooks/use-nfc'
 import {checkCard, createCard} from '@/lib/firebase/cards'
 import {macStr} from '@/utils/macstr'
 import {useRouter} from 'next/navigation'
-import {useEffect, useState} from 'react'
-import {AdminDock} from '../_components/dock'
+import {useEffect, useMemo, useState} from 'react'
+import {AdminDock, DockItems} from '../_components/dock'
 import {NFCDataWithDuplicate, NFCScanList} from '../_components/nfc-list'
 
 const NFCPage = () => {
@@ -68,6 +68,46 @@ const NFCPage = () => {
     setNCFScans([])
     clearHistory()
   }
+
+  const dockItems = useMemo(
+    () =>
+      ({
+        nav: [{id: 'back', icon: 'back', fn: back, label: 'Dashboard'}],
+        toolbar: [
+          {
+            name: 'start scan',
+            fn: startScanning,
+            icon: isScanning ? 'nfc' : 'play-solid',
+            style: 'text-blue-400 dark:text-blue-300',
+          },
+          {
+            name: 'halt',
+            fn: stopScanning,
+            icon: 'pause-solid',
+            style: isScanning
+              ? 'text-amber-500'
+              : 'text-slate-300 dark:text-slate-600',
+          },
+          {
+            name: 'toggle view',
+            fn: isScanning ? () => {} : () => console.log('toggle view'),
+            icon: 'split-vertical',
+            style: isScanning ? 'text-zinc-800' : 'text-zinc-500',
+          },
+        ],
+        options: [
+          {
+            name: 'clear list',
+            fn: isScanning ? () => {} : clearList,
+            icon: 'eraser',
+            style: isScanning
+              ? 'text-zinc-800'
+              : 'text-red-500 dark:text-red-400',
+          },
+        ],
+      }) as DockItems,
+    [isScanning],
+  )
 
   return (
     <div className='flex flex-col h-screen w-full overflow-hidden'>
@@ -132,14 +172,7 @@ const NFCPage = () => {
 
       {/* Bottom Dock */}
       <div className='fixed md:bottom-20 bottom-4 w-full'>
-        <AdminDock
-          back={back}
-          selected='nfc'
-          startFn={startScanning}
-          haltFn={stopScanning}
-          clearFn={clearList}
-          loading={isScanning}
-        />
+        <AdminDock dockItems={dockItems} />
       </div>
     </div>
   )

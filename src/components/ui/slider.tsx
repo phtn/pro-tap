@@ -70,7 +70,7 @@ function Slider({
     const thumb = (
       <SliderPrimitive.Thumb
         data-slot='slider-thumb'
-        className='border-zinc-500 bg-background ring-ring/50 block h-3 w-10 shrink-0 rounded-sm border shadow-sm transition-[color,box-shadow] outline-none hover:ring-4 focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50'
+        className='border-zinc-400 bg-background dark:bg-zinc-400 ring-ring/50 block h-4 w-10 shrink-0 rounded-md border shadow-md transition-[color,box-shadow] outline-none hover:ring-4 focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50'
         onPointerDown={handlePointerDown}
       />
     )
@@ -108,12 +108,12 @@ function Slider({
       <SliderPrimitive.Track
         data-slot='slider-track'
         className={cn(
-          'bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',
+          'bg-background relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2',
         )}>
         <SliderPrimitive.Range
           data-slot='slider-range'
           className={cn(
-            'bg-slate-400 absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
+            'bg-slate-400 dark:bg-teal-600 absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
           )}
         />
       </SliderPrimitive.Track>

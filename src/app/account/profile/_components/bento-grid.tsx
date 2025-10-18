@@ -21,20 +21,21 @@ interface BentoHeader {
 }
 
 export const BentoGridStats = () => {
-  const [imageSource, setImageSource] = useState<string>('')
+  const [imageSource, setImageSource] = useState<string | null>(null)
 
   useEffect(() => {
+    console.log('\ntest')
     const loadCachedImage = async () => {
       try {
         const cachedProfile = await getUserProfile()
         const bestImageSource = cachedProfile
           ? getBestImageSource(cachedProfile)
           : null
-        setImageSource(bestImageSource || '')
+        setImageSource(bestImageSource)
         console.log(bestImageSource)
       } catch (error) {
         console.error('Error loading cached image:', error)
-        setImageSource('')
+        // setImageSource('')
       }
     }
 
@@ -53,10 +54,15 @@ export const BentoGridStats = () => {
         },
         {
           title: 'Profile Editor',
-          description: (
-            <span className='text-sm'>Customize your public profile.</span>
+          description: <span className='text-sm'></span>,
+          header: (
+            <ProfileEditor>
+              <motion.div className='relative h-full w-full rounded-lg flex items-center overflow-hidden'>
+                <ImageDither image={imageSource} />
+                <DitherPhoto />
+              </motion.div>
+            </ProfileEditor>
           ),
-          header: <ProfileEditor image={imageSource} />,
           className:
             'md:col-span-1 bg-white/60 md:dark:bg-dark-origin dark:bg-transparent dark:border-dark-origin backdrop-blur-md',
           icon: 'check',
@@ -207,9 +213,9 @@ const SkeletonTwo = () => {
   )
 }
 interface ProfileEditorProps {
-  image: string
+  children?: ReactNode
 }
-const ProfileEditor = ({image}: ProfileEditorProps) => {
+const ProfileEditor = ({children}: ProfileEditorProps) => {
   const variants = {
     initial: {
       backgroundPosition: '0 50%',
@@ -234,10 +240,7 @@ const ProfileEditor = ({image}: ProfileEditorProps) => {
           'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
         backgroundSize: '500% 500%',
       }}>
-      <motion.div className='relative h-full w-full rounded-lg flex items-center overflow-hidden'>
-        <ImageDither image={image} />
-        <DitherPhoto />
-      </motion.div>
+      {children}
     </motion.div>
   )
 }
@@ -270,7 +273,7 @@ const SkeletonFour = () => {
       className='flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-row space-x-2'>
       <motion.div
         variants={first}
-        className='h-full w-1/3 rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
+        className='w-1/3 h-full rounded-2xl bg-white p-4 dark:bg-black dark:border-white/[0.1] border border-neutral-200 flex flex-col items-center justify-center'>
         <Icon name='nfc' className='rounded-full size-8 md:size-12' />
         <p className='sm:text-sm text-xs text-center font-light md:font-semibold text-neutral-500 mt-4'>
           my NFC Card

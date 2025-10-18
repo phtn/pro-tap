@@ -28,8 +28,12 @@ export function DiscoverFeed() {
         <div className='w-full md:max-w-7xl'>
           <div className='flex items-center justify-between mb-6 px-4'>
             <div>
-              <h1 className='text-3xl md:text-4xl font-black -tracking-wider italic font-figtree text-balance'>
-                Discover<span className='text-teal-500'>.</span>
+              <h1 className='flex items-center text-3xl md:text-4xl font-black -tracking-wider italic font-figtree text-balance'>
+                <span>Discover</span>
+                <span className='text-teal-500'>.</span>
+                <span className='ml-4 dark:text-indigo-300 text-indigo-500 rounded-md  text-xs border border-indigo-300/80 px-1 font-medium -italic opacity-80 tracking-normal'>
+                  test page only
+                </span>
               </h1>
               <p className='text-sm md:text-base text-muted-foreground font-figtree pl-1 text-pretty'>
                 Browse top picks we matched for you.
@@ -48,7 +52,7 @@ export function DiscoverFeed() {
                   variant={activeTab === tab.id ? 'secondary' : 'ghost'}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn('rounded-full text-xs px-2', {
-                    'bg-white': activeTab === tab.id,
+                    'bg-white dark:text-zinc-700': activeTab === tab.id,
                   })}>
                   {tab.label}
                 </Button>
@@ -90,7 +94,7 @@ export function DiscoverFeed() {
           </Card>
 
           {/* Suggested Group Card 1 */}
-          <Card className='bg-slate-400/80 rounded-md break-inside-avoid overflow-hidden border-border/50 hover:shadow-lg transition-shadow'>
+          <Card className='bg-slate-400/80 svg rounded-md break-inside-avoid overflow-hidden border-border/50 hover:shadow-lg transition-shadow'>
             <div className='p-6'>
               <div className='flex items-start justify-between mb-4'>
                 <Badge
@@ -100,15 +104,15 @@ export function DiscoverFeed() {
                 </Badge>
                 <div className='flex -space-x-2'>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U1</AvatarFallback>
                   </Avatar>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U2</AvatarFallback>
                   </Avatar>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U3</AvatarFallback>
                   </Avatar>
                 </div>
@@ -255,15 +259,15 @@ export function DiscoverFeed() {
                 </Badge>
                 <div className='flex -space-x-2'>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U1</AvatarFallback>
                   </Avatar>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U2</AvatarFallback>
                   </Avatar>
                   <Avatar className='h-8 w-8 border-2 border-white'>
-                    <AvatarImage src='/placeholder.svg?height=32&width=32' />
+                    <AvatarImage src='/images/sega.png' />
                     <AvatarFallback>U3</AvatarFallback>
                   </Avatar>
                 </div>
@@ -307,7 +311,7 @@ export function DiscoverFeed() {
             <div className='p-6'>
               <div className='flex items-start gap-3 mb-4'>
                 <Avatar className='h-12 w-12'>
-                  <AvatarImage src='/placeholder.svg?height=48&width=48' />
+                  <AvatarImage src='/images/sega.png' />
                   <AvatarFallback>RF</AvatarFallback>
                 </Avatar>
                 <div className='flex-1'>
