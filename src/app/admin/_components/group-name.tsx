@@ -24,7 +24,7 @@ export const GroupName = ({setGroup, group, disabled}: GroupNameProps) => {
         disabled={disabled}
         defaultValue={group}
         onChange={handleGroupChange}
-        className='border-transparent uppercase dark:border-transparent font-space dark:bg-origin md:w-fit w-16 pl-2 pr-2 md:h-10 h-7 bg-muted'
+        className='text-xs md:text-sm border-transparent uppercase dark:border-transparent font-space dark:bg-origin md:w-fit w-14 pl-2 pr-2 md:h-10 h-7 bg-muted'
       />
     </div>
   )

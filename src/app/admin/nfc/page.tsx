@@ -6,8 +6,11 @@ import {checkCard, createCard} from '@/lib/firebase/cards'
 import {macStr} from '@/utils/macstr'
 import {useRouter} from 'next/navigation'
 import {useEffect, useMemo, useState} from 'react'
+import {BatchName} from '../_components/batch-name'
 import {AdminDock, DockItems} from '../_components/dock'
+import {GroupName} from '../_components/group-name'
 import {NFCDataWithDuplicate, NFCScanList} from '../_components/nfc-list'
+import {SeriesSelect} from '../_components/select-series'
 
 const NFCPage = () => {
   const {user} = useAuthCtx()
@@ -20,7 +23,11 @@ const NFCPage = () => {
 
   const [nfcScans, setNCFScans] = useState<(NFCDataWithDuplicate | null)[]>([])
   const [firestoreReceipt, setFirestoreReceipt] = useState<string | null>(null)
-  const [groupName] = useState('general')
+  const col = 'general'
+
+  const [series, setSeries] = useState<string>('individual')
+  const [group, setGroup] = useState('indv')
+  const [batch, setBatch] = useState(Date.now().toString())
 
   useEffect(() => {
     if (!scanDetails) return
@@ -43,7 +50,7 @@ const NFCPage = () => {
     // Check Firestore and create if needed
     const id = macStr(serialNumber)
     ;(async () => {
-      const exists = await checkCard(id, groupName)
+      const exists = await checkCard(id, col)
       if (exists) {
         onWarn('Card already on the list')
         // Mark all scans with this serial as onlist
@@ -59,10 +66,12 @@ const NFCPage = () => {
 
       // Only create for non-duplicates within this session
       if (!isLocalDuplicate && user) {
-        setFirestoreReceipt(await createCard(scanDetails, user, groupName))
+        setFirestoreReceipt(
+          await createCard(scanDetails, {series, group, batch}, user, col),
+        )
       }
     })()
-  }, [scanDetails, groupName, nfcScans, user])
+  }, [scanDetails, col, nfcScans, user])
 
   const clearList = () => {
     setNCFScans([])
@@ -113,40 +122,35 @@ const NFCPage = () => {
     <div className='flex flex-col h-screen w-full overflow-hidden'>
       {/* Header */}
       <div className='fixed top-0 bg-zinc-800/10 dark:bg-zinc-700/10 flex flex-col w-full border-b border-zinc-500/10'>
-        <div className='flex items-center justify-between w-full py-3 px-3 md:p-6 h-fit'>
-          <div className='w-full h-full flex items-center justify-end r-2'>
+        <div className='flex w-full items-center justify-between py-3 px-3 md:p-6 h-fit'>
+          {/*<div className='w-full h-full flex items-center justify-end r-2'>
             <div className='h-full w-full flex flex-col items-end overflow-hidden font-figtree tracking-tight'>
               <ScanStatus isScanning={isScanning} />
             </div>
+          </div>*/}
+
+          <div className='flex item-center justify-center space-x-6'>
+            <SeriesSelect setSeries={setSeries} disabled={isScanning} />
+            <GroupName
+              disabled={isScanning}
+              setGroup={setGroup}
+              group={group}
+            />
+            <BatchName
+              disabled={isScanning}
+              setBatch={setBatch}
+              batch={batch}
+            />
+            <ScanStatus isScanning={isScanning} />
           </div>
 
-          <div className='flex w-full space-x-10 md:space-x-12 lg:space-x-24 xl:space-x-32'>
-            <div className='w-fit'>
-              <div className='h-full w-full flex flex-col items-center font-figtree space-y-1'>
-                <p className='opacity-60 md:text-base text-xs tracking-tight'>
-                  Scans
-                </p>
-                <p className='text-sm md:text-xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)] px-1'>
-                  {nfcScans.filter((scan) => !scan?.isDuplicate).length}
-                </p>
-              </div>
-            </div>
-            <div className='w-fit'>
-              <div className='h-full w-full flex flex-col items-center font-figtree space-y-1'>
-                <p className='opacity-60 md:text-lg text-xs tracking-tight'>
-                  Duplicates
-                </p>
-                <p className='text-sm md:text-xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)] px-1'>
-                  {nfcScans.filter((scan) => scan?.isDuplicate).length}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className='w-full flex items-start justify-end space-x-1 md:space-x-4'>
-            <div className='relative h-full w-full flex flex-col font-figtree tracking-tight whitespace-nowrap space-y-2'>
-              <p className='opacity-60 md:text-lg font-medium text-xs tracking-tight'>
-                NFC Cards
+          <div className='flex items-start justify-end space-x-1 md:space-x-4'>
+            <div className='h-full w-full flex flex-col items-center font-figtree space-y-1'>
+              <p className='opacity-60 md:text-base text-xs tracking-tight'>
+                Cards
+              </p>
+              <p className='text-sm md:text-xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)] px-1'>
+                {nfcScans.filter((scan) => !scan?.isDuplicate).length}
               </p>
             </div>
           </div>
@@ -157,14 +161,6 @@ const NFCPage = () => {
       <div className='h-full w-full md:mt-29 mt-19 flex items-center justify-center'>
         <div className='h-full w-full'>
           <div className='p-4'>
-            <div className='mb-4'>
-              <h3 className='text-lg font-semibold mb-2'>NFC Scan Details</h3>
-              <pre className='bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm overflow-auto'>
-                {scanDetails
-                  ? JSON.stringify(scanDetails, null, 2)
-                  : 'No scan data available'}
-              </pre>
-            </div>
             <NFCScanList list={nfcScans} firestoreReceipt={firestoreReceipt} />
           </div>
         </div>
@@ -184,7 +180,7 @@ interface ScanStatusProps {
 
 const ScanStatus = ({isScanning}: ScanStatusProps) => {
   return (
-    <div className='w-full flex items-center justify-start text-xs md:text-base font-figtree'>
+    <div className='w-full hidden md:flex items-center justify-start text-xs md:text-base font-figtree'>
       <div className='h-full w-full flex flex-col items-start justify-center font-figtree space-y-1'>
         <p className='opacity-60 md:text-base text-xs tracking-tight'>state</p>
         <div className='flex items-center w-full text-sm md:text-xl font-semibold font-figtree tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)]'>

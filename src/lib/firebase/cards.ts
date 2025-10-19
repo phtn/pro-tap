@@ -1,6 +1,6 @@
-import { NFCData } from '@/hooks/use-nfc'
-import { macStr } from '@/utils/macstr'
-import { User } from 'firebase/auth'
+import {NFCData} from '@/hooks/use-nfc'
+import {macStr} from '@/utils/macstr'
+import {User} from 'firebase/auth'
 import {
   collection,
   CollectionReference,
@@ -14,7 +14,7 @@ import {
   where,
   writeBatch,
 } from 'firebase/firestore'
-import { db } from '.'
+import {db} from '.'
 
 export interface ProtapCardDoc {
   id: string
@@ -42,8 +42,15 @@ function cardDocRef(id: string, col: string): DocumentReference<ProtapCardDoc> {
   return doc(cardsCollection(col), id) as DocumentReference<ProtapCardDoc>
 }
 
+interface ScanItem {
+  series: string
+  group: string
+  batch: string
+}
+
 export async function createCard(
   data: NFCData,
+  item: ScanItem,
   user: User,
   grp: string,
 ): Promise<string> {
@@ -67,6 +74,7 @@ export async function createCard(
     isActive: true,
     ownerId: null,
     activatedOn: null,
+    ...item,
   })
   return id
 }

@@ -149,20 +149,7 @@ const QRCodePage = () => {
       {/* Header */}
       <div className='fixed z-60 top-0 bg-zinc-800/10 dark:bg-zinc-700/10 backdrop-blur-2xl flex flex-col w-full border-b border-zinc-500/10'>
         <div className='flex items-center justify-between w-full py-3 px-3 md:p-6 h-fit'>
-          <div className='hidden _flex w-full space-x-10 md:space-x-12 lg:space-x-24 xl:space-x-32'>
-            <div className='w-fit'>
-              <div className='h-full w-full flex flex-col items-center font-figtree space-y-1'>
-                <p className='opacity-60 pb-3 md:text-base text-xs tracking-tight'>
-                  Generated
-                </p>
-                <p className='text-right text-sm md:text-xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)] px-1'>
-                  {generatedCount}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className='flex item-center justify-center space-x-6'>
+          <div className='flex item-center justify-center space-x-3 md:space-x-6'>
             <SeriesSelect disabled={generatedCount > 0} setSeries={setSeries} />
             <GroupName
               disabled={generatedCount > 0}
@@ -200,7 +187,7 @@ const QRCodePage = () => {
       <div className='flex items-center justify-center h-full w-full '>
         <div className='h-full w-full'>
           <div className='h-screen overflow-scroll pb-64'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-24 md:pt-36 px-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-24 md:pt-36 px-3 md:px-4'>
               {qrCodeGens.map((gen, idx) => (
                 <CardItem
                   id={gen}

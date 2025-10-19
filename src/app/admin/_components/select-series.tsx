@@ -34,8 +34,11 @@ export function SeriesSelect({setSeries, disabled}: Props) {
         <SelectTrigger
           id={id}
           disabled={disabled}
-          className='border-transparent font-space tracking-tight whitespace-nowrap bg-muted dark:bg-origin shadow-none rounded-lg w-36 md:w-40 md:h-10 h-7'>
-          <SelectValue placeholder='Select series' />
+          className='text-xs md:text-sm border-transparent font-space tracking-tight whitespace-nowrap bg-muted dark:bg-origin shadow-none rounded-lg w-28 md:w-40 md:h-10 h-7'>
+          <SelectValue
+            placeholder='Select series'
+            className='text-xs md:text-sm'
+          />
         </SelectTrigger>
         <SelectContent sideOffset={2} className='font-space z-80 space-y-2'>
           <SelectItem value='individual'>Individual</SelectItem>

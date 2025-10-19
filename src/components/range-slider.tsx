@@ -12,7 +12,7 @@ interface RangeSliderWithInputProps {
 export const RangeSliderWithInput = ({
   setSelectedValue,
 }: RangeSliderWithInputProps) => {
-  const minValue = 10
+  const minValue = 1
   const maxValue = 1000
   const initialValue = [200]
 
