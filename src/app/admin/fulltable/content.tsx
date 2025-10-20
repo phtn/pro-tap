@@ -7,8 +7,10 @@ import {
   textCell,
 } from '@/components/experimental/table/cells'
 import {ColumnConfig} from '@/components/experimental/table/create-columns'
+import {RowActions} from '@/components/experimental/table/row-actions'
 import {useMobile} from '@/hooks/use-mobile'
 import {getAllCards, ProtapCardDoc} from '@/lib/firebase/cards'
+import {Icon} from '@/lib/icons'
 import {format} from 'date-fns'
 import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useState} from 'react'
@@ -40,14 +42,16 @@ export const Content = () => {
 
   const columnConfigs: ColumnConfig<ProtapCardDoc>[] = [
     {
+      id: 'serialNumber',
       header: 'Serial Number',
       accessorKey: 'serialNumber',
       cell: textCell('serialNumber', 'font-space text-muted-foreground'),
       size: 150,
-      enableHiding: false,
+      enableHiding: true,
       enableSorting: true,
     },
     {
+      id: 'ownerId',
       header: 'Owner',
       accessorKey: 'ownerId',
       cell: textCell('ownerId', 'font-mono truncate text-clip w-[10ch]'),
@@ -56,6 +60,7 @@ export const Content = () => {
       enableSorting: true,
     },
     {
+      id: 'createdByName',
       header: 'Created By',
       accessorKey: 'createdByName',
       size: 150,
@@ -63,6 +68,7 @@ export const Content = () => {
       enableSorting: true,
     },
     {
+      id: 'isActive',
       header: 'Status',
       accessorKey: 'isActive',
       cell: booleanCell(
@@ -75,6 +81,7 @@ export const Content = () => {
       enableSorting: true,
     },
     {
+      id: 'createdAt',
       header: 'Created At',
       accessorKey: 'createdAt',
       cell: dateCell<ProtapCardDoc>(
@@ -85,6 +92,19 @@ export const Content = () => {
       size: 180,
       enableHiding: true,
       enableSorting: true,
+    },
+    {
+      id: 'actions',
+      accessorKey: 'id',
+      header: (
+        <div className='w-fit flex justify-center px-1.5'>
+          <Icon name='settings' className='size-5 opacity-80' />
+        </div>
+      ),
+      cell: ({row}) => <RowActions row={row} />,
+      size: 0,
+      enableHiding: false,
+      enableSorting: false,
     },
   ]
 
@@ -112,13 +132,11 @@ export const Content = () => {
     <div>
       {data && (
         <DataTable
-          title='All'
+          title='Limited individual'
           data={data}
           create={false}
           edit={false}
           editingRowId={null}
-          toggleForm={() => {}}
-          toggleEditForm={() => {}}
           columnConfigs={columnConfigs}
         />
       )}

@@ -768,6 +768,84 @@ export const icons = {
     viewBox: `0 0 24 24`,
     set: 'lets-icons',
   },
+  'more-h': {
+    symbol:
+      '<g fill="currentColor"><circle cx="6" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="18" cy="12" r="1.75"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'more-v': {
+    symbol:
+      '<g fill="currentColor"><circle cx="12" cy="18" r="1.75" transform="rotate(-90 12 18)"/><circle cx="12" cy="12" r="1.75" transform="rotate(-90 12 12)"/><circle cx="12" cy="6" r="1.75" transform="rotate(-90 12 6)"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  printer: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 17v1.05c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.428.218.988.218 2.108.218h4.1c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V17m-10.5 0v-1.05c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874c.428-.218.988-.218 2.108-.218h4.1c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874c.218.428.218.988.218 2.108V17m-10.5 0h-.8c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874c-.218-.428-.218-.988-.218-2.108v-3c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C5.03 6 5.87 6 7.55 6h8.9c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311c.327.642.327 1.482.327 3.162v3c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C19.73 17 19.17 17 18.05 17h-.8M6.75 4.25a1.5 1.5 0 0 1 1.5-1.5h7.5a1.5 1.5 0 0 1 1.5 1.5V6H6.75z"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  json: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20.25a3 3 0 0 1-3-3v0v-1.343a4 4 0 0 0-1.172-2.829L3.75 12l1.078-1.078A4 4 0 0 0 6 8.093V6.75v0a3 3 0 0 1 3-3v0m6 16.5a3 3 0 0 0 3-3v0v-1.343a4 4 0 0 1 1.172-2.829L20.25 12l-1.078-1.078A4 4 0 0 1 18 8.093V6.75v0a3 3 0 0 0-3-3v0"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'treasure-chest': {
+    symbol:
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M9.75 19.75v-12a3.5 3.5 0 0 0-3.5-3.5v0"/><path d="M2.75 8.25a4 4 0 0 1 4-4h10.5a4 4 0 0 1 4 4v9.5a2 2 0 0 1-2 2H4.75a2 2 0 0 1-2-2zm0 2h18.5M15.5 12V8.5"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  justify: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M2.75 5.25h18.5M2.75 12h18.5m-18.5 6.75h18.5"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'checkbox-checked': {
+    symbol:
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect width="16.5" height="16.5" x="3.75" y="3.75" rx="4"/><path d="m16.512 9.107l-5.787 5.786l-3.237-3.232"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'checkbox-unchecked': {
+    symbol:
+      '<rect width="16.5" height="16.5" x="3.75" y="3.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" rx="4"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'checkbox-indeterminate': {
+    symbol:
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect width="16.5" height="16.5" x="3.75" y="3.75" rx="4"/><path d="M16.19 12H7.81"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'checkbox-indeterminate-2': {
+    symbol:
+      '<g fill="none"><rect width="18.5" height="18.5" x="2.75" y="2.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" rx="4"/><path fill="currentColor" d="M7.113 6.25a.86.86 0 0 0-.863.862v9.775c0 .477.386.863.862.863h9.775a.863.863 0 0 0 .863-.863V7.114a.863.863 0 0 0-.863-.863z"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  filter: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 7.25h15M7.385 12h9.23m-6.345 4.75h3.46"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'arrow-swap': {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m9.618 12.249l-3.814 3.814c-.293.293-.44.677-.44 1.06M9.619 22l-3.814-3.814a1.5 1.5 0 0 1-.44-1.061m13.395 0H5.365m-.124-9.751h13.394m-4.253-4.875l3.814 3.814c.293.293.44.677.44 1.06m-4.254 4.876l3.814-3.814c.293-.293.44-.677.44-1.061"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'text-align-right': {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.75 5.25h13.5M2.75 12h18.5m-10 6.75h10"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
 }
 
 /*

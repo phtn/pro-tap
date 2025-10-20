@@ -34,7 +34,7 @@ export const Search = <T,>({col}: Props<T>) => {
         id={`input-${id}`}
         ref={inputRef}
         className={cn(
-          'peer md:h-10 dark:bg-background/40 w-40 md:min-w-60 ps-3 rounded-lg border-none',
+          'peer md:h-10 dark:bg-background/40 w-28 md:min-w-60 ps-3 rounded-lg border-none',
           '',
           Boolean(getFilterValue()) && 'pe-10',
         )}

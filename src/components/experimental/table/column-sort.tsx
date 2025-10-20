@@ -43,7 +43,7 @@ export const ColumnSort = <TData, TValue>({
             solid
             aria-hidden='true'
             name='play-solid'
-            className='size-4 shrink-0 text-teal-500 -rotate-90'
+            className='size-4 shrink-0 text-teal-500 -rotate-90 dark:opacity-90'
           />
         ),
         desc: (
@@ -51,7 +51,7 @@ export const ColumnSort = <TData, TValue>({
             solid
             aria-hidden='true'
             name='play-solid'
-            className='size-4 shrink-0 text-orange-300 rotate-90'
+            className='size-4 shrink-0 text-amber-500 rotate-90 dark:opacity-90'
           />
         ),
       }[header.column.getIsSorted() as string] ?? null}

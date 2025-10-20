@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import {Button} from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +12,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Icon, IconName } from '@/lib/icons'
-import { Row } from '@tanstack/react-table'
-import { useCallback } from 'react'
+import {Icon, IconName} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {Row} from '@tanstack/react-table'
+import {useCallback} from 'react'
 
 interface CustomAction<T> {
   label: string
@@ -35,7 +36,7 @@ export const RowActions = <T,>({
   row,
   editFn,
   deleteFn,
-  customActions = []
+  customActions = [],
 }: Props<T>) => {
   const handleEdit = useCallback(() => {
     editFn?.(row.original)
@@ -45,27 +46,35 @@ export const RowActions = <T,>({
     deleteFn?.(row.original)
   }, [row.original, deleteFn])
 
-  const handleCustomAction = useCallback((action: CustomAction<T>) => {
-    action.onClick(row.original)
-  }, [row.original])
+  const handleCustomAction = useCallback(
+    (action: CustomAction<T>) => {
+      action.onClick(row.original)
+    },
+    [row.original],
+  )
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className='flex justify-center'>
-          <Button
-            size='sq'
-            variant='ghost'
-            className='shadow-none w-9 rounded-lg cursor-pointer'
-            aria-label='More'>
-            <Icon solid name='add' className='text-muted-foreground' />
-          </Button>
-        </div>
+        <Button
+          size='sq'
+          variant='ghost'
+          className='shadow-none rounded-lg cursor-pointer data-[state=open]:bg-origin/50'
+          aria-label='More'>
+          <Icon
+            solid
+            name='text-align-right'
+            className='text-muted-foreground size-4'
+          />
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
+      <DropdownMenuContent
+        align='end'
+        alignOffset={12}
+        className='rounded-3xl md:p-3 p-2.5 border-origin md:min-w-40'>
         {editFn && (
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={handleEdit}>
+          <DropdownMenuGroup className='space-y-3'>
+            <DropdownMenuItem onClick={handleEdit} className='h-16 rounded-2xl'>
               <Icon name='pencil' className='size-4 mr-2' />
               <span>Edit</span>
               <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
@@ -80,12 +89,20 @@ export const RowActions = <T,>({
             {customActions.map((action, index) => (
               <DropdownMenuItem
                 key={index}
-                className={action.variant === 'destructive' ? 'text-destructive focus:text-destructive' : ''}
-                onClick={() => handleCustomAction(action)}
-              >
-                {action.icon && <Icon name={action.icon} className='size-4 mr-2' />}
+                className={cn(
+                  'h-14',
+                  action.variant === 'destructive'
+                    ? 'text-destructive focus:text-destructive'
+                    : '',
+                )}
+                onClick={() => handleCustomAction(action)}>
+                {action.icon && (
+                  <Icon name={action.icon} className='size-4 mr-2' />
+                )}
                 <span>{action.label}</span>
-                {action.shortcut && <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>}
+                {action.shortcut && (
+                  <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>
+                )}
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
@@ -93,38 +110,41 @@ export const RowActions = <T,>({
 
         {customActions.length > 0 && <DropdownMenuSeparator />}
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
+        <DropdownMenuGroup className='space-y-2 tracking-tight font-figtree'>
+          <DropdownMenuItem className='h-12 rounded-2xl px-4'>
             <Icon name='eye' className='size-4 mr-2' />
             <span>View</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icon name='link' className='size-4 mr-2' />
-            <span>Duplicate</span>
+          <DropdownMenuItem className='h-12 rounded-2xl px-4'>
+            <Icon name='pencil' className='size-4 mr-2' />
+            <span>Edit Row</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
+        <DropdownMenuGroup className='space-y-2 tracking-tight font-figtree'>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <Icon name='settings' className='size-4 mr-2' />
-              More
+            <DropdownMenuSubTrigger className='h-12 rounded-2xl pl-3'>
+              <Icon name='chevron-left' className='size-5 opacity-60' />
+              <span className='w-full pl-3.5'>Export</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>
-                  <Icon name='paperclip' className='size-4 mr-2' />
+              <DropdownMenuSubContent
+                className='rounded-3xl md:p-3 p-2.5 md:min-w-40 border-origin tracking-tight font-figtree'
+                alignOffset={-8}
+                sideOffset={4}>
+                <DropdownMenuItem className='h-12 rounded-2xl px-4 dark:focus:bg-origin/40'>
+                  <Icon name='printer' className='size-4 mr-2' />
                   Print
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Icon name='chat' className='size-4 mr-2' />
-                  Email
+                <DropdownMenuItem className='h-12 rounded-2xl px-4 dark:focus:bg-origin/40'>
+                  <Icon name='json' className='size-4 mr-2' />
+                  Copy JSON
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Icon name='settings' className='size-4 mr-2' />
+                <DropdownMenuSeparator className=' dark:bg-origin/30' />
+                <DropdownMenuItem className='h-12 rounded-2xl px-4 focus:bg-indigo-300/30 dark:focus:bg-origin/40'>
+                  <Icon name='pawn' className='size-4 mr-2' />
                   Advanced
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
