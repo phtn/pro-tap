@@ -29,14 +29,16 @@ export const HyperTable = <T,>({
         name: 'clear list',
         fn: loading ? () => {} : () => console.log('Clearing list...'),
         icon: 'split-vertical',
-        style: loading ? 'text-zinc-800' : 'text-zinc-500',
+        style: loading
+          ? 'text-zinc-800 opacity-20'
+          : ' opacity-20 text-zinc-500',
       },
     ],
     options: [
       {
-        name: 'options',
+        name: 'next',
         fn: () => {},
-        icon: 'split-vertical',
+        icon: 'chevron-right',
         style: 'text-slate-300 dark:text-slate-600',
       },
     ],
