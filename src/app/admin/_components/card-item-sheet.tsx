@@ -37,22 +37,21 @@ export const CardItemSheet = ({
     }
   }, [open, side])
 
-  if (!open || !item) return null
   const createdAt = useMemo(
-    () => tsToDate(item.createdAt as unknown as Timestamp, 'PPpp'),
+    () => tsToDate(item?.createdAt as unknown as Timestamp, 'PPpp'),
     [item],
   )
 
   const details = useMemo(
     () => [
-      {label: 'id', value: item.id},
-      {label: 'series', value: item.series},
-      {label: 'group', value: item.group},
-      {label: 'batch', value: item.batch},
+      {label: 'id', value: item?.id},
+      {label: 'series', value: item?.series},
+      {label: 'group', value: item?.group},
+      {label: 'batch', value: item?.batch},
       {label: 'timestamp', value: createdAt},
       {
         label: 'url',
-        value: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
+        value: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/api/verify/?id=${item?.id}&series=${item?.series}&group=${item?.group}&batch=${item?.batch}`,
       },
     ],
     [item, createdAt],
@@ -61,11 +60,13 @@ export const CardItemSheet = ({
   const {copy} = useCopy({timeout: 2000})
 
   const handleCopyValue = useCallback(
-    (detail: {label: string; value: string}) => () => {
-      copy(detail.label, detail.value)
+    (detail: {label: string; value: string | undefined}) => () => {
+      copy(detail.label, detail?.value ?? '')
     },
     [],
   )
+
+  if (!open || !item) return null
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
