@@ -1,7 +1,9 @@
-import { onError, onSuccess, onWarn } from '@/ctx/toast'
+import {onError, onSuccess, onWarn} from '@/ctx/toast'
 import crypto from 'crypto'
-import type { Dispatch, ReactElement, SetStateAction } from 'react'
-export function generateUID (): string {
+import {format as _format} from 'date-fns'
+import {Timestamp} from 'firebase/firestore'
+import type {Dispatch, ReactElement, SetStateAction} from 'react'
+export function generateUID(): string {
   const uuid: string = crypto.randomUUID() // e.g., "9e107d9d-372b-4f99-a567-16e0c3b8a8d3"
   const hex: string = uuid.replace(/-/g, '') // dash delete
 
@@ -18,10 +20,10 @@ export function generateUID (): string {
   return base64.slice(0, 20)
 }
 // Webhook verification (recommended for security)
-export function verifyWebhookSignature (
+export function verifyWebhookSignature(
   payload: string,
   signature: string,
-  secret: string
+  secret: string,
 ): boolean {
   const hmac = crypto.createHmac('sha256', secret)
   hmac.update(payload)
@@ -37,20 +39,20 @@ export const opts = (...args: (ReactElement | null)[]) => {
 }
 
 export type CopyFnParams = {
-  name: string;
-  text: string;
-  limit?: number;
+  name: string
+  text: string
+  limit?: number
 }
 type CopyFn = (params: CopyFnParams) => Promise<boolean> // Return success
 
 export const charLimit = (
   text: string | undefined,
-  chars?: number
+  chars?: number,
 ): string | undefined => {
   if (!text) return
   return text.substring(0, chars ?? 35)
 }
-export const copyFn: CopyFn = async ({ name, text }) => {
+export const copyFn: CopyFn = async ({name, text}) => {
   if (!navigator?.clipboard) {
     onWarn('Clipboard not supported')
     return false
@@ -72,16 +74,23 @@ export const copyFn: CopyFn = async ({ name, text }) => {
 export const Err =
   <T extends Error | null | undefined>(
     setLoading: Dispatch<SetStateAction<boolean>>,
-    msg?: string
+    msg?: string,
   ) =>
-    (e: T) => {
-      onError(msg ?? `Error: ${e?.name}`)
-      setLoading(false)
-    }
+  (e: T) => {
+    onError(msg ?? `Error: ${e?.name}`)
+    setLoading(false)
+  }
 
 export const Ok =
   (setLoading: Dispatch<SetStateAction<boolean>>, ...args: string[]) =>
-    () => {
-      setLoading(false)
-      onSuccess(`${args[0]} ${args[1] ?? ''}`)
-    }
+  () => {
+    setLoading(false)
+    onSuccess(`${args[0]} ${args[1] ?? ''}`)
+  }
+
+export const tsToDate = (st: Timestamp | null, format = 'PPpp') => {
+  if (!st) return
+  console.log(st)
+  const date = st.toDate()
+  _format(date, format)
+}

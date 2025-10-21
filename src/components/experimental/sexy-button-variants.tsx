@@ -12,6 +12,7 @@ type SexyButtonVariant =
   | 'ghost'
   | 'dark'
   | 'invert'
+  | 'tertiary'
 type SexyButtonSize = 'sq' | 'sm' | 'md' | 'lg'
 
 interface SexyButtonProps extends HTMLMotionProps<'button'> {
@@ -89,6 +90,17 @@ const variantClasses: Record<SexyButtonVariant, string> = {
     'dark:border-ash/60 dark:hover:border-ash/40',
     'inset-shadow-[0_1px_rgb(237_237_237)]/20',
     'dark:inset-shadow-[0_1px_rgb(237_237_237)]/50',
+  ),
+  tertiary: cn(
+    'bg-gradient-to-r from-slate-200/90 via-slate-300 to-slate-300',
+    'hover:from-slate-200/90 hover:via-slate-200 hover:to-slate-200',
+    'dark:from-slate-600/80 dark:via-slate-600 dark:to-slate-500',
+    'dark:hover:from-slate-600/90 dark:hover:via-slate-500 dark:hover:to-slate-500',
+    'text-foreground/80 hover:text-foreground',
+    'border-zinc-400/80 hover:border-zinc-400/80',
+    'dark:border-zinc-400/40 dark:hover:border-zinc-500/80',
+    'inset-shadow-[0_1px_rgb(237_237_237)]/50',
+    'dark:inset-shadow-[0_1px_rgb(100_100_100)]/40',
   ),
 }
 

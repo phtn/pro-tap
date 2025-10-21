@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     // Return success response with activation data
     return NextResponse.redirect(
-      new URL(`/verify/${id}`, 'https://192.168.1.2:3000'),
+      new URL(`/verify/${id}`, 'https://localhost:3000'),
     )
   } catch (error) {
     console.error('Error checking card:', error)

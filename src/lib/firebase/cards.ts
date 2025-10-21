@@ -245,6 +245,7 @@ export async function checkCard(id: string, col: string) {
 export interface CardStatus {
   id: string | null
   ownerId: string | null
+  nfcData: NFCData | null
 }
 
 export async function checkCardStatus(
@@ -255,7 +256,7 @@ export async function checkCardStatus(
   const snap = await getDoc(ref)
 
   if (!snap.exists()) {
-    return {id: null, ownerId: null}
+    return {id: null, ownerId: null, nfcData: null}
   }
 
   const data = snap.data()
@@ -263,6 +264,7 @@ export async function checkCardStatus(
   return {
     id: data.id,
     ownerId: data.ownerId,
+    nfcData: data.nfcData ?? null,
   }
 }
 

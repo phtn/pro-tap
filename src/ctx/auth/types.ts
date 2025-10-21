@@ -1,5 +1,6 @@
 import {ProtapUserDoc, UserBioData} from '@/lib/firebase/types/user'
 import {User} from 'firebase/auth'
+import {Timestamp} from 'firebase/firestore'
 
 export type UserRole = 'admin' | 'manager' | 'user' | 'dev'
 
@@ -26,6 +27,7 @@ export interface AuthUser extends User {
     | import('firebase/firestore').FieldValue
     | import('firebase/firestore').Timestamp
   isActivated: boolean
+  activatedOn: Timestamp | null
   ntag: {
     serialNumber: string
     scanTime: number | null
@@ -33,7 +35,7 @@ export interface AuthUser extends User {
     type: string
   }
   userBioData: UserBioData
-  userType: 'INDIVIDUAL' | 'FLEET' | 'ORGANIZATION'
+  userType: 'INDIVIDUAL' | 'FLEET' | 'LIMITED-EDITION'
   purchaseType: string
   loyaltyPoints: number
   isMerchant: boolean

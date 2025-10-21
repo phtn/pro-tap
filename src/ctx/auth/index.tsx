@@ -1,10 +1,10 @@
 'use client'
 
-import { VoidPromise } from '@/app/types'
-import { auth } from '@/lib/firebase'
-import { createUser, getUser } from '@/lib/firebase/users'
-import { setUserProfile, getUserProfile, clearUserProfile } from '@/app/actions'
-import { downloadAndCacheImage } from '@/lib/image-cache'
+import {clearUserProfile, getUserProfile, setUserProfile} from '@/app/actions'
+import {VoidPromise} from '@/app/types'
+import {auth} from '@/lib/firebase'
+import {createUser, getUser} from '@/lib/firebase/users'
+import {downloadAndCacheImage} from '@/lib/image-cache'
 import {
   GoogleAuthProvider,
   onIdTokenChanged,
@@ -12,10 +12,10 @@ import {
   signOut,
   type User,
 } from 'firebase/auth'
-import { useRouter } from 'next/navigation'
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useSigninCheck } from 'reactfire'
-import type { AuthUser } from './types'
+import {useRouter} from 'next/navigation'
+import React, {createContext, useContext, useEffect, useState} from 'react'
+import {useSigninCheck} from 'reactfire'
+import type {AuthUser} from './types'
 
 interface AuthContextType {
   user: AuthUser | null
@@ -26,7 +26,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const { status, data: signInCheckResult } = useSigninCheck()
+  const {status, data: signInCheckResult} = useSigninCheck()
 
   useEffect(() => {
     if (status === 'success' && signInCheckResult.user) {
@@ -77,10 +77,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             email: cachedProfile.email,
             displayName: cachedProfile.displayName,
             photoURL: cachedProfile.photoURL,
-            providerIds: firebaseUser.providerData?.map((p) => p.providerId) || [],
+            providerIds:
+              firebaseUser.providerData?.map((p) => p.providerId) || [],
             createdAt: null as any, // Will be updated if we fetch fresh data
             lastLogin: null as any,
             isActivated: cachedProfile.isActivated,
+            activatedOn: null,
             ntag: {
               serialNumber: '',
               scanTime: null,
@@ -115,53 +117,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               // Spread userProfile with null coalescing for required properties
               ...(userProfile
                 ? {
-                  uid: userProfile.uid,
-                  email: userProfile.email,
-                  displayName: userProfile.displayName,
-                  photoURL: userProfile.photoURL,
-                  providerIds: userProfile.providerIds || [],
-                  createdAt: userProfile.createdAt,
-                  lastLogin: userProfile.lastLogin,
-                  isActivated: userProfile.isActivated,
-                  ntag: userProfile.ntag,
-                  userBioData: userProfile.userBioData,
-                  userType: userProfile.userType,
-                  purchaseType: userProfile.purchaseType,
-                  loyaltyPoints: userProfile.loyaltyPoints,
-                  isMerchant: userProfile.isMerchant,
-                  isAffiliate: userProfile.isAffiliate,
-                  userInfo: userProfile.userInfo,
-                }
+                    uid: userProfile.uid,
+                    email: userProfile.email,
+                    displayName: userProfile.displayName,
+                    photoURL: userProfile.photoURL,
+                    providerIds: userProfile.providerIds || [],
+                    createdAt: userProfile.createdAt,
+                    lastLogin: userProfile.lastLogin,
+                    isActivated: userProfile.isActivated,
+                    activatedOn: null,
+                    ntag: userProfile.ntag,
+                    userBioData: userProfile.userBioData,
+                    userType: userProfile.userType,
+                    purchaseType: userProfile.purchaseType,
+                    loyaltyPoints: userProfile.loyaltyPoints,
+                    isMerchant: userProfile.isMerchant,
+                    isAffiliate: userProfile.isAffiliate,
+                    userInfo: userProfile.userInfo,
+                  }
                 : {
-                  // Default values when userProfile is null
-                  uid: firebaseUser.uid,
-                  email: firebaseUser.email,
-                  displayName: firebaseUser.displayName,
-                  photoURL: firebaseUser.photoURL,
-                  providerIds:
-                    firebaseUser.providerData?.map((p) => p.providerId) || [],
-                  createdAt: null as any,
-                  lastLogin: null as any,
-                  isActivated: false,
-                  ntag: {
-                    serialNumber: '',
-                    scanTime: null,
-                    metadata: {},
-                    type: '',
-                  },
-                  userBioData: {
-                    firstName: null,
-                    middleName: null,
-                    lastName: null,
-                    gender: null,
-                  },
-                  userType: 'INDIVIDUAL' as const,
-                  purchaseType: '',
-                  loyaltyPoints: 0,
-                  isMerchant: false,
-                  isAffiliate: false,
-                  userInfo: null,
-                }),
+                    // Default values when userProfile is null
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    displayName: firebaseUser.displayName,
+                    photoURL: firebaseUser.photoURL,
+                    providerIds:
+                      firebaseUser.providerData?.map((p) => p.providerId) || [],
+                    createdAt: null as any,
+                    lastLogin: null as any,
+                    isActivated: false,
+                    activatedOn: null,
+                    ntag: {
+                      serialNumber: '',
+                      scanTime: null,
+                      metadata: {},
+                      type: '',
+                    },
+                    userBioData: {
+                      firstName: null,
+                      middleName: null,
+                      lastName: null,
+                      gender: null,
+                    },
+                    userType: 'INDIVIDUAL' as const,
+                    purchaseType: '',
+                    loyaltyPoints: 0,
+                    isMerchant: false,
+                    isAffiliate: false,
+                    userInfo: null,
+                  }),
               role: userProfile?.role ?? 'user',
             }
 
@@ -215,10 +219,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               email: cachedProfile.email,
               displayName: cachedProfile.displayName,
               photoURL: cachedProfile.photoURL,
-              providerIds: firebaseUser.providerData?.map((p) => p.providerId) || [],
+              providerIds:
+                firebaseUser.providerData?.map((p) => p.providerId) || [],
               createdAt: null as any,
               lastLogin: null as any,
               isActivated: cachedProfile.isActivated,
+              activatedOn: null,
               ntag: {
                 serialNumber: '',
                 scanTime: null,
@@ -254,53 +260,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               // Spread userProfile with null coalescing for required properties
               ...(userProfile
                 ? {
-                  uid: userProfile.uid,
-                  email: userProfile.email,
-                  displayName: userProfile.displayName,
-                  photoURL: userProfile.photoURL,
-                  providerIds: userProfile.providerIds || [],
-                  createdAt: userProfile.createdAt,
-                  lastLogin: userProfile.lastLogin,
-                  isActivated: userProfile.isActivated,
-                  ntag: userProfile.ntag,
-                  userBioData: userProfile.userBioData,
-                  userType: userProfile.userType,
-                  purchaseType: userProfile.purchaseType,
-                  loyaltyPoints: userProfile.loyaltyPoints,
-                  isMerchant: userProfile.isMerchant,
-                  isAffiliate: userProfile.isAffiliate,
-                  userInfo: userProfile.userInfo,
-                }
+                    uid: userProfile.uid,
+                    email: userProfile.email,
+                    displayName: userProfile.displayName,
+                    photoURL: userProfile.photoURL,
+                    providerIds: userProfile.providerIds || [],
+                    createdAt: userProfile.createdAt,
+                    lastLogin: userProfile.lastLogin,
+                    isActivated: userProfile.isActivated,
+                    ntag: userProfile.ntag,
+                    userBioData: userProfile.userBioData,
+                    userType: userProfile.userType,
+                    purchaseType: userProfile.purchaseType,
+                    loyaltyPoints: userProfile.loyaltyPoints,
+                    isMerchant: userProfile.isMerchant,
+                    isAffiliate: userProfile.isAffiliate,
+                    userInfo: userProfile.userInfo,
+                    activatedOn: null,
+                  }
                 : {
-                  // Default values when userProfile is null
-                  uid: firebaseUser.uid,
-                  email: firebaseUser.email,
-                  displayName: firebaseUser.displayName,
-                  photoURL: firebaseUser.photoURL,
-                  providerIds:
-                    firebaseUser.providerData?.map((p) => p.providerId) || [],
-                  createdAt: null as any,
-                  lastLogin: null as any,
-                  isActivated: false,
-                  ntag: {
-                    serialNumber: '',
-                    scanTime: null,
-                    metadata: {},
-                    type: '',
-                  },
-                  userBioData: {
-                    firstName: null,
-                    middleName: null,
-                    lastName: null,
-                    gender: null,
-                  },
-                  userType: 'INDIVIDUAL' as const,
-                  purchaseType: '',
-                  loyaltyPoints: 0,
-                  isMerchant: false,
-                  isAffiliate: false,
-                  userInfo: null,
-                }),
+                    // Default values when userProfile is null
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    displayName: firebaseUser.displayName,
+                    photoURL: firebaseUser.photoURL,
+                    providerIds:
+                      firebaseUser.providerData?.map((p) => p.providerId) || [],
+                    createdAt: null as any,
+                    lastLogin: null as any,
+                    isActivated: false,
+                    activatedOn: null,
+                    ntag: {
+                      serialNumber: '',
+                      scanTime: null,
+                      metadata: {},
+                      type: '',
+                    },
+                    userBioData: {
+                      firstName: null,
+                      middleName: null,
+                      lastName: null,
+                      gender: null,
+                    },
+                    userType: 'INDIVIDUAL' as const,
+                    purchaseType: '',
+                    loyaltyPoints: 0,
+                    isMerchant: false,
+                    isAffiliate: false,
+                    userInfo: null,
+                  }),
               role: userProfile?.role || 'user',
             }
 

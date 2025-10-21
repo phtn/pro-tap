@@ -1,19 +1,19 @@
-import { Verifier } from '@/components/kokonutui/verifier'
+import {Verifier} from '@/components/kokonutui/verifier'
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { useAuthCtx } from '@/ctx/auth'
-import { onError } from '@/ctx/toast'
-import { NFCData } from '@/hooks/use-nfc'
-import { activateCard, checkCard } from '@/lib/firebase/cards'
-import { activateUser } from '@/lib/firebase/users'
-import { macStr } from '@/utils/macstr'
-import { AnimatePresence, motion } from 'motion/react'
-import { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import {useAuthCtx} from '@/ctx/auth'
+import {onError} from '@/ctx/toast'
+import {NFCData} from '@/hooks/use-nfc'
+import {activateCard, checkCard} from '@/lib/firebase/cards'
+import {activateUser} from '@/lib/firebase/users'
+import {macStr} from '@/utils/macstr'
+import {AnimatePresence, motion} from 'motion/react'
+import {useRouter} from 'next/navigation'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 interface ActivationProgressProps {
   open: boolean
@@ -26,7 +26,7 @@ export const ActivationProgress = ({
   onOpenChange,
   nfcData,
 }: ActivationProgressProps) => {
-  const { user } = useAuthCtx()
+  const {user} = useAuthCtx()
   const router = useRouter()
 
   const [isVerified, setIsVerified] = useState(false)
@@ -34,6 +34,14 @@ export const ActivationProgress = ({
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const serialNumber = useMemo(
+    () =>
+      nfcData && nfcData.serialNumber.startsWith('qr-')
+        ? nfcData.serialNumber
+        : nfcData && macStr(nfcData.serialNumber),
+    [nfcData],
+  )
 
   const performActivation = useCallback(async () => {
     if (!nfcData || !user || isLoading) return
@@ -43,8 +51,10 @@ export const ActivationProgress = ({
 
     try {
       // Step 1: Verify card exists and ownerId is null
-      const cardId = macStr(nfcData.serialNumber)
-      const cardExists = await checkCard(cardId, 'general')
+      if (!serialNumber) {
+        return
+      }
+      const cardExists = await checkCard(serialNumber, 'general')
 
       if (!cardExists) {
         throw new Error('Card not found or already activated')
@@ -54,12 +64,12 @@ export const ActivationProgress = ({
       // onSuccess('Card verified successfully')
 
       // Step 2: Activate user
-      await activateUser(user.uid, cardId, nfcData.serialNumber)
+      await activateUser(user.uid, serialNumber, nfcData.serialNumber)
       setIsActivated(true)
       // onSuccess('User activated successfully')
 
       // Step 3: Activate card
-      await activateCard(cardId, 'general', user.uid)
+      await activateCard(serialNumber, 'general', user.uid)
       // onSuccess('Card activated successfully')
 
       // Step 4: Complete activation
@@ -121,9 +131,9 @@ export const ActivationProgress = ({
                 Try Again
               </button>
             </div>
-          ) : nfcData?.serialNumber && user ? (
+          ) : serialNumber && user ? (
             <Verifier
-              code={macStr(nfcData?.serialNumber) ?? null}
+              code={serialNumber}
               isActivated={isActivated}
               isCompleted={isCompleted}
               isVerified={isVerified}
@@ -138,16 +148,16 @@ interface NtagCodeProps {
   serialNumber?: string
 }
 
-export const NtagId = ({ serialNumber }: NtagCodeProps) => {
+export const NtagId = ({serialNumber}: NtagCodeProps) => {
   return (
     <div className='md:w-80 w-40 flex items-center justify-end overflow-hidden'>
       <AnimatePresence mode='wait'>
         <motion.span
           key='expanded'
-          initial={{ width: 0 }}
-          animate={{ width: 'auto' }}
-          exit={{ width: 0 }}
-          transition={{ visualDuration: 0.5, type: 'spring', bounce: 0.15 }}
+          initial={{width: 0}}
+          animate={{width: 'auto'}}
+          exit={{width: 0}}
+          transition={{visualDuration: 0.5, type: 'spring', bounce: 0.15}}
           className='capitalize font-doto text-base lg:text-2xl font-bold tracking-widest whitespace-nowrap text-foreground'>
           {serialNumber && macStr(serialNumber)}
         </motion.span>

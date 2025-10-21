@@ -54,6 +54,7 @@ export async function createUser(user: User): Promise<void> {
     updatedAt: serverTimestamp() as ServerTime,
     lastLogin: serverTimestamp() as ServerTime,
     isActivated: false,
+    activatedOn: null,
     ntag: {
       serialNumber: '',
       scanTime: null,

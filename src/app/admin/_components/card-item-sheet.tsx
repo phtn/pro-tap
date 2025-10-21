@@ -29,7 +29,7 @@ export const CardItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
-  const debug = false
+  const debug = true
   useEffect(() => {
     if (open) {
       console.log(side)
@@ -54,7 +54,10 @@ export const CardItemSheet = ({
         side={side}
         className={cn(
           'z-200 space-y-3 md:space-y-0 h-[80vh] md:h-[60vh] dark:bg-zinc-800 rounded-t-3xl overflow-hidden p-4 md:p-6',
-          {'md:h-screen h-screen rounded-none ': side === 'right'},
+          {
+            'md:h-screen h-screen rounded-none': side === 'right',
+          },
+          'selection:bg-sky-300/80',
         )}>
         <div
           className={cn(
@@ -141,7 +144,7 @@ export const CardItemSheet = ({
                       </div>
                       <div
                         className={cn(
-                          'font-mono w-full whitespace-nowrap overflow-x-scroll text-slate-400 break-all',
+                          'font-mono w-full whitespace-nowrap overflow-x-scroll break-all',
                           {'sm:max-w-lg': side === 'right'},
                         )}>
                         https://{debug ? '192.168.1.2:3000' : 'protap.ph'}

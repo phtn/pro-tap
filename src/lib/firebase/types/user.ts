@@ -75,9 +75,10 @@ export interface ProtapUserDoc {
   updatedAt: ServerTime
   lastLogin: ServerTime
   isActivated: boolean
+  activatedOn: ServerTime | null
   ntag: NTag
   userBioData: UserBioData
-  userType: 'INDIVIDUAL' | 'FLEET' | 'ORGANIZATION'
+  userType: 'INDIVIDUAL' | 'FLEET' | 'LIMITED-EDITION'
   purchaseType: string
   loyaltyPoints: number
   isMerchant: boolean

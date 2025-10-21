@@ -1,11 +1,13 @@
 'use client'
 
+import {ActivationProgress} from '@/app/account/_components/progress'
 import {AuthedCardV2} from '@/app/sign/_components/authed-card'
 import {MiniVerifier} from '@/components/kokonutui/verifier'
 import {Navbar} from '@/components/ui/navbar'
 import {useAuthCtx} from '@/ctx/auth'
 import {useProduct} from '@/hooks/use-product'
-import {useMemo} from 'react'
+import {useToggle} from '@/hooks/use-toggle'
+import {useEffect, useMemo} from 'react'
 import {NavChild} from './_components/nav-child'
 
 export const Content = ({code}: {code: string}) => {
@@ -15,7 +17,15 @@ export const Content = ({code}: {code: string}) => {
     [cardStatus, loading],
   )
 
+  const {on: openProgress, toggle: toggleOpenProgress} = useToggle()
+
   const {user} = useAuthCtx()
+
+  useEffect(() => {
+    if (cardStatus?.nfcData) {
+      console.log(JSON.stringify(cardStatus.nfcData, null, 2))
+    }
+  }, [cardStatus?.nfcData])
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-white to-background text-foreground'>
@@ -24,11 +34,20 @@ export const Content = ({code}: {code: string}) => {
       </Navbar>
       <main className='flex justify-center items-start h-screen max-w-7xl mx-auto'>
         <div className='w-full'>
-          <div className='w-full h-32 md:h-64 flex flex-col items-center justify-center'>
+          <div className='w-full h-32 md:h-44 flex flex-col items-center justify-center'>
             <MiniVerifier isGood={isNotOwned} />
           </div>
-          <div className='px-6'>{user && <AuthedCardV2 user={user} />}</div>
+          <div className='px-6 w-full flex justify-center'>
+            {user && (
+              <AuthedCardV2 activateFn={toggleOpenProgress} user={user} />
+            )}
+          </div>
         </div>
+        <ActivationProgress
+          open={openProgress}
+          onOpenChange={toggleOpenProgress}
+          nfcData={cardStatus && cardStatus.nfcData}
+        />
       </main>
     </div>
   )

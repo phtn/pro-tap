@@ -1,12 +1,12 @@
 'use client'
 
-import { ThemeHotkey } from '@/components/theme-hotkey'
-import { FirebaseProvider } from '@/lib/firebase/provider'
-import { ThemeProvider } from 'next-themes'
-import { createContext, useContext, type ReactNode } from 'react'
-import { AuthProvider } from './auth'
-import { ActivationCtxProvider } from './activation'
-import { Toasts } from './toast'
+import {ThemeHotkey} from '@/components/theme-hotkey'
+import {FirebaseProvider} from '@/lib/firebase/provider'
+import {ThemeProvider} from 'next-themes'
+import {createContext, useContext, type ReactNode} from 'react'
+import {ActivationCtxProvider} from './activation'
+import {AuthProvider} from './auth'
+import {Toasts} from './toast'
 
 interface ProvidersProviderProps {
   children: ReactNode
@@ -18,7 +18,7 @@ interface ProvidersCtxValues {
 
 const ProvidersCtx = createContext<ProvidersCtxValues | null>(null)
 
-const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
+const ProvidersCtxProvider = ({children}: ProvidersProviderProps) => {
   return (
     <ProvidersCtx value={null}>
       <FirebaseProvider>
@@ -52,4 +52,4 @@ const useProvidersCtx = () => {
   return ctx
 }
 
-export { ProvidersCtx, ProvidersCtxProvider, useProvidersCtx }
+export {ProvidersCtx, ProvidersCtxProvider, useProvidersCtx}
