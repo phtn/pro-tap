@@ -1,5 +1,3 @@
-'use client'
-
 import {
   booleanCell,
   dateCell,
@@ -9,7 +7,11 @@ import {ColumnConfig} from '@/components/experimental/table/create-columns'
 import {RowActions} from '@/components/experimental/table/row-actions'
 import {useMobile} from '@/hooks/use-mobile'
 import {useToggle} from '@/hooks/use-toggle'
-import {getAllIndividualCards, ProtapCardDoc} from '@/lib/firebase/cards'
+import {
+  getAllIndividualCards,
+  ProtapActivationInfo,
+  ProtapCardDoc,
+} from '@/lib/firebase/cards'
 import {Icon} from '@/lib/icons'
 import {FilterFn} from '@tanstack/react-table'
 import {format} from 'date-fns'
@@ -27,7 +29,9 @@ export const ProductsTable = ({query = 'individual'}: ProductsTableProps) => {
   const [data, setData] = useState<ProtapCardDoc[]>()
   const [loading, setLoading] = useState(true)
 
-  const [selectedItem, setSelectedItem] = useState<ProtapCardDoc | null>(null)
+  const [selectedItem, setSelectedItem] = useState<ProtapActivationInfo | null>(
+    null,
+  )
   const isMobile = useMobile()
   const {on: open, toggle} = useToggle()
   const onOpenChange = (open: boolean) => {

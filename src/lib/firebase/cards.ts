@@ -1,3 +1,5 @@
+'use client'
+
 import {NFCData} from '@/hooks/use-nfc'
 import {macStr} from '@/utils/macstr'
 import {User} from 'firebase/auth'
@@ -11,30 +13,38 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore'
+import {useState} from 'react'
 import {db} from '.'
+import {ServerTime} from './types/user'
 
 export interface ProtapCardDoc {
   id: string
   serialNumber: string
   nfcData?: NFCData
   qrcData?: string | null
-  createdAt: string
-  updatedAt: string
+  createdAt: Timestamp | null
+  updatedAt: Timestamp | null
   createdBy: string
   updatedBy: string
   createdByName: string | null
   createdByEmail: string | null
   ownerId: string | null
   isActive: boolean
-  activatedOn: string | null
+  activatedOn: Timestamp | null
   series: string
   group: string
   batch: string
 }
+
+export type ProtapActivationInfo = Pick<
+  ProtapCardDoc,
+  'id' | 'series' | 'group' | 'batch' | 'createdAt'
+>
 
 function cardsCollection(col: string): CollectionReference<ProtapCardDoc> {
   const protapCol = collection(db, 'protap')
@@ -69,11 +79,11 @@ export async function createCard(
     qrcData: null,
     nfcData: data,
     serialNumber: data.serialNumber,
-    createdAt: new Date().toISOString(),
+    createdAt: serverTimestamp(),
     createdBy: user.uid,
     createdByName: user.displayName,
     createdByEmail: user.email,
-    updatedAt: new Date().toISOString(),
+    updatedAt: serverTimestamp(),
     updatedBy: user.uid,
     isActive: true,
     ownerId: null,
@@ -99,11 +109,11 @@ export async function createQR(
     qrcData: null,
     nfcData: data,
     serialNumber: data.serialNumber,
-    createdAt: new Date().toISOString(),
+    createdAt: serverTimestamp(),
     createdBy: user.uid,
     createdByName: user.displayName,
     createdByEmail: user.email,
-    updatedAt: new Date().toISOString(),
+    updatedAt: serverTimestamp(),
     updatedBy: user.uid,
     isActive: true,
     ownerId: null,
@@ -120,11 +130,12 @@ export async function createBulkQRCodes(
   batch: string,
   user: User,
   onProgress?: (progress: number) => void,
-): Promise<string[]> {
+): Promise<{createdIds: string[]; createdAt: Timestamp}> {
   const col = 'general'
   const countBatch = writeBatch(db)
   const baseTime = Date.now().toString(12)
   const createdIds: string[] = []
+  const [createdAt, setCreatedAt] = useState<ServerTime | null>(null)
 
   // Process in batches of 500 (Firestore limit)
   const batchSize = 500
@@ -142,20 +153,22 @@ export async function createBulkQRCodes(
             data: `https://protap.ph/api/verify/?id=${serialNumber}&series=${series}&group=${group}&batch=${batch}`,
           },
         ],
-        timestamp: new Date(),
+        timestamp: serverTimestamp(),
       }
 
       const ref = cardDocRef(serialNumber, col)
+      const timestamp = serverTimestamp()
+      setCreatedAt(timestamp)
       const docData = {
         id: serialNumber,
         qrcData: null,
         nfcData: qrData,
         serialNumber,
-        createdAt: serverTimestamp(),
+        createdAt: timestamp,
         createdBy: user.uid,
         createdByName: user.displayName,
         createdByEmail: user.email,
-        updatedAt: serverTimestamp(),
+        updatedAt: timestamp,
         updatedBy: user.uid,
         series,
         group,
@@ -190,7 +203,7 @@ export async function createBulkQRCodes(
     }
   }
 
-  return createdIds
+  return {createdIds, createdAt: createdAt as Timestamp}
 }
 
 export async function checkCard(id: string, col: string) {

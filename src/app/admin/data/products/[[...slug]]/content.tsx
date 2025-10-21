@@ -1,8 +1,14 @@
-export const Content = () => {
+'use client'
+import {ProductsTable} from '../../_components/products-table'
+
+interface Props {
+  slug: string
+}
+
+export const Content = ({slug}: Props) => {
   return (
-    <div>
-      <h1>Product Details</h1>
-      <p>This is the product details page.</p>
+    <div className=''>
+      <ProductsTable query={slug} />
     </div>
   )
 }

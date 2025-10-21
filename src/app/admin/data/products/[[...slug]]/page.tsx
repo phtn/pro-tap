@@ -1,4 +1,4 @@
-import {ProductsTable} from '../../_components/products-table'
+import {Content} from './content'
 
 export default async function Page({
   params,
@@ -6,9 +6,5 @@ export default async function Page({
   params: Promise<{slug: string}>
 }) {
   const {slug} = await params
-  return (
-    <div>
-      <ProductsTable query={slug} />
-    </div>
-  )
+  return <Content slug={slug} />
 }

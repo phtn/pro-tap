@@ -1,7 +1,7 @@
 'use client'
 
-import { useNFC, type NFCData } from '@/hooks/use-nfc' // Adjust path as needed
-import { Icon } from '@/lib/icons'
+import {useNFC, type NFCData} from '@/hooks/use-nfc' // Adjust path as needed
+import {Icon} from '@/lib/icons'
 import React from 'react'
 
 interface NFCScannerProps {
@@ -130,9 +130,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
             {scanHistory.map((scan, index) => (
               <div key={index} className='p-3 bg-gray-50 rounded border'>
                 <div className='flex justify-between items-start mb-1'>
-                  <span className='text-xs text-gray-500'>
-                    {scan.timestamp.toLocaleTimeString()}
-                  </span>
+                  <span className='text-xs text-gray-500'></span>
                   <span className='text-xs text-gray-500 truncate ml-2'>
                     {scan.serialNumber}
                   </span>

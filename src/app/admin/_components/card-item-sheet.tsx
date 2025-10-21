@@ -1,3 +1,5 @@
+'use client'
+
 import {QRCodeSVG} from '@/components/experimental/qr-viewer'
 import {
   Sheet,
@@ -6,20 +8,18 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import {ProtapActivationInfo} from '@/lib/firebase/cards'
 import {cn} from '@/lib/utils'
 import {format} from 'date-fns'
-import {useEffect} from 'react'
+import {Timestamp} from 'firebase/firestore'
+import {useEffect, useMemo} from 'react'
 
 interface CardItemSheetProps {
   open: boolean
   side?: 'left' | 'right' | 'top' | 'bottom'
   onOpenChange: (open: boolean) => void
   isMobile: boolean
-  item?: {
-    id: string
-    series: string
-    batch: string
-  } | null
+  item: ProtapActivationInfo | null
 }
 
 export const CardItemSheet = ({
@@ -29,14 +29,17 @@ export const CardItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
-  if (!open) return null
-
   useEffect(() => {
     if (open) {
       console.log(side)
     }
   }, [open, side])
 
+  if (!open || !item) return null
+  const createdAt = useMemo(
+    () => (item.createdAt as unknown as Timestamp).toDate(),
+    [item],
+  )
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetHeader>
@@ -83,7 +86,7 @@ export const CardItemSheet = ({
                       },
                     )}
                     options={{
-                      content: `https://protap.ph/api/activation/?id=${item.id}&series=${item.series}&batch=${item.batch}`,
+                      content: `https://protap.ph/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
                       width: isMobile ? 280 : 400,
                       height: isMobile ? 280 : 400,
                     }}
@@ -127,7 +130,7 @@ export const CardItemSheet = ({
                         Timestamp
                       </div>
                       <div className='font-medium text-foreground font-mono'>
-                        {format(Date.now(), 'PPpp')}
+                        {format(createdAt, 'PPpp')}
                       </div>
                     </div>
 
@@ -140,8 +143,8 @@ export const CardItemSheet = ({
                           'font-mono w-full whitespace-nowrap overflow-x-scroll text-slate-400 break-all',
                           {'sm:max-w-lg': side === 'right'},
                         )}>
-                        https://protap.ph/api/activation/?id={item.id}&series=
-                        {item.series}&batch={item.batch}
+                        https://protap.ph/api/verify/?id={item.id}&series=
+                        {item.series}&group={item.group}&batch={item.batch}
                       </div>
                     </div>
                     <div className='h-10'></div>

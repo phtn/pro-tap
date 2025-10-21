@@ -2,9 +2,10 @@
 import {useAuthCtx} from '@/ctx/auth'
 import {onSuccess, onWarn} from '@/ctx/toast'
 import {useMobile} from '@/hooks/use-mobile'
-import {createBulkQRCodes} from '@/lib/firebase/cards'
+import {createBulkQRCodes, ProtapActivationInfo} from '@/lib/firebase/cards'
 import {Icon} from '@/lib/icons'
 import {User} from 'firebase/auth'
+import {Timestamp} from 'firebase/firestore'
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 import {BatchName} from '../_components/batch-name'
@@ -25,6 +26,7 @@ const QRCodePage = () => {
   const [series, setSeries] = useState('individual')
   const [group, setGroup] = useState('indv')
   const [batch, setBatch] = useState(Date.now().toString())
+  const [createdAt, setCreatedAt] = useState<Timestamp | null>(null)
   const isMobile = useMobile()
 
   const generateQr = async (grp: string, count: number) => {
@@ -33,7 +35,7 @@ const QRCodePage = () => {
     setIsGenerating(true)
 
     try {
-      const generatedIds = await createBulkQRCodes(
+      const {createdIds, createdAt} = await createBulkQRCodes(
         count,
         series,
         group,
@@ -41,10 +43,11 @@ const QRCodePage = () => {
         user as User,
       )
 
-      setQrCodeGens((prev) => [...prev, ...generatedIds])
-      setGeneratedCount(generatedIds.length)
-      onSuccess(`Successfully generated ${generatedIds.length} QR codes`)
-      return generatedIds
+      setQrCodeGens((prev) => [...prev, ...createdIds])
+      setCreatedAt(createdAt)
+      setGeneratedCount(createdIds.length)
+      onSuccess(`Successfully generated ${createdIds.length} QR codes`)
+      return createdIds
     } catch (error) {
       console.error('Bulk QR generation failed:', error)
       onWarn(
@@ -82,17 +85,11 @@ const QRCodePage = () => {
   }
 
   const [openCardItem, setOpenCardItem] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<{
-    id: string
-    series: string
-    batch: string
-  } | null>(null)
+  const [selectedItem, setSelectedItem] = useState<ProtapActivationInfo | null>(
+    null,
+  )
 
-  const handleOpenCardItem = (item?: {
-    id: string
-    series: string
-    batch: string
-  }) => {
+  const handleOpenCardItem = (item: ProtapActivationInfo | null) => {
     if (item) {
       setSelectedItem(item)
       setOpenCardItem(true)
@@ -188,14 +185,22 @@ const QRCodePage = () => {
         <div className='h-full w-full'>
           <div className='h-screen overflow-scroll pb-64'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-24 md:pt-36 px-3 md:px-4'>
-              {qrCodeGens.map((gen, idx) => (
+              {qrCodeGens.map((gen) => (
                 <CardItem
                   id={gen}
                   key={gen}
                   group={group}
                   batch={batch}
                   series={series}
-                  viewFn={() => handleOpenCardItem({id: gen, series, batch})}
+                  viewFn={() =>
+                    handleOpenCardItem({
+                      id: gen,
+                      series,
+                      group,
+                      batch,
+                      createdAt,
+                    })
+                  }
                 />
               ))}
             </div>

@@ -1,7 +1,9 @@
-import { VoidPromise } from '@/app/types'
-import { onWarn } from '@/ctx/toast'
-import { macStr } from '@/utils/macstr'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {VoidPromise} from '@/app/types'
+import {onWarn} from '@/ctx/toast'
+import {ServerTime} from '@/lib/firebase/types/user'
+import {macStr} from '@/utils/macstr'
+import {serverTimestamp} from 'firebase/firestore'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 // NFC Web API TypeScript definitions
 // Reading types (from NDEFReadingEvent)
@@ -24,11 +26,11 @@ interface NDEFRecordInit {
   mediaType?: string
   id?: string
   data?:
-  | string
-  | BufferSource
-  | DataView
-  | { records: NDEFRecordInit[] }
-  | unknown
+    | string
+    | BufferSource
+    | DataView
+    | {records: NDEFRecordInit[]}
+    | unknown
   encoding?: string
   lang?: string
 }
@@ -40,10 +42,10 @@ interface NDEFMessageInit {
 type NDEFMessageSource = string | BufferSource | NDEFMessageInit
 
 interface NDEFReader extends EventTarget {
-  scan(options?: { signal?: AbortSignal }): Promise<void>
+  scan(options?: {signal?: AbortSignal}): Promise<void>
   write(
     message: NDEFMessageSource,
-    options?: { overwrite?: boolean; signal?: AbortSignal },
+    options?: {overwrite?: boolean; signal?: AbortSignal},
   ): Promise<void>
   addEventListener(
     type: 'reading',
@@ -69,7 +71,7 @@ interface NDEFReadingEvent extends Event {
 declare global {
   interface Window {
     NDEFReader: {
-      new(): NDEFReader
+      new (): NDEFReader
     }
   }
 }
@@ -82,7 +84,7 @@ export interface NFCData {
     mediaType?: string
     id?: string
   }>
-  timestamp: Date
+  timestamp: ServerTime
 }
 
 export interface UseNFCOptions {
@@ -120,7 +122,7 @@ export interface UseNFCReturn {
 }
 
 export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
-  const { onScan, onError, maxHistorySize = 1000, autoStop = true } = options
+  const {onScan, onError, maxHistorySize = 1000, autoStop = true} = options
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isScanning, setIsScanning] = useState<boolean>(false)
@@ -186,7 +188,7 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
 
   const handleNFCReading = useCallback(
     (event: NDEFReadingEvent): void => {
-      const { serialNumber, message } = event
+      const {serialNumber, message} = event
 
       const records = message.records.map((record): NFCData['records'][0] => {
         let data = ''
@@ -223,7 +225,7 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
       const nfcData: NFCData = {
         serialNumber,
         records,
-        timestamp: new Date(),
+        timestamp: serverTimestamp(),
       }
 
       setLastScan(nfcData)
@@ -276,7 +278,7 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
       reader.addEventListener('reading', handleNFCReading)
       reader.addEventListener('readingerror', handleNFCError)
 
-      await reader.scan({ signal: controller.signal })
+      await reader.scan({signal: controller.signal})
     } catch (error: unknown) {
       let errorMessage = 'Failed to start NFC scanning: Unknown error'
 
@@ -369,19 +371,19 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
 
     try {
       const ndef = new window.NDEFReader()
-      const records: { recordType: string; data: string }[] = []
+      const records: {recordType: string; data: string}[] = []
 
       if (writeText) {
-        records.push({ recordType: 'text', data: writeText })
+        records.push({recordType: 'text', data: writeText})
       }
 
       if (writeUrl) {
-        records.push({ recordType: 'url', data: writeUrl })
+        records.push({recordType: 'url', data: writeUrl})
       }
 
       setStatus('Hold an NFC tag near your device to write...')
 
-      await ndef.write({ records })
+      await ndef.write({records})
 
       setStatus('✅ Successfully wrote to NFC tag!')
       setMessages((prev) => [
@@ -426,7 +428,15 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
         recordType: string
         data: string
         lang?: string
-      }> = [{ recordType: 'url', data: posterUrl + '?id=' + (serialNumber ? serialNumber.toString() : macStr('id')) }]
+      }> = [
+        {
+          recordType: 'url',
+          data:
+            posterUrl +
+            '?id=' +
+            (serialNumber ? serialNumber.toString() : macStr('id')),
+        },
+      ]
 
       if (posterTitle) {
         smartPosterRecords.push({
@@ -454,7 +464,7 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
         records: [
           {
             recordType: 'smart-poster',
-            data: { records: smartPosterRecords },
+            data: {records: smartPosterRecords},
           },
         ],
       })
@@ -498,19 +508,19 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
 
     try {
       const ndef = new window.NDEFReader()
-      const records: { recordType: string; data: string }[] = []
+      const records: {recordType: string; data: string}[] = []
 
       if (writeText) {
-        records.push({ recordType: 'text', data: writeText })
+        records.push({recordType: 'text', data: writeText})
       }
 
       if (writeUrl) {
-        records.push({ recordType: 'url', data: writeUrl })
+        records.push({recordType: 'url', data: writeUrl})
       }
 
       setStatus('Hold an NFC tag to make it read-only...')
 
-      await ndef.write({ records }, { overwrite: false })
+      await ndef.write({records}, {overwrite: false})
 
       setStatus('✅ Tag is now read-only!')
       setMessages((prev) => ['🔒 Made tag read-only', ...prev])
