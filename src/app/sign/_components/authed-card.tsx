@@ -8,6 +8,7 @@ import {tsToDate} from '@/utils/helpers'
 import {DropdownMenuSeparator} from '@radix-ui/react-dropdown-menu'
 import Link from 'next/link'
 import {ReactNode, useCallback, useMemo} from 'react'
+import {RowItem} from './row-items'
 
 export interface SignInCardProps {
   user: AuthUser | null
@@ -87,10 +88,16 @@ export const AuthedCardV2 = ({
     return (
       <div
         className={cn(
-          'absolute -top-2.5 right-2 border rounded-full bg-foreground dark:bg-background text-white text-xs px-3 py-1.5',
-          user?.isActivated && 'dark:border-mac-teal',
+          'flex items-center space-x-1 absolute -top-4 right-2 border rounded-full bg-foreground dark:bg-background text-white text-xs px-2.5 py-1.5 dark:border-amber-500/60',
+          user?.isActivated && 'dark:border-mac-teal/60',
         )}>
-        {user?.isActivated ? 'Active' : 'Inactive'}
+        <Icon
+          name={user?.isActivated ? 'badge-verified-solid' : 'alert-circle'}
+          className={cn('size-3.5 text-amber-500/90 animate-caret-blink', {
+            'text-mac-teal animate-none size-5': user?.isActivated,
+          })}
+        />
+        <span>{user?.isActivated ? 'Active' : 'Inactive'}</span>
       </div>
     )
   }, [user])
@@ -99,8 +106,8 @@ export const AuthedCardV2 = ({
     () =>
       ({
         status: user?.isActivated ? 'Active' : 'Inactive',
-        type: user?.userType.substring(0, 5),
-        expiry: user ? tsToDate(user.activatedOn, 'P') : 'n/a',
+        type: user?.userType?.substring(0, 6),
+        expiry: tsToDate(user?.activatedOn ?? null, 'P'),
         days: 80,
       }) as IAccountStatus,
     [user],
@@ -127,12 +134,17 @@ export const AuthedCardV2 = ({
           <RowItem title='next step'>
             <SexyButton
               size='lg'
+              disabled={user?.isActivated}
               variant='tertiary'
               onClick={activateFn}
               rightIcon='zap-solid'
               iconStyle='text-yellow-500'
               className='w-full flex items-center space-x-3 px-3'>
-              <span className='tracking-tight'>Start Protap Activation</span>
+              <span className='tracking-tight px-2'>
+                {user?.isActivated
+                  ? 'Add Another Protap'
+                  : 'Start Protap Activation'}
+              </span>
             </SexyButton>
           </RowItem>
           <section className='fixed bottom-px left-0 right-[1px]  px-px flex flex-col justify-center space-y-px h-16 w-full'>
@@ -143,12 +155,12 @@ export const AuthedCardV2 = ({
                 className='flex items-center justify-center w-full '>
                 <button
                   type='button'
-                  className='flex items-center justify-center space-x-1 w-full h-[3.75rem] hover:bg-origin dark:bg-background/40 dark:hover:bg-background/20 bg-zinc-100/80 cursor-pointer group rounded-tl-xs rounded-bl-4xl'></button>
+                  className='flex items-center justify-center space-x-1 w-full h-[3.75rem]  hover:bg-origin/20 dark:bg-background/40 dark:hover:bg-background/20 bg-zinc-100/80 cursor-pointer group rounded-tl-xs rounded-bl-4xl'></button>
               </Link>
               <button
                 type='button'
                 onClick={signOut}
-                className='flex items-center justify-center space-x-4 w-full h-[3.75rem] dark:bg-background/40 dark:hover:bg-background/20 bg-zinc-100/80 cursor-pointer group rounded-br-4xl rounded-tr-xs'>
+                className='flex items-center justify-center space-x-4 w-full h-[3.75rem] dark:bg-background/40 dark:hover:bg-background/20 bg-zinc-100/80 hover:bg-origin/20 cursor-pointer group rounded-br-4xl rounded-tr-xs'>
                 <span className='text-sm md:text-base font-medium font-figtree tracking-tight'>
                   Sign out
                 </span>
@@ -205,22 +217,6 @@ const UserProfileBadge = ({user, children}: UserProfileProps) => {
     </Link>
   )
 }
-
-interface RowItemProps {
-  title: string
-  children: ReactNode
-}
-
-const RowItem = ({title, children}: RowItemProps) => (
-  <div className=' space-y-3 mx-6'>
-    <div className='w-full flex items-center px-3'>
-      <span className='text-xs font-semibold uppercase tracking-widest opacity-50 font-figtree'>
-        {title}
-      </span>
-    </div>
-    {children}
-  </div>
-)
 
 interface IAccountStatus {
   status: string | undefined

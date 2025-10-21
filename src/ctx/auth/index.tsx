@@ -1,6 +1,11 @@
 'use client'
 
-import {clearUserProfile, getUserProfile, setUserProfile} from '@/app/actions'
+import {
+  clearUserProfile,
+  getCookie,
+  getUserProfile,
+  setUserProfile,
+} from '@/app/actions'
 import {VoidPromise} from '@/app/types'
 import {auth} from '@/lib/firebase'
 import {createUser, getUser} from '@/lib/firebase/users'
@@ -51,9 +56,98 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
     setLoading(true)
     const provider = new GoogleAuthProvider()
     try {
-      await signInWithPopup(auth, provider)
+      const result = await signInWithPopup(auth, provider)
+      const firebaseUser = result.user
+
+      // Cache user profile data after successful authentication
+      if (firebaseUser) {
+        try {
+          console.log(
+            'Starting user profile caching for user:',
+            firebaseUser.uid,
+          )
+          let userProfile = await getUser(firebaseUser.uid)
+
+          // Create user profile if it doesn't exist
+          if (!userProfile) {
+            console.log('No user profile found, creating new profile...')
+            await createUser(firebaseUser)
+            userProfile = await getUser(firebaseUser.uid)
+            console.log('User profile created:', userProfile)
+          }
+
+          if (userProfile) {
+            // Download and cache image data if photoURL exists
+            let photoData = null
+            if (userProfile.photoURL) {
+              console.log('Downloading profile image...')
+              photoData = await downloadAndCacheImage(userProfile.photoURL)
+              console.log('Image downloaded, size:', photoData?.length || 0)
+            }
+
+            const profileData = {
+              uid: userProfile.uid,
+              email: userProfile.email || null,
+              displayName: userProfile.displayName || null,
+              photoURL: userProfile.photoURL || null,
+              // Exclude photoData to keep cookie size under 4096 chars
+              // photoData,
+              role: userProfile.role || 'user',
+              isActivated: userProfile.isActivated,
+              userType: userProfile.userType,
+              subscriptionType: userProfile.subscriptionType || null,
+              purchaseType: '',
+              loyaltyPoints: userProfile.loyaltyPoints,
+              isMerchant: userProfile.isMerchant,
+              isAffiliate: userProfile.isAffiliate,
+            }
+
+            console.log('Setting user profile cookie with data:', profileData)
+            console.log(
+              'Cookie data size estimate:',
+              JSON.stringify(profileData).length,
+              'characters',
+            )
+
+            await setUserProfile(profileData)
+            console.log('User profile cookie set successfully')
+
+            // Verify the cookie was set
+            const verifyCookie = await getUserProfile()
+            console.log('Cookie verification - retrieved data:', verifyCookie)
+
+            // Also check all cookies in the browser
+            if (typeof document !== 'undefined') {
+              console.log('All cookies:', document.cookie)
+            }
+          } else {
+            console.error(
+              'Failed to get or create user profile for user:',
+              firebaseUser.uid,
+            )
+          }
+        } catch (error) {
+          console.error('Error in user profile caching process:', error)
+          console.error('Error details:', {
+            message: error instanceof Error ? error.message : 'Unknown error',
+            stack: error instanceof Error ? error.stack : 'No stack trace',
+          })
+        }
+      } else {
+        console.error('No firebase user found after authentication')
+      }
+
+      const scanResult = await getCookie('protapScanResult')
+
+      if (scanResult) {
+        // Process the scan result
+        router.push('/account/activated')
+      } else if (scanResult === null) {
+        // Handle the case when the cookie is not found
+        router.push('/account/profile')
+      }
+
       setLoading(false)
-      router.push('/account/profile')
     } catch (error) {
       console.error('Error signin?? in with Google:', error)
       setLoading(false)
@@ -128,8 +222,9 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                     activatedOn: null,
                     ntag: userProfile.ntag,
                     userBioData: userProfile.userBioData,
-                    userType: userProfile.userType,
-                    purchaseType: userProfile.purchaseType,
+                    userType: userProfile.userType || null,
+                    subscriptionType: userProfile.subscriptionType || null,
+                    purchaseType: userProfile.purchaseType || null,
                     loyaltyPoints: userProfile.loyaltyPoints,
                     isMerchant: userProfile.isMerchant,
                     isAffiliate: userProfile.isAffiliate,
@@ -160,6 +255,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                       gender: null,
                     },
                     userType: 'INDIVIDUAL' as const,
+                    subscriptionType: null,
                     purchaseType: '',
                     loyaltyPoints: 0,
                     isMerchant: false,
@@ -172,20 +268,19 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
             // Cache the user profile data for future use
             if (userProfile) {
               // Download and cache image data if photoURL exists
-              let photoData = null
-              if (userProfile.photoURL) {
-                photoData = await downloadAndCacheImage(userProfile.photoURL)
-              }
 
               await setUserProfile({
                 uid: userProfile.uid,
                 email: userProfile.email || null,
                 displayName: userProfile.displayName || null,
                 photoURL: userProfile.photoURL || null,
-                photoData,
+                // Exclude photoData to keep cookie size under 4096 chars
+                // photoData,
                 role: userProfile.role || 'user',
                 isActivated: userProfile.isActivated,
                 userType: userProfile.userType,
+                subscriptionType: userProfile.subscriptionType || null,
+                purchaseType: '',
                 loyaltyPoints: userProfile.loyaltyPoints,
                 isMerchant: userProfile.isMerchant,
                 isAffiliate: userProfile.isAffiliate,
@@ -270,7 +365,8 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                     isActivated: userProfile.isActivated,
                     ntag: userProfile.ntag,
                     userBioData: userProfile.userBioData,
-                    userType: userProfile.userType,
+                    userType: userProfile.userType ?? null,
+                    subscriptionType: userProfile.subscriptionType || null,
                     purchaseType: userProfile.purchaseType,
                     loyaltyPoints: userProfile.loyaltyPoints,
                     isMerchant: userProfile.isMerchant,
@@ -303,6 +399,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                       gender: null,
                     },
                     userType: 'INDIVIDUAL' as const,
+                    subscriptionType: null,
                     purchaseType: '',
                     loyaltyPoints: 0,
                     isMerchant: false,
@@ -315,23 +412,22 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
             // Cache the user profile data for future use
             if (userProfile) {
               // Download and cache image data if photoURL exists
-              let photoData = null
-              if (userProfile.photoURL) {
-                photoData = await downloadAndCacheImage(userProfile.photoURL)
-              }
 
               await setUserProfile({
                 uid: userProfile.uid,
                 email: userProfile.email || null,
                 displayName: userProfile.displayName || null,
                 photoURL: userProfile.photoURL || null,
-                photoData,
+                // Exclude photoData to keep cookie size under 4096 chars
+                // photoData,
                 role: userProfile.role || 'user',
                 isActivated: userProfile.isActivated,
                 userType: userProfile.userType,
+                subscriptionType: userProfile.subscriptionType || null,
                 loyaltyPoints: userProfile.loyaltyPoints,
                 isMerchant: userProfile.isMerchant,
                 isAffiliate: userProfile.isAffiliate,
+                purchaseType: null,
               })
             }
 

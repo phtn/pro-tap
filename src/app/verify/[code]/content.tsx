@@ -7,7 +7,7 @@ import {Navbar} from '@/components/ui/navbar'
 import {useAuthCtx} from '@/ctx/auth'
 import {useProduct} from '@/hooks/use-product'
 import {useToggle} from '@/hooks/use-toggle'
-import {useEffect, useMemo} from 'react'
+import {useMemo} from 'react'
 import {NavChild} from './_components/nav-child'
 
 export const Content = ({code}: {code: string}) => {
@@ -21,12 +21,6 @@ export const Content = ({code}: {code: string}) => {
 
   const {user} = useAuthCtx()
 
-  useEffect(() => {
-    if (cardStatus?.nfcData) {
-      console.log(JSON.stringify(cardStatus.nfcData, null, 2))
-    }
-  }, [cardStatus?.nfcData])
-
   return (
     <div className='min-h-screen bg-gradient-to-br from-white dark:from-background dark:via-black via-white to-background text-foreground'>
       <Navbar>
@@ -34,7 +28,7 @@ export const Content = ({code}: {code: string}) => {
       </Navbar>
       <main className='flex justify-center items-start h-screen max-w-7xl mx-auto'>
         <div className='w-full'>
-          <div className='w-full h-32 md:h-44 flex flex-col items-center justify-center'>
+          <div className='w-full h-32 md:h-40 flex flex-col items-center md:justify-start justify-center'>
             <MiniVerifier isGood={isNotOwned} />
           </div>
           <div className='px-6 w-full flex justify-center'>

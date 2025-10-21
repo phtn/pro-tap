@@ -89,8 +89,7 @@ export const Ok =
   }
 
 export const tsToDate = (st: Timestamp | null, format = 'PPpp') => {
-  if (!st) return
-  console.log(st)
+  if (!st) return ''
   const date = st.toDate()
-  _format(date, format)
+  return _format(date, format)
 }

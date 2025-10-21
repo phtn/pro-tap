@@ -2,6 +2,7 @@
 
 import {HeroCTA} from '@/app/(landing)/_components/hero-cta'
 import {VisualContent} from '@/app/(landing)/_components/visual-content'
+import HyperButton from '@/components/experimental/base/button'
 import {Footer} from '@/components/experimental/modern-footer'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {TextFlip} from '@/components/experimental/text-flip'
@@ -221,6 +222,11 @@ export const Landing = () => {
       </div>
 
       <FAQ />
+      <div className='h-10'></div>
+      <HyperButton
+        label='Get Protap Today!'
+        onClick={() => console.log('click')}
+      />
       <Footer />
       <div className='h-10'></div>
     </main>

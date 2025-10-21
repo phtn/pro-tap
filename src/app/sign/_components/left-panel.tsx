@@ -20,7 +20,7 @@ export const LeftPanel = () => {
           glow={1}
         />
       </div>
-      <div className='h-full p-12 relative z-50'>
+      <div className='hidden h-full p-12 relative z-50'>
         {/* Brand Logo */}
         <div className='md:hidden absolute top-0 left-8 flex items-center text-foreground'>
           <Icon name='protap' className='size-20 opacity-80' />

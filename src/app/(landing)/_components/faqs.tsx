@@ -34,14 +34,14 @@ export const FAQ = () => {
                       <span
                         className={cn(
                           'text-lg md:text-xl font-semibold tracking-tighter',
-                          {'dark:text-orange-200 text-orange-400': open},
+                          {'dark:text-primary-hover text-primary': open},
                         )}>
                         {faq.question}
                       </span>
                       {open ? (
                         <Icon
                           name='close'
-                          className='w-5 h-5 dark:text-orange-300 text-orange-400'
+                          className='w-5 h-5 dark:text-primary-hover text-primary'
                         />
                       ) : (
                         <Icon name='add' className='w-5 h-5 text-primary' />

@@ -26,7 +26,18 @@ type CookieType =
   | 'qrcData'
   | 'protapScanResult'
 
-type ValuesMap = {
+export interface CachedScanResult {
+  success: boolean
+  id: string
+  series: string
+  group: string
+  batch: string
+  ownerId?: string
+  ownerPublicUrl?: string
+  ownerPublicName?: string
+}
+
+export type ValuesMap = {
   theme: string
   session: {token: string}
   language: string
@@ -45,23 +56,16 @@ type ValuesMap = {
     photoData?: string | null // base64 encoded image data
     role: string
     isActivated: boolean
-    userType: string
+    userType: string | null
+    subscriptionType: string | null
+    purchaseType: string | null
     loyaltyPoints: number
     isMerchant: boolean
     isAffiliate: boolean
   }
   nfcData?: string
   qrcData?: string
-  protapScanResult: {
-    success: boolean
-    id: string
-    series: string
-    group: string
-    batch: string
-    ownerId?: string
-    ownerPublicUrl?: string
-    ownerPublicName?: string
-  }
+  protapScanResult: CachedScanResult
 }
 
 interface Expiry {

@@ -1,4 +1,4 @@
-import {UserRole} from '@/ctx/auth/types'
+import {ProductType, UserRole} from '@/ctx/auth/types'
 import {UserInfo} from '@/schema/user-account'
 import {FieldValue, Timestamp} from 'firebase/firestore'
 export type Gender = 'male' | 'female'
@@ -78,7 +78,8 @@ export interface ProtapUserDoc {
   activatedOn: ServerTime | null
   ntag: NTag
   userBioData: UserBioData
-  userType: 'INDIVIDUAL' | 'FLEET' | 'LIMITED-EDITION'
+  userType: ProductType | null
+  subscriptionType?: ProductType | null
   purchaseType: string
   loyaltyPoints: number
   isMerchant: boolean

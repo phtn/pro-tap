@@ -8,11 +8,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import {useCopy} from '@/hooks/use-copy'
 import {ProtapActivationInfo} from '@/lib/firebase/cards'
 import {cn} from '@/lib/utils'
-import {format} from 'date-fns'
+import {tsToDate} from '@/utils/helpers'
 import {Timestamp} from 'firebase/firestore'
-import {useEffect, useMemo} from 'react'
+import {useCallback, useEffect, useMemo} from 'react'
 
 interface CardItemSheetProps {
   open: boolean
@@ -38,9 +39,34 @@ export const CardItemSheet = ({
 
   if (!open || !item) return null
   const createdAt = useMemo(
-    () => (item.createdAt as unknown as Timestamp).toDate(),
+    () => tsToDate(item.createdAt as unknown as Timestamp, 'PPpp'),
     [item],
   )
+
+  const details = useMemo(
+    () => [
+      {label: 'id', value: item.id},
+      {label: 'series', value: item.series},
+      {label: 'group', value: item.group},
+      {label: 'batch', value: item.batch},
+      {label: 'timestamp', value: createdAt},
+      {
+        label: 'url',
+        value: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
+      },
+    ],
+    [item, createdAt],
+  )
+
+  const {copy} = useCopy({timeout: 2000})
+
+  const handleCopyValue = useCallback(
+    (detail: {label: string; value: string}) => () => {
+      copy(detail.label, detail.value)
+    },
+    [],
+  )
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetHeader>
@@ -102,56 +128,20 @@ export const CardItemSheet = ({
               <div className='flex-1 space-y-1 md:space-y-6 md:p-2 overflow-y-scroll'>
                 <div className='space-y-1 md:space-y-4 w-full'>
                   <div className='space-y-1 md:space-y-4 pb-12 w-full'>
-                    <div className='border-b border-origin/40 p-2 md:p-3 font-figtree rounded-lg'>
-                      <div className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide font-medium mb-1'>
-                        ID
-                      </div>
-                      <div className='font-mono text-sm font-medium text-foreground break-all'>
-                        {item.id}
-                      </div>
-                    </div>
-
-                    <div className='border-b border-origin/40 p-2 md:p-3 font-figtree rounded-lg'>
-                      <div className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide font-medium mb-1'>
-                        Series
-                      </div>
-                      <div className='font-medium text-foreground capitalize font-space'>
-                        {item.series}
-                      </div>
-                    </div>
-
-                    <div className='border-b border-origin/40 p-2 md:p-3 font-figtree rounded-lg'>
-                      <div className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide font-medium mb-1'>
-                        Batch
-                      </div>
-                      <div className='font-medium text-foreground capitalize font-space'>
-                        {item.batch}
-                      </div>
-                    </div>
-
-                    <div className='border-b border-origin/40 p-2 md:p-3 font-figtree rounded-lg'>
-                      <div className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide font-medium mb-1'>
-                        Timestamp
-                      </div>
-                      <div className='font-medium text-foreground font-mono'>
-                        {format(createdAt, 'PPpp')}
-                      </div>
-                    </div>
-
-                    <div className='border-b border-origin/40 p-2 md:p-3 font-figtree rounded-lg'>
-                      <div className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide font-medium mb-1'>
-                        URL
-                      </div>
+                    {details.map((detail, idx) => (
                       <div
-                        className={cn(
-                          'font-mono w-full whitespace-nowrap overflow-x-scroll break-all',
-                          {'sm:max-w-lg': side === 'right'},
-                        )}>
-                        https://{debug ? '192.168.1.2:3000' : 'protap.ph'}
-                        /api/verify/?id={item.id}&series=
-                        {item.series}&group={item.group}&batch={item.batch}
+                        key={idx}
+                        onClick={handleCopyValue(detail)}
+                        className='cursor-pointer border-b border-origin/40 p-2 md:px-3 md:py-3 font-figtree rounded-lg space-y-2.5'>
+                        <div className='text-xs text-muted-foreground uppercase tracking-wide font-medium'>
+                          {detail.label}
+                        </div>
+                        <div className='font-mono text-sm font-medium text-foreground break-all'>
+                          {detail.value}
+                        </div>
                       </div>
-                    </div>
+                    ))}
+
                     <div className='h-10'></div>
                   </div>
                 </div>

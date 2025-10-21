@@ -1,7 +1,9 @@
-import {setCookie} from '@/app/actions'
+import {getUserProfile, setCookie} from '@/app/actions'
 import {NextRequest, NextResponse} from 'next/server'
 
 export async function GET(request: NextRequest) {
+  const user = await getUserProfile()
+
   const {searchParams} = new URL(request.url)
   const id = searchParams.get('id')
   const series = searchParams.get('series') || 'general'
@@ -10,6 +12,10 @@ export async function GET(request: NextRequest) {
 
   if (!id) {
     return NextResponse.json({error: 'Missing id parameter'}, {status: 400})
+  }
+
+  if (!user) {
+    return NextResponse.json({error: 'User not found'}, {status: 404})
   }
 
   try {
@@ -25,7 +31,12 @@ export async function GET(request: NextRequest) {
     if (params) {
       await setCookie('protapScanResult', {success: true, ...params})
     }
-    // return NextResponse.json(data)
+
+    if (!user) {
+      return NextResponse.redirect(
+        new URL(`/sign`, request.url ?? 'https://localhost:3000'),
+      )
+    }
 
     // Return success response with activation data
     return NextResponse.redirect(

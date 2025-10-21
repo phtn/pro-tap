@@ -3,6 +3,7 @@ import {User} from 'firebase/auth'
 import {Timestamp} from 'firebase/firestore'
 
 export type UserRole = 'admin' | 'manager' | 'user' | 'dev'
+export type ProductType = 'INDIVIDUAL' | 'FLEET' | 'LIMITED-EDITION'
 
 export interface UserProfile {
   uid: string
@@ -35,12 +36,13 @@ export interface AuthUser extends User {
     type: string
   }
   userBioData: UserBioData
-  userType: 'INDIVIDUAL' | 'FLEET' | 'LIMITED-EDITION'
-  purchaseType: string
+  userType: ProductType | null
+  purchaseType: string | null
   loyaltyPoints: number
   isMerchant: boolean
   isAffiliate: boolean
   userInfo: import('@/schema/user-account').UserInfo | null
+  subscriptionType?: ProductType | null
 }
 
 export interface UserData extends ProtapUserDoc {}
