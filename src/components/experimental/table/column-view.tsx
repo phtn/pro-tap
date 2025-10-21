@@ -39,7 +39,7 @@ export const ColumnView = <T,>({cols, isMobile}: Props<T>) => {
         <DropdownMenuLabel className='flex items-center space-x-1.5 italic capitalize'>
           <Icon
             name='arrow-swap'
-            className='size-4 rounded-full bg-zinc-400/80 dark:bg-background -rotate-30 text-white dark:opacity-60'
+            className='size-4 rounded-full bg-zinc-400/80 dark:bg-background -rotate-55 text-white dark:opacity-60'
           />
           <span className='opacity-60'>Toggle columns</span>
         </DropdownMenuLabel>
@@ -49,7 +49,7 @@ export const ColumnView = <T,>({cols, isMobile}: Props<T>) => {
             <DropdownMenuCheckboxItem
               key={column.id}
               className={cn(
-                'text-xs h-12 opacity-60 italic',
+                'text-xs h-10 md:h-12 opacity-60 italic',
                 column.getIsVisible() && 'opacity-100 not-italic',
               )}
               checked={column.getIsVisible()}
@@ -77,4 +77,7 @@ const columns: Record<string, string> = {
   createdByName: 'Created By',
   isActive: 'Status',
   createdAt: 'Created At',
+  group: 'Group',
+  series: 'Series',
+  Batch: 'Batch',
 }

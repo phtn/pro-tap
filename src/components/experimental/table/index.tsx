@@ -18,7 +18,7 @@ import {
 } from '@tanstack/react-table'
 
 import {HyperCard} from '@/components/experimental/card/hyper-card'
-import {useCallback, useMemo, useState} from 'react'
+import {ChangeEvent, useCallback, useMemo, useState} from 'react'
 
 import {
   Table,
@@ -42,24 +42,28 @@ import {SelectToggle} from './select-toggle'
 
 interface TableProps<T> {
   data: T[]
-  create: boolean
-  edit: boolean
+  title?: string
+  loading: boolean
   editingRowId: string | null
   columnConfigs: ColumnConfig<T>[]
   actionConfig?: ActionConfig<T>
-  title?: string
 }
 
 export const DataTable = <T,>({
   data,
-  edit,
-  create,
+  loading,
   editingRowId,
   columnConfigs,
   actionConfig,
   title = 'Data Table',
 }: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+  const [globalFilter, setGlobalFilter] = useState<string>('')
+  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setGlobalFilter(e.target.value)
+  }
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [pagination, setPagination] = useState<PaginationState>({
@@ -106,57 +110,21 @@ export const DataTable = <T,>({
       sorting,
       pagination,
       columnFilters,
+      globalFilter,
       columnVisibility,
       rowSelection,
     },
   })
 
-  // Get counts for each status
-  const facetedUniqueValues = table
-    .getColumn('isActive')
-    ?.getFacetedUniqueValues()
-
-  // Get unique status values
-  const uniqueStatusValues = useMemo(() => {
-    if (!facetedUniqueValues) return []
-    const values = Array.from(facetedUniqueValues.keys())
-    return values?.sort()
-  }, [facetedUniqueValues])
-
-  const statusCounts =
-    table.getColumn('isActive')?.getFacetedUniqueValues() ?? new Map()
-
-  const filterValue = table.getColumn('isActive')?.getFilterValue() as string[]
-  const selectedStatuses = useMemo(() => {
-    return filterValue ?? []
-  }, [filterValue])
-
-  const onStatusChange = (checked: boolean) => (value: string) => {
-    const filterValue = table
-      .getColumn('isActive')
-      ?.getFilterValue() as string[]
-    const newFilterValue = filterValue ? [...filterValue] : []
-
-    if (checked) {
-      newFilterValue.push(value)
-    } else {
-      const index = newFilterValue.indexOf(value)
-      if (index > -1) {
-        newFilterValue.splice(index, 1)
-      }
-    }
-
-    table
-      .getColumn('isActive')
-      ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined)
-  }
+  // State for active filter columns
+  const [activeFilterColumns, setActiveFilterColumns] = useState<
+    Column<T, unknown>[]
+  >([])
 
   const allCols = table.getAllColumns().filter((c) => c.getCanHide()) as Column<
     T,
     unknown
   >[]
-
-  const filterCol = table.getColumn('serialNumber') as Column<T, unknown>
 
   const paginationState = table.getState().pagination
   const rowCount = table.getRowCount()
@@ -185,31 +153,29 @@ export const DataTable = <T,>({
     <div
       className={cn(
         'text-foreground flex w-full overflow-hidden gap-x-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]',
-        create || edit ? 'xl:max-w-[58vw]' : 'xl:max-w-[100vw]',
       )}>
       <HyperCard className='rounded-none h-fit pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
         <div className='px-2 md:px-3 -mb-3 md:mb-0 flex items-center justify-between'>
           <div className='flex items-center gap-1 md:gap-4'>
             <Title title={title} />
             <div className='flex items-center space-x-1 md:space-x-3'>
-              <Search col={filterCol} />
+              <Search onChange={handleFilterChange} value={globalFilter} />
               <SelectToggle
                 on={selectOn}
                 toggleFn={selectToggle}
                 rows={selectedRows}
               />
               <Filter
-                statusCount={statusCounts}
-                selected={selectedStatuses}
-                onStatusChange={onStatusChange}
-                uniqueValues={uniqueStatusValues}
+                columns={allCols}
+                activeFilterColumns={activeFilterColumns}
+                onFilterColumnsChange={setActiveFilterColumns}
                 isMobile={isMobile}
               />
               <ColumnView cols={allCols} isMobile={isMobile} />
             </div>
           </div>
           <div className='flex items-center gap-3'>
-            <ExportTable />
+            <ExportTable loading={loading} />
           </div>
         </div>
 

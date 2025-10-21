@@ -9,6 +9,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   setDoc,
   updateDoc,
   where,
@@ -30,6 +31,9 @@ export interface ProtapCardDoc {
   ownerId: string | null
   isActive: boolean
   activatedOn: string | null
+  series: string
+  group: string
+  batch: string
 }
 
 function cardsCollection(col: string): CollectionReference<ProtapCardDoc> {
@@ -82,6 +86,7 @@ export async function createCard(
 export async function createQR(
   data: NFCData,
   user: User,
+  item: ScanItem,
   grp: string,
 ): Promise<string> {
   const ref = cardDocRef(data.serialNumber, grp)
@@ -103,6 +108,7 @@ export async function createQR(
     isActive: true,
     ownerId: null,
     activatedOn: null,
+    ...item,
   })
   return data.serialNumber
 }
@@ -117,7 +123,6 @@ export async function createBulkQRCodes(
 ): Promise<string[]> {
   const col = 'general'
   const countBatch = writeBatch(db)
-  const timestamp = new Date().toISOString()
   const baseTime = Date.now().toString(12)
   const createdIds: string[] = []
 
@@ -146,11 +151,11 @@ export async function createBulkQRCodes(
         qrcData: null,
         nfcData: qrData,
         serialNumber,
-        createdAt: timestamp,
+        createdAt: serverTimestamp(),
         createdBy: user.uid,
         createdByName: user.displayName,
         createdByEmail: user.email,
-        updatedAt: timestamp,
+        updatedAt: serverTimestamp(),
         updatedBy: user.uid,
         series,
         group,
@@ -204,10 +209,9 @@ export async function checkCard(id: string, col: string) {
 export async function activateCard(id: string, grp: string, uid: string) {
   const ref = cardDocRef(id, grp)
   const docData = {
-    activatedOn: new Date().toISOString(),
+    activatedOn: serverTimestamp(),
     ownerId: uid,
   }
-
   await updateDoc(ref, docData)
 }
 
@@ -217,9 +221,20 @@ export const getAllCards = async (collection = 'general') => {
   const cards = querySnapshot.docs.map((doc) => doc.data())
   return cards
 }
-export const getAllCards_ = async (collection = 'general') => {
-  // const q = query(cardsCollection(collection), where('ownerId', '!=', null))
-  const querySnapshot = await getDocs(cardsCollection(collection))
+
+export const queryProductSeries = async (qry = 'individual') => {
+  const q = query(cardsCollection('general'), where('series', '==', qry))
+  const querySnapshot = await getDocs(q)
+  const cards = querySnapshot.docs.map((doc) => doc.data())
+  return cards
+}
+
+export const getAllIndividualCards = async (qry: string) => {
+  const q = query(
+    cardsCollection('general'),
+    where('series', '==', String(qry)),
+  )
+  const querySnapshot = await getDocs(q)
   const cards = querySnapshot.docs.map((doc) => doc.data())
   return cards
 }

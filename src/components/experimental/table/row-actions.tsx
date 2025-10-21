@@ -27,20 +27,20 @@ interface CustomAction<T> {
 
 interface Props<T> {
   row: Row<T>
-  editFn?: (row: T) => void
+  viewFn?: VoidFunction
   deleteFn?: (row: T) => void
   customActions?: CustomAction<T>[]
 }
 
 export const RowActions = <T,>({
   row,
-  editFn,
+  viewFn,
   deleteFn,
   customActions = [],
 }: Props<T>) => {
-  const handleEdit = useCallback(() => {
-    editFn?.(row.original)
-  }, [row.original, editFn])
+  const handleView = useCallback(() => {
+    viewFn && viewFn()
+  }, [viewFn])
 
   const handleDelete = useCallback(() => {
     deleteFn?.(row.original)
@@ -72,18 +72,6 @@ export const RowActions = <T,>({
         align='end'
         alignOffset={12}
         className='rounded-3xl md:p-3 p-2.5 border-origin md:min-w-40'>
-        {editFn && (
-          <DropdownMenuGroup className='space-y-3'>
-            <DropdownMenuItem onClick={handleEdit} className='h-16 rounded-2xl'>
-              <Icon name='pencil' className='size-4 mr-2' />
-              <span>Edit</span>
-              <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        )}
-
-        {(editFn || customActions.length > 0) && <DropdownMenuSeparator />}
-
         {customActions.length > 0 && (
           <DropdownMenuGroup>
             {customActions.map((action, index) => (
@@ -111,9 +99,11 @@ export const RowActions = <T,>({
         {customActions.length > 0 && <DropdownMenuSeparator />}
 
         <DropdownMenuGroup className='space-y-2 tracking-tight font-figtree'>
-          <DropdownMenuItem className='h-12 rounded-2xl px-4'>
-            <Icon name='eye' className='size-4 mr-2' />
-            <span>View</span>
+          <DropdownMenuItem asChild className='h-12 rounded-2xl px-4'>
+            <button onClick={handleView} className='w-full'>
+              <Icon name='eye' className='size-4 mr-2' />
+              <span>View</span>
+            </button>
           </DropdownMenuItem>
           <DropdownMenuItem className='h-12 rounded-2xl px-4'>
             <Icon name='pencil' className='size-4 mr-2' />

@@ -1,12 +1,13 @@
 import {ClassName} from '@/app/types'
 import {cn} from '@/lib/utils'
 import {CellContext} from '@tanstack/react-table'
+import {Timestamp} from 'firebase/firestore'
 import {type ReactNode} from 'react'
 
 interface CellOptions<T> {
   className?: ClassName
   formatter?: (
-    value: string | number | symbol | Date,
+    value: string | number | symbol | Date | Timestamp,
     ctx: CellContext<T, unknown>,
   ) => ReactNode
   fallback?: ReactNode
@@ -51,14 +52,14 @@ export const textCell = <T, K extends keyof T>(
 
 export const dateCell = <T,>(
   prop: keyof T,
-  formatter: (date: Date) => string,
+  formatter: (d: string | number | symbol | Date | Timestamp) => string,
   className?: ClassName,
   fallback?: ReactNode,
 ) => {
   const cell = superCell<T>(prop, {
     className,
     fallback,
-    formatter: (v) => formatter(v as Date),
+    formatter: (v) => formatter(v),
   })
   cell.displayName = `DateCell(${String(prop)})`
   return cell

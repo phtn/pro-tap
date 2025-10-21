@@ -69,7 +69,7 @@ export interface ColumnConfig<T> {
 
 // Action configuration interface
 export interface ActionConfig<T> {
-  editFn?: (row: T) => void
+  viewFn?: VoidFunction
   deleteFn?: (row: T) => void
   customActions?: Array<{
     label: string
@@ -128,7 +128,7 @@ export const createColumns = <T,>(
   // Add actions column if action config is provided
   if (
     actionConfig &&
-    (actionConfig.editFn ||
+    (actionConfig.viewFn ||
       actionConfig.deleteFn ||
       actionConfig.customActions?.length)
   ) {
@@ -145,7 +145,7 @@ export const createColumns = <T,>(
       cell: ({row}) => (
         <RowActions
           row={row}
-          editFn={actionConfig.editFn}
+          viewFn={actionConfig.viewFn}
           deleteFn={actionConfig.deleteFn}
           customActions={actionConfig.customActions}
         />

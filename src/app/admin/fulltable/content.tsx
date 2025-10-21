@@ -1,17 +1,12 @@
 'use client'
 
 import {DataTable} from '@/components/experimental/table'
-import {
-  booleanCell,
-  dateCell,
-  textCell,
-} from '@/components/experimental/table/cells'
+import {booleanCell, textCell} from '@/components/experimental/table/cells'
 import {ColumnConfig} from '@/components/experimental/table/create-columns'
 import {RowActions} from '@/components/experimental/table/row-actions'
 import {useMobile} from '@/hooks/use-mobile'
 import {getAllCards, ProtapCardDoc} from '@/lib/firebase/cards'
 import {Icon} from '@/lib/icons'
-import {format} from 'date-fns'
 import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useState} from 'react'
 import {AdminDock, DockItems} from '../_components/dock'
@@ -81,19 +76,6 @@ export const Content = () => {
       enableSorting: true,
     },
     {
-      id: 'createdAt',
-      header: 'Created At',
-      accessorKey: 'createdAt',
-      cell: dateCell<ProtapCardDoc>(
-        'createdAt',
-        (date) => format(date, 'PPpp'),
-        'font-space text-muted-foreground',
-      ),
-      size: 180,
-      enableHiding: true,
-      enableSorting: true,
-    },
-    {
       id: 'actions',
       accessorKey: 'id',
       header: (
@@ -132,11 +114,10 @@ export const Content = () => {
     <div>
       {data && (
         <DataTable
-          title='Limited individual'
           data={data}
-          create={false}
-          edit={false}
+          loading={loading}
           editingRowId={null}
+          title='Limited individual'
           columnConfigs={columnConfigs}
         />
       )}

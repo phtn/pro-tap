@@ -2,13 +2,15 @@ import {ModernInput} from '@/components/ui/input'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {Column} from '@tanstack/react-table'
-import {useEffect, useId, useRef} from 'react'
+import {ChangeEvent, useEffect, useId, useRef} from 'react'
 
 interface Props<T> {
-  col: Column<T, unknown>
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  value: string
+  col?: Column<T, unknown>
 }
-export const Search = <T,>({col}: Props<T>) => {
-  const {getFilterValue} = col
+export const Search = <T,>({col, value, onChange}: Props<T>) => {
+  const getFilterValue = col?.getFilterValue
   const inputRef = useRef<HTMLInputElement>(null)
   const id = useId()
 
@@ -36,10 +38,11 @@ export const Search = <T,>({col}: Props<T>) => {
         className={cn(
           'peer md:h-10 dark:bg-background/40 w-28 md:min-w-60 ps-3 rounded-lg border-none',
           '',
-          Boolean(getFilterValue()) && 'pe-10',
+          Boolean(getFilterValue) && 'pe-10',
         )}
-        value={(col?.getFilterValue() ?? '') as string}
-        onChange={(e) => col?.setFilterValue(e.target.value)}
+        // value={(col?.getFilterValue() ?? '') as string}
+        value={value}
+        onChange={onChange}
         placeholder='Search'
         type='text'
         inputMode='text'

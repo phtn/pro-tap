@@ -129,7 +129,7 @@ const NFCPage = () => {
             </div>
           </div>*/}
 
-          <div className='flex item-center justify-center space-x-6'>
+          <div className='flex item-center justify-center space-x-3 md:space-x-6 lg:space-x-8 xl:space-x-12'>
             <SeriesSelect setSeries={setSeries} disabled={isScanning} />
             <GroupName
               disabled={isScanning}

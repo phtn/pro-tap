@@ -20,7 +20,7 @@ export const CardItem = ({id, series, group, batch, viewFn}: CardItemProps) => {
             <QRCodeSVG
               className='size-[160px]'
               options={{
-                content: `https://protap.ph/api/activation/?id=${id}&series=${series}&batch=${batch}`,
+                content: `https://protap.ph/api/verify/?id=${id}&series=${series}&group=${group}&batch=${batch}`,
                 width: 160,
                 height: 160,
               }}
