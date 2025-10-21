@@ -1,43 +1,38 @@
-import { checkCard } from '@/lib/firebase/cards'
-import { NextRequest, NextResponse } from 'next/server'
+import {setCookie} from '@/app/actions'
+import {NextRequest, NextResponse} from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
+  const {searchParams} = new URL(request.url)
   const id = searchParams.get('id')
-  const grp = searchParams.get('grp') || 'general'
+  const series = searchParams.get('series') || 'general'
+  const group = searchParams.get('group') || 'general'
+  const batch = searchParams.get('batch') || 'general'
 
   if (!id) {
-    return NextResponse.json(
-      { error: 'Missing id parameter' },
-      { status: 400 }
-    )
+    return NextResponse.json({error: 'Missing id parameter'}, {status: 400})
   }
 
   try {
-    // Check if the card exists and is available for activation
-    const cardExists = await checkCard(id, grp)
+    const params = {id, series, group, batch}
 
-    if (!cardExists) {
+    if (!params) {
       return NextResponse.json(
-        { error: 'Card not found or already activated' },
-        { status: 404 }
+        {error: 'Card not found or already activated'},
+        {status: 404},
       )
     }
 
+    if (params) {
+      await setCookie('protapScanResult', {success: true, ...params})
+    }
+    // return NextResponse.json(data)
+
     // Return success response with activation data
-    return NextResponse.json({
-      success: true,
-      data: {
-        id,
-        grp,
-        message: 'Card is available for activation'
-      }
-    })
+    return NextResponse.redirect(
+      new URL(`/verify/${id}`, 'https://192.168.1.2:3000'),
+    )
   } catch (error) {
     console.error('Error checking card:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({error: 'Internal server error'}, {status: 500})
   }
 }

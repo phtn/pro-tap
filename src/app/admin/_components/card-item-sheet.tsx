@@ -29,6 +29,7 @@ export const CardItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
+  const debug = false
   useEffect(() => {
     if (open) {
       console.log(side)
@@ -86,7 +87,7 @@ export const CardItemSheet = ({
                       },
                     )}
                     options={{
-                      content: `https://protap.ph/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
+                      content: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
                       width: isMobile ? 280 : 400,
                       height: isMobile ? 280 : 400,
                     }}
@@ -143,7 +144,8 @@ export const CardItemSheet = ({
                           'font-mono w-full whitespace-nowrap overflow-x-scroll text-slate-400 break-all',
                           {'sm:max-w-lg': side === 'right'},
                         )}>
-                        https://protap.ph/api/verify/?id={item.id}&series=
+                        https://{debug ? '192.168.1.2:3000' : 'protap.ph'}
+                        /api/verify/?id={item.id}&series=
                         {item.series}&group={item.group}&batch={item.batch}
                       </div>
                     </div>

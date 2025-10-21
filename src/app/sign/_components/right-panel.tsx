@@ -1,6 +1,7 @@
 import {type VoidPromise} from '@/app/types'
 import {Button} from '@/components/ui/button'
 import {useAuthCtx} from '@/ctx/auth'
+import {AuthUser} from '@/ctx/auth/types'
 import {Icon} from '@/lib/icons'
 import {type IconName} from '@/lib/icons/types'
 import {cn} from '@/lib/utils'
@@ -100,7 +101,7 @@ export const RightPanel = ({socialLogins, user, signOut}: RightPanelProps) => {
           {user ? '' : 'Personalize your web presence!'}
         </Header>*/}
         {user ? (
-          <AuthedCard user={user} signOut={signOut} />
+          <AuthedCard user={user as AuthUser} signOut={signOut} />
         ) : (
           <SignInContent />
         )}
@@ -121,7 +122,7 @@ export const RightPanel = ({socialLogins, user, signOut}: RightPanelProps) => {
         {user ? null : <SocialLogins data={socialLogins} />}
         {/*{user ? null : <SignInFooter />}*/}
 
-        {user ? <AuthedCard user={user} signOut={signOut} /> : null}
+        {user ? <AuthedCard user={user as AuthUser} signOut={signOut} /> : null}
       </div>
     </div>
   )

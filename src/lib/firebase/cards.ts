@@ -2,12 +2,14 @@
 
 import {NFCData} from '@/hooks/use-nfc'
 import {macStr} from '@/utils/macstr'
+import {Effect} from 'effect'
 import {User} from 'firebase/auth'
 import {
   collection,
   CollectionReference,
   doc,
   DocumentReference,
+  Firestore,
   getDoc,
   getDocs,
   query,
@@ -21,6 +23,27 @@ import {
 import {useState} from 'react'
 import {db} from '.'
 import {ServerTime} from './types/user'
+
+// Define Firestore service interface
+// interface FirestoreService {
+//   readonly getFirestore: () => Firestore
+// }
+
+// Create a Tag for the Firestore service
+
+// Error types
+export class FirestoreError {
+  readonly _tag = 'FirestoreError'
+  constructor(
+    readonly message: string,
+    readonly cause?: unknown,
+  ) {}
+}
+
+export class DocumentNotFoundError {
+  readonly _tag = 'DocumentNotFoundError'
+  constructor(readonly docId: string) {}
+}
 
 export interface ProtapCardDoc {
   id: string
@@ -218,6 +241,59 @@ export async function checkCard(id: string, col: string) {
   // Check if card exists and is not owned by anyone (ownerId is null)
   return data.ownerId === null && data.isActive
 }
+
+export interface CardStatus {
+  id: string | null
+  ownerId: string | null
+}
+
+export async function checkCardStatus(
+  id: string,
+  col: string,
+): Promise<CardStatus> {
+  const ref = cardDocRef(id, col)
+  const snap = await getDoc(ref)
+
+  if (!snap.exists()) {
+    return {id: null, ownerId: null}
+  }
+
+  const data = snap.data()
+  // Check if card exists and is not owned by anyone (ownerId is null)
+  return {
+    id: data.id,
+    ownerId: data.ownerId,
+  }
+}
+
+export const getCardStatus = (
+  id: string,
+): Effect.Effect<
+  ProtapCardDoc,
+  FirestoreError | DocumentNotFoundError,
+  Firestore
+> =>
+  Effect.gen(function* (_) {
+    const docRef = cardDocRef(id, 'general')
+    const docSnap = yield* _(
+      Effect.tryPromise({
+        try: async () => {
+          return await getDoc(docRef)
+        },
+        catch: (error) => new FirestoreError('Failed to get user', error),
+      }),
+    )
+
+    if (!docSnap.exists()) {
+      return yield* _(Effect.fail(new DocumentNotFoundError(id)))
+    }
+
+    const data = docSnap.data()
+    return {
+      id: docSnap.id,
+      ownerId: data.ownerId,
+    } as ProtapCardDoc
+  })
 
 export async function activateCard(id: string, grp: string, uid: string) {
   const ref = cardDocRef(id, grp)

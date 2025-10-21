@@ -1,6 +1,6 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import {cookies} from 'next/headers'
 
 interface CookieOptions {
   path?: string
@@ -24,10 +24,11 @@ type CookieType =
   | 'protapUserProfile'
   | 'nfcData'
   | 'qrcData'
+  | 'protapScanResult'
 
 type ValuesMap = {
   theme: string
-  session: { token: string }
+  session: {token: string}
   language: string
   soundEnabled: boolean
   darkMode: boolean
@@ -51,6 +52,16 @@ type ValuesMap = {
   }
   nfcData?: string
   qrcData?: string
+  protapScanResult: {
+    success: boolean
+    id: string
+    series: string
+    group: string
+    batch: string
+    ownerId?: string
+    ownerPublicUrl?: string
+    ownerPublicName?: string
+  }
 }
 
 interface Expiry {
@@ -71,6 +82,7 @@ const cookieNameMap: Record<CookieType, string> = {
   protapUserProfile: 'protap-user-profile',
   nfcData: 'nfc-data',
   qrcData: 'qrc-data',
+  protapScanResult: 'protap-scan-result',
 }
 
 const defaults: CookieOptions = {
@@ -103,7 +115,7 @@ export const setCookie = async <T extends CookieType>(
   const store = await cookies()
   const value = JSON.stringify(values)
   const maxAge = options?.maxAge ?? cookieExpiryMap[type] ?? defaults.maxAge
-  store.set(name, value, { ...defaults, maxAge, ...options })
+  store.set(name, value, {...defaults, maxAge, ...options})
 }
 
 export const getCookie = async <T extends CookieType>(
@@ -133,7 +145,9 @@ export const deleteCookie = async (type: CookieType) => {
  * @name setUserProfile
  * @description Cache user profile data to avoid fetching on every page route
  */
-export const setUserProfile = async (userProfile: ValuesMap['protapUserProfile']) => {
+export const setUserProfile = async (
+  userProfile: ValuesMap['protapUserProfile'],
+) => {
   await setCookie('protapUserProfile', userProfile)
 }
 
@@ -141,7 +155,9 @@ export const setUserProfile = async (userProfile: ValuesMap['protapUserProfile']
  * @name getUserProfile
  * @description Retrieve cached user profile data
  */
-export const getUserProfile = async (): Promise<ValuesMap['protapUserProfile'] | undefined> => {
+export const getUserProfile = async (): Promise<
+  ValuesMap['protapUserProfile'] | undefined
+> => {
   return await getCookie('protapUserProfile')
 }
 
@@ -157,7 +173,9 @@ export const clearUserProfile = async () => {
  * @name downloadAndCacheImage
  * @description Download image from URL and cache as base64 data
  */
-export const downloadAndCacheImage = async (imageUrl: string): Promise<string | null> => {
+export const downloadAndCacheImage = async (
+  imageUrl: string,
+): Promise<string | null> => {
   try {
     const response = await fetch(imageUrl)
     if (!response.ok) {
@@ -179,4 +197,3 @@ export const downloadAndCacheImage = async (imageUrl: string): Promise<string | 
     return null
   }
 }
-

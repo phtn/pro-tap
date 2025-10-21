@@ -284,22 +284,21 @@ const V = ({isCompleted}: CompletedProps) => {
         duration: 0.6,
         ease: 'easeInOut',
       }}
-      className='w-[102px] h-[102px] flex items-center justify-center'>
+      className='w-[104px] h-[104px] flex items-center justify-center'>
       <div className='relative z-20'>
         <motion.div
-          className='absolute inset-0 rounded-full border-2 border-transparent'
+          className='absolute inset-0 rounded-full blur-lg border-4 border-l border-r border-t-0 border-b-0'
           style={{
-            borderLeftColor: 'oklch(0.592 0.178 257.29)',
-            borderRightColor: 'oklch(0.592 0.178 257.29)',
-            filter: 'blur(0.5px)',
+            borderLeftColor: 'oklch(0.6 0.178 257.29)',
+            borderRightColor: 'oklch(0.6 0.178 257.29)',
           }}
           animate={{
-            rotate: 650,
-            scale: [1.01, 1.03, 1],
+            rotate: 960,
+            scale: [1.05, 1.2, 1.6],
           }}
           transition={{
             rotate: {
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
               ease: 'linear',
             },
@@ -310,14 +309,42 @@ const V = ({isCompleted}: CompletedProps) => {
             },
           }}
         />
-        <div className='relative z-10 bg-white dark:bg-zinc-950 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]'>
+        <motion.div
+          className='absolute inset-0 rounded-full border-2 border-transparent'
+          style={{
+            borderLeftColor: 'oklch(0.592 0.178 257.29)',
+            borderRightColor: 'oklch(0.592 0.178 257.29)',
+            filter: 'blur(0.25px)',
+          }}
+          animate={{
+            rotate: 960,
+            scale: [1.04, 1.09, 1.05],
+          }}
+          transition={{
+            rotate: {
+              duration: 4,
+              repeat: Infinity,
+              ease: 'linear',
+            },
+            scale: {
+              duration: 4,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            },
+          }}
+        />
+        <motion.div
+          initial={{scale: 1.2, rotate: 90}}
+          animate={{scale: 0.2, rotate: -90}}
+          transition={{type: 'spring', visualDuration: 6, bounce: 0.6}}
+          className='relative z-10 bg-white dark:bg-zinc-950 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]'>
           <Icon
             name='hexagon'
             className={cn('size-10 text-primary', {
-              'animate-caret-blink': !isCompleted,
+              // 'animate-caret-blink': !isCompleted,
             })}
           />
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   )
@@ -347,5 +374,54 @@ const Y = () => {
         />
       </div>
     </motion.div>
+  )
+}
+
+interface MiniVerifierProps {
+  isGood: boolean
+}
+
+export const MiniVerifier = ({isGood}: MiniVerifierProps) => {
+  const XX = useCallback(() => {
+    const options = opts(<Y />, <V isCompleted={isGood} />)
+    return <AnimatePresence mode='wait'>{options.get(isGood)}</AnimatePresence>
+  }, [isGood])
+  return (
+    <div className='relative w-[100px] h-[100px] flex items-center justify-center'>
+      <motion.div
+        className={cn(
+          'absolute inset-0 blur-2xl bg-primary-hover/10 dark:bg-primary-hover/10 rounded-full',
+          'transition-colors duration-400',
+          {'bg-emerald-500/10 dark:bg-emerald-500/5': isGood},
+        )}
+        initial={{opacity: 0}}
+        animate={{
+          opacity: [0, 1, 0.8],
+        }}
+        transition={{
+          duration: 1.5,
+          times: [0, 0.5, 1],
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      />
+      <motion.div
+        className={cn(
+          'absolute inset-0 blur-2xl bg-primary-hover/10 dark:bg-primary-hover/25 rounded-full',
+          'transition-colors duration-400',
+          {'bg-emerald-500/10 dark:bg-emerald-500/5': isGood},
+        )}
+        initial={{opacity: 0}}
+        animate={{
+          opacity: [0, 1, 0.8],
+        }}
+        transition={{
+          duration: 1.5,
+          times: [0, 0.5, 1],
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      />
+
+      <XX />
+    </div>
   )
 }
