@@ -57,16 +57,16 @@ export const AdminPageContent = () => {
   ]
 
   const dataList: RouteItem[] = [
-    {
-      name: 'full-table',
-      label: 'Full Table',
-      href: '/admin/fulltable',
-      icon: 'bullet-list-square',
-      type: 'data',
-      color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'View and manage all products in a table',
-    },
+    // {
+    //   name: 'full-table',
+    //   label: 'Full Table',
+    //   href: '/admin/fulltable',
+    //   icon: 'bullet-list-square',
+    //   type: 'data',
+    //   color:
+    //     'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
+    //   description: 'View and manage all products in a table',
+    // },
     {
       name: 'products-table',
       label: 'Products',

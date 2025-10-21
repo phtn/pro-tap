@@ -11,7 +11,7 @@ export const ExportTable = ({loading}: Props) => {
     <Button
       variant='secondary'
       className={cn(
-        'ml-auto bg-background/30 translate-x-0 transition-transform duration-200 ease-in-out md:aspect-auto aspect-square',
+        'ml-auto bg-background/30 translate-x-0 transition-transform duration-200 ease-in-out md:aspect-auto aspect-square select-none',
       )}>
       <Icon
         name={loading ? 'spinners-ring' : 'download'}

@@ -30,7 +30,7 @@ export const SelectToggle = <T,>({
   return (
     <Button
       variant='secondary'
-      className='relative aspect-square'
+      className='relative aspect-square select-none'
       onClick={toggleFn}>
       <CountBadge />
       <Icon

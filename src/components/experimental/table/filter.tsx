@@ -115,7 +115,7 @@ export const Filter = <T,>({
         <Button
           variant='secondary'
           className={cn(
-            'relative aspect-square data-[state=open]:bg-origin/50',
+            'relative aspect-square data-[state=open]:bg-origin/50 select-none',
           )}>
           <Icon
             name='filter'

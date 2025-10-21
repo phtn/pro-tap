@@ -10,6 +10,7 @@ export interface DataRouteItem {
   icon: IconName
   color: ClassName
   description?: string
+  disabled?: boolean
 }
 export interface RouteItem {
   name: string

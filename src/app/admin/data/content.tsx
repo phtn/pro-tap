@@ -17,6 +17,7 @@ export const DataContent = () => {
       color:
         'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'Manage Individual Series products',
+      disabled: false,
     },
     {
       name: 'fleet',
@@ -27,6 +28,7 @@ export const DataContent = () => {
       color:
         'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'Manage Fleet Series products',
+      disabled: false,
     },
     {
       name: 'limited-edition',
@@ -37,6 +39,7 @@ export const DataContent = () => {
       color:
         'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'Manage Limited Edition Series products',
+      disabled: false,
     },
   ]
 
@@ -50,6 +53,7 @@ export const DataContent = () => {
       color:
         'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'Scan NFC Cards to add to your products',
+      disabled: true,
     },
     {
       name: 'all-users',
@@ -60,6 +64,7 @@ export const DataContent = () => {
       color:
         'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'Scan NFC Cards to add to your products',
+      disabled: true,
     },
   ]
 
@@ -67,7 +72,7 @@ export const DataContent = () => {
     (item: DataRouteItem, index: number) => (
       <Link
         key={`${item.name}_${index}`}
-        href={item.href}
+        href={item.disabled ? '#' : `/admin/data/products/${item.name}`}
         className={cn(
           'group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
           'transition-transform duration-300 ease-in-out active:scale-90',
@@ -97,7 +102,15 @@ export const DataContent = () => {
           </p>
         </div>
 
-        <p className='font-figtree opacity-70 text-sm'>{item.description}</p>
+        <p className='font-figtree opacity-70 text-sm flex items-center'>
+          {item.disabled && (
+            <Icon
+              name='road-barrier'
+              className='size-3 md:size-6 mx-3 text-rose-600 dark:text-mac-pink opacity-80'
+            />
+          )}
+          {item.disabled ? 'Development: In-Progress' : item.description}
+        </p>
       </Link>
     ),
     [],
