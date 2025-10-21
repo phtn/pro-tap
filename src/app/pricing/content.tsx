@@ -8,9 +8,9 @@ export const Content = () => {
       <Navbar />
       <main className='h-full pt-28 flex items-start justify-center gap-8'>
         <PricingCard
+          popular
           title='PRO'
           price='999'
-          popular
           period='12 month'
           billing='annually'
           buttonText='Get Protap'

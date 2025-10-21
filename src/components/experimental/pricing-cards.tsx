@@ -65,7 +65,7 @@ export const ModernPricingPage = () => {
         {/* Header */}
         <div className='text-center mb-12'>
           <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-8 bg-gradient-to-r from-teal-400 via-teal-100 to-white bg-clip-text text-transparent -tracking-wider'>
-            Designed for Flexibility
+            Our Growth Focused Products
           </h1>
 
           {/* Billing Toggle */}

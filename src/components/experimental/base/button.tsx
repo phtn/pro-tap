@@ -1,5 +1,6 @@
 'use client'
 
+import {TextShimmer} from '@/components/ui/shimmer'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 
@@ -17,7 +18,7 @@ export default function HyperButton({
       <div className='relative'>
         {/* Deep shadow layer - creates the main depth */}
         <div
-          className='absolute inset-0 rounded-full pointer-events-none'
+          className='absolute inset-0 rounded-full pointer-events-none dark:opacity-0'
           style={{
             filter: 'blur(40px)',
             transform: 'scale(1.8) translateY(25px)',
@@ -73,7 +74,7 @@ export default function HyperButton({
         />
         <div
           className={cn(
-            'absolute left-1/2 -translate-x-1/2 -top-3 pointer-events-none',
+            'absolute left-1/2 -translate-x-1/2 -top-2 pointer-events-none',
             'bg-gradient-to-r from-[#fff5]/90 via-[#fff]/80 to-[#fff5]/80 ',
             'blur-[6px] h-20 w-32 z-40 rounded-full',
           )}
@@ -82,14 +83,14 @@ export default function HyperButton({
           className={cn(
             'absolute left-1/2 -translate-x-1/3 -top-1/5 pointer-events-none',
             'bg-gradient-to-r from-[#fff5]/90 via-[#fff]/80 to-[#fff5]/80 ',
-            'blur-[4px] h-18 w-24 z-50 rounded-full',
+            'blur-[4px] h-16 w-24 z-50 rounded-full',
           )}
         />
         <div
           className={cn(
-            'absolute left-1/2 -translate-x-1/4 -top-1/5 pointer-events-none',
+            'absolute left-1/2 -translate-x-1/4 -top-1/8 pointer-events-none',
             'bg-gradient-to-r from-[#fff5]/90 via-[#fff]/80 to-[#fff5]/80 ',
-            'blur-[2px] h-18 w-36 z-50 rounded-full',
+            'blur-[5px] h-16 w-44 z-50 rounded-full',
           )}
         />
         {/* Core */}
@@ -97,45 +98,47 @@ export default function HyperButton({
           className={cn(
             'z-10 absolute inset-0 rounded-full pointer-events-none',
             'bg-[radial-gradient(ellipse_180%_130%_at_50%_30%,rgba(250,250,230,0.95)_80%,rgba(250,255,240,0.9)_100%,transparent_95%)]',
-            'h-20 w-40 translate-x-[40px] -translate-y-6 blur-lg',
+            'h-16 w-40 translate-x-[40px] -translate-y-5 blur-lg',
           )}
         />
 
         {/* The button itself */}
         <button
           onClick={onClick}
-          className='z-100 relative px-10 py-4 bg-gradient-to-b from-white via-gray-50 to-gray-100 rounded-full flex items-center justify-between gap-16 transition-all duration-400 cursor-pointer hover:scale-101 active:scale-96'
+          className='z-100 relative px-10 py-5 bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-background dark:via-dark-origin dark:to-dark-origin rounded-full flex items-center justify-between gap-16 transition-all duration-400 cursor-pointer hover:scale-101 active:scale-96'
           style={{
             boxShadow: `
-              0 2px 4px rgba(0, 0, 0, 0.08),
-              0 6px 12px rgba(0, 0, 0, 0.06),
-              0 12px 24px rgba(0, 0, 0, 0.05),
-              0 20px 40px rgba(0, 0, 0, 0.04),
-              0 30px 60px rgba(0, 0, 0, 0.03),
+              0 2px 4px rgba(100, 100, 100, 0.08),
+              0 6px 12px rgba(100, 100, 100, 0.06),
+              0 12px 24px rgba(100, 100, 100, 0.05),
+              0 20px 40px rgba(100, 100, 100, 0.04),
+              0 30px 60px rgba(100, 100, 100, 0.03),
               inset 0 1px 2px rgba(255, 255, 255, 0.95),
-              inset 0 -1px 2px rgba(0, 0, 0, 0.04)
+              inset 0 -1px 2px rgba(100, 100, 100, 0.04)
             `,
-            border: '1px solid rgba(255, 255, 255, 0.85)',
+            // border: '1px solid rgba(255, 255, 255, 0.85)',
           }}>
           <div
-            className='absolute top-0 left-3 right-3 h-2/5 rounded-full pointer-events-none'
+            className='absolute opacity-90 dark:opacity-20 top-0 left-3 right-3 h-2/5 rounded-full pointer-events-none'
             style={{
               background:
                 'linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3), transparent)',
-              opacity: 0.8,
             }}
           />
 
           {/* Text */}
-          <span className='capitalize relative text-gray-900 font-medium text-base tracking-tight'>
+          <TextShimmer className='font-medium text-base tracking-tight'>
             {label}
-          </span>
+
+            {/*<span className='capitalize relative text-gray-900 font-medium text-base tracking-tight'>
+          </span>*/}
+          </TextShimmer>
 
           {/* Search Icon */}
           <div className='relative flex items-center justify-center'>
             <Icon
-              name='zap-solid'
-              className='w-5 h-5 text-gray-700'
+              name='arrow-up'
+              className='size-5 rotate-45'
               strokeWidth={2.5}
             />
           </div>

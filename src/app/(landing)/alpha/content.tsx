@@ -81,7 +81,7 @@ export const Content = () => {
         iconStyle={cn(
           'text-primary-hover md:text-primary dark:text-mac-teal size-5',
         )}
-        rightIcon={on ? 'close' : 'zap'}>
+        rightIcon={on ? 'close' : 'zap-solid'}>
         <span className='md:px-4 px-2 md:text-lg text-primary md:text-foreground dark:text-white'>
           {on ? 'Select Activation' : 'Activate Account'}
         </span>

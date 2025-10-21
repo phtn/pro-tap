@@ -168,6 +168,7 @@ export const Landing = () => {
             </div>
             <div className='h-16 flex items-center justify-center w-full'>
               <SexyButton
+                onClick={() => router.push('/pricing')}
                 size='lg'
                 fullWidth
                 variant='dark'

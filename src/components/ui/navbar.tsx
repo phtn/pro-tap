@@ -1,7 +1,9 @@
+'use client'
 import {NavbarCtxProvider} from '@/ctx/navbar'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import Link from 'next/link'
+import {usePathname} from 'next/navigation'
 import {memo, type ReactNode} from 'react'
 
 interface NavbarProps {
@@ -11,11 +13,15 @@ interface NavbarProps {
 }
 
 const Nav = ({children, hideOnMobile, label}: NavbarProps) => {
+  const pathname = usePathname().split('/').pop()
   return (
     <nav
       className={cn(
         'h-[10lvh] md:h-[12lvh] flex items-center justify-between py-6 w-screen md:max-w-6xl mx-auto',
-        {'hidden md:flex': hideOnMobile},
+        {
+          'hidden md:flex': hideOnMobile,
+          'bg-foreground md:max-w-full md:px-8': pathname === 'pricing',
+        },
       )}>
       <Link href='/alpha' className='flex items-center px-4 md:px-0'>
         {label ? (
@@ -25,7 +31,9 @@ const Nav = ({children, hideOnMobile, label}: NavbarProps) => {
         ) : (
           <Icon
             name='protap'
-            className='h-24 md:h-36 w-auto aspect-auto text-foreground'
+            className={cn('h-20 md:h-32 w-auto aspect-auto text-foreground', {
+              'text-background': pathname === 'pricing',
+            })}
           />
         )}
       </Link>
