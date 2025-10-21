@@ -88,7 +88,7 @@ export const DataContent = () => {
           <h3 className='md:text-lg font-semibold tracking-tight'>
             {item.label}
           </h3>
-          <p
+          <div
             className={cn(
               'absolute -right-2 -top-2 text-xs font-mono bg-zinc-400/20 dark:bg-background rounded-md px-2 py-1',
               {
@@ -99,10 +99,10 @@ export const DataContent = () => {
             <span className='capitalize'>
               {item.type === 'products' ? 'P' : 'U'}
             </span>
-          </p>
+          </div>
         </div>
 
-        <p className='font-figtree opacity-70 text-sm flex items-center'>
+        <div className='font-figtree opacity-70 text-sm flex items-center'>
           {item.disabled && (
             <Icon
               name='road-barrier'
@@ -110,14 +110,14 @@ export const DataContent = () => {
             />
           )}
           {item.disabled ? 'Development: In-Progress' : item.description}
-        </p>
+        </div>
       </Link>
     ),
     [],
   )
 
   return (
-    <div className='md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+    <div className='h-screen overflow-y-scroll pt-4 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
       <CardList title='Products' list={products} renderFn={renderCardItem} />
       <CardList title='Users' list={users} renderFn={renderCardItem} />
     </div>

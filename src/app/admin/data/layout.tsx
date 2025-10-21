@@ -14,14 +14,14 @@ export default function Layout({children}: DataLayoutProps) {
   return (
     <div>
       <div className='max-w-full mx-auto'>
-        <div className='md:py-0'>
+        <div className='h-full md:py-0'>
           <Header
             title='Admin'
             subtext='Dashboard'
             back={back}
             className={cn(
               'mb-0 md:mb-0 mx-2 md:mx-4',
-              endpoint === 'data' && 'mb-4 md:mb-8',
+              endpoint === 'data' && 'mb-0 md:mb-8',
             )}
             breadcrumbs={
               <div className='flex items-center justify-center tracking-tight font-figtree text-sm md:text-base'>
