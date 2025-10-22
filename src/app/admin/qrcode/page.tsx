@@ -30,13 +30,14 @@ const QRCodePage = () => {
   const [createdAt, setCreatedAt] = useState<Timestamp | null>(null)
   const isMobile = useMobile()
 
-  const generateQr = async (grp: string, count: number) => {
+  const generateQr = async (coll: string, count: number) => {
     if (isGenerating) return
 
     setIsGenerating(true)
 
     try {
       const {createdIds, createdAt} = await createBulkQRCodes(
+        coll,
         count,
         series,
         group,

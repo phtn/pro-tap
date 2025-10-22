@@ -88,8 +88,10 @@ export const Ok =
     onSuccess(`${args[0]} ${args[1] ?? ''}`)
   }
 
-export const tsToDate = (st: Timestamp | null, format = 'PPpp') => {
-  if (!st) return ''
-  const date = st.toDate()
-  return _format(date, format)
+export const tsToDate = (st?: Timestamp | null, format = 'PPpp') => {
+  if (st && st instanceof Timestamp) {
+    const date = st.toDate()
+    return _format(date, format)
+  }
+  return ''
 }

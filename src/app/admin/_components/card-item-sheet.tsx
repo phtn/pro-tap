@@ -12,7 +12,6 @@ import {useCopy} from '@/hooks/use-copy'
 import {ProtapActivationInfo} from '@/lib/firebase/cards'
 import {cn} from '@/lib/utils'
 import {tsToDate} from '@/utils/helpers'
-import {Timestamp} from 'firebase/firestore'
 import {useCallback, useEffect, useMemo} from 'react'
 
 interface CardItemSheetProps {
@@ -31,16 +30,17 @@ export const CardItemSheet = ({
   side = 'bottom',
 }: CardItemSheetProps) => {
   const debug = true
+  const baseUrl = useMemo(
+    () => (debug ? '192.168.1.2:3000' : 'protap.ph'),
+    [debug],
+  )
   useEffect(() => {
     if (open) {
       console.log(side)
     }
   }, [open, side])
 
-  const createdAt = useMemo(
-    () => tsToDate(item?.createdAt as unknown as Timestamp, 'PPpp'),
-    [item],
-  )
+  const createdAt = useMemo(() => tsToDate(item?.createdAt, 'PPpp'), [item])
 
   const details = useMemo(
     () => [
@@ -117,7 +117,7 @@ export const CardItemSheet = ({
                       },
                     )}
                     options={{
-                      content: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
+                      content: `https://${baseUrl}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
                       width: isMobile ? 280 : 400,
                       height: isMobile ? 280 : 400,
                     }}

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   if (!user) {
     return NextResponse.redirect(
-      new URL(`/sign`, request.url ?? 'https://localhost:3000'),
+      new URL(`/sign`, request.url ?? 'https://protap.ph'),
     )
   }
 
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
     // Return success response with activation data
     return NextResponse.redirect(
-      new URL(`/verify/${id}`, 'https://localhost:3000'),
+      new URL(`/verify/${id}`, 'https://https://protap.ph'),
     )
   } catch (error) {
     console.error('Error checking card:', error)

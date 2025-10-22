@@ -20,9 +20,7 @@ import {
   where,
   writeBatch,
 } from 'firebase/firestore'
-import {useState} from 'react'
 import {db} from '.'
-import {ServerTime} from './types/user'
 
 // Define Firestore service interface
 // interface FirestoreService {
@@ -148,6 +146,7 @@ export async function createQR(
 }
 
 export async function createBulkQRCodes(
+  coll: string,
   count: number,
   series: string,
   group: string,
@@ -155,12 +154,11 @@ export async function createBulkQRCodes(
   user: User,
   onProgress?: (progress: number) => void,
 ): Promise<{createdIds: string[]; createdAt: Timestamp}> {
-  const col = 'general'
   const countBatch = writeBatch(db)
   const baseTime = Date.now().toString(12)
   const createdIds: string[] = []
-  const [createdAt, setCreatedAt] = useState<ServerTime | null>(null)
 
+  const timestamp = serverTimestamp()
   // Process in batches of 500 (Firestore limit)
   const batchSize = 500
   for (let i = 0; i < count; i += batchSize) {
@@ -180,9 +178,7 @@ export async function createBulkQRCodes(
         timestamp: serverTimestamp(),
       }
 
-      const ref = cardDocRef(serialNumber, col)
-      const timestamp = serverTimestamp()
-      setCreatedAt(timestamp)
+      const ref = cardDocRef(serialNumber, coll)
       const docData = {
         id: serialNumber,
         qrcData: null,
@@ -227,7 +223,7 @@ export async function createBulkQRCodes(
     }
   }
 
-  return {createdIds, createdAt: createdAt as Timestamp}
+  return {createdIds, createdAt: timestamp as Timestamp}
 }
 
 export async function checkCard(id: string, col: string) {
