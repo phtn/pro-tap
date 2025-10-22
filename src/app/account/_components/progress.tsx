@@ -37,7 +37,7 @@ export const ActivationProgress = ({
 
   const serialNumber = useMemo(
     () =>
-      nfcData && nfcData.serialNumber.startsWith('qr-')
+      nfcData && nfcData.serialNumber.split('-').shift() === 'qr'
         ? nfcData.serialNumber
         : nfcData && macStr(nfcData.serialNumber),
     [nfcData],

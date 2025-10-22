@@ -1,6 +1,12 @@
 'use client'
-
 import {QRCodeSVG} from '@/components/experimental/qr-viewer'
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu'
 import {
   Sheet,
   SheetContent,
@@ -10,9 +16,10 @@ import {
 } from '@/components/ui/sheet'
 import {useCopy} from '@/hooks/use-copy'
 import {ProtapActivationInfo} from '@/lib/firebase/cards'
+import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {tsToDate} from '@/utils/helpers'
-import {useCallback, useEffect, useMemo} from 'react'
+import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react'
 
 interface CardItemSheetProps {
   open: boolean
@@ -59,11 +66,51 @@ export const CardItemSheet = ({
 
   const {copy} = useCopy({timeout: 2000})
 
+  const qrOptions = useMemo(() => {
+    if (!item) return null
+    return {
+      content: `https://${baseUrl}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
+      width: isMobile ? 280 : 400,
+      height: isMobile ? 280 : 400,
+    }
+  }, [baseUrl, item, isMobile])
+
+  const [svgData, setSvgData] = useState('')
+
+  useEffect(() => {
+    if (!qrOptions) {
+      setSvgData('')
+      return
+    }
+
+    // Generate SVG data directly using the same logic as QRCodeSVG
+    const generateSVG = async () => {
+      try {
+        const QRCode = (await import('qrcode-svg')).default
+        const code = new QRCode({
+          content: qrOptions.content,
+          padding: 4,
+          width: qrOptions.width,
+          height: qrOptions.height,
+          color: '#12121a',
+          background: '#ffffff',
+          ecl: 'M' as const,
+        })
+        setSvgData(code.svg())
+      } catch (error) {
+        console.error('Failed to generate QR code SVG:', error)
+        setSvgData('')
+      }
+    }
+
+    generateSVG()
+  }, [qrOptions])
+
   const handleCopyValue = useCallback(
     (detail: {label: string; value: string | undefined}) => () => {
       copy(detail.label, detail?.value ?? '')
     },
-    [],
+    [copy],
   )
 
   if (!open || !item) return null
@@ -103,25 +150,29 @@ export const CardItemSheet = ({
                 )}>
                 <div
                   className={cn(
-                    'flex items-center md:items-start justify-center p-3 md:p-2 w-full h-full md:h-fit rounded-3xl',
+                    'relative flex items-center md:items-start justify-center p-3 md:p-2 w-full h-full md:h-fit rounded-3xl',
                     {
                       'w-full h-full md:w-fit md:h-fit flex md:justify-center md:items-center p-0':
                         side === 'right',
                     },
                   )}>
-                  <QRCodeSVG
-                    className={cn(
-                      'flex items-center justify-center p-3 md:p-0 md:w-[400px] md:h-[400px]',
-                      {
-                        ' w-[300px] h-[300px] p-1': side === 'right',
-                      },
-                    )}
-                    options={{
-                      content: `https://${baseUrl}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
-                      width: isMobile ? 280 : 400,
-                      height: isMobile ? 280 : 400,
-                    }}
-                  />
+                  {qrOptions && (
+                    <>
+                      <QRCodeSVG
+                        className={cn(
+                          'flex items-center justify-center p-3 md:p-0 md:w-[400px] md:h-[400px]',
+                          {
+                            ' w-[300px] h-[300px] p-1': side === 'right',
+                          },
+                        )}
+                        options={qrOptions}
+                      />
+                      <ImageContextMenu
+                        image={svgData}
+                        qrUrl={qrOptions.content}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -160,5 +211,147 @@ export const CardItemSheet = ({
         </div>
       </SheetContent>
     </Sheet>
+  )
+}
+
+interface IContextMenuProps {
+  image: string
+  qrUrl: string
+  children?: ReactNode
+}
+
+const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
+  const {copy} = useCopy({timeout: 2000})
+
+  const handleCopyUrl = useCallback(() => {
+    copy('QR Code URL', qrUrl)
+  }, [copy, qrUrl])
+
+  const handleDownloadImage = useCallback(async () => {
+    try {
+      // Create a canvas element to convert SVG to PNG
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      // Create an image element from the SVG data
+      const img = new Image()
+      const svgData = image
+
+      img.onload = () => {
+        canvas.width = img.width
+        canvas.height = img.height
+
+        if (ctx) {
+          ctx.drawImage(img, 0, 0)
+
+          // Convert to blob and download
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `qr-code-${Date.now()}.png`
+              document.body.appendChild(a)
+              a.click()
+              document.body.removeChild(a)
+              URL.revokeObjectURL(url)
+            }
+          }, 'image/png')
+        }
+      }
+
+      // For SVG data, we need to create a data URL
+      if (svgData) {
+        const svgBlob = new Blob([svgData], {
+          type: 'image/svg+xml;charset=utf-8',
+        })
+        img.src = URL.createObjectURL(svgBlob)
+      }
+    } catch (error) {
+      console.error('Failed to download QR code:', error)
+    }
+  }, [image])
+
+  const handlePrintQr = useCallback(() => {
+    try {
+      // Create a new window for printing
+      const printWindow = window.open('', '_blank')
+      if (printWindow) {
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Print QR Code</title>
+              <style>
+                body {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  min-height: 100vh;
+                  margin: 0;
+                  background: white;
+                }
+                .qr-container {
+                  text-align: center;
+                  padding: 20px;
+                }
+                .qr-code {
+                  max-width: 400px;
+                  width: 100%;
+                  height: auto;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="qr-container">
+                <h2>QR Code</h2>
+                <div class="qr-code">${image}</div>
+              </div>
+              <script>
+                window.onload = function() {
+                  window.print();
+                  window.onafterprint = function() {
+                    window.close();
+                  };
+                };
+              </script>
+            </body>
+          </html>
+        `)
+        printWindow.document.close()
+      }
+    } catch (error) {
+      console.error('Failed to print QR code:', error)
+    }
+  }, [image])
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className='md:size-120 absolute z-50'>
+        {children}
+      </ContextMenuTrigger>
+      <ContextMenuContent className='invert dark:bg-background shadow-xl dark:border-dark-origin relative z-200 font-figtree md:w-[175px] rounded-4xl px-4 py-5 bg-dark-origin'>
+        <ContextMenuItem
+          onClick={handleCopyUrl}
+          className='h-12 rounded-xl cursor-pointer'>
+          <Icon name='shape-subtract' className='size-5' />
+          <span className='pl-2'>Copy Image URL</span>
+        </ContextMenuItem>
+        <ContextMenuSeparator className='bg-origin/40' />
+        <ContextMenuItem
+          onClick={handleDownloadImage}
+          className='h-12 rounded-xl cursor-pointer'>
+          <Icon name='download' className='size-5' />
+          <span className='pl-2'>Download Image</span>
+        </ContextMenuItem>
+        <ContextMenuSeparator className='bg-origin/40' />
+        <ContextMenuItem
+          onClick={handlePrintQr}
+          className='h-12 rounded-xl cursor-pointer'>
+          <Icon name='printer' className='size-5' />
+          <span className='pl-2'>Print QR Code</span>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }

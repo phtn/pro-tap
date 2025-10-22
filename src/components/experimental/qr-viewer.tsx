@@ -1,24 +1,24 @@
 'use client'
 
-import {ClassName} from '@/app/types'
-import {cn} from '@/lib/utils'
-import QRCodeStyling, {Options} from 'qr-code-styling'
-import QRCode, {Options as QRCodeSVGOptions} from 'qrcode-svg'
-import {useEffect, useRef, useState} from 'react'
+import { ClassName } from '@/app/types'
+import { cn } from '@/lib/utils'
+import QRCodeStyling, { Options } from 'qr-code-styling'
+import QRCode, { Options as QRCodeSVGOptions } from 'qrcode-svg'
+import { useEffect, useRef, useState } from 'react'
 
 interface QrViewerProps {
   id: string
   grp: string
 }
 
-export default function QrViewer({id, grp}: QrViewerProps) {
+export default function QrViewer({ id, grp }: QrViewerProps) {
   const options: Options = {
     shape: 'square',
     width: 300,
     height: 300,
     data: `https://protap.ph/activation/?id=${id}${grp ? `&grp=${grp}` : ''}`,
     margin: 3,
-    qrOptions: {typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'Q'},
+    qrOptions: { typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'Q' },
     image: '/svg/protap-final.svg',
     imageOptions: {
       saveAsBlob: true,
@@ -33,16 +33,16 @@ export default function QrViewer({id, grp}: QrViewerProps) {
         type: 'radial',
         rotation: 0,
         colorStops: [
-          {offset: 0, color: '#12121a'},
-          {offset: 1, color: '#14141b'},
+          { offset: 0, color: '#12121a' },
+          { offset: 1, color: '#14141b' },
         ],
       },
     },
-    backgroundOptions: {round: 0, color: '#ffffff'},
+    backgroundOptions: { round: 0, color: '#ffffff' },
 
-    cornersSquareOptions: {type: 'extra-rounded', color: '#12121a'},
+    cornersSquareOptions: { type: 'extra-rounded', color: '#12121a' },
 
-    cornersDotOptions: {type: 'square', color: '#000000'},
+    cornersDotOptions: { type: 'square', color: '#000000' },
   }
 
   const [qrCode, setQrCode] = useState<QRCodeStyling>()
@@ -79,7 +79,7 @@ interface QRCodeSVGProps {
   className?: ClassName
 }
 
-export const QRCodeSVG = ({options, className}: QRCodeSVGProps) => {
+export const QRCodeSVG = ({ options, className }: QRCodeSVGProps) => {
   const code = new QRCode({
     content: options.content,
     padding: 4,
@@ -89,14 +89,32 @@ export const QRCodeSVG = ({options, className}: QRCodeSVGProps) => {
     background: '#ffffff',
     ecl: 'M' as const,
   })
+
+  const svgString = code.svg()
+
   return (
     <div className={cn('size-full', className)}>
       {
         <svg
           className='aspect-square'
-          dangerouslySetInnerHTML={{__html: code.svg()}}
+          dangerouslySetInnerHTML={{ __html: svgString }}
         />
       }
     </div>
   )
+}
+
+// Hook to get QR code SVG data for downloading/printing
+export const useQRCodeSVG = ({ options }: { options: QRCodeSVGOptions }) => {
+  const code = new QRCode({
+    content: options.content,
+    padding: 4,
+    width: options.width ?? 160,
+    height: options.height ?? 160,
+    color: '#12121a',
+    background: '#ffffff',
+    ecl: 'M' as const,
+  })
+
+  return code.svg()
 }

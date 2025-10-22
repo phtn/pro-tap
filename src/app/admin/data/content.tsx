@@ -74,7 +74,7 @@ export const DataContent = () => {
         key={`${item.name}_${index}`}
         href={item.disabled ? '#' : `/admin/data/products/${item.name}`}
         className={cn(
-          'group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
+          'invert group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
           'transition-transform duration-300 ease-in-out active:scale-90',
         )}>
         <div className='flex items-center space-x-6 mb-4 relative'>

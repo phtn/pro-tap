@@ -74,7 +74,7 @@ export const AdminPageContent = () => {
       icon: 'bullet-list-square',
       type: 'data',
       color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
+        'bg-dark-origin dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
       description: 'View and manage all products in a table',
     },
   ]
@@ -86,6 +86,7 @@ export const AdminPageContent = () => {
       className={cn(
         'group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
         'transition-transform duration-300 ease-in-out active:scale-90',
+        'invert',
       )}>
       <div className='flex items-center space-x-6 mb-4 relative'>
         <div
@@ -122,8 +123,8 @@ export const AdminPageContent = () => {
         <div className='md:py-8'>
           <Header
             title='Admin'
-            subtext='Dashboard'
             back={router.back}
+            subtext='Dashboard'
             className='md:mb-8 mb-4 ml-2'
           />
           <div className='md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
