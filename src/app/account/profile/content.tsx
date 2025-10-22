@@ -54,14 +54,15 @@ interface CoverSectionProps {
 const CoverSection = ({imageSource, isActivated}: CoverSectionProps) => {
   return (
     <div className='relative'>
-      <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl md:rounded-t-4xl overflow-hidden'>
+      <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl rounded-t-4xl overflow-hidden'>
         <Image
           // src="https://res.cloudinary.com/dx0heqhhe/image/upload/v1757754913/personalization_pluy38.webp"
-          src='https://res.cloudinary.com/dx0heqhhe/image/upload/v1759433575/Screenshot_2025-09-05_at_5.23.47_AM_k6cs9n.png'
+          // src='https://res.cloudinary.com/dx0heqhhe/image/upload/v1759433575/Screenshot_2025-09-05_at_5.23.47_AM_k6cs9n.png'
+          src='/images/short-cover.avif'
           alt='Logo'
-          width={0}
-          height={0}
-          className='aspect-auto w-full select-none sepia'
+          width={1600}
+          height={900}
+          className='aspect-auto object-cover w-full select-none sepia'
           priority
           unoptimized
         />

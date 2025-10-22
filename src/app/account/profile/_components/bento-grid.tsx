@@ -116,7 +116,11 @@ export const BentoGridStats = () => {
           title={item.title}
           description={item.description}
           header={item.header}
-          className={cn('[&>p:text-lg]', item.className)}
+          className={cn(
+            '[&>p:text-lg]',
+            item.className,
+            item.title === '' && 'hover:shadow-none',
+          )}
           icon={item.icon}
           activeIcon={item.activeIcon}
           pro={item.pro}
