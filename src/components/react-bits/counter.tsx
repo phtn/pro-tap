@@ -1,5 +1,6 @@
+import {ClassName} from '@/app/types'
 import {MotionValue, motion, useSpring, useTransform} from 'motion/react'
-import {CSSProperties, useEffect} from 'react'
+import {useEffect} from 'react'
 
 interface NumberProps {
   mv: MotionValue<number>
@@ -81,6 +82,7 @@ interface CounterProps {
   gradientTo?: string
   topGradientStyle?: React.CSSProperties
   bottomGradientStyle?: React.CSSProperties
+  className?: ClassName
 }
 
 export function Counter({
@@ -90,17 +92,12 @@ export function Counter({
   places = [100, 10, 1],
   gap = 8,
   borderRadius = 4,
-  horizontalPadding = 8,
-  textColor = 'white',
+  horizontalPadding = 4,
   fontWeight = 'bold',
   containerStyle,
   counterStyle,
   digitStyle,
-  gradientHeight = 16,
-  gradientFrom = 'black',
-  gradientTo = 'transparent',
-  topGradientStyle,
-  bottomGradientStyle,
+  className,
 }: CounterProps) {
   const height = fontSize + padding
 
@@ -118,35 +115,15 @@ export function Counter({
     paddingLeft: horizontalPadding,
     paddingRight: horizontalPadding,
     lineHeight: 1,
-    color: textColor,
+    // color: textColor,
     fontWeight,
   }
 
-  const gradientContainerStyle: React.CSSProperties = {
-    pointerEvents: 'none',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  }
-
-  const defaultTopGradientStyle: React.CSSProperties = {
-    height: gradientHeight,
-    background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
-  }
-
-  const defaultBottomGradientStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: gradientHeight,
-    background: `linear-gradient(to top, ${gradientFrom}, ${gradientTo})`,
-  }
-
   return (
-    <div style={{...defaultContainerStyle, ...containerStyle}}>
-      <div style={{...defaultCounterStyle, ...counterStyle}}>
+    <div className='' style={{...defaultContainerStyle, ...containerStyle}}>
+      <div
+        style={{...defaultCounterStyle, ...counterStyle}}
+        className={className}>
         {places.map((place) => (
           <Digit
             key={place}
@@ -156,12 +133,6 @@ export function Counter({
             digitStyle={digitStyle}
           />
         ))}
-      </div>
-      <div style={gradientContainerStyle}>
-        <div
-          style={topGradientStyle ?? (defaultTopGradientStyle as CSSProperties)}
-        />
-        <div style={bottomGradientStyle ?? defaultBottomGradientStyle} />
       </div>
     </div>
   )

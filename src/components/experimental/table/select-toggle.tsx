@@ -34,7 +34,7 @@ export const SelectToggle = <T,>({
       onClick={toggleFn}>
       <CountBadge />
       <Icon
-        name={on ? 'check' : 'checkbox-indeterminate-2'}
+        name={'checkbox-indeterminate-2'}
         className={cn(' md:size-5 size-4', on ? 'text-primary' : 'opacity-40')}
       />
       <span className='hidden md:flex'>Select</span>

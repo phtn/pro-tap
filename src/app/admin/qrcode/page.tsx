@@ -9,6 +9,7 @@ import {Timestamp} from 'firebase/firestore'
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 import {BatchName} from '../_components/batch-name'
+import {CardCounter} from '../_components/card-counter'
 import {CardItem} from '../_components/card-item'
 import {CardItemSheet} from '../_components/card-item-sheet'
 import {CountSelectDrop} from '../_components/count-select-drop'
@@ -170,9 +171,9 @@ const QRCodePage = () => {
                     name='chevron-down'
                     className='size-3 md:size-4 mr-0.5 md:ml-1 text-mac-gray'
                   />
-                  <span className='lg:w-14 md:w-10 w-8 font-semibold'>
-                    {selectedQuantity}
-                  </span>
+                  <div className='lg:w-14 md:w-10 w-8 font-semibold'>
+                    <CardCounter value={selectedQuantity} />
+                  </div>
                 </div>
               </button>
             </CountSelectDrop>
