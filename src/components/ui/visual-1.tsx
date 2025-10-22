@@ -1,3 +1,5 @@
+import {ClassName} from '@/app/types'
+import {cn} from '@/lib/utils'
 import * as React from 'react'
 
 interface Visual1Props {
@@ -22,10 +24,11 @@ export function Visual1({
 }
 
 interface GridLayerProps {
-  color: string
+  color?: string
+  className?: ClassName
 }
 
-const GridLayer = ({color}: GridLayerProps) => {
+export const GridLayer = ({className, color = '#80808015'}: GridLayerProps) => {
   return (
     <div
       style={
@@ -33,7 +36,10 @@ const GridLayer = ({color}: GridLayerProps) => {
           '--grid-color': color,
         } as React.CSSProperties
       }
-      className='pointer-events-none absolute inset-0 z-[4] h-full w-full bg-transparent bg-[linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)] bg-[size:20px_20px] bg-center opacity-70'
+      className={cn(
+        'pointer-events-none absolute inset-0 z-[4] h-full w-full bg-transparent bg-[linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)] bg-[size:20px_20px] bg-center opacity-70',
+        className,
+      )}
     />
   )
 }

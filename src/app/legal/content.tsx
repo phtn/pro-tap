@@ -1,0 +1,100 @@
+'use client'
+
+import {SexyButton} from '@/components/experimental/sexy-button-variants'
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {Icon, IconName} from '@/lib/icons'
+import Link from 'next/link'
+import {useRouter} from 'next/navigation'
+import {useMemo} from 'react'
+
+interface LegalDocument {
+  slug: string
+  title: string
+  description: string
+  icon: IconName
+}
+
+export const Content = () => {
+  const documents = useMemo(
+    () =>
+      [
+        {
+          slug: 'terms-of-use',
+          title: 'Terms of Use',
+          description: 'Our terms for using this website.',
+          icon: 'file-text',
+        },
+        {
+          slug: 'privacy-policy',
+          title: 'Privacy Policy',
+          description: 'How we manage your information',
+          icon: 'shield-checkmark',
+        },
+        {
+          slug: 'purchase-policy',
+          title: 'Purchase Policy',
+          description: 'Policies regarding purchases and returns',
+          icon: 'bag-light',
+        },
+      ] as LegalDocument[],
+    [],
+  )
+
+  const router = useRouter()
+
+  return (
+    <main className='min-h-screen bg-background fontfont-figtree'>
+      <div className='mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8'>
+        <div className='max-w-5xl mx-auto mb-12'>
+          <div className='w-fit mb-2 text-4xl font-bold text-foreground tracking-tight'>
+            <Icon
+              name='protap'
+              onClick={() => router.push('/')}
+              className='h-10 w-20 opacity-50 cursor-pointer hover:opacity-100 hover:text-primary'
+            />
+            <h1 className='font-figtree'>Legal Resources</h1>
+          </div>
+
+          <p className='text-base'>
+            Access our terms, policies, and important information
+          </p>
+        </div>
+
+        <div className='grid gap-6 md:grid-cols-3'>
+          {documents.map((doc) => (
+            <Link key={doc.slug} href={`/legal/${doc.slug}`}>
+              <Card className='dark:bg-origin rounded-4xl md:py-8 md:px-4 h-80 flex flex-col justify-center space-y-2'>
+                <CardHeader>
+                  <div className='mb-2 inline-flex w-fit rounded-2xl bg-origin/20 dark:bg-background/10 p-4'>
+                    <Icon name={doc.icon} className='size-6' />
+                  </div>
+                  <div className='h-20 flex flex-col justify-center'>
+                    <CardTitle className='md:text-xl tracking-tight mb-1'>
+                      {doc.title}
+                    </CardTitle>
+                    <CardDescription>{doc.description}</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardFooter>
+                  <SexyButton
+                    size='lg'
+                    variant='tertiary'
+                    className='w-full'
+                    leftIcon='eye'>
+                    Read
+                  </SexyButton>
+                </CardFooter>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}

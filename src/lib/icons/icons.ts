@@ -924,6 +924,18 @@ export const icons = {
     viewBox: '0 0 24 24',
     set: 'lets-icons',
   },
+  'file-text': {
+    symbol:
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="M11.688 3.063a3.5 3.5 0 0 1 1.027.712l5.968 5.97c.3.3.54.647.711 1.026m-7.706-7.708a3.5 3.5 0 0 0-1.448-.313H7.792a3.5 3.5 0 0 0-3.5 3.5v11.5a3.5 3.5 0 0 0 3.5 3.5h8.416a3.5 3.5 0 0 0 3.5-3.5v-5.53c0-.505-.109-.999-.314-1.45m-7.706-7.707V8.77a2 2 0 0 0 2 2h5.706"/><path d="M7.29 13.77h9.42m-9.42 3.48h6.42"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'bag-light': {
+    symbol:
+      '<g fill="none" stroke="currentColor"><path stroke-linecap="round" d="M8 12V8a4 4 0 0 1 4-4v0a4 4 0 0 1 4 4v4"/><path d="M3.694 12.668c.145-1.741.218-2.611.792-3.14S5.934 9 7.681 9h8.639c1.746 0 2.62 0 3.194.528s.647 1.399.792 3.14l.514 6.166c.084 1.013.126 1.52-.17 1.843c-.298.323-.806.323-1.824.323H5.174c-1.017 0-1.526 0-1.823-.323s-.255-.83-.17-1.843z"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'lets-icons',
+  },
 }
 
 /*

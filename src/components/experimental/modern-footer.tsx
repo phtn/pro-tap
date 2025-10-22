@@ -3,6 +3,7 @@
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {useRouter} from 'next/navigation'
+import {GridLayer} from '../ui/visual-1'
 
 export function Footer() {
   const router = useRouter()
@@ -10,7 +11,7 @@ export function Footer() {
     <footer
       className={cn(
         // 'pt-12 pb-28 dark:bg-gray-900/20 bg-zinc-800',
-        'rounded-t-2xl pt-12 pb-28 bg-gradient-to-b from-zinc-600/50 to-zinc-700/50 dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm',
+        'relative rounded-t-4xl pt-12 pb-28 bg-gradient-to-b from-[#1a1a24] to-[#1a1a24] dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm overflow-hidden',
       )}>
       <div className='container mx-auto px-10 font-figtree'>
         <div className='grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-12'>
@@ -119,8 +120,8 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href='#'
-                  className='text-gray-400 hover:text-white transition-colors text-sm'>
+                  href='/legal'
+                  className='text-gray-400 hover:text-white transition-colors text-sm hover:underline decoration-dashed decoration-[0.33px] underline-offset-2 decoration-primary-hover dark:decoration-primary'>
                   Legal
                 </a>
               </li>
@@ -150,6 +151,7 @@ export function Footer() {
           </div>
         </div>
       </div>
+      <GridLayer className='absolute -rotate-10 skew-16 translate-y-8 -translate-x-6  bg-[size:40px_32px] opacity-40' />
     </footer>
   )
 }

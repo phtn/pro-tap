@@ -298,3 +298,62 @@
         background-position: 75%;
     }
 }
+
+@layer components {
+    .prose {
+        @apply max-w-none;
+    }
+
+    .prose h1 {
+        @apply mb-6 mt-8 text-3xl font-bold text-foreground first:mt-0;
+    }
+
+    .prose h2 {
+        @apply mb-4 mt-6 text-2xl font-semibold text-foreground;
+    }
+
+    .prose h3 {
+        @apply mb-3 mt-4 text-xl font-semibold text-foreground;
+    }
+
+    .prose p {
+        @apply mb-4 leading-relaxed text-foreground;
+    }
+
+    .prose ul,
+    .prose ol {
+        @apply mb-4 ml-6 space-y-2;
+    }
+
+    .prose li {
+        @apply text-foreground;
+    }
+
+    .prose strong {
+        @apply font-semibold text-foreground;
+    }
+
+    .prose em {
+        @apply italic text-foreground;
+    }
+
+    .prose a {
+        @apply text-primary hover:underline;
+    }
+
+    .prose code {
+        @apply rounded bg-muted px-2 py-1 font-mono text-sm text-foreground;
+    }
+
+    .prose pre {
+        @apply mb-4 overflow-x-auto rounded-lg bg-muted p-4;
+    }
+
+    .prose blockquote {
+        @apply border-l-4 border-primary pl-4 italic text-muted-foreground;
+    }
+
+    .prose hr {
+        @apply my-6 border-border;
+    }
+}
