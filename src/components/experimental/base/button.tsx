@@ -1,7 +1,6 @@
 'use client'
 
 import {TextShimmer} from '@/components/ui/shimmer'
-import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 
 interface HyperButtonProps {
@@ -14,7 +13,7 @@ export default function HyperButton({
   onClick,
 }: HyperButtonProps) {
   return (
-    <div className='w-full h-96 flex items-center justify-center overflow-hidden'>
+    <div className='w-full h-96 hidden dark:flex items-center justify-center overflow-hidden'>
       <div className='relative'>
         {/* Deep shadow layer - creates the main depth */}
         <div
@@ -105,7 +104,7 @@ export default function HyperButton({
         {/* The button itself */}
         <button
           onClick={onClick}
-          className='z-100 relative px-10 py-5 bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-background dark:via-dark-origin dark:to-dark-origin rounded-full flex items-center justify-between gap-16 transition-all duration-400 cursor-pointer hover:scale-101 active:scale-96'
+          className='z-100 relative px-10 py-5 bg-gradient-to-b from-primary-hover via-primary to-primary dark:from-background dark:via-dark-origin dark:to-dark-origin rounded-full flex items-center justify-between gap-16 transition-all duration-400 cursor-pointer hover:scale-101 active:scale-96'
           style={{
             boxShadow: `
               0 2px 4px rgba(100, 100, 100, 0.08),
@@ -119,7 +118,7 @@ export default function HyperButton({
             // border: '1px solid rgba(255, 255, 255, 0.85)',
           }}>
           <div
-            className='absolute opacity-90 dark:opacity-20 top-0 left-3 right-3 h-2/5 rounded-full pointer-events-none'
+            className='hidden absolute opacity-90 dark:opacity-20 top-0 left-3 right-3 h-2/5 rounded-full pointer-events-none'
             style={{
               background:
                 'linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3), transparent)',
@@ -127,21 +126,12 @@ export default function HyperButton({
           />
 
           {/* Text */}
-          <TextShimmer className='font-medium text-base tracking-tight'>
+          <TextShimmer className='font-medium text-base md:text-xl tracking-tight'>
             {label}
 
             {/*<span className='capitalize relative text-gray-900 font-medium text-base tracking-tight'>
           </span>*/}
           </TextShimmer>
-
-          {/* Search Icon */}
-          <div className='relative flex items-center justify-center'>
-            <Icon
-              name='arrow-up'
-              className='size-5 rotate-45'
-              strokeWidth={2.5}
-            />
-          </div>
         </button>
       </div>
     </div>

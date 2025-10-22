@@ -1,12 +1,13 @@
-import { ProvidersCtxProvider } from '@/ctx/providers'
+import {ProvidersCtxProvider} from '@/ctx/providers'
 import Devtools from '@/devtools'
-import type { Metadata } from 'next'
+import type {Metadata} from 'next'
 import {
   Doto,
   Figtree,
   Geist,
   Geist_Mono as GeistMono,
   Space_Grotesk as SpaceGrotesk,
+  Tektur,
 } from 'next/font/google'
 import './globals.css'
 
@@ -33,14 +34,27 @@ const doto = Doto({
   variable: '--font-doto',
   subsets: ['latin'],
 })
+const tek = Tektur({
+  variable: '--font-tek',
+  weight: ['400'],
+  subsets: ['latin'],
+})
 export const metadata: Metadata = {
   title: {
     default: 'ProTap - Smart NFC Business Cards & Digital Networking',
-    template: '%s | ProTap'
+    template: '%s | ProTap',
   },
-  description: 'Create stunning digital business cards with NFC technology. Share your contact information, social links, and more with a simple tap. Perfect for modern networking and professional connections.',
-  keywords: ['NFC business cards', 'digital networking', 'contact sharing', 'smart cards', 'professional networking', 'digital transformation'],
-  authors: [{ name: 'ProTap Team' }],
+  description:
+    'Create stunning digital business cards with NFC technology. Share your contact information, social links, and more with a simple tap. Perfect for modern networking and professional connections.',
+  keywords: [
+    'NFC business cards',
+    'digital networking',
+    'contact sharing',
+    'smart cards',
+    'professional networking',
+    'digital transformation',
+  ],
+  authors: [{name: 'ProTap Team'}],
   creator: 'ProTap',
   publisher: 'ProTap',
   formatDetection: {
@@ -48,7 +62,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://protap.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://protap.com',
+  ),
   alternates: {
     canonical: '/',
   },
@@ -57,7 +73,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: '/',
     title: 'ProTap - Smart Digital Insurance',
-    description: 'Create stunning online personal and business profile. Share your contact information, social links, and more with a simple tap.',
+    description:
+      'Create stunning online personal and business profile. Share your contact information, social links, and more with a simple tap.',
     siteName: 'ProTap',
     images: [
       {
@@ -71,7 +88,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ProTap - Smart Digital Insurance',
-    description: 'Create stunning online personal and business profile. Share your contact information, social links, and more with a simple tap.',
+    description:
+      'Create stunning online personal and business profile. Share your contact information, social links, and more with a simple tap.',
     images: ['/og-image.png'],
     creator: '@protap',
   },
@@ -122,7 +140,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        className={`${tek.variable} ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
         <Devtools />
       </body>

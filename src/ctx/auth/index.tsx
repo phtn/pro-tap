@@ -1,5 +1,5 @@
 'use client'
-
+// download
 import {
   clearUserProfile,
   getCookie,
@@ -9,7 +9,6 @@ import {
 import {VoidPromise} from '@/app/types'
 import {auth} from '@/lib/firebase'
 import {createUser, getUser} from '@/lib/firebase/users'
-import {downloadAndCacheImage} from '@/lib/image-cache'
 import {
   GoogleAuthProvider,
   onIdTokenChanged,
@@ -77,14 +76,6 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
           }
 
           if (userProfile) {
-            // Download and cache image data if photoURL exists
-            let photoData = null
-            if (userProfile.photoURL) {
-              console.log('Downloading profile image...')
-              photoData = await downloadAndCacheImage(userProfile.photoURL)
-              console.log('Image downloaded, size:', photoData?.length || 0)
-            }
-
             const profileData = {
               uid: userProfile.uid,
               email: userProfile.email || null,
@@ -141,8 +132,8 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
 
       if (scanResult) {
         // Process the scan result
-        router.push('/account/activated')
-      } else if (scanResult === null) {
+        router.push('/account/add-service')
+      } else {
         // Handle the case when the cookie is not found
         router.push('/account/profile')
       }

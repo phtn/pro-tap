@@ -50,7 +50,7 @@ export function FullSignIn() {
       <div className='bg-white dark:bg-background  w-full md:rounded-4xl md:shadow-2xl overflow-hidden'>
         <div className='flex flex-col lg:flex-row md:min-h-[70lvh]'>
           <AnimatePresence mode='wait'>
-            {scanResult && <ActivationMessage />}
+            {!user && scanResult && <ActivationMessage />}
           </AnimatePresence>
           <LeftPanel />
           <RightPanel
@@ -69,6 +69,7 @@ const ActivationMessage = () => {
     <motion.div
       initial={{opacity: 0, scale: 0.8, y: -8}}
       animate={{opacity: 1, scale: 1, y: 0}}
+      exit={{opacity: 0, scale: 0.6, y: -10}}
       transition={{
         type: 'spring',
         visualDuration: 0.5,
@@ -78,7 +79,8 @@ const ActivationMessage = () => {
       <div className='space-y-10 w-full flex flex-col items-start'>
         <div
           className={cn(
-            'ml-7 flex items-center space-x-1 border rounded-full bg-foreground dark:bg-background text-white text-xs md:text-sm px-3 py-1.5 dark:border-amber-500/60',
+            'ml-7 flex items-center space-x-1 border rounded-full bg-foreground dark:bg-background text-white text-xs md:text-sm px-3 py-1.5 ',
+            'dark:border-slate-500/60',
           )}>
           <motion.div
             initial={{opacity: 0, scale: 0.2, x: -48}}
@@ -91,7 +93,7 @@ const ActivationMessage = () => {
             className=''>
             <Icon
               name={'zap-solid'}
-              className={cn('size-5 text-mac-teal', {})}
+              className={cn('size-5 text-amber-400', {})}
             />
           </motion.div>
           <TextAnimate
@@ -100,13 +102,19 @@ const ActivationMessage = () => {
             {'Protap Activation'}
           </TextAnimate>
         </div>
-        <RowItem title='Code Validation'>
+        <RowItem
+          className='text-primary opacity-100 dark:text-primary-hover'
+          bullet='square-check-solid'
+          title={<span>Code Validation</span>}>
           <div className='pl-3'>Your code is valid and ready to use.</div>
         </RowItem>
         <div className='w-full flex justify-center overflow-x-visible'>
           <div className='h-[3px] bg-origin/60 dark:bg-origin/30 w-full rounded-full -mx-24' />
         </div>
-        <RowItem title='next step'>
+        <RowItem
+          className='text-teal-600 opacity-100 dark:text-teal-500 size-4'
+          bullet='right-double'
+          title='next step'>
           <div className='pl-3 max-w-[30ch]'>
             Sign in to your account you wish to activate your protap.
           </div>

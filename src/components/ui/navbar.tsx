@@ -20,7 +20,7 @@ const Nav = ({children, hideOnMobile, label}: NavbarProps) => {
         'h-[10lvh] md:h-[12lvh] flex items-center justify-between py-6 w-screen md:max-w-6xl mx-auto',
         {
           'hidden md:flex': hideOnMobile,
-          'bg-foreground md:max-w-full md:px-8': pathname === 'pricing',
+          'absolute md:max-w-full md:px-8': pathname === 'pricing',
         },
       )}>
       <Link href='/alpha' className='flex items-center px-4 md:px-0'>

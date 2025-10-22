@@ -1,24 +1,34 @@
+'use client'
+
 import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {useRouter} from 'next/navigation'
 
 export function Footer() {
+  const router = useRouter()
   return (
-    <footer className='pt-12 pb-28 dark:bg-gray-900/20 bg-zinc-800 rounded-t-2xl'>
+    <footer
+      className={cn(
+        // 'pt-12 pb-28 dark:bg-gray-900/20 bg-zinc-800',
+        'rounded-t-2xl pt-12 pb-28 bg-gradient-to-b from-zinc-600/50 to-zinc-700/50 dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm',
+      )}>
       <div className='container mx-auto px-10 font-figtree'>
         <div className='grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-12'>
           {/* Brand Section */}
           <div className='font-figtree'>
             <div className='h-10 flex items-center overflow-hidden'>
               <Icon
+                onClick={() => router.push('/alpha')}
                 name='protap'
-                className='text-zinc-200 md:h-36 h-20 w-auto'
+                className='text-zinc-200 md:h-36 h-20 w-auto cursor-pointer'
               />
             </div>
-            <p className='opacity-70 text-zinc-200 tracking-wider font-space mb-2'>
+            <p className='opacity-70 text-zinc-200 tracking-wider font-tek mb-2'>
               Digital Insurance
             </p>
             <a
               href='mailto:support@pxgen.com'
-              className='text-primary-hover text-xs hover:text-purple-400 transition-colors'>
+              className='font-figtree text-primary-hover text-xs md:text-sm hover:text-primary transition-colors'>
               support@protap.ph
             </a>
 

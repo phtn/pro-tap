@@ -1,29 +1,29 @@
-import { Icon, type IconName } from '@/lib/icons'
-import { cn } from '@/lib/utils'
+import {Icon, type IconName} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {useRouter} from 'next/navigation'
+import {ReactNode, useCallback} from 'react'
 import {
   TextureCardContent,
   TextureCardFooter,
   TextureCardHeader,
 } from '../ui/texture-card'
-import { SexyButton } from './sexy-button-variants'
-import { ReactNode, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import {SexyButton} from './sexy-button-variants'
 
 interface Feature {
-  icon: IconName;
-  text: string;
+  icon: IconName
+  text: string
 }
 
 interface PricingCardProps {
-  title: ReactNode;
-  price: string;
-  period: string;
-  billing: string;
-  buttonText: string;
-  gradient: string;
-  features: Feature[];
-  footerText: string;
-  popular?: boolean;
+  title: ReactNode
+  price: string
+  period: string
+  billing: string
+  buttonText: string
+  gradient: string
+  features: Feature[]
+  footerText: string
+  popular?: boolean
 }
 
 export function PricingCard({
@@ -48,9 +48,8 @@ export function PricingCard({
         'bg-gradient-to-b from-white/95 to-white/95 dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm',
         ' border-[0.33px] border-zinc-300 dark:border-zinc-800/60',
         ' shadow-xl shadow-zinc-900/5 dark:shadow-zinc-950/20',
-        'font-figtree font-semibold'
-      )}
-    >
+        'font-figtree font-semibold',
+      )}>
       {popular && (
         <div className='font-figtree absolute top-0 left-1/2 transform -translate-x-1/2 z-10'>
           <div className='bg-gradient-to-b from-teal-600/40 via-teal-500/40 via-33% to-teal-500/40 text-white tracking-normal px-6 py-1 rounded-b-lg text-xs font-medium shadow-md'>
@@ -63,9 +62,8 @@ export function PricingCard({
         <div
           className={cn(
             'h-fit p-8 text-zinc-700 dark:text-foreground font-sans',
-            ''
-          )}
-        >
+            '',
+          )}>
           <div className='space-y-6'>
             <h3 className='text-xl text-orange-200 tracking-tighter font-bold'>
               {title}
@@ -97,8 +95,7 @@ export function PricingCard({
                 onClick={handleRoute}
                 className='relative z-20 w-full'
                 size='lg'
-                variant='primary'
-              >
+                variant='primary'>
                 {buttonText}
               </SexyButton>
             </div>

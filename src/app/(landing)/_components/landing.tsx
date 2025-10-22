@@ -222,12 +222,13 @@ export const Landing = () => {
         <LogoCarousel columnCount={isMobile ? 4 : 5} />
       </div>
 
-      <FAQ />
-      <div className='h-10'></div>
       <HyperButton
         label='Get Protap Today!'
         onClick={() => console.log('click')}
       />
+      <FAQ />
+      <div className='h-10'></div>
+
       <Footer />
       <div className='h-10'></div>
     </main>

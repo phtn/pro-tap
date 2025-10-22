@@ -15,7 +15,9 @@ export async function GET(request: NextRequest) {
   }
 
   if (!user) {
-    return NextResponse.json({error: 'User not found'}, {status: 404})
+    return NextResponse.redirect(
+      new URL(`/sign`, request.url ?? 'https://localhost:3000'),
+    )
   }
 
   try {
@@ -28,15 +30,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    if (params) {
-      await setCookie('protapScanResult', {success: true, ...params})
-    }
-
-    if (!user) {
-      return NextResponse.redirect(
-        new URL(`/sign`, request.url ?? 'https://localhost:3000'),
-      )
-    }
+    await setCookie('protapScanResult', {success: true, ...params})
 
     // Return success response with activation data
     return NextResponse.redirect(

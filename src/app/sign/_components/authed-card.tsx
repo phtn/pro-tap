@@ -1,6 +1,7 @@
 import {VoidPromise} from '@/app/types'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {ProAvatar} from '@/components/ui/pro-avatar'
+import TextAnimate from '@/components/ui/text-animate'
 import {AuthUser} from '@/ctx/auth/types'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
@@ -21,7 +22,12 @@ export const AuthedCard = ({user, signOut}: SignInCardProps) => {
       <div className='left-0 top-8 absolute size-full font-figtree flex flex-col space-y-12 items-center justify-start text-zinc-600 dark:text-zinc-400 z-100'>
         <div className='w-full flex items-center space-x-3 px-6 font-bold text-xl tracking-tight'>
           <Icon name='shield-checkmark' className='text-zinc-600 size-8' />
-          <span>{user ? "You're logged in as" : 'Sign in'}</span>
+          <TextAnimate
+            type='whipInUp'
+            className='text-lg font-semibold font-figtree tracking-tight'>
+            Hello, Successful!
+          </TextAnimate>
+          <span></span>
         </div>
 
         <div className='space-y-8 w-full px-6'>

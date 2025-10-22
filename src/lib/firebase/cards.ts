@@ -123,6 +123,7 @@ export async function createQR(
   grp: string,
 ): Promise<string> {
   const ref = cardDocRef(data.serialNumber, grp)
+
   const snap = await getDoc(ref)
   if (snap.exists()) {
     return snap.id

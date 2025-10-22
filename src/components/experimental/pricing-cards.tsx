@@ -1,9 +1,9 @@
 'use client'
 
-import {Footer} from '@/components/experimental/modern-footer'
 import {Button} from '@/components/ui/button'
 import {Icon} from '@/lib/icons'
 import {useState} from 'react'
+import {LightRays} from '../react-bits/light-rays'
 
 export const ModernPricingPage = () => {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>(
@@ -60,10 +60,11 @@ export const ModernPricingPage = () => {
   ]
 
   return (
-    <div className='min-h-screen bg-[#0a0a0f] text-white'>
+    <div className='relative min-h-screen bg-[#0a0a0f] text-white'>
       <main className='container mx-auto px-4 py-16'>
+        <Rays />
         {/* Header */}
-        <div className='text-center mb-12'>
+        <div className='text-center mb-12 md:mb-16'>
           <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-8 bg-gradient-to-r from-teal-400 via-teal-100 to-white bg-clip-text text-transparent -tracking-wider'>
             Our Growth Focused Products
           </h1>
@@ -163,7 +164,7 @@ export const ModernPricingPage = () => {
               </Button>
 
               {/* Features */}
-              <ul className='space-y-4'>
+              <ul className='space-y-4 md:space-y-10'>
                 {plan.features.map((feature, index) => (
                   <li key={index} className='flex items-start gap-3'>
                     {feature.included ? (
@@ -187,8 +188,23 @@ export const ModernPricingPage = () => {
           ))}
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }
+
+const Rays = () => (
+  <div className='absolute h-[60vh] top-0 left-1/2 -translate-x-1/2'>
+    <LightRays
+      raysOrigin='top-center'
+      raysColor='#00ffff'
+      raysSpeed={1.5}
+      lightSpread={0.8}
+      rayLength={1.2}
+      followMouse={true}
+      mouseInfluence={0.1}
+      noiseAmount={0.1}
+      distortion={0.05}
+      className='custom-rays'
+    />
+  </div>
+)

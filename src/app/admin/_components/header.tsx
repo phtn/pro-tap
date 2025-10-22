@@ -21,16 +21,15 @@ export const Header = ({
   return (
     <div
       className={cn(
-        'w-full',
-        'flex items-center justify-between',
+        'w-full flex items-center justify-between',
         'border-b h-14 md:h-20 px-2 md:px-0',
         className,
       )}>
       <div className='flex items-center space-x-4 md:space-x-8'>
         <Icon
-          name='back'
-          className='size-5 md:size-7 opacity-60 cursor-pointer'
           onClick={back}
+          name='arrow-left-solid'
+          className='size-5 md:size-7 opacity-60 cursor-pointer'
         />
         <h1 className='text-lg md:text-3xl font-bold text-gray-900 dark:text-white tracking-tighter font-figtree space-x-2'>
           <span>{title}</span>

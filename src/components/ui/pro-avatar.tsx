@@ -19,7 +19,7 @@ export const ProAvatar = ({
   return photoURL ? (
     <Avatar
       className={cn(
-        'flex items-center justify-center aspect-auto size-12 shadow-2xs select-none',
+        'flex items-center overflow-visible justify-center aspect-auto size-12 shadow-2xs select-none',
         className,
       )}>
       <AvatarFallback className='bg-zinc-300'>
@@ -28,7 +28,7 @@ export const ProAvatar = ({
       <AvatarImage
         src={photoURL}
         className={cn(
-          'aspect-auto w-auto border-0 border-white/40 dark:border-zinc-900 rounded-full',
+          'aspect-auto overflow-hidden w-auto border-0 border-white/40 dark:border-zinc-900 rounded-full',
           {'h-10 w-auto': tiny},
         )}
       />
