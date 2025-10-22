@@ -116,7 +116,8 @@ const ActivationMessage = () => {
           bullet='right-double'
           title='next step'>
           <div className='pl-3 max-w-[30ch]'>
-            Sign in to your account you wish to activate your protap.
+            Sign in to your Google account you wish to link with your Protap
+            Account.
           </div>
         </RowItem>
       </div>

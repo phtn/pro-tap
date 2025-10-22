@@ -27,7 +27,7 @@ export function LegalDocumentPage({document}: LegalDocumentPageProps) {
   return (
     <div className='min-h-screen bg-background'>
       {/* Header */}
-      <header className='sticky top-0 z-40 border-b border-border bg-origin/20 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+      <header className='sticky top-0 z-40 border-b border-border backdrop-blur supports-[backdrop-filter]:bg-origin/40'>
         <div className='flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8'>
           <div className='flex items-center gap-4'>
             <Link
@@ -84,16 +84,16 @@ export function LegalDocumentPage({document}: LegalDocumentPageProps) {
               headings={document.headings}
             />
 
-            <nav className='fixed bottom-0 left-0 w-screen bg-background/40 backdrop-blur-3xl border-t border-border py-4 print:hidden'>
+            <nav className='fixed bottom-0 left-0 w-screen  backdrop-blur supports-[backdrop-filter]:bg-origin/40 border-t border-border py-4 print:hidden'>
               <div className='flex items-center justify-center space-x-4 '>
                 {otherDocuments.map((doc) => (
                   <Link
                     key={doc.slug}
                     href={`/legal/${doc.slug}`}
-                    className='min-w-lg group flex items-center justify-between rounded-2xl border border-border bg-muted/30 p-4 transition-all hover:border-primary-hover hover:bg-muted/60'>
+                    className='min-w-lg group flex items-center justify-between rounded-3xl border border-origin bg-background p-4 transition-all hover:border-primary-hover hover:bg-muted/60'>
                     <div>
-                      <p className='text-sm font-medium text-muted-foreground'>
-                        Next
+                      <p className='text-sm text-muted-foreground'>
+                        {doc.slug}
                       </p>
                       <p className='font-semibold text-foreground group-hover:text-primary'>
                         {doc.title}
@@ -111,21 +111,18 @@ export function LegalDocumentPage({document}: LegalDocumentPageProps) {
         </main>
 
         {/* Desktop TOC Sidebar */}
-        <aside className='hidden w-64 border-l border-border bg-muted/30 p-6 lg:block print:hidden'>
+        <aside className='hidden w-80 md:h-[85lvh] overflow-y-scroll border-l border-border bg-muted/30 p-6 lg:block print:hidden'>
           <div className='sticky top-20'>
+            <span>Table of Contents</span>
             <nav className='space-y-3 text-sm'>
               {document.headings.map((heading) => (
                 <a
                   key={heading.id}
                   href={`#${heading.id}`}
-                  className={`block truncate rounded font-figtree px-2 py-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground ${
-                    heading.level === 2
-                      ? 'font-medium'
-                      : 'ml-0 font-bold opacity-60 text-lg tracking-tight'
+                  className={`block truncate rounded font-figtree tracking-tight px-2 py-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground ${
+                    heading.level === 2 ? 'font-medium' : 'ml-2'
                   }`}>
-                  <span className='hover:underline decoration-dashed decoration-[0.33px] decoration-zinc-600 underline-offset-5'>
-                    {heading.text} {heading.level !== 2 && 'Contents'}
-                  </span>
+                  <span className=''>{heading.text}</span>
                 </a>
               ))}
             </nav>

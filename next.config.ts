@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next'
+import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -13,8 +13,8 @@ const nextConfig: NextConfig = {
   ...(process.env.NODE_ENV === 'development' && {
     allowedDevOrigins: [
       'http://localhost:3000',
-      'http://localhost:3001',
-      'http://192.168.1.5:3000',
+      'http://localhost:3002',
+      'http://192.168.1.2:3000',
     ],
   }),
 
@@ -89,7 +89,7 @@ const nextConfig: NextConfig = {
   },
 
   // Webpack optimization
-  webpack: (config, { isServer }) => {
+  webpack: (config, {isServer}) => {
     // Optimize bundle size
     if (!isServer) {
       config.optimization.splitChunks.cacheGroups = {

@@ -25,14 +25,16 @@ export default function AddServicePage() {
 
 const ActivationPanel = () => (
   <div className='h-full w-full col-span-1 md:col-span-4 relative mt-12'>
-    <Widget className='h-full space-y-0 md:h-[60lvh] w-full overflow-hidden p-0'>
+    <Widget className='h-full space-y-0 md:h-[65lvh] w-full overflow-hidden p-0'>
       <Visual1 />
     </Widget>
-    <div className='absolute top-8 h-fit w-full rounded-[19px] shadow-xl flex justify-center'>
+    <div className='absolute top-8 h-fit w-full rounded-[19px] flex justify-center'>
       <ElectricCard>
-        <div className='relative rounded-4xl m-0.5 border-4 border-[#bec4a9]'>
-          <ProtapCard className='-m-0.5' />
-          <div className='absolute h-10 w-52 bg-yellow-100/40 top-14 -left-4 blur-3xl -rotate-40' />
+        <div className='relative rounded-4xl -p-2 border-3 border-[#bec4a9]/0'>
+          <div className='absolute w-126 h-82 border-2 rounded-4xl border-[#dec4af]/90 blur-[1px] -translate-y-1 -translate-x-1' />
+          <div className='absolute w-126 h-82 border-4 rounded-4xl border-[#becfcf]/80 blur-[4px] -translate-y-1 -translate-x-1' />
+          <ProtapCard className='p-1' />
+          <div className='absolute z-10 h-10 w-50 bg-yellow-100/30 top-14 -left-4 blur-3xl -rotate-40' />
         </div>
       </ElectricCard>
     </div>
@@ -98,9 +100,9 @@ const FeaturesPanel = () => {
   return (
     <div className='w-full h-[64lvh] col-span-1 p-4 md:p-8 md:pl-0 md:col-span-5 mt-0'>
       <div className='pt-4 size-full rounded-4xl flex items-start'>
-        <div className='w-full h-full space-y-8'>
+        <div className='w-full h-full space-y-6'>
           <div className=''>
-            <div className='mb-4 h-9 w-fit px-4 text-sm rounded-full flex items-center justify-center dark:bg-teal-100/20 tracking-widest font-thin font-figtree uppercase'>
+            <div className='mb-6 h-9 w-fit px-4 text-sm rounded-full flex items-center justify-center dark:bg-teal-100/20 tracking-widest font-thin font-figtree uppercase'>
               features
             </div>
             <div className='w-full flex justify-start'>
@@ -127,10 +129,10 @@ const FeaturesPanel = () => {
 export function AnimatedFeatureCard({title, description}: IFeature) {
   return (
     <div className='flex items-center space-x-3 font-figtree'>
-      <div className='size-18 bg-dark-origin aspect-square border flex items-center justify-center rounded-3xl'>
-        <Icon name='shield-keyhole' className='size-10 opacity-60' />
+      <div className='size-14 bg-dark-origin aspect-square border flex items-center justify-center rounded-3xl'>
+        <Icon name='shield-keyhole' className='size-8 opacity-60' />
       </div>
-      <CardBody className='border-none max-w-[35ch]'>
+      <CardBody className='border-none max-w-[38ch]'>
         <CardTitle className='text-xl'>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardBody>

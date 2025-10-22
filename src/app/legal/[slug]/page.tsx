@@ -32,7 +32,7 @@ interface PageProps {
 }
 
 export default async function Page({params}: PageProps) {
-  const {slug} = await params
+  const slug = (await params).slug
   const doc = legalDocuments.find((d) => d.slug === slug)
 
   if (!doc) {

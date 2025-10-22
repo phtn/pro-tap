@@ -2,26 +2,27 @@
 
 import type React from 'react'
 
-import {Button} from '@/components/ui/button'
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
-import {Icon} from '@/lib/icons'
-import {Html5Qrcode} from 'html5-qrcode'
-import {useEffect, useRef, useState} from 'react'
-import {HyperCard} from './card/hyper-card'
-import {SexyButton} from './sexy-button-variants'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Icon } from '@/lib/icons'
+import { Html5Qrcode } from 'html5-qrcode'
+import { useEffect, useRef, useState } from 'react'
+import { HyperCard } from './card/hyper-card'
+import { SexyButton } from './sexy-button-variants'
 
 interface QRCodeReaderProps {
   onScan?: (data: string) => void
 }
 
-export function QRCodeReader({onScan}: QRCodeReaderProps) {
+export function QRCodeReader({ onScan }: QRCodeReaderProps) {
   const [activeTab, setActiveTab] = useState<'camera' | 'upload'>('camera')
   const [qrResult, setQrResult] = useState<string>('')
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [error, setError] = useState<string>('')
   const [uploadedImage, setUploadedImage] = useState<string>('')
+  const [isDragOver, setIsDragOver] = useState(false)
 
-  // const cameraRef = useRef<HTMLDivElement>(null)
+  const cameraRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null)
 
@@ -65,10 +66,10 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
 
       // Request camera permission through the start method
       await html5QrCodeRef.current.start(
-        {facingMode: 'environment'},
+        { facingMode: 'environment' },
         {
           fps: 10,
-          qrbox: {width: 250, height: 250},
+          qrbox: { width: 250, height: 250 },
         },
         async (decodedText) => {
           setQrResult(decodedText)
@@ -143,6 +144,44 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
     }
   }
 
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragOver(false)
+    const files = Array.from(event.dataTransfer.files)
+    if (files.length > 0) {
+      const file = files[0]
+      if (file && file.type.startsWith('image/')) {
+        setError('')
+        setQrResult('')
+
+        // Show preview of uploaded image
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          setUploadedImage(e.target?.result as string)
+        }
+        reader.readAsDataURL(file)
+
+        try {
+          if (!html5QrCodeRef.current) {
+            html5QrCodeRef.current = new Html5Qrcode('qr-reader-upload')
+          }
+
+          const decodedText = await html5QrCodeRef.current.scanFile(file, true)
+          console.log('[v0] QR Code detected from dropped image:', decodedText)
+          setQrResult(decodedText)
+          onScan?.(decodedText)
+        } catch (err) {
+          console.error('[v0] QR detection error:', err)
+          setError(
+            'No QR code found in the image. Please ensure the image contains a clear QR code.',
+          )
+        }
+      } else {
+        setError('Please drop a valid image file.')
+      }
+    }
+  }
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -180,7 +219,9 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
         </TabsList>
 
         <TabsContent value='camera' className='space-y-2'>
-          <div className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
+          <div
+            ref={cameraRef}
+            className='relative aspect-square bg-muted rounded-lg overflow-hidden'>
             {!isCameraActive && !qrResult && (
               <div className='absolute inset-0 flex items-center justify-center'>
                 <div className='text-center space-y-4'>
@@ -212,8 +253,8 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
               <Button
                 onClick={stopCamera}
                 variant='destructive'
-                className='flex-1'>
-                <Icon name='close' className='mr-2 h-4 w-4' />
+                className='flex-1 tracking-tight font-figtree'>
+                <Icon name='stop' className='mr-2 size-4' />
                 Stop Camera
               </Button>
             )}
@@ -223,7 +264,17 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
         <TabsContent value='upload' className='space-y-2'>
           <div id='qr-reader-upload' className='hidden' />
 
-          <div className='relative aspect-square bg-origin/10 rounded-3xl overflow-hidden border-2 border-dashed border-border'>
+          <div
+            className={`relative aspect-square bg-origin/10 rounded-3xl overflow-hidden border-2 border-dashed cursor-pointer transition-colors ${isDragOver ? 'border-primary bg-primary/5' : 'border-border'
+              }`}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setIsDragOver(true)
+            }}
+            onDragLeave={() => setIsDragOver(false)}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+          >
             {uploadedImage ? (
               <img
                 src={uploadedImage || '/placeholder.svg'}
@@ -238,7 +289,7 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
                     className='size-36 mx-auto opacity-60'
                   />
                   <p className='text-sm text-muted-foreground'>
-                    Upload an image containing a QR code
+                    Drag and drop an image here or click to upload
                   </p>
                 </div>
               </div>
@@ -252,13 +303,6 @@ export function QRCodeReader({onScan}: QRCodeReaderProps) {
             onChange={handleFileUpload}
             className='hidden'
           />
-          <Button
-            size='lg'
-            className='w-full h-14 rounded-[1.25rem]'
-            onClick={() => fileInputRef.current?.click()}>
-            <Icon name='qr-code' className='mr-2 size-4 text-white' />
-            <span className='md:text-lg text-white'>Choose Image</span>
-          </Button>
         </TabsContent>
       </Tabs>
 

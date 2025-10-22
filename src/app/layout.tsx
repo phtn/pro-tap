@@ -1,6 +1,6 @@
-import {ProvidersCtxProvider} from '@/ctx/providers'
+import { ProvidersCtxProvider } from '@/ctx/providers'
 import Devtools from '@/devtools'
-import type {Metadata} from 'next'
+import type { Metadata } from 'next'
 import {
   Doto,
   Figtree,
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     'professional networking',
     'digital transformation',
   ],
-  authors: [{name: 'ProTap Team'}],
+  authors: [{ name: 'ProTap Team' }],
   creator: 'ProTap',
   publisher: 'ProTap',
   formatDetection: {
@@ -139,6 +139,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
+      <head>
+        <meta httpEquiv="Permissions-Policy" content="camera=(), microphone=()" />
+      </head>
       <body
         className={`${tek.variable} ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
