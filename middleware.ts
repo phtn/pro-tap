@@ -1,17 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getCookie } from './src/app/actions'
+import {type NextRequest, NextResponse} from 'next/server'
 
-const protectedRoutes = [
-  '/account',
-  '/admin',
-]
+const protectedRoutes = ['/account', '/admin']
 
-const authRoutes = [
-  '/sign',
-]
+const authRoutes = ['/sign']
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const {pathname} = request.nextUrl
+  const response = NextResponse.next()
 
   // Skip middleware for static files, API routes, and Next.js internals
   if (
@@ -27,17 +22,15 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
+    const userProfile = response.cookies.get('protap-user-profile')
+    const scanResults = response.cookies.get('protap-scan-results')
     // Check for cached user profile
-    const userProfile = await getCookie('protapUserProfile')
-
-    // Check for scan result cookie
-    const scanResult = await getCookie('protapScanResult')
 
     const isAuthenticated = !!userProfile
-    const hasScanResult = !!scanResult
+    const hasScanResult = !!scanResults
 
     // Handle protected routes
-    if (protectedRoutes.some(route => pathname.startsWith(route))) {
+    if (protectedRoutes.some((route) => pathname.startsWith(route))) {
       if (!isAuthenticated) {
         // Redirect unauthenticated users to sign-in
         const signInUrl = new URL('/sign', request.url)
@@ -47,12 +40,14 @@ export async function middleware(request: NextRequest) {
     }
 
     // Handle auth routes (sign-in page)
-    if (authRoutes.some(route => pathname.startsWith(route))) {
+    if (authRoutes.some((route) => pathname.startsWith(route))) {
       if (isAuthenticated) {
         // Redirect authenticated users away from sign-in
         if (hasScanResult) {
           // If there's a scan result, redirect to account/add-service
-          return NextResponse.redirect(new URL('/account/add-service', request.url))
+          return NextResponse.redirect(
+            new URL('/account/add-service', request.url),
+          )
         } else {
           // Otherwise, redirect to account profile
           return NextResponse.redirect(new URL('/account/profile', request.url))
@@ -71,7 +66,9 @@ export async function middleware(request: NextRequest) {
     if (pathname === '/sign' && isAuthenticated) {
       if (hasScanResult) {
         // Clear scan result cookie after redirect
-        const response = NextResponse.redirect(new URL('/account/add-service', request.url))
+        const response = NextResponse.redirect(
+          new URL('/account/add-service', request.url),
+        )
         response.cookies.delete('protapScanResult')
         return response
       } else {
