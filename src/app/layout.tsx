@@ -1,6 +1,6 @@
-import { ProvidersCtxProvider } from '@/ctx/providers'
+import {ProvidersCtxProvider} from '@/ctx/providers'
 import Devtools from '@/devtools'
-import type { Metadata } from 'next'
+import type {Metadata} from 'next'
 import {
   Doto,
   Figtree,
@@ -9,6 +9,7 @@ import {
   Space_Grotesk as SpaceGrotesk,
   Tektur,
 } from 'next/font/google'
+
 import './globals.css'
 
 const geistSans = Geist({
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     'professional networking',
     'digital transformation',
   ],
-  authors: [{ name: 'ProTap Team' }],
+  authors: [{name: 'ProTap Team'}],
   creator: 'ProTap',
   publisher: 'ProTap',
   formatDetection: {
@@ -140,11 +141,15 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        <meta httpEquiv="Permissions-Policy" content="camera=(), microphone=()" />
+        <meta
+          httpEquiv='Permissions-Policy'
+          content='camera=(), microphone=()'
+        />
       </head>
       <body
         className={`${tek.variable} ${doto.variable} ${figtree.variable} ${space.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
+
         <Devtools />
       </body>
     </html>

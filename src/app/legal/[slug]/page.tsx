@@ -1,20 +1,18 @@
 import {legalDocuments} from '@/legal/documents'
 import {Metadata} from 'next'
-import {notFound} from 'next/navigation'
-import {LegalDocumentPage} from '../_components/document-page'
+import {Content} from './content'
 
+interface PageProps {
+  params: Promise<{slug: string}>
+}
 export async function generateStaticParams() {
   return legalDocuments.map((doc) => ({
     slug: doc.slug,
   }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: {slug: string}
-}): Promise<Metadata> {
-  const {slug} = params
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const slug = (await params).slug
   const doc = legalDocuments.find((d) => d.slug === slug)
 
   if (!doc) {
@@ -27,17 +25,8 @@ export async function generateMetadata({
   }
 }
 
-interface PageProps {
-  params: Promise<{slug: string}>
-}
-
 export default async function Page({params}: PageProps) {
   const slug = (await params).slug
-  const doc = legalDocuments.find((d) => d.slug === slug)
 
-  if (!doc) {
-    notFound()
-  }
-
-  return <LegalDocumentPage document={doc} />
+  return <Content slug={slug} />
 }

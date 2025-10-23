@@ -37,8 +37,8 @@ export const Content = () => {
           icon: 'shield-checkmark',
         },
         {
-          slug: 'purchase-policy',
-          title: 'Purchase Policy',
+          slug: 'purchase-agreement',
+          title: 'Purchase Agreement',
           description: 'Policies regarding purchases and returns',
           icon: 'bag-light',
         },
@@ -75,8 +75,8 @@ export const Content = () => {
                     <Icon name={doc.icon} className='size-6' />
                   </div>
                   <div className='h-20 flex flex-col justify-center'>
-                    <CardTitle className='md:text-xl tracking-tight mb-1'>
-                      {doc.title}
+                    <CardTitle className='md:text-xl tracking-tight mb-1 capitalize'>
+                      {doc.slug.split('-').join(' ')}
                     </CardTitle>
                     <CardDescription>{doc.description}</CardDescription>
                   </div>
@@ -84,7 +84,7 @@ export const Content = () => {
                 <CardFooter>
                   <SexyButton
                     size='lg'
-                    variant='tertiary'
+                    variant='default'
                     className='w-full'
                     leftIcon='eye'>
                     Read

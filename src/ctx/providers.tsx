@@ -2,8 +2,10 @@
 
 import {ThemeHotkey} from '@/components/theme-hotkey'
 import {FirebaseProvider} from '@/lib/firebase/provider'
+import {MDXProvider} from '@mdx-js/react'
 import {ThemeProvider} from 'next-themes'
 import {createContext, useContext, type ReactNode} from 'react'
+import {components} from '../../mdx.components'
 import {ActivationCtxProvider} from './activation'
 import {AuthProvider} from './auth'
 import {Toasts} from './toast'
@@ -21,27 +23,29 @@ const ProvidersCtx = createContext<ProvidersCtxValues | null>(null)
 const ProvidersCtxProvider = ({children}: ProvidersProviderProps) => {
   return (
     <ProvidersCtx value={null}>
-      <FirebaseProvider>
-        <AuthProvider>
-          <ActivationCtxProvider>
-            <ThemeProvider
-              enableSystem
-              attribute='class'
-              enableColorScheme
-              defaultTheme='system'
-              disableTransitionOnChange>
-              <div
-                className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
-                {children}
+      <MDXProvider components={components}>
+        <FirebaseProvider>
+          <AuthProvider>
+            <ActivationCtxProvider>
+              <ThemeProvider
+                enableSystem
+                attribute='class'
+                enableColorScheme
+                defaultTheme='system'
+                disableTransitionOnChange>
+                <div
+                  className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
+                  {children}
 
-                <ThemeHotkey />
-              </div>
+                  <ThemeHotkey />
+                </div>
 
-              <Toasts />
-            </ThemeProvider>
-          </ActivationCtxProvider>
-        </AuthProvider>
-      </FirebaseProvider>
+                <Toasts />
+              </ThemeProvider>
+            </ActivationCtxProvider>
+          </AuthProvider>
+        </FirebaseProvider>
+      </MDXProvider>
     </ProvidersCtx>
   )
 }

@@ -6,7 +6,6 @@ import {legalDocuments} from '@/legal/documents'
 import {Icon} from '@/lib/icons'
 import Link from 'next/link'
 import {useState} from 'react'
-import {MarkdownRenderer} from './md-renderer'
 import {TocDrawer} from './toc-drawer'
 
 interface LegalDocumentPageProps {
@@ -79,11 +78,6 @@ export function LegalDocumentPage({document}: LegalDocumentPageProps) {
         {/* Main content */}
         <main className='flex-1'>
           <div className='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
-            <MarkdownRenderer
-              content={document.content}
-              headings={document.headings}
-            />
-
             <nav className='fixed bottom-0 left-0 w-screen  backdrop-blur supports-[backdrop-filter]:bg-origin/40 border-t border-border py-4 print:hidden'>
               <div className='flex items-center justify-center space-x-4 '>
                 {otherDocuments.map((doc) => (
@@ -114,18 +108,6 @@ export function LegalDocumentPage({document}: LegalDocumentPageProps) {
         <aside className='hidden w-80 md:h-[85lvh] overflow-y-scroll border-l border-border bg-muted/30 p-6 lg:block print:hidden'>
           <div className='sticky top-20'>
             <span>Table of Contents</span>
-            <nav className='space-y-3 text-sm'>
-              {document.headings.map((heading) => (
-                <a
-                  key={heading.id}
-                  href={`#${heading.id}`}
-                  className={`block truncate rounded font-figtree tracking-tight px-2 py-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground ${
-                    heading.level === 2 ? 'font-medium' : 'ml-2'
-                  }`}>
-                  <span className=''>{heading.text}</span>
-                </a>
-              ))}
-            </nav>
           </div>
         </aside>
       </div>

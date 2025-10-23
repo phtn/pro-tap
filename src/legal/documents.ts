@@ -9,28 +9,7 @@ export interface LegalDocument {
   title: string
   description: string
   content: string
-  headings: Heading[]
-}
-
-const generateHeadings = (content: string): Heading[] => {
-  const headingRegex = /^(#{1,6})\s+(.+)$/gm
-  const headings: Heading[] = []
-  let match
-
-  while ((match = headingRegex.exec(content)) !== null) {
-    const level = match[1].length
-    const text = match[2]
-    const id =
-      'heading-' +
-      text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-
-    headings.push({id, text, level})
-  }
-
-  return headings
+  headings?: Heading[]
 }
 
 const termsOfUseContent = `# Terms of Use
@@ -130,8 +109,8 @@ We use administrative, technical, and physical security measures to protect your
 
 If you have questions or comments about this Privacy Policy, please contact us at:
 
-Email: privacy@company.com
-Address: 123 Business Street, City, State 12345
+Email: support@protap.ph
+Address: 5B, Crissant Plaza Building, 272 Commonwealth Ave, Quezon City, 1119 Metro Manila
 
 ## 7. Changes to This Privacy Policy
 
@@ -220,20 +199,17 @@ export const legalDocuments: LegalDocument[] = [
     title: 'Terms of Use',
     description: 'Our terms and conditions for using this website',
     content: termsOfUseContent,
-    headings: generateHeadings(termsOfUseContent),
   },
   {
     slug: 'privacy-policy',
     title: 'Privacy Policy',
     description: 'How we collect and use your information',
     content: privacyPolicyContent,
-    headings: generateHeadings(privacyPolicyContent),
   },
   {
-    slug: 'purchase-policy',
-    title: 'Purchase Policy',
+    slug: 'purchase-agreement',
+    title: 'Purchase Agreement',
     description: 'Our policies regarding purchases and returns',
     content: purchasePolicyContent,
-    headings: generateHeadings(purchasePolicyContent),
   },
 ]

@@ -195,7 +195,7 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
                   className={cn('mr-1.5 -ml-0.5', iconStyle)}
                 />
               ) : null}
-              <span>{children}</span>
+              <span className='select-none'>{children}</span>
               <RightIcon />
             </div>
           )}
