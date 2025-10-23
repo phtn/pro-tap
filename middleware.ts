@@ -6,7 +6,7 @@ const authRoutes = ['/sign']
 
 export async function middleware(request: NextRequest) {
   const {pathname} = request.nextUrl
-  const response = NextResponse.next()
+  // const response = NextResponse.next()
 
   // Skip middleware for static files, API routes, and Next.js internals
   if (
@@ -22,8 +22,15 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const userProfile = response.cookies.get('protap-user-profile')
-    const scanResult = response.cookies.get('protap-scan-result')
+    console.log('Middleware: Starting execution for path:', pathname)
+    const userProfile = request.cookies.get('protap-user-profile')
+    const scanResult = request.cookies.get('protap-scan-result')
+    console.log(
+      'Middleware: userProfile cookie:',
+      !!userProfile,
+      'scanResult cookie:',
+      !!scanResult,
+    )
     // Check for cached user profile
 
     const isAuthenticated = !!userProfile
@@ -76,6 +83,10 @@ export async function middleware(request: NextRequest) {
       }
     }
 
+    console.log(
+      'Middleware: Execution completed successfully for path:',
+      pathname,
+    )
     return NextResponse.next()
   } catch (error) {
     console.error('Middleware error:', error)
