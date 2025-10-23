@@ -23,11 +23,11 @@ export async function middleware(request: NextRequest) {
 
   try {
     const userProfile = response.cookies.get('protap-user-profile')
-    const scanResults = response.cookies.get('protap-scan-results')
+    const scanResult = response.cookies.get('protap-scan-result')
     // Check for cached user profile
 
     const isAuthenticated = !!userProfile
-    const hasScanResult = !!scanResults
+    const hasScanResult = !!scanResult
 
     // Handle protected routes
     if (protectedRoutes.some((route) => pathname.startsWith(route))) {
@@ -69,7 +69,7 @@ export async function middleware(request: NextRequest) {
         const response = NextResponse.redirect(
           new URL('/account/add-service', request.url),
         )
-        response.cookies.delete('protapScanResult')
+        response.cookies.delete('protap-scan-result')
         return response
       } else {
         return NextResponse.redirect(new URL('/account/profile', request.url))
