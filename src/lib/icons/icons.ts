@@ -960,6 +960,12 @@ export const icons = {
     viewBox: '0 0 24 24',
     set: 'proicons',
   },
+  'circle-solid': {
+    symbol:
+      '<path fill="currentColor" d="M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0"/>',
+    viewBox: '0 0 24 24',
+    set: 'stash',
+  },
 }
 
 /*

@@ -49,7 +49,7 @@ export const BentoGridStats = () => {
           title: '',
           description: <span className='text-sm'></span>,
           header: <SkeletonFour />,
-          className: 'md:col-span-2 border-none dark:bg-transparent',
+          className: 'md:col-span-2 border-none dark:bg-transparent px-0',
           icon: 'link',
         },
         {
@@ -64,7 +64,7 @@ export const BentoGridStats = () => {
             </ProfileEditor>
           ),
           className:
-            'md:col-span-1 bg-white/60 md:dark:bg-dark-origin dark:bg-transparent dark:border-dark-origin backdrop-blur-md',
+            'md:col-span-1 bg-white/60 backdrop-blur-md hover:shadow-xs',
           icon: 'check',
           activeIcon: 'arrow-up',
           pro: true,
@@ -119,7 +119,7 @@ export const BentoGridStats = () => {
           className={cn(
             '[&>p:text-lg]',
             item.className,
-            item.title === '' && 'hover:shadow-none',
+            // item.title === '' && '',
           )}
           icon={item.icon}
           activeIcon={item.activeIcon}

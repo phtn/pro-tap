@@ -43,7 +43,7 @@ export const EditorOverview = () => {
   const privateInfo: RouteItem[] = [
     {
       name: 'biodata',
-      label: 'User Biodata',
+      label: 'User Info',
       href: '/account/profile/editor/biodata',
       icon: 'text-edit',
       color:

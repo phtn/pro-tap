@@ -43,7 +43,7 @@ export const TextField = (item: TextFieldConfig) => (
       onChange={(e) => item.validators?.onChange(e.target.value as string)}
       value={item.value}
       placeholder={item.placeholder}
-      className='w-full md:text-base px-4 py-2 h-16 rounded-xl dark:border-origin/50'
+      className='w-full md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none'
     />
   </div>
 )
@@ -75,7 +75,7 @@ export const SelectField = (item: SelectFieldConfig) => {
         onValueChange={(value) => item.validators?.onChange(value)}>
         <SelectTrigger
           size='default'
-          className='h-fit py-7 cursor-pointer rounded-2xl dark:bg-background/20 bg-background  border-[0.33px] dark:border-gray-500/50 outline-none text-left w-full'>
+          className='min-h-14 h-fit py-4 md:py-7 cursor-pointer rounded-2xl dark:bg-background/20 bg-background  border-[0.33px] dark:border-gray-500/50 outline-none text-left w-full'>
           <SelectValue
             placeholder={item.placeholder ?? 'Select an option'}
             className='text-neutral-200 h-full placeholder:text-base'
@@ -94,12 +94,18 @@ export const SelectField = (item: SelectFieldConfig) => {
   )
 }
 
-const SelectFieldItem = ({value, icon, label, description}: FieldOption) => (
+const SelectFieldItem = ({
+  value,
+  icon,
+  label,
+  description,
+  iconStyle,
+}: FieldOption) => (
   <SelectItem
     value={value}
-    className='h-20 font-semibold font-quick cursor-pointer focus:text-panel'>
+    className='h-fit py-4 md:py-7 font-semibold font-quick cursor-pointer focus:text-panel'>
     <div className='flex items-center px-2 gap-x-4'>
-      <Icon name={icon} className='' />
+      <Icon name={icon} className={cn('size-5', iconStyle)} />
       <div className='flex flex-col justify-start'>
         <span className='block text-[14px] tracking-tight font-bold'>
           {label}

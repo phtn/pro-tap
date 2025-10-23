@@ -32,7 +32,7 @@ const Nav = ({children, extra}: NavProps) => {
           onClick: () => {},
         },
         {
-          href: '/',
+          href: '/alpha',
           icon: 'bell',
           onClick: () => {},
         },
@@ -68,8 +68,8 @@ const Nav = ({children, extra}: NavProps) => {
     <nav className={cn('max-w-6xl mx-auto flex items-center h-16')}>
       {user && (
         <div className='flex items-center justify-between w-full'>
-          <div className='w-full md:hidden pl-4 opacity-80'>
-            <Icon name='back' className='size-5' onClick={router.back} />
+          <div className='w-full md:hidden pl-6  opacity-80'>
+            <Icon name='arrow-left' className='size-5' onClick={router.back} />
           </div>
           <div
             className={cn('flex items-center space-x-5', {

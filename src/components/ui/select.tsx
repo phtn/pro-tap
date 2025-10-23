@@ -45,7 +45,7 @@ function SelectTrigger({
       {...props}>
       {children}
       <SelectPrimitive.Icon asChild>
-        <Icon name='chevron-down' className='size-4' />
+        <Icon name='chevron-down' className='size-3 mr-2' />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )

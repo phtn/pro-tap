@@ -1,3 +1,4 @@
+import {ClassName} from '@/app/types'
 import {ProfileFormData, ServerTime} from '@/lib/firebase/types/user'
 import {IconName} from '@/lib/icons'
 import z from 'zod'
@@ -47,6 +48,7 @@ export type FieldOption = {
   label: string
   icon: IconName
   description?: string
+  iconStyle?: ClassName
 }
 // Select field config
 export interface SelectFieldConfig extends BaseFieldConfig {
@@ -109,29 +111,27 @@ export const profileFormDataSchema = userBioDataSchema.extend({
   isPublished: z.boolean(),
 })
 
-export interface ISelectFieldItem {
+export interface ISelectFieldItem extends FieldOption {
   id: string
-  icon: IconName
-  value: string
   name: string
-  label: string
-  description?: string
 }
 export const genderOptions: ISelectFieldItem[] = [
   {
     id: '1',
-    icon: 'chevron-up',
     value: 'male',
     name: 'male',
     label: 'Male',
+    icon: 'circle-solid',
+    iconStyle: 'text-blue-500',
     // description: 'Biological male',
   },
   {
     id: '2',
-    icon: 'chevron-down',
     value: 'female',
     name: 'female',
     label: 'Female',
+    icon: 'circle-solid',
+    iconStyle: 'text-pink-500',
     // description: 'Biological female',
   },
 ]

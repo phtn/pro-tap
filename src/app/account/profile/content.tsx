@@ -6,6 +6,7 @@ import Image from 'next/image'
 
 import {BentoGridStats} from '@/app/account/profile/_components/bento-grid'
 import {getUserProfile} from '@/app/actions'
+import {ClassName} from '@/app/types'
 import {StarsBackground} from '@/components/animate-ui/components/backgrounds/stars'
 import {getBestImageSource} from '@/lib/image-cache'
 import {cn} from '@/lib/utils'
@@ -38,7 +39,7 @@ export const Content = () => {
       <ProfileBackground />
       <CoverSection imageSource={imageSource} isActivated={true} />
       <Spacer />
-      <HeaderTitle title='Overview' />
+      <HeaderTitle title='Overview' className='md:flex hidden' />
       <BentoGridStats />
       <Spacer />
       {/*<ReactMasonryExample />*/}
@@ -84,16 +85,18 @@ const CoverSection = ({imageSource, isActivated}: CoverSectionProps) => {
 
 interface HeaderProps {
   title: string
+  className?: ClassName
 }
 
-const HeaderTitle = ({title}: HeaderProps) => {
+const HeaderTitle = ({title, className}: HeaderProps) => {
   return (
-    <div className='flex items-center relative h-20 md:pl-4 pl-8'>
+    <div
+      className={cn('flex items-center relative h-20 md:pl-4 pl-8', className)}>
       <TextAnimate
+        delay={500}
         text={title}
         type='whipInUp'
         className='tracking-tighter text-2xl font-semibold font-figtree'
-        delay={500}
       />
     </div>
   )
@@ -108,7 +111,7 @@ const ProfileBackground = () => {
     <StarsBackground
       starColor={resolvedTheme === 'dark' ? '#FFF' : '#000'}
       className={cn(
-        'absolute z-0 pointer-events-none inset-0 flex items-center justify-center',
+        'hidden dark:flex items-center justify-center absolute z-0 pointer-events-none inset-0',
         'dark:bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_60%)] _bg-[radial-gradient(ellipse_at_bottom,_#f5f5f5_0%,_#fff_50%)]',
       )}
     />

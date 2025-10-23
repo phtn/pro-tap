@@ -14,13 +14,7 @@ import {useProfileService} from '@/hooks/use-profile-service'
 import {ProfileFormData} from '@/lib/firebase/types/user'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {
-  useActionState,
-  useCallback,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react'
+import {useActionState, useCallback, useState, useTransition} from 'react'
 import ProfileView from '../../_components/profile-preview'
 
 export default function BioDataPage() {
@@ -71,10 +65,6 @@ export default function BioDataPage() {
 
   const [, action, pending] = useActionState(handleSave, profileInitialValues)
   const [isPending, startTransition] = useTransition()
-
-  useEffect(() => {
-    if (profile) console.log(profile)
-  }, [profile])
 
   const handleFormSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -150,13 +140,16 @@ export default function BioDataPage() {
   )
 
   return (
-    <div className='h-[calc(100vh-48px)] overflow-hidden'>
+    <div className='h-[calc(96vh)] overflow-hidden'>
       <ScrollArea className='max-w-4xl rounded-4xl md:py-8'>
-        <div className='w-full h-fit bg-origin/40 px-4 py-4 md:py-8'>
+        <div className='w-full h-fit bg-origin/40 dark:bg-origin px-4 py-4 md:py-8'>
           <div className='mb-2 flex items-center justify-between'>
-            <h1 className='flex items-center text-base md:text-2xl font-bold tracking-tight px-2'>
-              <Icon name='user' className='size-6 shrink-0 mr-1 md:mr-1' />
-              <span>Biodata</span>
+            <h1 className='flex items-center text-lg md:text-2xl font-bold tracking-tight px-2'>
+              <Icon
+                name='user'
+                className='size-5 md:size-6 shrink-0 mr-1 md:mr-1'
+              />
+              <span>Personal Info</span>
             </h1>
           </div>
           <div className='h-1 md:h-2 w-full rounded-full bg-origin/40' />
