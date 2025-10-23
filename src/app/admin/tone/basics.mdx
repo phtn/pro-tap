@@ -1,0 +1,24 @@
+The number in a note represents the **octave** - it tells you how high or low the pitch is.
+
+In musical notation using scientific pitch notation (which Tone.js uses):
+
+- **C4** = Middle C (the C in the middle of a piano keyboard)
+- **C3** = One octave lower than middle C
+- **C5** = One octave higher than middle C
+
+## The Pattern:
+
+- **Lower numbers = lower/deeper sounds** (like a bass)
+- **Higher numbers = higher sounds** (like a whistle)
+
+## Example Scale:
+- C1, C2, C3 - Very low (bass range)
+- **C4** - Middle C (reference point)
+- C5, C6, C7 - High (treble range)
+- C8 - Very high (top of piano)
+
+So in the demo code, when you see notes like:
+- `'C4', 'E4', 'G4', 'B4'` - These are all in the same octave (4th octave)
+- `'C4'` to `'C5'` - This spans one full octave
+
+Each octave contains 12 semitones (all the white and black keys from one C to the next C on a piano). The letter (C, D, E, F, G, A, B) represents the note name, and the number represents which octave it's in.

@@ -1,5 +1,6 @@
 'use client'
 
+import {VoidPromise} from '@/app/types'
 import {Button, buttonVariants} from '@/components/ui/button'
 import {Dock, DockIcon} from '@/components/ui/dock'
 import {
@@ -18,7 +19,7 @@ interface DockNav {
 }
 interface DockToolbar {
   name: string
-  fn: VoidFunction
+  fn: VoidFunction | VoidPromise
   icon: IconName
   style: string
 }
@@ -89,15 +90,17 @@ export const AdminDock = ({
                     aria-label={item.label}
                     className={cn(
                       buttonVariants({variant: 'ghost', size: 'sq'}),
-                      'md:size-12 size-12 rounded-xl hover:bg-zinc-300/30 dark:hover:bg-zinc-600/40',
+                      'md:size-12 size-12 rounded-xl hover:bg-zinc-300/30 dark:hover:bg-zinc-700/40',
                     )}>
                     <Icon
                       name={item.icon}
-                      className={cn('size-6 md:size-7 dark:text-zinc-200')}
+                      className={cn(
+                        'size-6 md:size-7 text-zinc-600 dark:text-slate-300',
+                      )}
                     />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent sideOffset={8}>
                   <p className='dark:text-white capitalize text-lg tracking-tight font-medium font-figtree'>
                     {item.label}
                   </p>
@@ -124,7 +127,7 @@ export const AdminDock = ({
                     />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className='md:flex hidden'>
+                <TooltipContent sideOffset={8} className='md:flex hidden'>
                   <p className='dark:text-white capitalize text-base tracking-tight font-semibold font-figtree'>
                     {tool.name}
                   </p>
@@ -151,7 +154,7 @@ export const AdminDock = ({
                     />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className='md:flex hidden'>
+                <TooltipContent sideOffset={8} className='md:flex hidden'>
                   <p className='dark:text-white capitalize text-base tracking-tight font-semibold font-figtree'>
                     {option.name}
                   </p>

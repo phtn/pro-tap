@@ -118,7 +118,7 @@ export const AdminPageContent = () => {
   )
 
   return (
-    <div>
+    <div className='h-screen'>
       <div className='max-w-7xl mx-auto'>
         <div className='md:py-8'>
           <Header

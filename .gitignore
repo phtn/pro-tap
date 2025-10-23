@@ -46,3 +46,6 @@ firestore.indexes.json
 icon.txt
 
 certificates
+
+# deprecated
+__components

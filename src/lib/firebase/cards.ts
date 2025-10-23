@@ -22,6 +22,7 @@ import {
 } from 'firebase/firestore'
 import {db} from '.'
 
+//
 // Define Firestore service interface
 // interface FirestoreService {
 //   readonly getFirestore: () => Firestore

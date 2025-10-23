@@ -50,31 +50,33 @@ export const Content = () => {
 
   return (
     <main className='min-h-screen bg-background fontfont-figtree'>
-      <div className='mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8'>
-        <div className='max-w-5xl mx-auto mb-12'>
-          <div className='w-fit mb-2 text-4xl font-bold text-foreground tracking-tight'>
+      <div className='mx-auto max-w-6xl px-4 py-4 md:py-16 sm:px-6 lg:px-8'>
+        <div className='max-w-5xl mx-auto mb-4 md:mb-12'>
+          <div className='w-fit mb-2 font-bold text-foreground tracking-tight'>
             <Icon
               name='protap'
               onClick={() => router.push('/')}
-              className='h-10 w-20 opacity-50 cursor-pointer hover:opacity-100 hover:text-primary'
+              className='h-10 w-16 m:w-20 opacity-50 cursor-pointer hover:opacity-100 hover:text-primary'
             />
-            <h1 className='font-figtree'>Legal Resources</h1>
+            <h1 className='font-figtree text-3xl md:text-4xl tracking-tight'>
+              Legal Resources
+            </h1>
           </div>
 
-          <p className='text-base'>
-            Access our terms, policies, and important information
+          <p className='text-sm md:text-base'>
+            Access our terms, privacy, and purchase agreement.
           </p>
         </div>
 
         <div className='grid gap-6 md:grid-cols-3'>
           {documents.map((doc) => (
             <Link key={doc.slug} href={`/legal/${doc.slug}`}>
-              <Card className='dark:bg-origin rounded-4xl md:py-8 md:px-4 h-80 flex flex-col justify-center space-y-2'>
+              <Card className='dark:bg-origin rounded-4xl md:py-8 md:px-4 h-44 md:h-80 flex flex-col justify-center space-y-2'>
                 <CardHeader>
-                  <div className='mb-2 inline-flex w-fit rounded-2xl bg-origin/20 dark:bg-background/10 p-4'>
+                  <div className='mb-4 md:mb-2 inline-flex w-fit rounded-2xl bg-origin/20 dark:bg-background/10 p-2 md:p-4'>
                     <Icon name={doc.icon} className='size-6' />
                   </div>
-                  <div className='h-20 flex flex-col justify-center'>
+                  <div className='h-full md:h-20 flex flex-col justify-center font-figtree'>
                     <CardTitle className='md:text-xl tracking-tight mb-1 capitalize'>
                       {doc.slug.split('-').join(' ')}
                     </CardTitle>
@@ -85,7 +87,7 @@ export const Content = () => {
                   <SexyButton
                     size='lg'
                     variant='default'
-                    className='w-full'
+                    className='w-full md:flex hidden'
                     leftIcon='eye'>
                     Read
                   </SexyButton>

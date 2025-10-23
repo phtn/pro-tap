@@ -14,7 +14,7 @@ export const RangeSliderWithInput = ({
 }: RangeSliderWithInputProps) => {
   const minValue = 1
   const maxValue = 1000
-  const initialValue = [200]
+  const initialValue = [100]
 
   const {
     sliderValue,

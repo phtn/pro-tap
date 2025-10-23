@@ -1,13 +1,11 @@
 'use client'
-import {useAuthCtx} from '@/ctx/auth'
-import {onSuccess, onWarn} from '@/ctx/toast'
+
+import {Note, useTone} from '@/ctx/tone'
 import {useMobile} from '@/hooks/use-mobile'
-import {createBulkQRCodes, ProtapActivationInfo} from '@/lib/firebase/cards'
+import {useQrGen} from '@/hooks/use-qr-gen'
 import {Icon} from '@/lib/icons'
-import {User} from 'firebase/auth'
-import {Timestamp} from 'firebase/firestore'
 import {useRouter} from 'next/navigation'
-import {useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {BatchName} from '../_components/batch-name'
 import {CardCounter} from '../_components/card-counter'
 import {CardItem} from '../_components/card-item'
@@ -18,130 +16,94 @@ import {GroupName} from '../_components/group-name'
 import {SeriesSelect} from '../_components/select-series'
 
 const QRCodePage = () => {
-  const {user} = useAuthCtx()
+  const {
+    group,
+    batch,
+    series,
+    setBatch,
+    setGroup,
+    createdAt,
+    setSeries,
+    qrCodeGens,
+    openCardItem,
+    isGenerating,
+    selectedItem,
+    generatedCount,
+    handleClearGens,
+    selectedQuantity,
+    handleOpenCardItem,
+    setSelectedQuantity,
+    handleStartGeneration,
+    handleSheetOpenChange,
+  } = useQrGen()
   const back = useRouter().back
-  const [qrCodeGens, setQrCodeGens] = useState<string[]>([])
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedCount, setGeneratedCount] = useState(0)
-  const [selectedQuantity, setSelectedQuantity] = useState(100)
-  const [series, setSeries] = useState('individual')
-  const [group, setGroup] = useState('indv')
-  const [batch, setBatch] = useState(Date.now().toString())
-  const [createdAt, setCreatedAt] = useState<Timestamp | null>(null)
   const isMobile = useMobile()
 
-  const generateQr = async (coll: string, count: number) => {
-    if (isGenerating) return
+  const {playNote, isStarted, startAudio, stopAudio} = useTone()
+  const [noteIdx, setNoteIdx] = useState<number>(0)
 
-    setIsGenerating(true)
+  const notes: Note[] = ['E4', 'G4', 'C5']
 
-    try {
-      const {createdIds, createdAt} = await createBulkQRCodes(
-        coll,
-        count,
-        series,
-        group,
-        batch,
-        user as User,
-      )
-
-      setQrCodeGens((prev) => [...prev, ...createdIds])
-      setCreatedAt(createdAt)
-      setGeneratedCount(createdIds.length)
-      onSuccess(`Successfully generated ${createdIds.length} QR codes`)
-      return createdIds
-    } catch (error) {
-      console.error('Bulk QR generation failed:', error)
-      onWarn(
-        `Failed to generate QR codes: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      )
-    } finally {
-      setIsGenerating(false)
+  useEffect(() => {
+    if (qrCodeGens.length > 0) {
+      playNote(notes[noteIdx], '16n')
     }
-  }
+  }, [qrCodeGens.length, noteIdx])
 
-  const handleStartGeneration = async (grp?: string) => {
-    if (isGenerating) return
+  useEffect(() => {
+    setNoteIdx((prev) => (prev + 1) % notes.length)
+  }, [notes.length])
 
-    if (user && !grp) {
-      setGroup(user.uid.substring(-4).trim())
-      return generateQr(group, selectedQuantity)
-    }
-
-    if (selectedQuantity <= 0) {
-      onWarn('Please select a valid quantity')
-      return
-    }
-
-    if (selectedQuantity > 10000) {
-      onWarn('Maximum quantity allowed is 10,000')
-      return
-    }
-
-    await generateQr(group.trim(), selectedQuantity)
-  }
-
-  const handleClearGens = () => {
-    setQrCodeGens([])
-    setGeneratedCount(0)
-  }
-
-  const [openCardItem, setOpenCardItem] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<ProtapActivationInfo | null>(
-    null,
+  const dockItems = useMemo(
+    () =>
+      ({
+        nav: [{id: 'back', icon: 'back', fn: back, label: 'Dashboard'}],
+        toolbar: [
+          {
+            name: 'start scan',
+            fn: handleStartGeneration,
+            icon: isGenerating ? 'spinners-ring' : 'play',
+            style: 'text-zinc-600 dark:text-slate-300',
+          },
+          {
+            name: isStarted ? 'mute' : 'sound',
+            fn: isStarted ? stopAudio : startAudio,
+            icon: isStarted ? 'volume' : 'volume-mute',
+            style: isStarted
+              ? 'text-zinc-600 dark:text-blue-300'
+              : 'text-zinc-400 dark:text-slate-600',
+          },
+          {
+            name: 'settings',
+            fn: isGenerating ? () => {} : () => handleClearGens(),
+            icon: 'settings',
+            style: isGenerating
+              ? 'text-zinc-400/80 dark:text-zinc-700'
+              : 'text-zinc-600 dark:text-slate-300',
+          },
+        ],
+        options: [
+          {
+            name: 'clear list',
+            fn: handleClearGens,
+            icon: 'eraser',
+            style:
+              isGenerating || qrCodeGens.length === 0
+                ? 'text-zinc-400/80 dark:text-zinc-700'
+                : 'text-zinc-600 dark:text-slate-300',
+          },
+        ],
+      }) as DockItems,
+    [
+      isStarted,
+      stopAudio,
+      startAudio,
+      isGenerating,
+      handleClearGens,
+      handleStartGeneration,
+      qrCodeGens,
+    ],
   )
-
-  const handleOpenCardItem = (item: ProtapActivationInfo | null) => {
-    if (item) {
-      setSelectedItem(item)
-      setOpenCardItem(true)
-    } else {
-      setOpenCardItem((prev) => !prev)
-    }
-  }
-
-  const handleSheetOpenChange = (open: boolean) => {
-    setOpenCardItem(open)
-    if (!open) {
-      setSelectedItem(null)
-    }
-  }
-
-  const dockItems: DockItems = {
-    nav: [{id: 'back', icon: 'back', fn: back, label: 'Dashboard'}],
-    toolbar: [
-      {
-        name: 'start scan',
-        fn: handleStartGeneration,
-        icon: isGenerating ? 'spinners-ring' : 'play-solid',
-        style: 'text-blue-400 dark:text-blue-300',
-      },
-      {
-        name: 'halt',
-        fn: () => {},
-        icon: 'pause-solid',
-        style: isGenerating
-          ? 'text-amber-500'
-          : 'text-slate-300 dark:text-slate-600',
-      },
-      {
-        name: 'clear list',
-        fn: isGenerating ? () => {} : handleClearGens,
-        icon: 'split-vertical',
-        style: isGenerating ? 'text-zinc-800' : 'text-zinc-500',
-      },
-    ],
-    options: [
-      {
-        name: 'clear list',
-        fn: isGenerating ? () => {} : handleClearGens,
-        icon: 'eraser',
-        style: isGenerating
-          ? 'text-zinc-800'
-          : 'text-red-500 dark:text-red-400',
-      },
-    ],
-  }
 
   return (
     <div className='flex flex-col h-screen w-full overflow-hidden'>
@@ -151,14 +113,14 @@ const QRCodePage = () => {
           <div className='flex item-center justify-center space-x-3 md:space-x-6 lg:space-x-8 xl:space-x-12'>
             <SeriesSelect disabled={generatedCount > 0} setSeries={setSeries} />
             <GroupName
-              disabled={generatedCount > 0}
               group={group}
               setGroup={setGroup}
+              disabled={generatedCount > 0}
             />
             <BatchName
-              disabled={generatedCount > 0}
               batch={batch}
               setBatch={setBatch}
+              disabled={generatedCount > 0}
             />
           </div>
           <div className='w-full flex items-start justify-end space-x-1 md:space-x-4'>
@@ -209,10 +171,17 @@ const QRCodePage = () => {
           </div>
         </div>
       </div>
-
+      {/*
+  const notes: string[] = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'];
+  */}
       {/* Bottom Dock */}
-      <div className='fixed md:bottom-20 bottom-4 w-full'>
+      <div className='fixed md:bottom-20 bottom-4 w-full flex flex-col items-center'>
         <AdminDock dockItems={dockItems} />
+        {/*{isStarted ? (
+          <SexyButton onClick={() => playNote('C4', '16n')}>Play</SexyButton>
+        ) : (
+          <SexyButton onClick={startAudio}>Start</SexyButton>
+        )}*/}
       </div>
       <CardItemSheet
         open={openCardItem}

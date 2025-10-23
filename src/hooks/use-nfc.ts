@@ -263,7 +263,29 @@ export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
       if (onError) {
         onError(errorMsg)
       }
+      console.log('[use-nfc]: ', errorMsg)
+      onWarn('NFC is not supported.')
+
       return
+    }
+
+    // Prevent starting a new scan if already scanning to avoid multiple listeners and infinite loops
+    if (isScanning) {
+      console.warn(
+        'NFC scanning is already in progress. Ignoring start request.',
+      )
+      return
+    }
+
+    // Clean up any existing reader and controller before starting a new one
+    if (nfcReaderRef.current) {
+      nfcReaderRef.current.removeEventListener('reading', handleNFCReading)
+      nfcReaderRef.current.removeEventListener('readingerror', handleNFCError)
+      nfcReaderRef.current = null
+    }
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
     }
 
     try {

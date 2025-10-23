@@ -9,6 +9,7 @@ import {components} from '../../mdx.components'
 import {ActivationCtxProvider} from './activation'
 import {AuthProvider} from './auth'
 import {Toasts} from './toast'
+import {ToneProvider} from './tone'
 
 interface ProvidersProviderProps {
   children: ReactNode
@@ -27,21 +28,23 @@ const ProvidersCtxProvider = ({children}: ProvidersProviderProps) => {
         <FirebaseProvider>
           <AuthProvider>
             <ActivationCtxProvider>
-              <ThemeProvider
-                enableSystem
-                attribute='class'
-                enableColorScheme
-                defaultTheme='system'
-                disableTransitionOnChange>
-                <div
-                  className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
-                  {children}
+              <ToneProvider>
+                <ThemeProvider
+                  enableSystem
+                  attribute='class'
+                  enableColorScheme
+                  defaultTheme='system'
+                  disableTransitionOnChange>
+                  <div
+                    className={`bg-background h-screen w-screen overflow-hidden  selection:bg-sky-300/80 dark:selection:text-zinc-800 selection:text-foreground font-sans`}>
+                    {children}
 
-                  <ThemeHotkey />
-                </div>
+                    <ThemeHotkey />
+                  </div>
 
-                <Toasts />
-              </ThemeProvider>
+                  <Toasts />
+                </ThemeProvider>
+              </ToneProvider>
             </ActivationCtxProvider>
           </AuthProvider>
         </FirebaseProvider>

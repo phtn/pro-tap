@@ -22,7 +22,7 @@ export const Content = ({slug}: {slug: string}) => {
     })
   }, [])
   return (
-    <main className=' md:h-screen overflow-y-scroll'>
+    <main className='h-screen overflow-y-scroll'>
       <SpaceX />
       {docMap[slug]}
       <SpaceX />

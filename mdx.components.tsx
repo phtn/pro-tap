@@ -10,26 +10,14 @@ type AnchorProps = ComponentPropsWithoutRef<'a'>
 type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>
 
 const components = {
-  idx: (props: ComponentPropsWithoutRef<'span'>) => (
-    <i className='text-[14px] font-thin opacity-80 mr-4' {...props} />
-  ),
-  article: (props: ComponentPropsWithoutRef<'div'>) => (
-    <article
-      className='font-figtree transition-transform duration-400 ease-out group-hover/list:translate-x-1 text-primary-900 flex items-center space-x-2 text-xl font-semibold tracking-tighter mb-8'
-      {...props}
-    />
-  ),
-  div: (props: ComponentPropsWithoutRef<'div'>) => (
-    <div
-      className='font-figtree transition-transform duration-400 ease-out group-hover/list:translate-x-1 text-primary-900 flex items-center space-x-2  mb-8'
-      {...props}
-    />
-  ),
   h1: (props: HeadingProps) => (
-    <h1 className='font-medium pt-12 mb-0 text-3xl' {...props} />
+    <h1 className='font-bold pt-12 mb-0 text-3xl' {...props} />
   ),
   h2: (props: HeadingProps) => (
-    <h2 className='mb-4 mt-6 text-2xl font-bold tracking-tighter' {...props} />
+    <h2
+      className='mb-4 mt-6 text-2xl font-normal font-figtree tracking-tighter'
+      {...props}
+    />
   ),
   h3: (props: HeadingProps) => (
     <h3
@@ -40,7 +28,7 @@ const components = {
   h4: (props: HeadingProps) => <h4 className='font-medium' {...props} />,
   p: (props: ParagraphProps) => (
     <p
-      className='my-8 text-justify text-gray-800 dark:text-zinc-300 leading-snug'
+      className='font-figtree my-8 text-justify dark:opacity-70 leading-relaxed'
       {...props}
     />
   ),
@@ -61,7 +49,10 @@ const components = {
     <em className='font-medium' {...props} />
   ),
   strong: (props: ComponentPropsWithoutRef<'strong'>) => (
-    <strong className='font-medium' {...props} />
+    <strong
+      className='ml-2 font-bold font-figtree text-2xl md:text-3xl'
+      {...props}
+    />
   ),
   a: ({href, children, ...props}: AnchorProps) => {
     const className =
