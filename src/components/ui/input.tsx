@@ -30,7 +30,7 @@ const ModernInput = forwardRef<HTMLInputElement, ComponentProps<'input'>>(
       <input
         type={type}
         className={cn(
-          'flex md:h-14 h-9 w-full rounded-lg border border-zinc-300/0 dark:border-zinc-700 bg-background dark:bg-background/20 px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground/80 placeholder:tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-100/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-xs',
+          'flex md:h-14 h-9 w-full rounded-lg border border-zinc-300/0 dark:border-zinc-700 bg-background dark:bg-background/20 px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground/80 placeholder:tracking-tight focus-visible:outline-none focus-visible:ring-2 dark:focus-visible:ring-cyan-100/50 focus-visible:ring-primary/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-xs',
           className,
         )}
         ref={ref}

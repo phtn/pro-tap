@@ -167,15 +167,15 @@ export const fieldGroups: FieldGroup[] = [
   {
     title: 'ProfileFormData',
     fields: [
-      {
-        name: 'displayName',
-        type: 'text',
-        label: 'Display Name',
-        placeholder: 'Your display name',
-        helperText: 'The name shown in your profile.',
-        required: true,
-        error: false,
-      },
+      // {
+      //   name: 'displayName',
+      //   type: 'text',
+      //   label: 'Display Name',
+      //   placeholder: 'Your display name',
+      //   helperText: 'The name shown in your profile.',
+      //   required: true,
+      //   error: false,
+      // },
       {
         name: 'firstName',
         type: 'text',

@@ -140,9 +140,9 @@ export default function BioDataPage() {
   )
 
   return (
-    <div className='h-[calc(96vh)] overflow-hidden'>
-      <ScrollArea className='max-w-4xl rounded-4xl md:py-8'>
-        <div className='w-full h-fit bg-origin/40 dark:bg-origin px-4 py-4 md:py-8'>
+    <div className='h-[calc(96vh)] grid grid-cols-1 md:grid-cols-5 gap-4 md:py-8 max-w-6xl'>
+      <ScrollArea className='rounded-4xl bg-origin/40 dark:bg-origin col-span-1 md:col-span-3'>
+        <div className='w-full h-fit px-4 py-4 md:py-8'>
           <div className='mb-2 flex items-center justify-between'>
             <h1 className='flex items-center text-lg md:text-2xl font-bold tracking-tight px-2'>
               <Icon
@@ -173,7 +173,7 @@ export default function BioDataPage() {
               {fieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
-                  data={group.fields.slice(0, 5)}
+                  data={group.fields.slice(0, 4)}
                   component={renderField}
                   container='space-y-4 md:space-y-8'
                   itemStyle='px-1'
