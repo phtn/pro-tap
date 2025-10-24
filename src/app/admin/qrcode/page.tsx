@@ -108,7 +108,7 @@ const QRCodePage = () => {
   return (
     <div className='flex flex-col h-screen w-full overflow-hidden'>
       {/* Header */}
-      <div className='fixed z-60 top-0 bg-zinc-800/10 dark:bg-zinc-700/10 backdrop-blur-2xl flex flex-col w-full border-b border-zinc-500/10'>
+      <div className='fixed z-60 top-0 bg-origin dark:bg-dark-origin backdrop-blur-2xl flex flex-col w-full border-b border-origin dark:border-origin/60'>
         <div className='flex items-center justify-between w-full py-3 px-3 md:p-6 h-fit'>
           <div className='flex item-center justify-center space-x-3 md:space-x-6 lg:space-x-8 xl:space-x-12'>
             <SeriesSelect disabled={generatedCount > 0} setSeries={setSeries} />

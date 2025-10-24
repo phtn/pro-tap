@@ -11,7 +11,7 @@ import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {FieldOption, SelectFieldConfig, TextFieldConfig} from './schema'
 
-export const TextField = (item: TextFieldConfig) => (
+export const TextField = <T,>(item: TextFieldConfig<T>) => (
   <div className='relative'>
     <div className='flex items-center'>
       <div className='ps-1 mb-2 font-figtree flex items-center space-x-2 text-xs md:text-sm'>
@@ -36,19 +36,23 @@ export const TextField = (item: TextFieldConfig) => (
     </div>
     <ModernInput
       type={item.type}
-      name={item.name}
+      name={item.name as string}
       autoComplete={item.autoComplete}
       required={item.required}
-      defaultValue={item.defaultValue}
-      onChange={(e) => item.validators?.onChange(e.target.value as string)}
-      value={item.value}
+      defaultValue={item.defaultValue ? String(item.defaultValue) : undefined}
+      onChange={(e) => {
+        const val =
+          item.type === 'number' ? Number(e.target.value) : e.target.value
+        item.validators?.onChange(val)
+      }}
+      value={item.value ? String(item.value) : undefined}
       placeholder={item.placeholder}
       className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none'
     />
   </div>
 )
 
-export const SelectField = (item: SelectFieldConfig) => {
+export const SelectField = <T,>(item: SelectFieldConfig<T>) => {
   return (
     <div className='relative pb-2'>
       <div className='flex items-center'>
@@ -70,8 +74,8 @@ export const SelectField = (item: SelectFieldConfig) => {
         </div>
       </div>
       <Select
-        name={item.name}
-        defaultValue={item.defaultValue}
+        name={item.name as string}
+        defaultValue={item.defaultValue ? String(item.defaultValue) : undefined}
         onValueChange={(value) => item.validators?.onChange(value)}>
         <SelectTrigger
           size='default'

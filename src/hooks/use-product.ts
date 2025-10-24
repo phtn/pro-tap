@@ -1,5 +1,5 @@
 import {CardStatus, checkCardStatus} from '@/lib/firebase/cards'
-import {getVisiblePublicUsers, PublicUser} from '@/lib/firebase/public/u'
+import {getVisiblePublicUsers, PublicProfile} from '@/lib/firebase/public/u'
 import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useState} from 'react'
 
@@ -7,41 +7,44 @@ export const useProduct = (id: string | undefined) => {
   const router = useRouter()
   const [cardStatus, setCardStatus] = useState<CardStatus | null>(null)
   const [loading, setLoading] = useState(false)
-  const [visiblePublicUsers, setVisiblePublicUsers] = useState<PublicUser[]>([])
+  const [visiblePublicProfiles, setVisiblePublicProfiles] = useState<
+    PublicProfile[]
+  >([])
 
   const ownership = useCallback(
-    (users: PublicUser[]) => users.length > 0 && users.find((u) => u.id === id),
+    (users: PublicProfile[]) =>
+      users.length > 0 && users.find((u) => u.id === id),
     [id],
   )
 
-  const fetchVisiblePublicUsers = useCallback(async () => {
+  const fetchVisiblePublicProfiles = useCallback(async () => {
     if (!id) {
-      setVisiblePublicUsers([])
+      setVisiblePublicProfiles([])
       return
     }
 
     try {
       const users = await getVisiblePublicUsers('id')
-      setVisiblePublicUsers(users)
+      setVisiblePublicProfiles(users)
     } catch (error) {
       console.error('Failed to fetch public users:', error)
-      setVisiblePublicUsers([])
+      setVisiblePublicProfiles([])
     }
   }, [id])
 
   useEffect(() => {
-    fetchVisiblePublicUsers()
-  }, [fetchVisiblePublicUsers])
+    fetchVisiblePublicProfiles()
+  }, [fetchVisiblePublicProfiles])
 
   useEffect(() => {
-    if (ownership(visiblePublicUsers)) {
+    if (ownership(visiblePublicProfiles)) {
       // Handle the case when a user is found
       router.push('/u/' + id)
     }
-  }, [visiblePublicUsers, id, router, ownership])
+  }, [visiblePublicProfiles, id, router, ownership])
 
   const runFetch = useCallback(async () => {
-    if (!id && ownership(visiblePublicUsers)) {
+    if (!id && ownership(visiblePublicProfiles)) {
       setCardStatus(null)
       setLoading(false)
       return router.push('/u/' + id)
@@ -49,7 +52,7 @@ export const useProduct = (id: string | undefined) => {
 
     setLoading(true)
     try {
-      if (id && !ownership(visiblePublicUsers)) {
+      if (id && !ownership(visiblePublicProfiles)) {
         const result = await checkCardStatus(id, 'general')
         setCardStatus(result)
         setLoading(false)
@@ -59,7 +62,7 @@ export const useProduct = (id: string | undefined) => {
       setCardStatus(null)
       setLoading(false)
     }
-  }, [id, visiblePublicUsers, ownership])
+  }, [id, visiblePublicProfiles, ownership])
 
   useEffect(() => {
     runFetch()

@@ -26,7 +26,6 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
     startScanning,
     stopScanning,
     clearHistory,
-    formatRecordData,
   } = useNFC({
     onScan,
     onError,
@@ -115,7 +114,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
                   {record.recordType}:
                 </span>
                 <span className='ml-2 text-gray-600'>
-                  {formatRecordData(record)}
+                  {/*{formatRecordData(record)}*/}
                 </span>
               </div>
             ))}
@@ -138,7 +137,7 @@ const NFCScanner: React.FC<NFCScannerProps> = ({
                 <div className='text-sm'>
                   {scan.records.slice(0, 2).map((record, recordIndex) => (
                     <div key={recordIndex} className='truncate'>
-                      {formatRecordData(record)}
+                      {/*{formatRecordData(record)}*/}
                     </div>
                   ))}
                   {scan.records.length > 2 && (

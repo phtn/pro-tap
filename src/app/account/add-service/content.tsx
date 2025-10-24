@@ -34,11 +34,13 @@ export function AddServiceContent() {
                 recordType: 'url',
                 data: `https://protap.ph/u/${data.id}`,
                 id: data.id,
+                mediaType: null,
               },
               {
                 recordType: 'text',
                 data: String(data.id.split('-').shift()),
                 id: 'type',
+                mediaType: null,
               },
             ],
             timestamp: serverTimestamp(),

@@ -1,52 +1,41 @@
 'use client'
 
-import {
-  FieldConfig,
-  fieldGroups,
-  profileFormDataSchema,
-  profileInitialValues,
-} from '@/components/experimental/form/schema'
+import {FieldConfig} from '@/components/experimental/form/schema'
 import {useAppForm} from '@/components/experimental/form/utils'
 import {HyperList} from '@/components/list'
 import {ScrollArea} from '@/components/ui/scroll-area'
 import {useAuthCtx} from '@/ctx/auth'
-import {useProfileService} from '@/hooks/use-profile-service'
-import {ProfileFormData} from '@/lib/firebase/types/user'
+import {useUserInfoService} from '@/hooks/use-user-info-service'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {useActionState, useCallback, useState, useTransition} from 'react'
-import ProfileView from '../../_components/profile-preview'
+import {
+  fieldGroups,
+  userInfoInitial,
+  UserInfoSchema,
+  UserInfoType,
+} from '../_components/user-schema'
 
 export default function BioDataPage() {
   const {user} = useAuthCtx()
 
-  const {profile, formData, formMessage, handleSave} = useProfileService(
+  const {userInfo, formData, formMessage, handleSave} = useUserInfoService(
     user?.uid,
   )
 
   const [isPreview, setIsPreview] = useState(false)
 
   const form = useAppForm({
-    defaultValues: formData ?? profileInitialValues,
+    defaultValues: formData ?? userInfoInitial,
     validators: {
-      onChange: profileFormDataSchema,
+      onChange: UserInfoSchema,
     },
   })
 
-  const previewProfile = profile
-    ? {
-        ...profile,
-        ...formData,
-      }
-    : {
-        username: 'preview',
-        displayName: formData.displayName,
-        bio: formData.bio,
-        avatar: formData.avatar,
-        socialLinks: formData.socialLinks,
-        theme: formData.theme,
-        isPublished: formData.isPublished,
-      }
+  const userData = {
+    ...userInfo,
+    ...formData,
+  }
 
   if (isPreview) {
     return (
@@ -58,12 +47,11 @@ export default function BioDataPage() {
             Exit Preview
           </button>
         </div>
-        <ProfileView profile={previewProfile} />
       </div>
     )
   }
 
-  const [, action, pending] = useActionState(handleSave, profileInitialValues)
+  const [, action, pending] = useActionState(handleSave, userData)
   const [isPending, startTransition] = useTransition()
 
   const handleFormSubmit = useCallback(
@@ -78,11 +66,11 @@ export default function BioDataPage() {
   )
 
   const renderField = useCallback(
-    (field: FieldConfig) => {
+    (field: FieldConfig<UserInfoType>) => {
       return (
         <form.AppField
           key={field.name.toString()}
-          name={field.name as keyof ProfileFormData}
+          name={field.name as keyof UserInfoType}
           validators={field.validators}>
           {(fieldApi) => {
             const errors = fieldApi.state.meta.errors
@@ -99,7 +87,9 @@ export default function BioDataPage() {
                     required={field.required}
                     options={field.options}
                     type={field.type}
-                    defaultValue={formData[field.name] as string}
+                    defaultValue={
+                      formData[field.name as keyof UserInfoType] ?? undefined
+                    }
                     error={invalid && errors.join(', ')}
                   />
                 )
@@ -112,7 +102,7 @@ export default function BioDataPage() {
                     name={field.name}
                     label={field.label}
                     defaultValue={
-                      formData[field.name] as typeof field.defaultValue
+                      formData[field.name as keyof UserInfoType] ?? undefined
                     }
                     error={invalid && errors.join(', ')}
                     required={field.required}

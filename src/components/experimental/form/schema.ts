@@ -1,5 +1,5 @@
 import {ClassName} from '@/app/types'
-import {ProfileFormData, ServerTime} from '@/lib/firebase/types/user'
+import {ServerTime} from '@/lib/firebase/types/user'
 import {IconName} from '@/lib/icons'
 import z from 'zod'
 
@@ -11,12 +11,12 @@ export type UserFieldName = 'name' | 'tel' | 'email' | 'inquiry'
 type FieldValidator = (value: string | number) => true | string
 
 // Define base field properties
-export interface BaseFieldConfig {
-  name: keyof ProfileFormData
+export interface BaseFieldConfig<T> {
+  name: keyof T
   error: false | string
   label?: string
-  value?: any
-  defaultValue?: string
+  value?: string | number
+  defaultValue?: string | number
   required?: boolean
   autoComplete?: string
   placeholder?: string
@@ -25,21 +25,8 @@ export interface BaseFieldConfig {
   className?: string
 }
 
-export const profileInitialValues: ProfileFormData = {
-  displayName: '',
-  username: '',
-  avatar: '',
-  theme: 'auto',
-  isPublished: false,
-  bio: '',
-  firstName: '',
-  middleName: '',
-  lastName: '',
-  gender: null,
-}
-
 // Text field config
-export interface TextFieldConfig extends BaseFieldConfig {
+export interface TextFieldConfig<T> extends BaseFieldConfig<T> {
   type: 'text' | 'email' | 'number' | 'password' | 'tel'
 }
 
@@ -51,70 +38,28 @@ export type FieldOption = {
   iconStyle?: ClassName
 }
 // Select field config
-export interface SelectFieldConfig extends BaseFieldConfig {
+export interface SelectFieldConfig<T> extends BaseFieldConfig<T> {
   type: 'select'
   options: FieldOption[]
   // onValueChange: (value: string) => void;
 }
 
 // Union type for all field types
-export type FieldConfig = TextFieldConfig | SelectFieldConfig
+export type FieldConfig<T> = TextFieldConfig<T> | SelectFieldConfig<T>
 
 // Type for field groups
-export interface FieldGroup {
+export interface FieldGroup<T> {
   title: string
-  fields: FieldConfig[]
+  fields: FieldConfig<T>[]
 }
 
 export const serverTimeSchema = z.custom<ServerTime>().optional()
-
-export const userProfileSchema = z.object({
-  username: z.string().nullable(),
-  displayName: z.string().nullable(),
-  bio: z.string().nullable(),
-  avatar: z.string().nullable(),
-  socialLinks: z
-    .object({
-      twitter: z.string().optional(),
-      github: z.string().optional(),
-      linkedin: z.string().optional(),
-      website: z.string().optional(),
-    })
-    .optional(),
-  theme: z.union([z.literal('light'), z.literal('dark'), z.literal('auto')]),
-  isPublished: z.boolean(),
-  createdAt: serverTimeSchema,
-  updatedAt: serverTimeSchema,
-})
-
-export const userBioDataSchema = z.object({
-  firstName: z.string().nullable(),
-  middleName: z.string().nullable(),
-  lastName: z.string().nullable(),
-  gender: z.union([z.literal('male'), z.literal('female')]),
-})
-
-export const profileFormDataSchema = userBioDataSchema.extend({
-  username: z.string().nullable(),
-  displayName: z.string().nullable(),
-  bio: z.string().nullable(),
-  avatar: z.string().nullable(),
-  socialLinks: z
-    .object({
-      twitter: z.string().optional(),
-      github: z.string().optional(),
-      linkedin: z.string().optional(),
-      website: z.string().optional(),
-    })
-    .optional(),
-  theme: z.union([z.literal('light'), z.literal('dark'), z.literal('auto')]),
-  isPublished: z.boolean(),
-})
 
 export interface ISelectFieldItem extends FieldOption {
   id: string
   name: string
 }
+
 export const genderOptions: ISelectFieldItem[] = [
   {
     id: '1',
@@ -163,91 +108,91 @@ export const themeOptions: ISelectFieldItem[] = [
   },
 ]
 
-export const fieldGroups: FieldGroup[] = [
-  {
-    title: 'ProfileFormData',
-    fields: [
-      // {
-      //   name: 'displayName',
-      //   type: 'text',
-      //   label: 'Display Name',
-      //   placeholder: 'Your display name',
-      //   helperText: 'The name shown in your profile.',
-      //   required: true,
-      //   error: false,
-      // },
-      {
-        name: 'firstName',
-        type: 'text',
-        label: 'First Name',
-        placeholder: 'Your given name',
-        helperText: 'Your given name.',
-        required: false,
-        error: false,
-      },
-      {
-        name: 'middleName',
-        type: 'text',
-        label: 'Middle Name',
-        placeholder: 'Your middle name',
-        helperText: 'Your middle name.',
-        required: false,
-        error: false,
-      },
-      {
-        name: 'lastName',
-        type: 'text',
-        label: 'Last Name',
-        placeholder: 'Your last name',
-        helperText: 'Your last name.',
-        required: false,
-        error: false,
-      },
-      {
-        name: 'gender',
-        type: 'select',
-        label: 'Gender',
-        helperText: 'Your biological gender.',
-        placeholder: 'Select your gender',
-        required: true,
-        options: genderOptions,
-        error: false,
-      },
-      {
-        name: 'username',
-        type: 'text',
-        label: 'Username',
-        placeholder: 'Enter your username',
-        helperText: 'Enter your username',
-        required: false,
-        error: false,
-      },
-      {
-        name: 'bio',
-        type: 'text',
-        label: 'Bio',
-        placeholder: 'Enter your bio',
-        required: false,
-        error: false,
-      },
-      {
-        name: 'avatar',
-        type: 'text',
-        label: 'Avatar',
-        placeholder: 'Upload your avatar',
-        required: false,
-        error: false,
-      },
+// export const fieldGroups: FieldGroup[] = [
+//   {
+//     title: 'UserInfoData',
+//     fields: [
+//       {
+//         name: 'displayName',
+//         type: 'text',
+//         label: 'Display Name',
+//         placeholder: 'Your display name',
+//         helperText: 'The name shown in your profile.',
+//         required: true,
+//         error: false,
+//       },
+//       {
+//         name: 'firstName',
+//         type: 'text',
+//         label: 'First Name',
+//         placeholder: 'Your given name',
+//         helperText: 'Your given name.',
+//         required: false,
+//         error: false,
+//       },
+//       {
+//         name: 'middleName',
+//         type: 'text',
+//         label: 'Middle Name',
+//         placeholder: 'Your middle name',
+//         helperText: 'Your middle name.',
+//         required: false,
+//         error: false,
+//       },
+//       {
+//         name: 'lastName',
+//         type: 'text',
+//         label: 'Last Name',
+//         placeholder: 'Your last name',
+//         helperText: 'Your last name.',
+//         required: false,
+//         error: false,
+//       },
+//       {
+//         name: 'gender',
+//         type: 'select',
+//         label: 'Gender',
+//         helperText: 'Your biological gender.',
+//         placeholder: 'Select your gender',
+//         required: true,
+//         options: genderOptions,
+//         error: false,
+//       },
+//       {
+//         name: 'username',
+//         type: 'text',
+//         label: 'Username',
+//         placeholder: 'Enter your username',
+//         helperText: 'Enter your username',
+//         required: false,
+//         error: false,
+//       },
+//       {
+//         name: 'bio',
+//         type: 'text',
+//         label: 'Bio',
+//         placeholder: 'Enter your bio',
+//         required: false,
+//         error: false,
+//       },
+//       {
+//         name: 'avatar',
+//         type: 'text',
+//         label: 'Avatar',
+//         placeholder: 'Upload your avatar',
+//         required: false,
+//         error: false,
+//       },
 
-      {
-        name: 'theme',
-        type: 'select',
-        label: 'Theme',
-        placeholder: 'Select your theme',
-        required: true,
-        options: themeOptions,
-        error: false,
-      },
-    ],
-  },
-]
+//       {
+//         name: 'theme',
+//         type: 'select',
+//         label: 'Theme',
+//         placeholder: 'Select your theme',
+//         required: true,
+//         options: themeOptions,
+//         error: false,
+//       },
+//     ],
+//   },
+// ]

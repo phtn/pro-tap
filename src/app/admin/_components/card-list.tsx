@@ -16,7 +16,7 @@ export interface RouteItem {
   name: string
   label: string
   href: string
-  type: 'product' | 'order' | 'user' | 'settings' | 'debug' | 'data'
+  type: 'product' | 'order' | 'user' | 'settings' | 'debug' | 'data' | 'monitor'
   icon: IconName
   color: ClassName
   description?: string

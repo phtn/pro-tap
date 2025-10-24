@@ -36,7 +36,7 @@ export const CardItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
-  const debug = true
+  const debug = false
   const baseUrl = useMemo(
     () => (debug ? '192.168.1.2:3000' : 'protap.ph'),
     [debug],
@@ -70,8 +70,8 @@ export const CardItemSheet = ({
     if (!item) return null
     return {
       content: `https://${baseUrl}/api/verify/?id=${item.id}&series=${item.series}&group=${item.group}&batch=${item.batch}`,
-      width: isMobile ? 280 : 400,
-      height: isMobile ? 280 : 400,
+      width: isMobile ? 240 : 400,
+      height: isMobile ? 240 : 400,
     }
   }, [baseUrl, item, isMobile])
 
@@ -250,7 +250,7 @@ const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
               const url = URL.createObjectURL(blob)
               const a = document.createElement('a')
               a.href = url
-              a.download = `qr-code-${Date.now()}.png`
+              a.download = `qr-code-${Date.now().toString(12)}.png`
               document.body.appendChild(a)
               a.click()
               document.body.removeChild(a)
@@ -277,7 +277,7 @@ const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
       // Create a new window for printing
       const printWindow = window.open('', '_blank')
       if (printWindow) {
-        printWindow.document.write(`
+        printWindow.document.open(`
           <!DOCTYPE html>
           <html>
             <head>

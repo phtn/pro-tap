@@ -6,6 +6,7 @@ import {usePathname, useRouter} from 'next/navigation'
 import {useEffect, useState} from 'react'
 import {CardList, RouteItem} from './_components/card-list'
 import {Header} from './_components/header'
+import {dataList, tools, utils} from './static'
 
 export const AdminPageContent = () => {
   const pathname = usePathname()
@@ -33,56 +34,10 @@ export const AdminPageContent = () => {
     return null
   }
 
-  const tools: RouteItem[] = [
-    {
-      name: 'scan-nfc-cards',
-      label: 'Scan NFC Cards',
-      href: '/admin/nfc',
-      icon: 'nfc',
-      type: 'product',
-      color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'Scan NFC Cards to add to your products',
-    },
-    {
-      name: 'gen-qr-codes',
-      label: 'Generate QR Codes',
-      href: '/admin/qrcode',
-      icon: 'qr-code-bold',
-      type: 'product',
-      color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'Generate QR Codes / Add Product Items',
-    },
-  ]
-
-  const dataList: RouteItem[] = [
-    // {
-    //   name: 'full-table',
-    //   label: 'Full Table',
-    //   href: '/admin/fulltable',
-    //   icon: 'bullet-list-square',
-    //   type: 'data',
-    //   color:
-    //     'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-    //   description: 'View and manage all products in a table',
-    // },
-    {
-      name: 'products-table',
-      label: 'Products',
-      href: '/admin/data',
-      icon: 'bullet-list-square',
-      type: 'data',
-      color:
-        'bg-dark-origin dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'View and manage all products in a table',
-    },
-  ]
-
   const renderCardItem = (item: RouteItem, index: number) => (
     <Link
       key={`${item.name}_${index}`}
-      href={item.href}
+      href={`/admin/${item.name}`}
       className={cn(
         'group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
         'transition-transform duration-300 ease-in-out active:scale-90',
@@ -101,10 +56,10 @@ export const AdminPageContent = () => {
         </h3>
         <p
           className={cn(
-            'absolute -right-2 -top-2 text-xs font-mono bg-zinc-400/20 dark:bg-background rounded-md px-2 py-1',
+            'absolute -right-2 -top-2 text-xs font-mono rounded-md dark:bg-white px-2 py-1',
             {
-              ' text-teal-600 dark:text-mac-teal': item.type === 'product',
-              ' text-mac-blue dark:text-primary': item.type === 'data',
+              ' text-black dark:text-mac-teal': item.type === 'product',
+              ' text-red-700 dark:text-primary': item.type === 'data',
             },
           )}>
           <span className='capitalize'>
@@ -130,6 +85,7 @@ export const AdminPageContent = () => {
           <div className='md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
             <CardList title='Tools' list={tools} renderFn={renderCardItem} />
             <CardList title='Data' list={dataList} renderFn={renderCardItem} />
+            <CardList title='Utils' list={utils} renderFn={renderCardItem} />
           </div>
         </div>
       </div>

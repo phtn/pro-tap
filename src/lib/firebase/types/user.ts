@@ -10,7 +10,7 @@ export interface UserBioData {
   gender: Gender | null
 }
 
-export interface ProfileFormData extends UserBioData {
+export interface ProfileFormData {
   username: string | null
   displayName: string | null
   bio: string | null
@@ -76,8 +76,8 @@ export interface ProtapUserDoc {
   lastLogin: ServerTime
   isActivated: boolean
   activatedOn: ServerTime | null
-  ntag: NTag
-  userBioData: UserBioData
+  ntag: NTag | null
+  userBioData: UserBioData | null
   userType: ProductType | null
   subscriptionType?: ProductType | null
   purchaseType: string

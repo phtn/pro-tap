@@ -55,26 +55,10 @@ const Separator = ({className, orientation = 'horizontal'}: SeparatorProps) => (
 )
 
 interface AdminDockProps {
-  // back: VoidFunction
-  // selected: string
-  // startFn: VoidFunction
-  // haltFn: VoidFunction
-  // clearFn: VoidFunction
-  // loading: boolean
-  // loadingIcon: IconName
   dockItems?: DockItems
 }
 
-export const AdminDock = ({
-  // back,
-  // selected,
-  // startFn,
-  // haltFn,
-  // clearFn,
-  // loading,
-  // loadingIcon = 'spinner-pulse-a',
-  dockItems,
-}: AdminDockProps) => {
+export const AdminDock = ({dockItems}: AdminDockProps) => {
   return (
     <div className=''>
       <TooltipProvider>

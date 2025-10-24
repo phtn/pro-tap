@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  FieldConfig,
-  fieldGroups,
-  profileFormDataSchema,
-  profileInitialValues,
-} from '@/components/experimental/form/schema'
+import {FieldConfig} from '@/components/experimental/form/schema'
 import {useAppForm} from '@/components/experimental/form/utils'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {ImageCropper} from '@/components/image-cropper'
@@ -19,6 +14,12 @@ import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {useActionState, useCallback, useEffect, useTransition} from 'react'
 import ProfileView from '../../_components/profile-preview'
+import {
+  profileFieldGroups,
+  profileInitial,
+  UserProfile,
+  UserProfileSchema,
+} from '../_components/profile-schema'
 
 export default function ProfilePageEditor() {
   const {user} = useAuthCtx()
@@ -30,9 +31,9 @@ export default function ProfilePageEditor() {
   const {on: isPreview, toggle: togglePreview} = useToggle(false)
 
   const form = useAppForm({
-    defaultValues: formData ?? profileInitialValues,
+    defaultValues: formData ?? profileInitial,
     validators: {
-      onChange: profileFormDataSchema,
+      onChange: UserProfileSchema,
     },
   })
 
@@ -51,7 +52,7 @@ export default function ProfilePageEditor() {
         isPublished: formData.isPublished,
       }
 
-  const [, action, pending] = useActionState(handleSave, profileInitialValues)
+  const [, action, pending] = useActionState(handleSave, profileInitial)
   const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function ProfilePageEditor() {
   )
 
   const renderField = useCallback(
-    (field: FieldConfig) => {
+    (field: FieldConfig<UserProfile>) => {
       return (
         <form.AppField
           key={field.name.toString()}
@@ -91,7 +92,9 @@ export default function ProfilePageEditor() {
                     required={field.required}
                     options={field.options}
                     type={field.type}
-                    defaultValue={formData[field.name] as string}
+                    defaultValue={
+                      formData[field.name as keyof ProfileFormData] as string
+                    }
                     error={invalid && errors.join(', ')}
                   />
                 )
@@ -104,7 +107,7 @@ export default function ProfilePageEditor() {
                     name={field.name}
                     label={field.label}
                     defaultValue={
-                      formData[field.name] as typeof field.defaultValue
+                      formData[field.name as keyof ProfileFormData] as string
                     }
                     error={invalid && errors.join(', ')}
                     required={field.required}
@@ -176,7 +179,7 @@ export default function ProfilePageEditor() {
 
           <form onSubmit={handleFormSubmit}>
             <div className='mb-4 md:mb-8'>
-              {fieldGroups.map((group) => (
+              {profileFieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
                   data={group.fields.slice(0, 1)}

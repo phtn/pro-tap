@@ -11,7 +11,7 @@ export function Footer() {
     <footer
       className={cn(
         // 'pt-12 pb-28 dark:bg-gray-900/20 bg-zinc-800',
-        'relative rounded-t-4xl pt-12 pb-28 bg-gradient-to-b from-[#1a1a24] to-[#1a1a24] dark:from-zinc-600/95 dark:to-zinc-700/95 backdrop-blur-sm overflow-hidden',
+        'relative rounded-t-4xl pt-12 pb-28 bg-gradient-to-b from-[#1a1a24] to-[#1a1a24] dark:from-zinc-600/50 dark:to-zinc-700/50 backdrop-blur-sm overflow-hidden',
       )}>
       <div className='container mx-auto px-10 font-figtree'>
         <div className='grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-12'>

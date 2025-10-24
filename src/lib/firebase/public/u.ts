@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore'
 import {db} from '..'
 
-export interface PublicUser {
+export interface PublicProfile {
   id: string
   isVisible: boolean
   displayName: string | null
@@ -16,13 +16,15 @@ export interface PublicUser {
   theme: 'light' | 'dark' | 'auto'
 }
 
-const publicCollection = (): CollectionReference<PublicUser> => {
-  return collection(db, 'public') as CollectionReference<PublicUser>
+const publicCollection = (): CollectionReference<PublicProfile> => {
+  return collection(db, 'public') as CollectionReference<PublicProfile>
 }
 
-const publicUsersCollection = (by: string): CollectionReference<PublicUser> => {
+const publicUsersCollection = (
+  by: string,
+): CollectionReference<PublicProfile> => {
   const userColRef = doc(publicCollection(), 'u')
-  return collection(userColRef, by) as CollectionReference<PublicUser>
+  return collection(userColRef, by) as CollectionReference<PublicProfile>
 }
 
 export const getVisiblePublicUsers = async (by: string) => {
@@ -36,7 +38,7 @@ export const getVisiblePublicUsers = async (by: string) => {
 
 export const getVisiblePublicUserById = async (
   id: string,
-): Promise<PublicUser | null> => {
+): Promise<PublicProfile | null> => {
   const ref = query(publicUsersCollection('id'), where('id', '==', id))
   const snapshot = await getDocs(ref)
   const docs = snapshot.docs

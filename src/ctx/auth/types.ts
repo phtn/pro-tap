@@ -34,8 +34,8 @@ export interface AuthUser extends User {
     scanTime: number | null
     metadata?: Record<string, string>
     type: string
-  }
-  userBioData: UserBioData
+  } | null
+  userBioData: UserBioData | null
   userType: ProductType | null
   purchaseType: string | null
   loyaltyPoints: number

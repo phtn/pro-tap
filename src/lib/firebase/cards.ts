@@ -1,6 +1,7 @@
 'use client'
 
 import {NFCData} from '@/hooks/use-nfc'
+import {secureRef} from '@/utils/crypto'
 import {macStr} from '@/utils/macstr'
 import {Effect} from 'effect'
 import {User} from 'firebase/auth'
@@ -44,11 +45,17 @@ export class DocumentNotFoundError {
   constructor(readonly docId: string) {}
 }
 
+export interface BatchCard extends ScanItem {
+  createdAt: Timestamp | null
+  createdBy: string
+  id: string
+}
+
 export interface ProtapCardDoc {
   id: string
   serialNumber: string
   nfcData?: NFCData
-  qrcData?: string | null
+  qrcData?: NFCData
   createdAt: Timestamp | null
   updatedAt: Timestamp | null
   createdBy: string
@@ -68,6 +75,12 @@ export type ProtapActivationInfo = Pick<
   'id' | 'series' | 'group' | 'batch' | 'createdAt'
 >
 
+interface ScanItem {
+  series: string
+  group: string
+  batch: string
+}
+
 function cardsCollection(col: string): CollectionReference<ProtapCardDoc> {
   const protapCol = collection(db, 'protap')
   const cardsDoc = doc(protapCol, 'cards')
@@ -78,27 +91,34 @@ function cardDocRef(id: string, col: string): DocumentReference<ProtapCardDoc> {
   return doc(cardsCollection(col), id) as DocumentReference<ProtapCardDoc>
 }
 
-interface ScanItem {
-  series: string
-  group: string
-  batch: string
+function batchesCollection(coll: string): CollectionReference<ProtapCardDoc> {
+  const protapCol = collection(db, 'protap')
+  const batchesDoc = doc(protapCol, 'batches')
+  return collection(batchesDoc, coll) as CollectionReference<ProtapCardDoc>
+}
+
+export function batchesDocRef(
+  id: string,
+  coll: string,
+): DocumentReference<ProtapCardDoc> {
+  return doc(batchesCollection(coll), id) as DocumentReference<ProtapCardDoc>
 }
 
 export async function createCard(
   data: NFCData,
   item: ScanItem,
   user: User,
-  grp: string,
+  coll: string,
 ): Promise<string> {
   const id = macStr(data.serialNumber)
-  const ref = cardDocRef(id, grp)
+  const ref = cardDocRef(id, coll)
   const snap = await getDoc(ref)
   if (snap.exists()) {
     return snap.id
   }
   await setDoc(ref, {
     id,
-    qrcData: null,
+    qrcData: data,
     nfcData: data,
     serialNumber: data.serialNumber,
     createdAt: serverTimestamp(),
@@ -119,9 +139,9 @@ export async function createQR(
   data: NFCData,
   user: User,
   item: ScanItem,
-  grp: string,
+  coll: string,
 ): Promise<string> {
-  const ref = cardDocRef(data.serialNumber, grp)
+  const ref = cardDocRef(data.serialNumber, coll)
 
   const snap = await getDoc(ref)
   if (snap.exists()) {
@@ -129,7 +149,7 @@ export async function createQR(
   }
   await setDoc(ref, {
     id: data.serialNumber,
-    qrcData: null,
+    qrcData: data,
     nfcData: data,
     serialNumber: data.serialNumber,
     createdAt: serverTimestamp(),
@@ -156,7 +176,6 @@ export async function createBulkQRCodes(
   onProgress?: (progress: number) => void,
 ): Promise<{createdIds: string[]; createdAt: Timestamp}> {
   const countBatch = writeBatch(db)
-  const baseTime = Date.now().toString(12)
   const createdIds: string[] = []
 
   const timestamp = serverTimestamp()
@@ -167,13 +186,15 @@ export async function createBulkQRCodes(
 
     for (let j = 0; j < currentBatchSize; j++) {
       const index = i + j
-      const serialNumber = `qr-${baseTime}-${index}`
-      const qrData: NFCData = {
+      const serialNumber = `qrc-${secureRef(14)}-${index}`
+      const qrcData: NFCData = {
         serialNumber,
         records: [
           {
             recordType: 'url',
             data: `https://protap.ph/api/verify/?id=${serialNumber}&series=${series}&group=${group}&batch=${batch}`,
+            mediaType: '',
+            id: String(index),
           },
         ],
         timestamp: serverTimestamp(),
@@ -182,9 +203,9 @@ export async function createBulkQRCodes(
       const ref = cardDocRef(serialNumber, coll)
       const docData = {
         id: serialNumber,
-        qrcData: null,
-        nfcData: qrData,
+        nfcData: qrcData,
         serialNumber,
+        qrcData,
         createdAt: timestamp,
         createdBy: user.uid,
         createdByName: user.displayName,

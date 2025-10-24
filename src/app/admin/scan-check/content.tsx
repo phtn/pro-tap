@@ -2,20 +2,18 @@
 import {useAuthCtx} from '@/ctx/auth'
 import {useTone} from '@/ctx/tone'
 import {useNFC} from '@/hooks/use-nfc'
-import {checkCard, createCard} from '@/lib/firebase/cards'
+import {useToggle} from '@/hooks/use-toggle'
+import {checkCard} from '@/lib/firebase/cards'
 import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
 import {useNFCStore} from '@/stores/nfc-store'
+import {secureRef} from '@/utils/crypto'
 import {macStr} from '@/utils/macstr'
 import {useRouter} from 'next/navigation'
-import {useEffect, useMemo} from 'react'
-import {BatchName} from '../_components/batch-name'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {AdminDock, DockItems} from '../_components/dock'
-import {GroupName} from '../_components/group-name'
-import {NFCScanList} from '../_components/nfc-list'
-import {SeriesSelect} from '../_components/select-series'
-//already
 
-const NFCPage = () => {
+export const ScanCheckContent = () => {
   const {user} = useAuthCtx()
   const back = useRouter().back
 
@@ -31,6 +29,7 @@ const NFCPage = () => {
     series,
     group,
     batch,
+    payload,
   } = useNFC({
     autoStop: false,
     withWrite: true,
@@ -38,6 +37,20 @@ const NFCPage = () => {
   const {nfcScans, addScan, clearList, setFirestoreReceipt, markAsOnList} =
     useNFCStore()
   const coll = 'general'
+
+  const [, setIsSupported] = useState(false)
+
+  useEffect(() => {
+    const supported =
+      typeof window !== 'undefined' &&
+      window.isSecureContext &&
+      'NDEFReader' in window
+
+    setIsSupported(supported)
+    if (!supported) {
+      console.error('NFC is not supported')
+    }
+  }, [])
 
   useEffect(() => {
     if (!scanDetails) return
@@ -52,15 +65,14 @@ const NFCPage = () => {
       const exists = await checkCard(id, coll)
       if (exists) {
         markAsOnList(serialNumber)
-        return
       }
 
       // Only create for non-duplicates within this session
-      if (user) {
-        setFirestoreReceipt(
-          await createCard(scanDetails, {series, group, batch}, user, coll),
-        )
-      }
+      // if (user) {
+      //   setFirestoreReceipt(
+      //     await createCard(scanDetails, {series, group, batch}, user, coll),
+      //   )
+      // }
     })()
   }, [
     scanDetails,
@@ -87,11 +99,30 @@ const NFCPage = () => {
     }
   }, [scanDetails])
 
+  const {on: toolOpen, toggle: toggleTool} = useToggle()
+  const seriesList = ['individual', 'fleet', 'limited-edition']
+
+  const handleRandom = useCallback(() => {
+    const random = Math.floor(Math.random() * 3)
+    setSeries(seriesList[random])
+    setGroup(secureRef(4))
+    setBatch(secureRef(3))
+    toggleTool()
+  }, [])
+
   const dockItems = useMemo(
     () =>
       ({
         nav: [{id: 'back', icon: 'back', fn: back, label: 'Dashboard'}],
         toolbar: [
+          {
+            name: 'Toggle View',
+            fn: handleRandom,
+            icon: toolOpen ? 'widget-v' : 'phone',
+            style: cn('text-zinc-600 dark:text-slate-300', {
+              '-rotate-90': toolOpen,
+            }),
+          },
           {
             name: 'start scan',
             fn: startScanning,
@@ -153,21 +184,10 @@ const NFCPage = () => {
       <div className='fixed z-60 top-0 bg-origin dark:bg-dark-origin backdrop-blur-3xl flex flex-col w-full border-b border-origin dark:border-origin/60'>
         <div className='flex justify-between w-full py-3 px-3 md:p-6 h-fit'>
           <div className='flex item-center justify-center space-x-3 md:space-x-6 lg:space-x-8 xl:space-x-12'>
-            <SeriesSelect setSeries={setSeries} disabled={isScanning} />
-            <GroupName
-              disabled={isScanning}
-              setGroup={setGroup}
-              group={group}
-            />
-            <BatchName
-              disabled={isScanning}
-              setBatch={setBatch}
-              batch={batch}
-            />
+            <ScanStatus isScanning={isScanning} />
           </div>
 
           <div className='flex items-start justify-end space-x-1 md:space-x-10 h-full'>
-            <ScanStatus isScanning={isScanning} />
             <div className='h-full w-full flex flex-col items-center font-figtree space-y-1'>
               <p className='text-lg md:text-3xl font-semibold font-space tracking-tight [text-shadow:_0_1px_1px_rgb(0_0_0_/_10%)] px-1'>
                 {trueCount}
@@ -177,7 +197,7 @@ const NFCPage = () => {
         </div>
       </div>
       {!nfcScans.length && (
-        <div className=' flex items-center justify-center mt-22 h-40 md:h-80 w-full'>
+        <div className='hidden _flex items-center justify-center mt-22 h-40 md:h-80 w-full'>
           <div className='flex w-fit bg-dark-origin/60 p-3 rounded-full italic items-center space-x-1 text-sm md:text-base font-figtree tracking-tight opacity-60'>
             <span>Press</span>
             <Icon name='play-solid' className='size-5' />
@@ -189,7 +209,7 @@ const NFCPage = () => {
         <div className='w-full'>
           <div className='h-22 w-full' />
           <div className='px-4'>
-            <NFCScanList />
+            <pre>{JSON.stringify({...scanDetails, ...payload}, null, 2)}</pre>
           </div>
         </div>
       </div>
@@ -218,5 +238,3 @@ const ScanStatus = ({isScanning}: ScanStatusProps) => {
     </div>
   )
 }
-
-export default NFCPage

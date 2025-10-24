@@ -3,16 +3,17 @@
 import {
   getVisiblePublicUserById,
   getVisiblePublicUsers,
-  PublicUser,
+  PublicProfile,
 } from '@/lib/firebase/public/u'
 import {useCallback, useEffect, useState} from 'react'
+import ProfileView from './view'
 
 interface ContentProps {
   username: string
 }
 
 export const Content = ({username}: ContentProps) => {
-  const [profile, setProfile] = useState<PublicUser | null>(null)
+  const [profile, setProfile] = useState<PublicProfile | null>(null)
 
   const getUsers = useCallback(
     async () => await getVisiblePublicUsers('id'),
@@ -39,7 +40,7 @@ export const Content = ({username}: ContentProps) => {
 
   return (
     <main>
-      <pre>{JSON.stringify(profile, null, 2)}</pre>
+      <ProfileView profile={profile} />
     </main>
   )
 }

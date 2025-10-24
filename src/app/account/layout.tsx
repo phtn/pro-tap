@@ -32,7 +32,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
       <SexyButton
         onClick={toggle}
         variant='ghost'
-        className='bg-mac-blue/85 hover:bg-mac-blue dark:bg-mac-teal/60 dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
+        className='md:bg-mac-blue/85 md:hover:bg-mac-blue md:dark:bg-mac-teal/60 md:dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
         <span className='md:px-2 md:text-lg text-white dark:text-white'>
           Activate Protap
         </span>
