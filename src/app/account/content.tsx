@@ -1,5 +1,4 @@
 'use client'
-
 import {DiscoverFeed} from './_components/discover-feed/discover-feed'
 
 export const Content = () => {

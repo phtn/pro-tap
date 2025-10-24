@@ -1,5 +1,5 @@
 'use client'
-import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react'
+import {startTransition, useState} from 'react'
 
 import {IFAQ} from '@/app/types/landing'
 import {siteDetails} from './site-details'
@@ -18,50 +18,62 @@ export const FAQ = () => {
 
         <div className='w-full md:max-w-2xl lg:max-w-full group'>
           {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className=' first:border-t border-b group-hover:border-transparent border-origin/60 hover:border-origin/80 last:border-b-0 font-figtree'>
-              <Disclosure>
-                {({open}) => (
-                  <div>
-                    <DisclosureButton
-                      className={cn(
-                        'font-figtree w-full flex items-center justify-between cursor-pointer px-4 py-6 md:py-8 text-lg text-left',
-                        ' hover:bg-origin/50',
-                        ' transition-all duration-50',
-                        {'bg-origin/20': open},
-                      )}>
-                      <span
-                        className={cn(
-                          'text-lg md:text-xl font-semibold tracking-tighter',
-                          {'dark:text-primary-hover text-primary': open},
-                        )}>
-                        {faq.question}
-                      </span>
-                      {open ? (
-                        <Icon
-                          name='close'
-                          className='w-5 h-5 dark:text-primary-hover text-primary'
-                        />
-                      ) : (
-                        <Icon name='add' className='w-5 h-5 text-primary' />
-                      )}
-                    </DisclosureButton>
-                    <DisclosurePanel
-                      className={cn(
-                        'px-4 py-4 text-foreground-accent leading-8',
-                        {'bg-origin/20': open},
-                      )}>
-                      {faq.answer}
-                    </DisclosurePanel>
-                  </div>
-                )}
-              </Disclosure>
-            </div>
+            <FAQItem key={index} faq={faq} />
           ))}
         </div>
       </div>
     </section>
+  )
+}
+
+const FAQItem = ({faq}: {faq: IFAQ}) => {
+  const [open, setOpen] = useState(false)
+
+  const toggle = () => {
+    document.startViewTransition(() => {
+      startTransition(() => {
+        setOpen(!open)
+      })
+    })
+  }
+
+  return (
+    <div className='first:border-t group-hover:border-transparent border-origin/60 hover:border-origin/80 last:border-b-0'>
+      <button
+        onClick={toggle}
+        className={cn(
+          'w-full flex items-center justify-between px-4 py-6 md:py-8 text-lg text-left',
+          'hover:bg-origin/40 cursor-pointer',
+          'transition-all duration-50',
+          {'bg-origin/20 hover:bg-origin/20': open},
+        )}>
+        <span
+          className={cn(
+            'font-figtree text-lg md:text-xl font-semibold tracking-tighter',
+            {
+              'dark:text-primary-hover text-primary': open,
+            },
+          )}>
+          {faq.question}
+        </span>
+        {open ? (
+          <Icon
+            name='close'
+            className='size-5 dark:text-primary-hover text-primary'
+          />
+        ) : (
+          <Icon name='add' className='size-5 text-primary' />
+        )}
+      </button>
+      <div
+        className={cn(
+          'px-4 py-4 text-foreground-accent leading-8 overflow-hidden transition-all duration-300 ease-in-out font-figtree',
+          {'max-h-96 opacity-100': open, 'max-h-0 opacity-0': !open},
+          {'bg-origin/20': open},
+        )}>
+        {faq.answer}
+      </div>
+    </div>
   )
 }
 

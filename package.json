@@ -48,6 +48,7 @@
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
+    "convex": "^1.28.0",
     "date-fns": "^4.1.0",
     "dompurify": "^3.3.0",
     "easyqrcodejs": "^4.6.2",
@@ -87,6 +88,7 @@
     "unified": "^11.0.5",
     "usehooks-ts": "^3.1.1",
     "vaul": "^1.1.2",
+    "workflow": "^4.0.1-beta.2",
     "zod": "^4.1.8",
     "zustand": "^5.0.8"
   },

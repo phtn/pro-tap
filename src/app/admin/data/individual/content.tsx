@@ -9,13 +9,13 @@ import {ColumnConfig} from '@/components/experimental/table/create-columns'
 import {RowActions} from '@/components/experimental/table/row-actions'
 import {useMobile} from '@/hooks/use-mobile'
 import {useToggle} from '@/hooks/use-toggle'
-import {getAllIndividualCards, ProtapCardDoc} from '@/lib/firebase/cards'
+import {db} from '@/lib/firebase'
+import {ProtapCardDoc} from '@/lib/firebase/cards'
 import {Icon} from '@/lib/icons'
 import {FilterFn} from '@tanstack/react-table'
 import {format} from 'date-fns'
-import {Effect, Option} from 'effect'
-import {Timestamp} from 'firebase/firestore'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {collection, doc, onSnapshot, query, Timestamp} from 'firebase/firestore'
+import {useEffect, useMemo, useState, useTransition} from 'react'
 import {CardItemSheet} from '../../_components/card-item-sheet'
 import {HyperTable} from '../_components/hyper-table'
 
@@ -137,38 +137,32 @@ export const Content = () => {
     [],
   )
 
-  const fetchDataEffect = useMemo(
-    () =>
-      Effect.promise(() => getAllIndividualCards('general')).pipe(
-        Effect.map((result) =>
-          Option.fromNullable(result).pipe(
-            Option.getOrElse(() => [] as ProtapCardDoc[]),
-          ),
-        ),
-        Effect.tap((cards) => setData(cards)),
-        Effect.tapError((error) =>
-          Effect.sync(() => console.error('Failed to fetch cards:', error)),
-        ),
-      ),
-    [],
-  )
+  const [isPending, startTransition] = useTransition()
 
-  const runFetch = useCallback(async () => {
+  useEffect(() => {
     setLoading(true)
-    try {
-      await Effect.runPromise(fetchDataEffect)
-    } finally {
-      setLoading(false)
-    }
+    const protapCol = collection(db, 'protap')
+    const cardsDoc = doc(protapCol, 'cards')
+    const cardsCol = collection(cardsDoc, 'general')
+    const q = query(cardsCol)
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const cards = querySnapshot.docs.map(
+          (doc) => doc.data() as ProtapCardDoc,
+        )
+        startTransition(() => {
+          setData(cards)
+          setLoading(false)
+        })
+      },
+      (error) => {
+        console.error('Failed to fetch cards:', error)
+        setLoading(false)
+      },
+    )
+    return () => unsubscribe()
   }, [])
-
-  useEffect(() => {
-    runFetch()
-  }, [runFetch])
-
-  useEffect(() => {
-    console.log(open)
-  }, [open])
 
   return (
     <div className='relative'>
@@ -177,7 +171,7 @@ export const Content = () => {
           data={data ?? []}
           title='Individual'
           columns={columns}
-          loading={loading}
+          loading={loading || isPending}
           viewer={viewer}
         />
       )}

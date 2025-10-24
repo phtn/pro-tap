@@ -74,13 +74,13 @@ export const AdminPageContent = () => {
 
   return (
     <div className='h-screen'>
-      <div className='max-w-7xl mx-auto'>
-        <div className='md:py-8'>
+      <div className='max-w-6xl mx-auto'>
+        <div className='h-full md:py-8'>
           <Header
             title='Admin'
             back={router.back}
             subtext='Dashboard'
-            className='md:mb-8 mb-4 ml-2'
+            className='md:mb-8 mb-4 ml-2 md:mx-4'
           />
           <div className='md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
             <CardList title='Tools' list={tools} renderFn={renderCardItem} />

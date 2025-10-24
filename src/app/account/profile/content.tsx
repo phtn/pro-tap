@@ -5,39 +5,34 @@ import TextAnimate from '@/components/ui/text-animate'
 import Image from 'next/image'
 
 import {BentoGridStats} from '@/app/account/profile/_components/bento-grid'
-import {getUserProfile} from '@/app/actions'
 import {ClassName} from '@/app/types'
 import {StarsBackground} from '@/components/animate-ui/components/backgrounds/stars'
-import {getBestImageSource} from '@/lib/image-cache'
+import {useAuthCtx} from '@/ctx/auth'
 import {cn} from '@/lib/utils'
+import {useMutation} from 'convex/react'
 import {useTheme} from 'next-themes'
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
+import {api} from '../../../../convex/_generated/api'
 
 export const Content = () => {
-  const [imageSource, setImageSource] = useState<string | null>(null)
+  const {user} = useAuthCtx()
+  const upsert = useMutation(api.users.create.default)
 
   useEffect(() => {
-    console.log('\ntest')
-    const loadCachedImage = async () => {
-      try {
-        const cachedProfile = await getUserProfile()
-        const bestImageSource = cachedProfile
-          ? getBestImageSource(cachedProfile)
-          : null
-        setImageSource(bestImageSource)
-        console.log(bestImageSource)
-      } catch (error) {
-        console.error('Error loading cached image:', error)
-        // setImageSource('')
-      }
-    }
+    if (!user) return
+    upsert({
+      proId: user.uid,
+      email: user.email as string,
+      visible: true,
+      // createdAt: new Date().toISOString(),
+      // updatedAt: new Date().toISOString(),
+    })
+  }, [user, upsert])
 
-    loadCachedImage().catch(console.error)
-  }, [])
   return (
     <div className='relative block'>
       <ProfileBackground />
-      <CoverSection imageSource={imageSource} isActivated={true} />
+      {user && <CoverSection imageSource={user?.photoURL} isActivated={true} />}
       <Spacer />
       <HeaderTitle title='Overview' className='md:flex hidden' />
       <BentoGridStats />

@@ -72,3 +72,70 @@ For clickable references, I'll ensure to follow the format:
 - motion.create()
 
 No further questions will be posed at the end.
+
+For **self-hosting a medium-traffic React online shop** (≈1,000–10,000 daily visitors, ~100–500 concurrent users during normal hours, occasional spikes), here are **realistic VM specs** you can provision on your own hardware (or a dedicated server from Hetzner, OVH, etc.).
+
+---
+
+### Recommended VM Specs (Medium Traffic, Self-Hosted)
+
+| Component         | Specification                            | Notes |
+|-------------------|------------------------------------------|-------|
+| **CPU**           | **4 vCPUs** (2.5 GHz+ base clock)        | Intel Xeon / AMD EPYC (PassMark ≥ 8,000 total). Handles Node.js backend, React build, DB queries. |
+| **RAM**           | **8 GB** (16 GB recommended)             | 4 GB for OS + services, 4 GB for Node.js + DB cache. 16 GB if using Redis or heavy image processing. |
+| **Storage**       | **80–120 GB NVMe SSD**                   | 40 GB OS + apps, 40–80 GB for DB (PostgreSQL/MongoDB) + product images (use external CDN for large media). |
+| **Network**       | **1 Gbps uplink** (≥100 Mbps sustained)  | Critical for checkout speed. Ensure low latency to users. |
+| **OS**            | Ubuntu 22.04 LTS or Debian 12            | Stable, well-supported for Node.js, Nginx, PM2, Docker. |
+
+---
+
+### Software Stack (Typical for Self-Hosted React Shop)
+
+| Layer             | Tool                                      |
+|-------------------|-------------------------------------------|
+| Web Server        | **Nginx** (serves built React files)      |
+| Backend           | **Node.js + Express/NestJS** (API)        |
+| Database          | **PostgreSQL** or **MongoDB**             |
+| Process Manager   | **PM2** (Node.js clustering)              |
+| Reverse Proxy     | Nginx → Node.js (port 3000)               |
+| SSL               | Let’s Encrypt (via Certbot)               |
+| Optional          | Redis (caching), Docker, Fail2ban         |
+
+---
+
+### Example: Real-World Equivalent (Hetzner / OVH)
+
+| Provider       | Model Equivalent         | Price (approx) |
+|----------------|--------------------------|----------------|
+| Hetzner        | CX41 (4 vCPU, 16 GB RAM, 160 GB NVMe) | ~€15–20/mo |
+| OVH            | Advance-1 (4 vCPU, 8 GB RAM, 80 GB NVMe) | ~€25/mo |
+
+> You can replicate this on your own server with similar specs.
+
+---
+
+### Scaling Tips for Self-Hosting
+- **Use a CDN** (Cloudflare free tier) for React assets & images → reduces server load.
+- **Cache DB queries** with Redis if response time >200ms.
+- **Monitor** with Netdata or UptimeRobot.
+- **Backup DB nightly** to separate drive or cloud (e.g., Backblaze B2).
+- **Vertical scale first**: upgrade RAM/CPU before clustering.
+
+---
+
+### Minimum (Barely Works) vs Recommended vs Comfortable
+
+| Level         | vCPU | RAM  | Storage     | Use Case |
+|---------------|------|------|-------------|----------|
+| Minimum       | 2    | 4 GB | 40 GB SSD   | <1K daily, no spikes |
+| **Recommended** | **4** | **8 GB** | **100 GB NVMe** | **Medium traffic, stable** |
+| Comfortable   | 6–8  | 16 GB | 160 GB NVMe | Spikes, admin tools, analytics |
+
+---
+
+**Bottom Line**:
+For a **self-hosted medium-traffic React shop**, build a VM with:
+**4 vCPUs • 8 GB RAM • 100 GB NVMe SSD • 1 Gbps NIC**
+on Ubuntu + Nginx + Node.js + PostgreSQL.
+
+Start there — monitor with `htop`, `pg_top`, and Nginx logs. Upgrade RAM first if you see swapping.

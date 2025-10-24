@@ -16,6 +16,8 @@ export const env = createEnv({
     RESEND_FROM: z.string(),
     UPSTASH_REDIS_REST_URL: z.string(),
     UPSTASH_REDIS_REST_TOKEN: z.string(),
+
+    CONVEX_DEPLOYMENT: z.string(),
   },
 
   client: {
@@ -34,6 +36,7 @@ export const env = createEnv({
 
     // GOOGLE CLIENT
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_CONVEX_URL: z.string(),
   },
 
   runtimeEnv: {
@@ -67,6 +70,9 @@ export const env = createEnv({
 
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+
+    CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
+    NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

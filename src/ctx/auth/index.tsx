@@ -53,6 +53,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
 
   const signInWithGoogle = async () => {
     setLoading(true)
+
     const provider = new GoogleAuthProvider()
     try {
       const result = await signInWithPopup(auth, provider)

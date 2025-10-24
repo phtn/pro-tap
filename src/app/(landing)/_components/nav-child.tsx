@@ -23,8 +23,8 @@ export const NavChild = () => {
   return (
     <div className='flex items-center pl-1 md:px-0 space-x-1 md:space-x-4'>
       {user ? (
-        <span className='hidden md:flex font-figtree tracking-tight text-sm opacity-80'>
-          {user.displayName}
+        <span className='hidden md:flex font-figtree tracking-tight text-sm md:text-lg opacity-80'>
+          {user.displayName?.split(' ').shift()}
         </span>
       ) : (
         <Link href='/sign'>

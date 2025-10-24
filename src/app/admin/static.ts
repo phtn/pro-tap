@@ -25,7 +25,7 @@ const tools: RouteItem[] = [
 
 const dataList: RouteItem[] = [
   {
-    name: 'products-table',
+    name: 'data',
     label: 'Products',
     href: '/admin/data',
     icon: 'bullet-list-square',
