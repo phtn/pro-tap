@@ -6,8 +6,8 @@ import {mutation} from '../_generated/server'
 // -- Create a New User
 export const userValidator = v.object({
   proId: v.string(),
-  email: v.string(),
   visible: v.boolean(), // Visivility
+  email: v.string(), // Store dates as ISO strings
   updatedAt: v.optional(v.string()), // Store dates as ISO strings
   createdAt: v.optional(v.string()), // Store dates as ISO strings
 })
@@ -17,10 +17,46 @@ const create = mutation({
   args: userValidator,
   handler: async ({db}, args) => {
     const user = await checkUser(db, args.proId)
-    if (user) {
-      return await db.patch(user._id, args)
+    if (user !== null) {
+      await db.patch(user._id, {
+        updatedAt: new Date().toString(),
+      })
+      return null
     }
-    return await db.insert('users', args)
+
+    const newUser = await db.insert('users', {
+      proId: args.proId,
+      visible: args.visible,
+      email: args.email,
+      updatedAt: new Date().toString(),
+      createdAt: new Date().toString(),
+    })
+
+    await db.insert('userProfiles', {
+      userId: newUser,
+      visible: args.visible,
+      email: args.email,
+      updatedAt: new Date().toString(),
+      createdAt: new Date().toString(),
+      username: null,
+      displayName: null,
+      bio: null,
+      avatarUrl: null,
+      phone: null,
+      website: null,
+      socialLinks: {},
+      isPublic: false,
+      showAnalytics: false,
+      theme: {
+        primaryColor: '#fff',
+        backgroundColor: '#000',
+        layoutStyle: 'cards',
+      },
+      metaTitle: null,
+      metaDescription: null,
+    })
+
+    return newUser
   },
 })
 

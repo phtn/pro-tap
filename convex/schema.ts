@@ -1,48 +1,12 @@
 import {defineSchema, defineTable} from 'convex/server'
 import {v} from 'convex/values'
+import {userProfileValidator} from './userProfiles/create'
 import {userValidator} from './users/create'
 
 export default defineSchema({
   users: defineTable(userValidator).index('by_proId', ['proId']),
 
-  userProfiles: defineTable({
-    userId: v.id('users'),
-    username: v.string(),
-    displayName: v.string(),
-    bio: v.union(v.string(), v.null()),
-    avatarUrl: v.union(v.string(), v.null()),
-    email: v.union(v.string(), v.null()),
-    phone: v.union(v.string(), v.null()),
-    website: v.union(v.string(), v.null()),
-    socialLinks: v.object({
-      linkedin: v.optional(v.string()),
-      twitter: v.optional(v.string()),
-      instagram: v.optional(v.string()),
-      github: v.optional(v.string()),
-      // Allow for additional dynamic social links
-      // This will allow string keys with optional string values
-      // Note: Convex doesn't directly support `[key: string]: string | undefined`
-      // so you might need to handle this flexibility in your application logic
-      // or define specific known social links here.
-    }),
-    isPublic: v.boolean(),
-    showAnalytics: v.boolean(),
-    theme: v.object({
-      primaryColor: v.string(),
-      backgroundColor: v.string(),
-      fontFamily: v.string(),
-      layoutStyle: v.union(
-        v.literal('minimal'),
-        v.literal('cards'),
-        v.literal('list'),
-      ),
-    }),
-    metaTitle: v.union(v.string(), v.null()),
-    metaDescription: v.union(v.string(), v.null()),
-    createdAt: v.string(),
-    updatedAt: v.string(),
-    visible: v.boolean(), // Visivility
-  })
+  userProfiles: defineTable(userProfileValidator)
     .index('by_userId', ['userId'])
     .index('by_username', ['username']),
 

@@ -1,5 +1,6 @@
 'use client'
 import {QRCodeSVG} from '@/components/experimental/qr-viewer'
+import {HyperList} from '@/components/list'
 import {Card} from '@/components/ui/card'
 import {Icon} from '@/lib/icons'
 
@@ -12,6 +13,12 @@ interface CardItemProps {
 }
 
 export const CardItem = ({id, series, group, batch, viewFn}: CardItemProps) => {
+  const details = [
+    {label: 'ID', value: id},
+    {label: 'Series', value: series},
+    {label: 'Group', value: group},
+    {label: 'Batch', value: batch},
+  ]
   return (
     <div className='flex justify-center items-center lg:justify-end'>
       <Card className='relative rounded-3xl dark:bg-origin w-full p-1 md:p-3 shadow-md'>
@@ -27,39 +34,11 @@ export const CardItem = ({id, series, group, batch, viewFn}: CardItemProps) => {
             />
           )}
 
-          {/* Company Info */}
-          <div className='space-y-2.5 flex flex-col justify-center pt-4'>
-            <div className='flex-1 min-w-0'>
-              <div className='font-semibold text-foreground tracking-tight text-sm md:text-base capitalize font-figtree leading-4'>
-                {series}
-              </div>
-              <div className='text-xs uppercase opacity-50 font-figtree'>
-                series
-              </div>
-            </div>
-            <div className='flex-1 min-w-0'>
-              <div className='font-semibold text-foreground tracking-tight text-sm md:text-base uppercase font-figtree leading-4'>
-                {group}
-              </div>
-              <div className='text-xs uppercase opacity-50 font-figtree'>
-                group
-              </div>
-            </div>
-            <div className='flex-1 min-w-0'>
-              <div className='font-semibold text-foreground tracking-tight text-sm md:text-base capitalize font-figtree leading-4'>
-                {batch}
-              </div>
-              <div className='text-xs uppercase opacity-50 font-figtree'>
-                batch
-              </div>
-            </div>
-            <div className='flex-1 min-w-0'>
-              <div className='font-semibold text-foreground tracking-tight text-sm md:text-base leading-4'>
-                {id}
-              </div>
-              <div className='text-xs text-muted-foreground'>ID</div>
-            </div>
-          </div>
+          <HyperList
+            data={details}
+            component={CardDetailItem}
+            container='space-y-2.5 md:space-y-6 flex flex-col justify-center pt-4'
+          />
         </div>
         <Icon
           id={`view-${id}`}
@@ -71,3 +50,16 @@ export const CardItem = ({id, series, group, batch, viewFn}: CardItemProps) => {
     </div>
   )
 }
+
+interface CardDetail {
+  label: string
+  value: string
+}
+const CardDetailItem = ({label, value}: CardDetail) => (
+  <div className='md:flex md:space-x-4 md:items-center flex-1 min-w-0'>
+    <div className='text-xs uppercase opacity-50 font-figtree'>{label}</div>
+    <div className='font-semibold text-foreground tracking-tight text-sm md:text-base font-figtree leading-4'>
+      {value}
+    </div>
+  </div>
+)

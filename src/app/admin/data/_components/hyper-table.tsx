@@ -45,7 +45,7 @@ export const HyperTable = <T,>({
   }
 
   return (
-    <div>
+    <>
       <DataTable
         data={data}
         title={title}
@@ -58,6 +58,6 @@ export const HyperTable = <T,>({
           <AdminDock dockItems={dockItems} />
         </div>
       )}
-    </div>
+    </>
   )
 }

@@ -137,7 +137,7 @@ export const SexyButton = forwardRef<HTMLButtonElement, SexyButtonProps>(
         />,
         null,
       )
-      return <>{options.get(!!rightIcon)}</>
+      return <>{options.get(typeof rightIcon !== 'undefined')}</>
     }, [rightIcon, iconStyle])
     return (
       <motion.button

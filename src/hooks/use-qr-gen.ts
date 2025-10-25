@@ -62,9 +62,6 @@ export const useQrGen = (): UseQRGen => {
         setQrCodeGens((prev) => [...prev, ...createdIds])
         setCreatedAt(createdAt)
         setGeneratedCount(createdIds.length)
-        onSuccess(
-          `Successfully generated ${createdIds.length} QR code${createdIds.length === 1 ? '' : 's'}`,
-        )
         return createdIds
       } catch (error) {
         console.error('Bulk QR generation failed:', error)

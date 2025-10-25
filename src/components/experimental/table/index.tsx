@@ -154,7 +154,7 @@ export const DataTable = <T,>({
       className={cn(
         'text-foreground flex w-full overflow-hidden gap-x-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]',
       )}>
-      <HyperCard className='rounded-none h-fit pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
+      <HyperCard className='h-[90lvh] inset-0 dark:inset-0 md:rounded-4xl pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
         <div className='px-2 md:px-3 -mb-3 md:mb-0 flex items-center justify-between'>
           <div className='flex items-center gap-1 md:gap-4'>
             <Title title={title} />
@@ -257,11 +257,11 @@ const renderRow = <T,>(
       data-state={row.getIsSelected() && 'selected'}
       className={cn(
         'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-card-origin group/row dark:hover:bg-background/40 border-b-origin/40',
-        'peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/15',
-        'transition-colors duration-50',
+        'peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-primary-hover/5',
+        'transition-colors duration-75',
         {
           // Apply editing styles - same as hover but persistent
-          'bg-mac-blue/5 dark:bg-sky-600/40 last:rounded-tr-2xl': isEditing,
+          ' dark:bg-sky-600/40 last:rounded-tr-2xl': isEditing,
           // Add cursor pointer when select mode is on
           'cursor-pointer': showSelectColumn && row.getCanSelect(),
         },
@@ -279,11 +279,11 @@ const renderCell = <TData, TValue>(
   <TableCell
     key={cell.id}
     className={cn(
-      'last:py-0 group-hover/row:first:rounded-l-lg group-hover/row:last:rounded-r-lg overflow-hidden dark:group-hover/row:bg-chalk-100/5',
+      'last:py-0 overflow-hidden dark:group-hover/row:bg-chalk-100/5',
       'transition-colors duration-300',
       {
         // Apply editing cell styles - same as hover but persistent
-        'first:rounded-l-lg last:rounded-r-lg dark:bg-chalk-100/5': isEditing,
+        'dark:bg-chalk-100/5': isEditing,
       },
     )}>
     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -297,7 +297,7 @@ const TableContainer = ({children}: {children: React.ReactNode}) => (
 )
 
 const Title = ({title}: {title: string}) => (
-  <div className='w-fit max-w-[8ch] md:max-w-[20ch] md:w-full md:mr-4'>
+  <div className='w-fit max-w-[8ch] md:max-w-[20ch] md:w-full md:mx-4'>
     <h2 className='capitalize text-lg leading-4 md:leading-5 md:text-2xl font-bold font-figtree tracking-tighter'>
       {title}
     </h2>

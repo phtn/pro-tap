@@ -42,16 +42,16 @@ const tek = Tektur({
 })
 export const metadata: Metadata = {
   title: {
-    default: 'ProTap - Smart NFC Business Cards & Digital Networking',
+    default: 'ProTap - Digital Insurance',
     template: '%s | ProTap',
   },
   description:
     'Create stunning digital business cards with NFC technology. Share your contact information, social links, and more with a simple tap. Perfect for modern networking and professional connections.',
   keywords: [
-    'NFC business cards',
-    'digital networking',
+    'nfc business cards',
+    'digital networking hub',
     'contact sharing',
-    'smart cards',
+    'secure smart cards',
     'professional networking',
     'digital transformation',
   ],
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || 'https://protap.com',
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://protap.ph',
   ),
   alternates: {
     canonical: '/',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    title: 'ProTap - Smart Digital Insurance',
+    title: 'ProTap - Digital Insurance',
     description:
       'Create stunning online personal and business profile. Share your contact information, social links, and more with a simple tap.',
     siteName: 'ProTap',
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'ProTap - Smart Digital Insurance',
+        alt: 'ProTap - Digital Insurance',
       },
     ],
   },
@@ -108,28 +108,28 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: 'icon',
-      url: '/favicon.ico',
+      url: '/p.ico/favicon.ico',
       sizes: 'any',
     },
     {
       rel: 'icon',
       type: 'image/png',
       sizes: '32x32',
-      url: '/favicon-32x32.png',
+      url: '/p.ico/favicon-32x32.png',
     },
     {
       rel: 'icon',
       type: 'image/png',
       sizes: '16x16',
-      url: '/favicon-16x16.png',
+      url: '/p.ico/favicon-16x16.png',
     },
     {
       rel: 'apple-touch-icon',
       sizes: '180x180',
-      url: '/apple-touch-icon.png',
+      url: '/p.ico/apple-icon-180x180.png',
     },
   ],
-  manifest: '/manifest.json',
+  manifest: '/p.ico/manifest.json',
   referrer: 'strict-origin-when-cross-origin',
 }
 

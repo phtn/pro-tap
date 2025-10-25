@@ -1,23 +1,31 @@
-import type { MetadataRoute } from 'next'
+import type {MetadataRoute} from 'next'
 
-export default function manifest (): MetadataRoute.Manifest {
+export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'ProTap',
+    id: 'ph.protap.insurance',
+    name: 'ProTap Digital Insurance',
     short_name: 'ProTap',
     start_url: '/',
     display: 'standalone',
-    background_color: '#000000',
+    categories: ['insurance', 'social', 'professional', 'club', 'network hub'],
+    background_color: '#1C1F2A',
     theme_color: '#000000',
     icons: [
       {
-        src: '/icons/icon-192x192.png',
-        sizes: '192x192',
+        src: '/p.ico/apple-icon-180x180.png',
+        sizes: '180x180',
         type: 'image/png',
       },
       {
-        src: '/icons/icon-512x512.png',
-        sizes: '512x512',
+        src: '/p.ico/ms-icon-310x310.png',
+        sizes: '310x310',
         type: 'image/png',
+      },
+    ],
+    protocol_handlers: [
+      {
+        protocol: 'pro+digital:',
+        url: 'https://protap.ph/?bro=12%s',
       },
     ],
   }

@@ -27,9 +27,9 @@ export const SubmitButton = ({
     <SexyButton
       type='submit'
       disabled={pending}
-      rightIcon={pending ? 'spinners-ring' : 'save'}
-      variant='primary'
-      className={cn(' md:px-6', className)}
+      rightIcon={pending ? 'spinners-ring' : 'arrow-up'}
+      variant='ghost'
+      className={cn(' md:px-12', className)}
       iconStyle='size-4 md:size-12'>
       <span className=' md:text-lg'>
         {pending ? 'Saving...' : (label ?? 'Submit')}

@@ -85,7 +85,7 @@ export const SelectField = <T,>(item: SelectFieldConfig<T>) => {
             className='text-neutral-200 h-full placeholder:text-base'
           />
         </SelectTrigger>
-        <SelectContent className='rounded-2xl border-gray-400 [&_*[role=option]]:ps-3 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-4'>
+        <SelectContent className='w-full rounded-2xl border-gray-400 [&_*[role=option]]:ps-3 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-4'>
           <HyperList
             data={item.options}
             component={SelectFieldItem}

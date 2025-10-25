@@ -50,7 +50,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
           </button>
         </div>
       ) : (
-        <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
+        <div className='md:h-28 w-full py-7'>
+          <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
+        </div>
       )}
       <main className='max-w-6xl mx-auto'>
         <div

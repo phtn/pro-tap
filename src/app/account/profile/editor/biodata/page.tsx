@@ -1,14 +1,14 @@
 'use client'
 
-import {FieldConfig} from '@/components/experimental/form/schema'
-import {useAppForm} from '@/components/experimental/form/utils'
-import {HyperList} from '@/components/list'
-import {ScrollArea} from '@/components/ui/scroll-area'
-import {useAuthCtx} from '@/ctx/auth'
-import {useUserInfoService} from '@/hooks/use-user-info-service'
-import {Icon} from '@/lib/icons'
-import {cn} from '@/lib/utils'
-import {useActionState, useCallback, useState, useTransition} from 'react'
+import { FieldConfig } from '@/components/experimental/form/schema'
+import { useAppForm } from '@/components/experimental/form/utils'
+import { HyperList } from '@/components/list'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { useAuthCtx } from '@/ctx/auth'
+import { useUserInfoService } from '@/hooks/use-user-info-service'
+import { cn } from '@/lib/utils'
+import { useActionState, useCallback, useEffect, useState, useTransition } from 'react'
+import { FormHeader, FormHeaderGap } from '../_components/form-header'
 import {
   fieldGroups,
   userInfoInitial,
@@ -17,13 +17,11 @@ import {
 } from '../_components/user-schema'
 
 export default function BioDataPage() {
-  const {user} = useAuthCtx()
+  const { user } = useAuthCtx()
 
-  const {userInfo, formData, formMessage, handleSave} = useUserInfoService(
+  const { userInfo, formData, formMessage, handleSave } = useUserInfoService(
     user?.uid,
   )
-
-  const [isPreview, setIsPreview] = useState(false)
 
   const form = useAppForm({
     defaultValues: formData ?? userInfoInitial,
@@ -37,19 +35,29 @@ export default function BioDataPage() {
     ...formData,
   }
 
-  if (isPreview) {
-    return (
-      <div>
-        <div className='fixed top-4 right-4 z-50 flex gap-2'>
-          <button
-            onClick={() => setIsPreview(false)}
-            className='px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700'>
-            Exit Preview
-          </button>
-        </div>
-      </div>
-    )
-  }
+  // Listen to form state changes
+  useEffect(() => {
+    const updateFormState = () => {
+      const errors = form.state.errors
+      const errorCount = Object.keys(errors).length
+      setFormErrors(errorCount)
+      setIsDirty(form.state.isDirty)
+      setIsValid(form.state.isValid)
+    }
+
+    updateFormState()
+
+    // Subscribe to form state changes
+    const unsubscribe = form.baseStore.subscribe((state: unknown) => {
+      updateFormState()
+    })
+
+    return unsubscribe
+  }, [form])
+
+  const [formErrors, setFormErrors] = useState<number>(0)
+  const [isDirty, setIsDirty] = useState<boolean>(false)
+  const [isValid, setIsValid] = useState<boolean>(true)
 
   const [, action, pending] = useActionState(handleSave, userData)
   const [isPending, startTransition] = useTransition()
@@ -75,7 +83,6 @@ export default function BioDataPage() {
           {(fieldApi) => {
             const errors = fieldApi.state.meta.errors
             const invalid = !fieldApi.state.meta.isValid
-            // Determine what type of field to render
             switch (field.type) {
               case 'select':
                 return (
@@ -95,7 +102,6 @@ export default function BioDataPage() {
                 )
 
               default:
-                // Text, email, number, etc.
                 return (
                   <fieldApi.TextField
                     {...fieldApi}
@@ -123,42 +129,38 @@ export default function BioDataPage() {
   const Submit = useCallback(
     () => (
       <form.AppForm>
-        <form.SubmitButton label='Save' pending={pending || isPending} />
+        <form.SubmitButton
+          label='Save Changes'
+          pending={pending || isPending}
+          className='text-white dark:bg-primary hover:bg-primary hover:text-white inset-shadow-[0_1px_rgb(237_237_237)]/0'
+        />
       </form.AppForm>
     ),
     [form, pending, isPending],
   )
 
   return (
-    <div className='h-[calc(96vh)] grid grid-cols-1 md:grid-cols-5 gap-4 md:py-8 max-w-6xl'>
-      <ScrollArea className='rounded-4xl bg-origin/40 dark:bg-origin col-span-1 md:col-span-3'>
-        <div className='w-full h-fit px-4 py-4 md:py-8'>
-          <div className='mb-2 flex items-center justify-between'>
-            <h1 className='flex items-center text-lg md:text-2xl font-bold tracking-tight px-2'>
-              <Icon
-                name='user'
-                className='size-5 md:size-6 shrink-0 mr-1 md:mr-1'
-              />
-              <span>Personal Info</span>
-            </h1>
-          </div>
-          <div className='h-1 md:h-2 w-full rounded-full bg-origin/40' />
+    <form onSubmit={handleFormSubmit} className='w-full'>
+      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-8 md:py-8 max-w-6xl'>
+        <div className='rounded-4xl border border-origin bg-white dark:bg-origin col-span-1 md:col-span-3 h-fit'>
+          <ScrollArea className='w-full h-fit px-4 py-4 md:py-8'>
+            <FormHeader title='Personal Info' icon='user' />
+            <FormHeaderGap />
 
-          <div
-            className={cn(
-              `border mb-3 md:mb-4 px-2 md:px-4 flex items-center w-full h-7 md:h-12 text-xs md:text-sm lg:text-base rounded-lg md:rounded-xl bg-green-100 text-green-700 tracking-tight font-figtree md:font-medium`,
-              {
-                'bg-red-100 dark:bg-red-400/80 dark:text-white text-red-700':
-                  formMessage.includes('Error'),
-                'bg-orange-100 text-orange-700':
-                  formMessage.includes('Invalid'),
-                'opacity-0': !formMessage,
-              },
-            )}>
-            {formMessage}
-          </div>
+            <div
+              className={cn(
+                `border mb-3 md:mb-4 px-2 md:px-4 flex items-center w-full h-7 md:h-12 text-xs md:text-sm lg:text-base rounded-lg md:rounded-xl bg-green-100 text-green-700 tracking-tight font-figtree md:font-medium`,
+                {
+                  'bg-red-100 dark:bg-red-400/80 dark:text-white text-red-700':
+                    formMessage.includes('Error'),
+                  'bg-orange-100 text-orange-700':
+                    formMessage.includes('Invalid'),
+                  'opacity-0': !formMessage,
+                },
+              )}>
+              {formMessage}
+            </div>
 
-          <form onSubmit={handleFormSubmit}>
             <div className='mb-4 md:mb-8'>
               {fieldGroups.map((group) => (
                 <HyperList
@@ -170,83 +172,42 @@ export default function BioDataPage() {
                 />
               ))}
             </div>
-            <div className='flex items-center justify-between w-full'>
+            <div className='md:hidden flex items-center justify-between w-full'>
               <div />
               <Submit />
             </div>
-          </form>
+          </ScrollArea>
         </div>
-      </ScrollArea>
-    </div>
+        <div className='rounded-4xl bg-white border border-origin dark:bg-origin col-span-1 md:col-span-2 h-full'>
+          <div className='mb-4 md:mb-8'>
+            <ScrollArea className='w-full px-4 py-4 md:py-8'>
+              <FormHeader title='Contact Info' icon='phone' />
+              <FormHeaderGap className='mb-12' />
+              {fieldGroups.map((group) => (
+                <HyperList
+                  key={group.title}
+                  data={group.fields.slice(4)}
+                  component={renderField}
+                  container='space-y-4 md:space-y-14'
+                  itemStyle='px-1'
+                />
+              ))}
+            </ScrollArea>
+            <div className='md:hidden flex items-center justify-between w-full px-4'>
+              <div />
+              <Submit />
+            </div>
+          </div>
+        </div>
+        <div className='p-2 md:bg-foreground rounded-3xl col-span-5 flex items-center justify-between w-full px-4 md:px-2 h-full'>
+          <div className='px-4 text-white'>
+            <div>Errors: {formErrors}</div>
+            <div>Dirty: {isDirty ? 'Yes' : 'No'}</div>
+            <div>Valid: {isValid ? 'Yes' : 'No'}</div>
+          </div>
+          <Submit />
+        </div>
+      </div>
+    </form>
   )
 }
-
-/*
-<div>
-              <label className='block text-sm font-medium mb-2'>
-                Social Links
-              </label>
-              <div className='space-y-3'>
-                <input
-                  type='text'
-                  value={formData.socialLinks?.website || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        website: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='Website URL'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.twitter || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        twitter: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='Twitter username (without @)'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.github || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        github: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='GitHub username'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.linkedin || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        linkedin: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='LinkedIn username'
-                />
-              </div>
-            </div>
-*/

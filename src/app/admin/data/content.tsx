@@ -1,9 +1,5 @@
 'use client'
 
-import {Icon} from '@/lib/icons'
-import {cn} from '@/lib/utils'
-import Link from 'next/link'
-import {useCallback} from 'react'
 import {CardList, type DataRouteItem} from '../_components/card-list'
 
 export const DataContent = () => {
@@ -68,58 +64,10 @@ export const DataContent = () => {
     },
   ]
 
-  const renderCardItem = useCallback(
-    (item: DataRouteItem, index: number) => (
-      <Link
-        key={`${item.name}_${index}`}
-        href={item.disabled ? '#' : `/admin/data/products/${item.name}`}
-        className={cn(
-          'invert group bg-dark-origin border border-origin dark:bg-dim-origin relative px-5 py-6 md:p-6 rounded-3xl shadow-sm font-figtree',
-          'transition-transform duration-300 ease-in-out active:scale-90',
-        )}>
-        <div className='flex items-center space-x-6 mb-4 relative'>
-          <div
-            className={cn(
-              'flex items-center justify-center size-8 md:size-12 rounded-xl transition-colors',
-              item.color,
-            )}>
-            <Icon name={item.icon} className={'size-4 md:size-6'} />
-          </div>
-          <h3 className='md:text-lg font-semibold tracking-tight'>
-            {item.label}
-          </h3>
-          <div
-            className={cn(
-              'absolute -right-2 -top-2 text-xs font-mono bg-zinc-400/20 dark:bg-background rounded-md px-2 py-1',
-              {
-                ' text-teal-600 dark:text-mac-teal': item.type === 'products',
-                ' text-mac-pink': item.type === 'users',
-              },
-            )}>
-            <span className='capitalize'>
-              {item.type === 'products' ? 'P' : 'U'}
-            </span>
-          </div>
-        </div>
-
-        <div className='font-figtree opacity-70 text-sm flex items-center'>
-          {item.disabled && (
-            <Icon
-              name='road-barrier'
-              className='size-3 md:size-6 mx-3 text-rose-600 dark:text-mac-pink opacity-80'
-            />
-          )}
-          {item.disabled ? 'Development: In-Progress' : item.description}
-        </div>
-      </Link>
-    ),
-    [],
-  )
-
   return (
-    <div className='h-screen overflow-y-scroll pt-4 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
-      <CardList title='Products' list={products} renderFn={renderCardItem} />
-      <CardList title='Users' list={users} renderFn={renderCardItem} />
+    <div className='h-screen w-full overflow-y-scroll pt-4 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+      <CardList title='Products' list={products as DataRouteItem[]} />
+      <CardList title='Users' list={users} />
     </div>
   )
 }

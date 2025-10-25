@@ -129,8 +129,8 @@ export const Landing = () => {
               className='absolute -top-5 -right-4 dark:text-orange-200 text-orange-300 size-14 -rotate-8 drop-shadow-xl'
             />
             <div className='border-b-4 border-zinc-600/80 dark:border-zinc-600/60 pb-2 w-full flex text-3xl md:text-4xl font-figtree tracking-tight'>
-              <span className='pl-2 opacity-60 text-zinc-100 font-light'>
-                protap.ph/u/
+              <span className='pl-10 opacity-60 text-zinc-100 font-light'>
+                protap.ph/
               </span>
               <div className='w-23 overflow-visible'>
                 <TextFlip

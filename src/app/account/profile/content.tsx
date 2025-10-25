@@ -19,20 +19,22 @@ export const Content = () => {
   const upsert = useMutation(api.users.create.default)
 
   useEffect(() => {
-    if (!user) return
-    upsert({
-      proId: user.uid,
-      email: user.email as string,
-      visible: true,
-      // createdAt: new Date().toISOString(),
-      // updatedAt: new Date().toISOString(),
-    })
+    if (user?.email) {
+      upsert({
+        proId: user.uid,
+        email: user.email,
+        visible: true,
+      })
+    }
   }, [user, upsert])
 
   return (
     <div className='relative block'>
       <ProfileBackground />
-      {user && <CoverSection imageSource={user?.photoURL} isActivated={true} />}
+      <CoverSection
+        imageSource={user?.photoURL ?? '/sam-editor.png'}
+        isActivated={true}
+      />
       <Spacer />
       <HeaderTitle title='Overview' className='md:flex hidden' />
       <BentoGridStats />

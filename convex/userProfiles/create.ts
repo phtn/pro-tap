@@ -3,42 +3,45 @@ import {mutation} from '../_generated/server'
 
 // --- Mutations ---
 
+const nullable = v.union(v.string(), v.null())
+
+const userProfileTheme = v.object({
+  primaryColor: v.string(),
+  backgroundColor: v.string(),
+  layoutStyle: v.union(
+    v.literal('minimal'),
+    v.literal('cards'),
+    v.literal('list'),
+  ),
+})
+
+export const userProfileValidator = v.object({
+  userId: v.id('users'),
+  username: nullable,
+  displayName: nullable,
+  bio: nullable,
+  avatarUrl: nullable,
+  email: nullable,
+  phone: nullable,
+  website: nullable,
+  socialLinks: v.object({
+    linkedin: v.optional(v.string()),
+    twitter: v.optional(v.string()),
+    instagram: v.optional(v.string()),
+    github: v.optional(v.string()),
+  }),
+  isPublic: v.boolean(),
+  showAnalytics: v.boolean(),
+  theme: userProfileTheme,
+  metaTitle: nullable,
+  metaDescription: nullable,
+  createdAt: v.string(),
+  updatedAt: v.string(),
+  visible: v.boolean(),
+})
 // Create a new user profile
 export const create = mutation({
-  args: {
-    userId: v.id('users'),
-    username: v.string(),
-    displayName: v.string(),
-    bio: v.union(v.string(), v.null()),
-    avatarUrl: v.union(v.string(), v.null()),
-    email: v.union(v.string(), v.null()),
-    phone: v.union(v.string(), v.null()),
-    website: v.union(v.string(), v.null()),
-    socialLinks: v.object({
-      linkedin: v.optional(v.string()),
-      twitter: v.optional(v.string()),
-      instagram: v.optional(v.string()),
-      github: v.optional(v.string()),
-      // Add other social links if you explicitly define them
-    }),
-    isPublic: v.boolean(),
-    showAnalytics: v.boolean(),
-    theme: v.object({
-      primaryColor: v.string(),
-      backgroundColor: v.string(),
-      fontFamily: v.string(),
-      layoutStyle: v.union(
-        v.literal('minimal'),
-        v.literal('cards'),
-        v.literal('list'),
-      ),
-    }),
-    metaTitle: v.union(v.string(), v.null()),
-    metaDescription: v.union(v.string(), v.null()),
-    createdAt: v.string(),
-    updatedAt: v.string(),
-    visible: v.boolean(),
-  },
+  args: userProfileValidator,
   handler: async (ctx, args) => {
     return await ctx.db.insert('userProfiles', args)
   },
@@ -51,11 +54,11 @@ export const update = mutation({
     // Only include fields that can be updated, make them optional
     username: v.optional(v.string()),
     displayName: v.optional(v.string()),
-    bio: v.optional(v.union(v.string(), v.null())),
-    avatarUrl: v.optional(v.union(v.string(), v.null())),
-    email: v.optional(v.union(v.string(), v.null())),
-    phone: v.optional(v.union(v.string(), v.null())),
-    website: v.optional(v.union(v.string(), v.null())),
+    bio: v.optional(nullable),
+    avatarUrl: v.optional(nullable),
+    email: v.optional(nullable),
+    phone: v.optional(nullable),
+    website: v.optional(nullable),
     socialLinks: v.optional(
       v.object({
         linkedin: v.optional(v.string()),
@@ -78,8 +81,8 @@ export const update = mutation({
         ),
       }),
     ),
-    metaTitle: v.optional(v.union(v.string(), v.null())),
-    metaDescription: v.optional(v.union(v.string(), v.null())),
+    metaTitle: v.optional(nullable),
+    metaDescription: v.optional(nullable),
     updatedAt: v.string(),
   },
   handler: async (ctx, args) => {
