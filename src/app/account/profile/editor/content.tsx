@@ -77,7 +77,7 @@ export const EditorOverview = () => {
     <Link
       key={`${item.name}_${index}`}
       href={item.href}
-      className='active:scale-90 transition-all duration-300 group bg-dark-origin dark:bg-dim-origin relative p-4 md:p-6 rounded-2xl shadow-xs shadow-origin'>
+      className='active:scale-90 transition-all duration-300 group bg-dark-origin dark:bg-dim-origin relative p-4 md:p-6 rounded-2xl shadow-xs shadow-origin border border-origin'>
       <div className='flex items-center space-x-3 md:space-x-6 mb-4'>
         <div
           className={cn(

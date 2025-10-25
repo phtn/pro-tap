@@ -12,7 +12,7 @@ import {ProfileFormData} from '@/lib/firebase/types/user'
 import {cn} from '@/lib/utils'
 import {useActionState, useCallback, useState, useTransition} from 'react'
 import ProfileView from '../../_components/profile-preview'
-import {FormHeader, FormHeaderGap} from '../_components/form-header'
+import {FormHeader} from '../_components/form-header'
 import {PortraitCropper} from '../_components/portrait-cropper'
 import {
   profileFieldGroups,
@@ -153,11 +153,10 @@ export default function ProfilePageEditor() {
 
   return (
     <form onSubmit={handleFormSubmit} className='w-full'>
-      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-8 md:py-8 max-w-6xl'>
-        <div className='rounded-4xl border border-dysto/30 bg-origin dark:bg-origin col-span-5 md:col-span-3 h-fit'>
-          <ScrollArea className='w-full h-fit px-4 py-4 md:pt-8'>
+      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-16 md:py-8 max-w-6xl'>
+        <div className='rounded-4xl border border-dysto/30 bg-origin dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
+          <ScrollArea className='w-full h-fit px-6 py-4 md:pt-8'>
             <FormHeader title='Profile Picture' icon='user'></FormHeader>
-            <FormHeaderGap />
             <PortraitCropper
               togglePreview={togglePreview}
               defaultValue={currentPhoto}
@@ -167,12 +166,13 @@ export default function ProfilePageEditor() {
             <div className='flex items-center justify-between w-full'></div>
           </ScrollArea>
         </div>
-        <div className='rounded-4xl border border-origin bg-white dark:bg-origin col-span-5 md:col-span-2 h-fit'>
-          <div className='mb-4 md:mb-8'>
-            <ScrollArea className='w-full h-fit px-4 py-4 md:py-8'>
-              <FormHeader title='Profile Info' icon='sign-pen'></FormHeader>
-              <FormHeaderGap />
-              <SubmitStatus status={formMessage} />
+        <div className='rounded-4xl border border-origin bg-white dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
+          <div className='mb-4 md:mb-6'>
+            <ScrollArea className='w-full h-fit px-4 md:px-6 py-4 md:pt-8 md:pb-4'>
+              <FormHeader title='Profile Info' icon='sign-pen'>
+                <SubmitStatus status={formMessage} />
+              </FormHeader>
+
               {profileFieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
@@ -185,7 +185,7 @@ export default function ProfilePageEditor() {
             </ScrollArea>
           </div>
         </div>
-        <div className='md:bg-terminal/90 md:dark:bg-greyed rounded-3xl col-span-5 md:flex items-center justify-between w-full p-2 md:px-4 h-full hidden'>
+        <div className='md:bg-terminal/90 md:dark:bg-greyed/20 rounded-3xl col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24 hidden'>
           <div className='flex w-full' />
           <div className='flex flex-1 items-center space-x-4 w-full'>
             <SexyButton

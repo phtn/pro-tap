@@ -39,6 +39,7 @@ export const TextField = <T,>(item: TextFieldConfig<T>) => (
       type={item.type}
       inputMode={item.inputMode}
       name={item.name as string}
+      spellCheck={item.inputMode === 'search'}
       defaultValue={item.defaultValue}
       placeholder={item.placeholder}
       className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none md:placeholded:font-normal'
@@ -73,7 +74,7 @@ export const SelectField = <T,>(item: SelectFieldConfig<T>) => {
         onValueChange={(value) => item.validators?.onChange(value)}>
         <SelectTrigger
           size='default'
-          className='min-h-14 h-fit py-4 md:py-4 cursor-pointer rounded-2xl dark:bg-background/20 bg-background  border-[0.33px] dark:border-gray-500/50 outline-none text-left w-full'>
+          className='min-h-14 h-fit py-4 md:py-4 cursor-pointer rounded-2xl dark:bg-background/25 bg-background border-[0.33px] border-gray-500/50 outline-none text-left w-full'>
           <SelectValue
             placeholder={item.placeholder ?? 'Select an option'}
             className='text-neutral-200 h-full placeholder:text-base'
@@ -83,7 +84,7 @@ export const SelectField = <T,>(item: SelectFieldConfig<T>) => {
           <HyperList
             data={item.options}
             component={SelectFieldItem}
-            itemStyle='border-b border-origin last:border-none'
+            itemStyle='border-b border-origin/0 last:border-none'
             keyId='value'
           />
         </SelectContent>

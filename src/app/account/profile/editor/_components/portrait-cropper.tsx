@@ -10,6 +10,7 @@ import {
   CropperImage,
 } from '@/components/ui/cropper'
 import {Slider} from '@/components/ui/slider'
+import {Icon} from '@/lib/icons'
 
 // Define type for pixel crop area
 type Area = {x: number; y: number; width: number; height: number}
@@ -183,7 +184,7 @@ export const PortraitCropper = ({
   }, [croppedImageUrl, imageSrc])
 
   return (
-    <div className='flex flex-col items-center gap-2'>
+    <div className='flex flex-col items-center gap-4'>
       <SexyButton
         onClick={handleCrop}
         disabled={!croppedAreaPixels}
@@ -191,7 +192,7 @@ export const PortraitCropper = ({
         variant='dark'>
         Crop preview
       </SexyButton>
-      <div className='h-128 relative flex w-full flex-col gap-4'>
+      <div className='h-110 relative flex w-full flex-col gap-4'>
         <Cropper
           aspectRatio={4 / 5}
           className='border-2 border-dysto/30 rounded-xl h-full bg-greyed py-0'
@@ -201,7 +202,7 @@ export const PortraitCropper = ({
           onZoomChange={setZoom}>
           <CropperDescription />
           <CropperImage className='rounded-md' />
-          <CropperCropArea className='h-full border-teal-400 rounded-md' />
+          <CropperCropArea className='h-full border-teal-100/80 dark:border-origin rounded-md' />
         </Cropper>
         <div className='mx-auto flex w-full max-w-80 items-center gap-1'>
           <Slider
@@ -220,7 +221,7 @@ export const PortraitCropper = ({
         </div>
       </div>
 
-      <div className='relative flex items-center justify-between w-full'>
+      <div className='py-4 relative flex items-center justify-between w-full'>
         <input
           type='file'
           accept='image/*'
@@ -228,19 +229,41 @@ export const PortraitCropper = ({
           ref={fileInputRef}
           className='hidden'
         />
-        <SexyButton
+
+        <Icon
           onClick={(e) => {
             e.preventDefault()
             fileInputRef.current?.click()
+          }}
+          name='photo-add'
+          className='size-8 mx-2'
+        />
+        <SexyButton
+          fullWidth
+          className='px-8'
+          onClick={(e) => {
+            e.preventDefault()
           }}>
-          Select Image
+          Crop
         </SexyButton>
         <SexyButton
+          fullWidth
+          variant='dark'
+          className='px-8'
           onClick={(e) => {
             e.preventDefault()
             handleCrop()
           }}>
-          Crop &amp; Preview
+          Preview
+        </SexyButton>
+        <SexyButton
+          fullWidth
+          variant='secondary'
+          className=''
+          onClick={(e) => {
+            e.preventDefault()
+          }}>
+          Save
         </SexyButton>
       </div>
     </div>

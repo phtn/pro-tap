@@ -49,7 +49,8 @@ export const BentoGridStats = () => {
           title: '',
           description: <span className='text-sm'></span>,
           header: <SkeletonFour />,
-          className: 'md:col-span-2 border-none dark:bg-transparent px-0',
+          className:
+            'md:col-span-2 border-none dark:bg-transparent px-0 hover:shadow-none',
           icon: 'link',
         },
         {

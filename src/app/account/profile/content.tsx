@@ -29,7 +29,7 @@ export const Content = () => {
   }, [user, upsert])
 
   return (
-    <div className='relative block'>
+    <div className='relative block md:mt-8'>
       <ProfileBackground />
       <CoverSection
         imageSource={user?.photoURL ?? '/sam-editor.png'}

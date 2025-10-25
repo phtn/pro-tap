@@ -11,7 +11,7 @@ export const themeOptions: ISelectFieldItem[] = [
     value: 'auto',
     name: 'auto',
     label: 'Auto',
-    description: 'Auto',
+    description: '',
   },
   {
     id: '2',

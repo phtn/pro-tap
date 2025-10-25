@@ -30,7 +30,7 @@ export const SubmitButton = ({
       rightIcon={pending ? 'spinners-ring' : 'arrow-up'}
       variant='ghost'
       className={cn(
-        'md:px-12 bg-transparent hover:bg-primary hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
+        'md:px-12 shadow-none bg-transparent dark:hover:bg-primary-hover hover:bg-primary hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
         className,
       )}
       iconStyle='size-4 md:size-12'>
