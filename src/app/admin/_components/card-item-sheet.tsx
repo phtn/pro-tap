@@ -330,7 +330,7 @@ const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
       <ContextMenuTrigger className='md:size-120 absolute z-50'>
         {children}
       </ContextMenuTrigger>
-      <ContextMenuContent className='invert dark:bg-background shadow-xl dark:border-dark-origin relative z-200 font-figtree md:w-[175px] rounded-4xl px-4 py-5 bg-dark-origin'>
+      <ContextMenuContent className='dark:bg-dysto bg-dark-origin shadow-xl dark:border-dark-origin relative z-200 font-figtree md:w-[175px] rounded-4xl px-4 py-5'>
         <ContextMenuItem
           onClick={handleCopyUrl}
           className='h-12 rounded-xl cursor-pointer'>

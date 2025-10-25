@@ -34,7 +34,7 @@ export const CardList = ({title, list}: CardListProps) => {
       <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-60'>
         {title}
       </h2>
-      <div className='flex space-x-4'>
+      <div className='flex space-x-4 md:space-x-8'>
         {list.map((item) => (
           <ListItem key={item.name} item={item} />
         ))}
@@ -52,7 +52,7 @@ const ListItem = ({item}: ListItemProps) => (
     className={cn(
       'px-5 py-6 md:p-6 rounded-3xl font-figtree',
       'transition-transform duration-300 ease-in-out active:scale-90',
-      'border-[0.33px] border-origin bg-white dark:bg-origin',
+      'border-[0.33px] border-origin bg-white dark:bg-greyed',
     )}>
     <div className='flex items-center space-x-6 mb-4 relative'>
       <div

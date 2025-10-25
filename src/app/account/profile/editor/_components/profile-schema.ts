@@ -1,9 +1,38 @@
-import {FieldGroup, themeOptions} from '@/components/experimental/form/schema'
+import {
+  FieldGroup,
+  ISelectFieldItem,
+} from '@/components/experimental/form/schema'
 import {z} from 'zod'
 
+export const themeOptions: ISelectFieldItem[] = [
+  {
+    id: '1',
+    icon: 'slash',
+    value: 'auto',
+    name: 'auto',
+    label: 'Auto',
+    description: 'Auto',
+  },
+  {
+    id: '2',
+    icon: 'dark-theme',
+    value: 'dark',
+    name: 'dark',
+    label: 'Dark',
+    description: '',
+  },
+  {
+    id: '3',
+    icon: 'circle-solid',
+    value: 'light',
+    name: 'light',
+    label: 'Light',
+    description: '',
+  },
+]
 export const UserProfileSchema = z.object({
   bio: z.string().nullable(),
-  avatar: z.string().nullable(),
+  avatar: z.string().nullable().or(z.instanceof(File)),
   socialLinks: z
     .object({
       twitter: z.string().optional(),
@@ -34,6 +63,14 @@ export const profileFieldGroups: FieldGroup<UserProfile>[] = [
     title: 'UserProfile',
     fields: [
       {
+        name: 'avatar',
+        type: 'file',
+        label: 'Avatar',
+        placeholder: 'Upload your avatar',
+        required: false,
+        error: false,
+      },
+      {
         name: 'displayName',
         type: 'text',
         label: 'Display Name',
@@ -59,14 +96,7 @@ export const profileFieldGroups: FieldGroup<UserProfile>[] = [
         required: false,
         error: false,
       },
-      {
-        name: 'avatar',
-        type: 'text',
-        label: 'Avatar',
-        placeholder: 'Upload your avatar',
-        required: false,
-        error: false,
-      },
+
       {
         name: 'theme',
         type: 'select',

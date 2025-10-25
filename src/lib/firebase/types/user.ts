@@ -1,6 +1,6 @@
-import {ProductType, UserRole} from '@/ctx/auth/types'
-import {UserInfo} from '@/schema/user-account'
-import {FieldValue, Timestamp} from 'firebase/firestore'
+import { ProductType, UserRole } from '@/ctx/auth/types'
+import { UserInfo } from '@/schema/user-account'
+import { FieldValue, Timestamp } from 'firebase/firestore'
 export type Gender = 'male' | 'female'
 
 export interface UserBioData {
@@ -14,7 +14,7 @@ export interface ProfileFormData {
   username: string | null
   displayName: string | null
   bio: string | null
-  avatar: string | null
+  avatar: string | null | File
   socialLinks?: {
     twitter?: string
     github?: string
@@ -44,7 +44,7 @@ export interface UserProfile {
   username: string | null
   displayName: string | null
   bio: string | null
-  avatar: string | null
+  avatar: string | null | File
   socialLinks?: {
     twitter?: string
     github?: string

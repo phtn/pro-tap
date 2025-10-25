@@ -14,19 +14,20 @@ import {FieldOption, SelectFieldConfig, TextFieldConfig} from './schema'
 export const TextField = <T,>(item: TextFieldConfig<T>) => (
   <div className='relative'>
     <div className='flex items-center'>
-      <div className='ps-1 mb-2 font-figtree flex items-center space-x-2 text-xs md:text-sm'>
+      <div className='ps-1 mb-2 font-figtree flex items-center text-xs md:text-sm'>
         <label className='block font-medium tracking-tight whitespace-nowrap'>
           {item.label}
         </label>
         {item.helperText && (
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-center'>
             <Icon
-              name='play-solid'
-              className={cn('size-3 md:size-4 opacity-30', {
-                'text-red-400 opacity-100': item.required,
+              name={item.required ? 'asterisk' : 'circle-small'}
+              className={cn('size-2 md:size-4 ml-2 opacity-60', {
+                'text-red-500 md:size-4 ml-0 -rotate-6 opacity-100':
+                  item.required,
               })}
             />
-            <span className='opacity-80'>{item.helperText}</span>
+            <span className='ml-2 opacity-80'>{item.helperText}</span>
           </div>
         )}
         {item.error && (
@@ -36,18 +37,11 @@ export const TextField = <T,>(item: TextFieldConfig<T>) => (
     </div>
     <ModernInput
       type={item.type}
+      inputMode={item.inputMode}
       name={item.name as string}
-      autoComplete={item.autoComplete}
-      required={item.required}
-      defaultValue={item.defaultValue ? String(item.defaultValue) : undefined}
-      onChange={(e) => {
-        const val =
-          item.type === 'number' ? Number(e.target.value) : e.target.value
-        item.validators?.onChange(val)
-      }}
-      value={item.value ? String(item.value) : undefined}
+      defaultValue={item.defaultValue}
       placeholder={item.placeholder}
-      className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none'
+      className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none md:placeholded:font-normal'
     />
   </div>
 )
@@ -121,3 +115,21 @@ const SelectFieldItem = ({
     </div>
   </SelectItem>
 )
+
+export const FileField = <T,>(item: TextFieldConfig<T>) => {
+  // const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   if (item.type === 'file') {
+  //     return event.target.files?.[0]
+  //   }
+  // }
+  return (
+    <ModernInput
+      type={item.type}
+      inputMode={item.inputMode}
+      name={item.name as string}
+      defaultValue={item.defaultValue}
+      placeholder={item.placeholder}
+      className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none'
+    />
+  )
+}

@@ -3,23 +3,24 @@
 import {FieldConfig} from '@/components/experimental/form/schema'
 import {useAppForm} from '@/components/experimental/form/utils'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
-import {ImageCropper} from '@/components/image-cropper'
 import {HyperList} from '@/components/list'
 import {ScrollArea} from '@/components/ui/scroll-area'
 import {useAuthCtx} from '@/ctx/auth'
 import {useProfileService} from '@/hooks/use-profile-service'
 import {useToggle} from '@/hooks/use-toggle'
 import {ProfileFormData} from '@/lib/firebase/types/user'
-import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
-import {useActionState, useCallback, useEffect, useTransition} from 'react'
+import {useActionState, useCallback, useState, useTransition} from 'react'
 import ProfileView from '../../_components/profile-preview'
+import {FormHeader, FormHeaderGap} from '../_components/form-header'
+import {PortraitCropper} from '../_components/portrait-cropper'
 import {
   profileFieldGroups,
   profileInitial,
   UserProfile,
   UserProfileSchema,
 } from '../_components/profile-schema'
+import {SubmitStatus} from '../_components/submit-status'
 
 export default function ProfilePageEditor() {
   const {user} = useAuthCtx()
@@ -41,12 +42,13 @@ export default function ProfilePageEditor() {
     ? {
         ...profile,
         ...formData,
+        avatar: typeof formData.avatar === 'string' ? formData.avatar : null,
       }
     : {
         username: 'preview',
         displayName: formData.displayName,
         bio: formData.bio,
-        avatar: formData.avatar,
+        avatar: typeof formData.avatar === 'string' ? formData.avatar : null,
         socialLinks: formData.socialLinks,
         theme: formData.theme,
         isPublished: formData.isPublished,
@@ -55,19 +57,25 @@ export default function ProfilePageEditor() {
   const [, action, pending] = useActionState(handleSave, profileInitial)
   const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
-    if (profile) console.log(profile)
-  }, [profile])
+  const [currentPhoto] = useState<string | null>(null)
+  const [croppedAvatar, setCroppedAvatar] = useState<File | null>(null)
+
+  const handleCrop = useCallback((file: File) => {
+    setCroppedAvatar(file)
+  }, [])
 
   const handleFormSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const formData = new FormData(e.currentTarget)
+      if (croppedAvatar) {
+        formData.set('avatar', croppedAvatar)
+      }
       startTransition(() => {
         action(formData)
       })
     },
-    [action],
+    [action, croppedAvatar],
   )
 
   const renderField = useCallback(
@@ -86,34 +94,30 @@ export default function ProfilePageEditor() {
                 return (
                   <fieldApi.SelectField
                     {...fieldApi}
-                    name={field.name}
-                    label={field.label}
+                    {...field}
+                    options={field.options}
                     helperText={field.helperText}
                     required={field.required}
-                    options={field.options}
-                    type={field.type}
                     defaultValue={
                       formData[field.name as keyof ProfileFormData] as string
                     }
                     error={invalid && errors.join(', ')}
                   />
                 )
+              case 'file':
+                // Avatar is handled by ImageCropper, skip rendering
+                return null
 
               default:
                 // Text, email, number, etc.
                 return (
                   <fieldApi.TextField
                     {...fieldApi}
-                    name={field.name}
-                    label={field.label}
+                    {...field}
                     defaultValue={
                       formData[field.name as keyof ProfileFormData] as string
                     }
                     error={invalid && errors.join(', ')}
-                    required={field.required}
-                    autoComplete={field.autoComplete}
-                    helperText={field.helperText}
-                    placeholder={field.placeholder}
                     type={field.type}
                   />
                 )
@@ -148,124 +152,55 @@ export default function ProfilePageEditor() {
   }
 
   return (
-    <div className='h-[calc(100vh-48px)] overflow-hidden'>
-      <ScrollArea className='max-w-4xl rounded-4xl md:py-8'>
-        <div className='w-full h-fit bg-origin/40 px-4 py-4 md:py-8'>
-          <div className='mb-2 flex items-center justify-between'>
-            <h1 className='flex items-center text-base md:text-2xl font-bold tracking-tight px-2'>
-              <Icon name='sign-pen' className='size-6 shrink-0 mr-1 md:mr-1' />
-              <span>Profile Page</span>
-            </h1>
-            <SexyButton leftIcon='eye' className='' onClick={togglePreview}>
-              Preview
-            </SexyButton>
-          </div>
-          <div className='h-1 md:h-2 w-full rounded-full bg-origin/40' />
+    <form onSubmit={handleFormSubmit} className='w-full'>
+      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-8 md:py-8 max-w-6xl'>
+        <div className='rounded-4xl border border-dysto/30 bg-origin dark:bg-origin col-span-5 md:col-span-3 h-fit'>
+          <ScrollArea className='w-full h-fit px-4 py-4 md:pt-8'>
+            <FormHeader title='Profile Picture' icon='user'></FormHeader>
+            <FormHeaderGap />
+            <PortraitCropper
+              togglePreview={togglePreview}
+              defaultValue={currentPhoto}
+              onCrop={handleCrop}
+            />
 
-          <ImageCropper />
-          <div
-            className={cn(
-              `border mb-3 md:mb-4 px-2 md:px-4 flex items-center w-full h-7 md:h-12 text-xs md:text-sm lg:text-base rounded-lg md:rounded-xl bg-green-100 text-green-700 tracking-tight font-figtree md:font-medium`,
-              {
-                'bg-red-100 dark:bg-red-400/80 dark:text-white text-red-700':
-                  formMessage.includes('Error'),
-                'bg-orange-100 text-orange-700':
-                  formMessage.includes('Invalid'),
-                'opacity-0': !formMessage,
-              },
-            )}>
-            {formMessage}
-          </div>
-
-          <form onSubmit={handleFormSubmit}>
-            <div className='mb-4 md:mb-8'>
+            <div className='flex items-center justify-between w-full'></div>
+          </ScrollArea>
+        </div>
+        <div className='rounded-4xl border border-origin bg-white dark:bg-origin col-span-5 md:col-span-2 h-fit'>
+          <div className='mb-4 md:mb-8'>
+            <ScrollArea className='w-full h-fit px-4 py-4 md:py-8'>
+              <FormHeader title='Profile Info' icon='sign-pen'></FormHeader>
+              <FormHeaderGap />
+              <SubmitStatus status={formMessage} />
               {profileFieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
-                  data={group.fields.slice(0, 1)}
+                  data={group.fields.slice(1, 5)}
                   component={renderField}
                   container='space-y-4 md:space-y-8'
                   itemStyle='px-1'
                 />
               ))}
-            </div>
-            <div className='flex items-center justify-between w-full'>
-              <div />
-              <Submit />
-            </div>
-          </form>
+            </ScrollArea>
+          </div>
         </div>
-      </ScrollArea>
-    </div>
+        <div className='md:bg-terminal/90 md:dark:bg-greyed rounded-3xl col-span-5 md:flex items-center justify-between w-full p-2 md:px-4 h-full hidden'>
+          <div className='flex w-full' />
+          <div className='flex flex-1 items-center space-x-4 w-full'>
+            <SexyButton
+              leftIcon='eye'
+              variant='ghost'
+              className={cn(
+                'md:px-6 bg-white/5 hover:bg-primary hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
+              )}
+              onClick={togglePreview}>
+              <span className='font-semibold text-lg'>Preview</span>
+            </SexyButton>
+            <Submit />
+          </div>
+        </div>
+      </div>
+    </form>
   )
 }
-
-/*
-<div>
-              <label className='block text-sm font-medium mb-2'>
-                Social Links
-              </label>
-              <div className='space-y-3'>
-                <input
-                  type='text'
-                  value={formData.socialLinks?.website || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        website: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='Website URL'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.twitter || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        twitter: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='Twitter username (without @)'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.github || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        github: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='GitHub username'
-                />
-                <input
-                  type='text'
-                  value={formData.socialLinks?.linkedin || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      socialLinks: {
-                        ...formData.socialLinks,
-                        linkedin: e.target.value,
-                      },
-                    })
-                  }
-                  className='w-full px-4 py-2 border rounded-lg'
-                  placeholder='LinkedIn username'
-                />
-              </div>
-            </div>
-*/

@@ -1,6 +1,11 @@
 import {cn} from '@/lib/utils'
 import {type ComponentProps, forwardRef} from 'react'
 
+type ValidatorFn = (value: string | number) => true | string
+export type InputProps = ComponentProps<'input'> & {
+  validators?: Record<string, ValidatorFn>
+}
+
 function Input({className, type, ...props}: ComponentProps<'input'>) {
   return (
     <input
@@ -24,17 +29,32 @@ function Input({className, type, ...props}: ComponentProps<'input'>) {
   )
 }
 
-const ModernInput = forwardRef<HTMLInputElement, ComponentProps<'input'>>(
-  ({className, type, ...props}, ref) => {
+const ModernInput = forwardRef<HTMLInputElement, InputProps>(
+  ({className, ...props}, ref) => {
+    // const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //   const val =
+    //     props.type === 'number' ? Number(e.target.value) : e.target.value
+    //   props.validators?.onChange(val)
+    // }
     return (
       <input
-        type={type}
+        // type={type}
+        // defaultValue={
+        //   props.defaultValue ? String(props.defaultValue) : undefined
+        // }
+        // value={props.value ? String(props.value) : undefined}
+        // onChange={onChange}
+        // spellCheck={type && type === 'search'}
+        {...props}
         className={cn(
-          'flex md:h-14 h-9 w-full rounded-lg border border-zinc-300/0 dark:border-zinc-700 bg-background dark:bg-background/20 px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground/80 placeholder:tracking-tight focus-visible:outline-none focus-visible:ring-2 dark:focus-visible:ring-cyan-100/50 focus-visible:ring-primary/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-xs',
+          'flex md:h-14 h-9 w-full rounded-lg px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-xs shadow-2xs',
+          ' bg-background dark:bg-background/20 border border-origin dark:border-zinc-700',
+          'file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground',
+          'placeholder:text-muted-foreground/80 placeholder:tracking-tight ',
+          'focus-visible:ring-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
+          'dark:focus-visible:ring-primary-hover/50 ring-offset-background',
           className,
         )}
-        ref={ref}
-        {...props}
       />
     )
   },

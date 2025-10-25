@@ -7,7 +7,7 @@ import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import {opts} from '@/utils/helpers'
-import {usePathname, useRouter} from 'next/navigation'
+import {usePathname} from 'next/navigation'
 import {useCallback} from 'react'
 import {FullActivation} from './_components/full-activation'
 
@@ -15,10 +15,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const {user} = useAuthCtx()
   const {on, toggle} = useToggle()
   const pathname = usePathname()
-  const isPreview = pathname.split('/').pop() === 'preview'
   const isActivated = pathname.split('/').pop() === 'activated'
-  const router = useRouter()
-  const back = useCallback(() => router.back(), [router])
 
   const ActiveStatus = useCallback(() => {
     const options = opts(
@@ -43,17 +40,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
   return (
     <div className='bg-background/10 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
-      {isPreview ? (
-        <div className='flex items-center justify-end'>
-          <button onClick={back} className='h-14 px-5'>
-            <Icon name='close' className='size-6' />
-          </button>
-        </div>
-      ) : (
-        <div className='md:h-28 w-full py-7'>
-          <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
-        </div>
-      )}
+      <div className='md:h-20 w-full py-7'>
+        <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
+      </div>
       <main className='max-w-6xl mx-auto'>
         <div
           className={cn(

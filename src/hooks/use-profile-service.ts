@@ -2,8 +2,9 @@ import {
   UserProfile,
   UserProfileSchema,
 } from '@/app/account/profile/editor/_components/profile-schema'
-import {ProfileService} from '@/lib/firebase/profile'
-import {useEffect, useState} from 'react'
+import { ProfileService } from '@/lib/firebase/profile'
+import { uploadProfilePicture } from '@/lib/firebase/upload'
+import { useEffect, useState } from 'react'
 
 export const useProfileService = (uid?: string) => {
   const [profile, setProfile] = useState<UserProfile | null>(null)
@@ -55,11 +56,17 @@ export const useProfileService = (uid?: string) => {
     setFormMessage('')
 
     // Extract all form data
+    let avatarUrl = (fd.get('avatar') as string) || null
+    const avatarFile = fd.get('avatar') as File | null
+    if (avatarFile) {
+      avatarUrl = await uploadProfilePicture(uid, avatarFile)
+    }
+
     const formValues = {
       displayName: (fd.get('displayName') as string) || null,
       username: (fd.get('username') as string) || null,
       bio: (fd.get('bio') as string) || null,
-      avatar: (fd.get('avatar') as string) || null,
+      avatar: avatarUrl,
       theme: (fd.get('theme') as 'light' | 'dark' | 'auto') || 'auto',
       isPublished: (fd.get('isPublished') as string) || false,
     }

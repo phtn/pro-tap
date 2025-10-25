@@ -33,7 +33,7 @@ export const AdminPageContent = () => {
   }
 
   return (
-    <div className='h-screen'>
+    <div className='h-screen bg-dark-origin dark:bg-terminal'>
       <div className='max-w-6xl mx-auto'>
         <div className='h-full'>
           <Header title='Admin' back={router.back} subtext='Dashboard' />

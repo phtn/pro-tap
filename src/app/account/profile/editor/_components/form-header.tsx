@@ -1,13 +1,15 @@
 import {ClassName} from '@/app/types'
 import {Icon, IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {ReactNode} from 'react'
 
 interface FormHeaderProps {
   title: string
   icon?: IconName
+  children?: ReactNode
 }
 
-export const FormHeader = ({title, icon}: FormHeaderProps) => {
+export const FormHeader = ({title, icon, children}: FormHeaderProps) => {
   return (
     <div className='mb-2 flex items-center justify-between'>
       <h2 className='flex items-center text-lg md:text-2xl font-bold tracking-tight px-2'>
@@ -19,6 +21,7 @@ export const FormHeader = ({title, icon}: FormHeaderProps) => {
         />
         <span>{title}</span>
       </h2>
+      {children}
     </div>
   )
 }

@@ -154,8 +154,8 @@ export const DataTable = <T,>({
       className={cn(
         'text-foreground flex w-full overflow-hidden gap-x-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]',
       )}>
-      <HyperCard className='h-[90lvh] inset-0 dark:inset-0 md:rounded-4xl pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
-        <div className='px-2 md:px-3 -mb-3 md:mb-0 flex items-center justify-between'>
+      <HyperCard className='dark:bg-greyed/80 mb-2 h-[92lvh] inset-0 dark:inset-0 md:rounded-4xl pt-2 md:pt-6 pb-4 flex-1 min-w-0 overflow-hidden'>
+        <div className='px-2 md:px-3 md:mb-0 flex items-center justify-between'>
           <div className='flex items-center gap-1 md:gap-4'>
             <Title title={title} />
             <div className='flex items-center space-x-1 md:space-x-3'>
@@ -192,7 +192,7 @@ export const DataTable = <T,>({
                       <TableHead
                         key={header.id}
                         style={{width: `${header.getSize()}px`}}
-                        className='md:h-10 h-8 font-normal font-space tracking-tighter md:tracking-tight text-xs md:text-sm border-b-[0.5px] dark:text-zinc-400'>
+                        className='md:h-10 h-8 font-normal font-space tracking-tighter md:tracking-tight text-xs md:text-sm border-b-[0.5px] dark:text-zinc-400 dark:bg-greyed'>
                         <ColumnSort flexRender={flexRender} header={header} />
                       </TableHead>
                     )

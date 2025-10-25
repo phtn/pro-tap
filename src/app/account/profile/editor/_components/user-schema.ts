@@ -1,4 +1,8 @@
-import {FieldGroup, genderOptions} from '@/components/experimental/form/schema'
+import {
+  FieldGroup,
+  ISelectFieldItem,
+} from '@/components/experimental/form/schema'
+import {formOptions} from '@tanstack/react-form'
 import {z} from 'zod'
 
 export const UserContactSchema = z.object({
@@ -20,6 +24,27 @@ export const UserInfoSchema = UserBiodataSchema.extend({
 
 export type UserInfoType = z.infer<typeof UserInfoSchema>
 
+export const genderOptions: ISelectFieldItem[] = [
+  {
+    id: '1',
+    value: 'male',
+    name: 'male',
+    label: 'Male',
+    icon: 'circle-solid',
+    iconStyle: 'text-blue-500',
+    // description: 'Biological male',
+  },
+  {
+    id: '2',
+    value: 'female',
+    name: 'female',
+    label: 'Female',
+    icon: 'circle-solid',
+    iconStyle: 'text-pink-500',
+    // description: 'Biological female',
+  },
+]
+
 export const userInfoInitial: UserInfoType = {
   email: null,
   phoneNumber: null,
@@ -30,6 +55,7 @@ export const userInfoInitial: UserInfoType = {
   gender: null,
 }
 
+export const userFormOpts = formOptions({defaultValues: userInfoInitial})
 export const fieldGroups: FieldGroup<UserInfoType>[] = [
   {
     title: 'UserInfoData',
@@ -79,6 +105,7 @@ export const fieldGroups: FieldGroup<UserInfoType>[] = [
         helperText: 'Email address.',
         required: false,
         error: false,
+        disabled: true,
       },
       {
         name: 'phoneNumber',

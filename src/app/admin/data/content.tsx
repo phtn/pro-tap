@@ -65,7 +65,7 @@ export const DataContent = () => {
   ]
 
   return (
-    <div className='h-screen w-full overflow-y-scroll pt-4 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+    <div className='h-screen w-full overflow-y-scroll pt-8 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
       <CardList title='Products' list={products as DataRouteItem[]} />
       <CardList title='Users' list={users} />
     </div>

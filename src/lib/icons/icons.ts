@@ -996,6 +996,24 @@ export const icons = {
     viewBox: '0 0 24 24',
     set: 'proicons',
   },
+  asterisk: {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 3.75l.004 8.243l7.009-4.118L12.008 12l7.005 4.125l-7.009-4.118L12 20.25l-.004-8.243l-7.009 4.118L11.992 12L4.987 7.875l7.009 4.118z"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  info: {
+    symbol:
+      '<g fill="none"><circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.5"/><path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M12 11.813v5"/><circle cx="12" cy="8.438" r="1.25" fill="currentColor"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'circle-small': {
+    symbol:
+      '<circle cx="12" cy="12" r="3.25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
 }
 
 /*

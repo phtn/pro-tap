@@ -54,8 +54,6 @@ const CoverSection = ({imageSource, isActivated}: CoverSectionProps) => {
     <div className='relative'>
       <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl rounded-t-4xl overflow-hidden'>
         <Image
-          // src="https://res.cloudinary.com/dx0heqhhe/image/upload/v1757754913/personalization_pluy38.webp"
-          // src='https://res.cloudinary.com/dx0heqhhe/image/upload/v1759433575/Screenshot_2025-09-05_at_5.23.47_AM_k6cs9n.png'
           src='/images/short-cover.avif'
           alt='Logo'
           width={1600}

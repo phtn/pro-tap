@@ -55,7 +55,7 @@ export const Paginator = ({
           <SelectContent className='[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2'>
             {[5, 10, 25, 50].map((pageSize) => (
               <SelectItem key={pageSize} value={pageSize.toString()}>
-                {pageSize}
+                {pageSize ?? 10}
               </SelectItem>
             ))}
           </SelectContent>
