@@ -54,6 +54,7 @@ const create = mutation({
       },
       metaTitle: null,
       metaDescription: null,
+      gallery: [],
     })
 
     return newUser

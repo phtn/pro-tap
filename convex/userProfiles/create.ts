@@ -38,6 +38,7 @@ export const userProfileValidator = v.object({
   createdAt: v.string(),
   updatedAt: v.string(),
   visible: v.boolean(),
+  gallery: v.array(v.id('files')),
 })
 // Create a new user profile
 export const create = mutation({

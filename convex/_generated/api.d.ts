@@ -11,6 +11,9 @@
 import type * as cards_create from "../cards/create.js";
 import type * as cards_m from "../cards/m.js";
 import type * as cards_q from "../cards/q.js";
+import type * as files_get from "../files/get.js";
+import type * as files_upload from "../files/upload.js";
+import type * as http from "../http.js";
 import type * as profileAnalytics_q from "../profileAnalytics/q.js";
 import type * as profileViews_create from "../profileViews/create.js";
 import type * as profileViews_q from "../profileViews/q.js";
@@ -40,6 +43,9 @@ declare const fullApi: ApiFromModules<{
   "cards/create": typeof cards_create;
   "cards/m": typeof cards_m;
   "cards/q": typeof cards_q;
+  "files/get": typeof files_get;
+  "files/upload": typeof files_upload;
+  http: typeof http;
   "profileAnalytics/q": typeof profileAnalytics_q;
   "profileViews/create": typeof profileViews_create;
   "profileViews/q": typeof profileViews_q;

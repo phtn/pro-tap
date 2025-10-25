@@ -1,5 +1,6 @@
 import {defineSchema, defineTable} from 'convex/server'
 import {v} from 'convex/values'
+import {fileSchema} from './files/upload'
 import {userProfileValidator} from './userProfiles/create'
 import {userValidator} from './users/create'
 
@@ -167,4 +168,6 @@ export default defineSchema({
   })
     .index('by_userId_period', ['userId', 'period']) // Important for quick lookup
     .index('by_userId', ['userId']), // Also useful for fetching all analytics for a user
+  files: defineTable(fileSchema),
+  images: defineTable(fileSchema),
 })
