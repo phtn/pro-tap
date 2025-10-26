@@ -1,40 +1,66 @@
-import {ModernInput} from '@/components/ui/input'
-import {Icon} from '@/lib/icons'
-import {cn} from '@/lib/utils'
-import {Column} from '@tanstack/react-table'
-import {ChangeEvent, useEffect, useId, useRef} from 'react'
+import { ModernInput } from '@/components/ui/input'
+import { Icon } from '@/lib/icons'
+import { cn } from '@/lib/utils'
+import { Column } from '@tanstack/react-table'
+import {
+  ChangeEvent,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+} from 'react'
 
 interface Props<T> {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   value: string
   col?: Column<T, unknown>
 }
-export const Search = <T,>({col, value, onChange}: Props<T>) => {
+
+export const Search = forwardRef<HTMLInputElement, Props<any>>(({ col, value, onChange }, ref) => {
   const getFilterValue = col?.getFilterValue
-  const inputRef = useRef<HTMLInputElement>(null)
+  const handlerRef = useRef<((event: KeyboardEvent) => void) | null>(null)
   const id = useId()
 
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    // Don't trigger if user is typing in an input or textarea
+    const target = event.target as HTMLElement
+    const isTyping =
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+
+    if (
+      event.key === '/' &&
+      !isTyping &&
+      ref &&
+      'current' in ref &&
+      ref.current &&
+      document.activeElement !== ref.current
+    ) {
+      event.preventDefault()
+      ref.current.focus()
+    }
+  }, [ref])
+
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === '/' &&
-        inputRef.current &&
-        document.activeElement !== inputRef.current
-      ) {
-        event.preventDefault()
-        inputRef.current.focus()
-      }
+    handlerRef.current = handleKeyDown
+  }, [handleKeyDown])
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      handlerRef.current?.(event)
     }
 
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    document.addEventListener('keydown', handler, true)
+    return () => document.removeEventListener('keydown', handler, true)
   }, [])
 
   return (
     <div className='relative'>
       <ModernInput
         id={`input-${id}`}
-        ref={inputRef}
+        ref={ref}
         className={cn(
           'peer md:h-10 dark:bg-background/40 w-28 md:min-w-60 ps-3 rounded-lg border-none',
           '',
@@ -61,8 +87,8 @@ export const Search = <T,>({col, value, onChange}: Props<T>) => {
           aria-label='Clear filter'
           onClick={() => {
             col?.setFilterValue('')
-            if (inputRef.current) {
-              inputRef.current.focus()
+            if (ref && 'current' in ref && ref.current) {
+              ref.current.focus()
             }
           }}>
           <Icon name='close' size={16} aria-hidden='true' />
@@ -70,4 +96,4 @@ export const Search = <T,>({col, value, onChange}: Props<T>) => {
       )}
     </div>
   )
-}
+})

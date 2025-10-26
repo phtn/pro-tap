@@ -1,3 +1,4 @@
+import {HyperList} from '@/components/list'
 import {Button} from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -12,10 +13,19 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {useCopy} from '@/hooks/use-copy'
 import {Icon, IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {Row} from '@tanstack/react-table'
-import {useCallback} from 'react'
+import {useCallback, useMemo} from 'react'
+
+interface ISubMenuItem {
+  label: string
+  icon?: IconName
+  fn: VoidFunction
+  variant?: 'default' | 'destructive'
+  shortcut?: string
+}
 
 interface CustomAction<T> {
   label: string
@@ -38,6 +48,8 @@ export const RowActions = <T,>({
   deleteFn,
   customActions = [],
 }: Props<T>) => {
+  const {copy} = useCopy({timeout: 2000})
+
   const handleView = useCallback(() => {
     viewFn && viewFn()
   }, [viewFn])
@@ -53,13 +65,27 @@ export const RowActions = <T,>({
     [row.original],
   )
 
+  const submenuItems = useMemo(
+    () =>
+      [
+        {label: 'CSV', icon: 'printer', fn: () => console.log('csv')},
+        {
+          label: 'Copy JSON',
+          icon: 'json',
+          fn: () => copy('Row', JSON.stringify(row.original, null, 2)),
+        },
+        {label: 'Advance', icon: 'pawn', fn: () => console.log('delete')},
+      ] as ISubMenuItem[],
+    [copy],
+  )
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           size='sq'
           variant='ghost'
-          className='shadow-none rounded-lg cursor-pointer data-[state=open]:bg-origin/50'
+          className='shadow-none rounded-lg cursor-pointer hover:bg-terminal/10 dark:data-[state=open]:bg-terminal/50 data-[state=open]:bg-terminal/10'
           aria-label='More'>
           <Icon
             solid
@@ -98,7 +124,7 @@ export const RowActions = <T,>({
 
         {customActions.length > 0 && <DropdownMenuSeparator />}
 
-        <DropdownMenuGroup className='space-y-2 tracking-tight font-figtree'>
+        <DropdownMenuGroup className='space-y-1 tracking-tight font-figtree'>
           <DropdownMenuItem asChild className='h-12 rounded-2xl px-4'>
             <button onClick={handleView} className='w-full'>
               <Icon name='eye' className='size-4 mr-2' />
@@ -111,9 +137,9 @@ export const RowActions = <T,>({
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
-        <DropdownMenuSeparator />
+        {/*<DropdownMenuSeparator className='dark:bg-dysto/60' />*/}
 
-        <DropdownMenuGroup className='space-y-2 tracking-tight font-figtree'>
+        <DropdownMenuGroup className='space-y-1 tracking-tight font-figtree'>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='h-12 rounded-2xl pl-3'>
               <Icon name='chevron-left' className='size-5 opacity-60' />
@@ -121,22 +147,11 @@ export const RowActions = <T,>({
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent
-                className='rounded-3xl md:p-3 p-2.5 md:min-w-40 border-origin tracking-tight font-figtree'
+                side='left'
+                className='rounded-3xl p-0 border-origin min-w-40 tracking-tight font-figtree'
                 alignOffset={-8}
-                sideOffset={4}>
-                <DropdownMenuItem className='h-12 rounded-2xl px-4 dark:focus:bg-origin/40'>
-                  <Icon name='printer' className='size-4 mr-2' />
-                  Print
-                </DropdownMenuItem>
-                <DropdownMenuItem className='h-12 rounded-2xl px-4 dark:focus:bg-origin/40'>
-                  <Icon name='json' className='size-4 mr-2' />
-                  Copy JSON
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className=' dark:bg-origin/30' />
-                <DropdownMenuItem className='h-12 rounded-2xl px-4 focus:bg-indigo-300/30 dark:focus:bg-origin/40'>
-                  <Icon name='pawn' className='size-4 mr-2' />
-                  Advanced
-                </DropdownMenuItem>
+                sideOffset={-4}>
+                <HyperList data={submenuItems} component={SubMenuItem} />
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
@@ -158,3 +173,17 @@ export const RowActions = <T,>({
     </DropdownMenu>
   )
 }
+
+const SubMenuItem = (item: ISubMenuItem) => (
+  <DropdownMenuItem
+    onClick={item.fn}
+    className={cn(
+      'cursor-pointer h-14 py-4 pl-4 pr-1 rounded-none dark:focus:bg-terminal/30',
+    )}>
+    <Icon
+      name={item.icon ? item.icon : 'chevron-right'}
+      className='size-4 mr-2'
+    />
+    <span>{item.label}</span>
+  </DropdownMenuItem>
+)

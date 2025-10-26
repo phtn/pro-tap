@@ -18,7 +18,7 @@ import {
 } from '@tanstack/react-table'
 
 import {HyperCard} from '@/components/experimental/card/hyper-card'
-import {ChangeEvent, useCallback, useMemo, useState} from 'react'
+import {ChangeEvent, useCallback, useMemo, useRef, useState} from 'react'
 
 import {
   Table,
@@ -58,6 +58,8 @@ export const DataTable = <T,>({
   title = 'Data Table',
 }: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [globalFilter, setGlobalFilter] = useState<string>('')
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +161,11 @@ export const DataTable = <T,>({
           <div className='flex items-center gap-1 md:gap-4'>
             <Title title={title} />
             <div className='flex items-center space-x-1 md:space-x-3'>
-              <Search onChange={handleFilterChange} value={globalFilter} />
+              <Search
+                ref={inputRef}
+                onChange={handleFilterChange}
+                value={globalFilter}
+              />
               <SelectToggle
                 on={selectOn}
                 toggleFn={selectToggle}

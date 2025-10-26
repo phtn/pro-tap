@@ -6,7 +6,6 @@ export const onInfo = (msg: string) =>
     style: {
       color: 'white',
       padding: '8px 12px',
-      marginBottom: '120px',
       backgroundColor: '#18181b',
       letterSpacing: '-0.50px',
       fontSize: '14px',
@@ -20,7 +19,6 @@ export const onWarn = (msg: string) =>
     },
     style: {
       padding: '8px 12px',
-      marginBottom: '120px',
       backgroundColor: '#18181b',
       color: 'white',
       letterSpacing: '-0.50px',
@@ -41,7 +39,6 @@ export const Toasts = () => {
         duration: 4000,
         success: {
           style: {
-            marginBottom: '120px',
             background: '#18181b',
             padding: '8px 12px',
             color: 'white',
@@ -58,7 +55,6 @@ export const Toasts = () => {
         error: {
           style: {
             background: '#18181b',
-            marginBottom: '120px',
             padding: '8px 12px',
             color: 'white',
             letterSpacing: '-0.50px',
@@ -69,7 +65,6 @@ export const Toasts = () => {
         loading: {
           style: {
             background: '#18181b',
-            marginBottom: '120px',
             padding: '8px 12px',
             color: 'white',
             letterSpacing: '-0.50px',
