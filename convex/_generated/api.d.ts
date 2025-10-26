@@ -9,6 +9,7 @@
  */
 
 import type * as cards_create from "../cards/create.js";
+import type * as cards_d from "../cards/d.js";
 import type * as cards_m from "../cards/m.js";
 import type * as cards_q from "../cards/q.js";
 import type * as files_get from "../files/get.js";
@@ -19,6 +20,8 @@ import type * as profileViews_create from "../profileViews/create.js";
 import type * as profileViews_q from "../profileViews/q.js";
 import type * as subscriptions_create from "../subscriptions/create.js";
 import type * as subscriptions_get from "../subscriptions/get.js";
+import type * as tokens_create from "../tokens/create.js";
+import type * as tokens_d from "../tokens/d.js";
 import type * as userProfiles_create from "../userProfiles/create.js";
 import type * as userProfiles_get from "../userProfiles/get.js";
 import type * as users_create from "../users/create.js";
@@ -41,6 +44,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   "cards/create": typeof cards_create;
+  "cards/d": typeof cards_d;
   "cards/m": typeof cards_m;
   "cards/q": typeof cards_q;
   "files/get": typeof files_get;
@@ -51,6 +55,8 @@ declare const fullApi: ApiFromModules<{
   "profileViews/q": typeof profileViews_q;
   "subscriptions/create": typeof subscriptions_create;
   "subscriptions/get": typeof subscriptions_get;
+  "tokens/create": typeof tokens_create;
+  "tokens/d": typeof tokens_d;
   "userProfiles/create": typeof userProfiles_create;
   "userProfiles/get": typeof userProfiles_get;
   "users/create": typeof users_create;

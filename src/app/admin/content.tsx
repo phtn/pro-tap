@@ -37,7 +37,7 @@ export const AdminPageContent = () => {
       <div className='max-w-6xl mx-auto'>
         <div className='h-full'>
           <Header title='Admin' back={router.back} subtext='Dashboard' />
-          <div className='md:py-8 h-[calc(92lvh)] md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+          <div className='py-8 h-[calc(92lvh)] md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
             <CardList title='Tools' list={tools} />
             <CardList title='Data' list={dataList} />
             <CardList title='Utils' list={utils} />

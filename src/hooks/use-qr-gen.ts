@@ -1,13 +1,20 @@
 'use client'
 
+import {CardRequest} from '@/app/api/card/generate/route'
+import {VoidPromise} from '@/app/types'
 import {useAuthCtx} from '@/ctx/auth'
 import {onSuccess, onWarn} from '@/ctx/toast'
 import {createBulkQRCodes, ProtapActivationInfo} from '@/lib/firebase/cards'
+import {TokenMetadata} from '@/lib/jwt/tok.types'
 import {User} from 'firebase/auth'
 import {Timestamp} from 'firebase/firestore'
-import {Dispatch, SetStateAction, useCallback, useState} from 'react'
+import {Dispatch, SetStateAction, useCallback, useMemo, useState} from 'react'
+import {CardSeries} from '../../convex/cards/d'
+import {useCardGen} from './use-card-gen'
 
 interface UseQRGen {
+  tokens: TokenMetadata[]
+  generateQRCode: VoidPromise
   qrCodeGens: string[]
   isGenerating: boolean
   generatedCount: number
@@ -19,11 +26,13 @@ interface UseQRGen {
   handleClearGens: VoidFunction
   openCardItem: boolean
   selectedItem: ProtapActivationInfo | null
+  selectedCard: TokenMetadata | null
   handleOpenCardItem: (item: ProtapActivationInfo | null) => void
+  handleSelectCard: (card: TokenMetadata | null) => void
   handleSheetOpenChange: (open: boolean) => void
   setSelectedQuantity: Dispatch<SetStateAction<number>>
   selectedQuantity: number
-  setSeries: Dispatch<SetStateAction<string>>
+  setSeries: Dispatch<SetStateAction<CardSeries>>
   setGroup: Dispatch<SetStateAction<string>>
   setBatch: Dispatch<SetStateAction<string>>
 }
@@ -34,7 +43,7 @@ export const useQrGen = (): UseQRGen => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedCount, setGeneratedCount] = useState(0)
   const [selectedQuantity, setSelectedQuantity] = useState(5)
-  const [series, setSeries] = useState('individual')
+  const [series, setSeries] = useState<CardSeries>('individual')
   const [group, setGroup] = useState('indv')
   const [batch, setBatch] = useState(Date.now().toString())
   const [createdAt, setCreatedAt] = useState<Timestamp | null>(null)
@@ -42,6 +51,8 @@ export const useQrGen = (): UseQRGen => {
   const [selectedItem, setSelectedItem] = useState<ProtapActivationInfo | null>(
     null,
   )
+
+  const [selectedCard, setSelectedCard] = useState<TokenMetadata | null>(null)
 
   const generateQr = useCallback(
     async (coll: string, count: number) => {
@@ -101,6 +112,7 @@ export const useQrGen = (): UseQRGen => {
 
   const handleClearGens = useCallback(() => {
     setQrCodeGens([])
+    setTokens([])
     setGeneratedCount(0)
   }, [])
 
@@ -113,14 +125,63 @@ export const useQrGen = (): UseQRGen => {
     }
   }
 
+  const handleSelectCard = (card: TokenMetadata | null) => {
+    if (card) {
+      setSelectedCard(card)
+      setOpenCardItem(true)
+    } else {
+      setOpenCardItem((prev) => !prev)
+    }
+  }
+
   const handleSheetOpenChange = (open: boolean) => {
     setOpenCardItem(open)
     if (!open) {
       setSelectedItem(null)
+      setSelectedCard(null)
     }
   }
 
+  /*
+
+  New function to generate QR code
+  */
+  const body = useMemo(
+    () =>
+      ({
+        type: 'qr',
+        body: {
+          series,
+          group,
+          batch,
+        },
+        userId: series,
+        count: selectedQuantity,
+      }) satisfies CardRequest,
+    [selectedQuantity, series, group, batch],
+  )
+
+  const {generate} = useCardGen(body)
+  const [tokens, setTokens] = useState<TokenMetadata[]>([])
+  const generateQRCode = useCallback(async () => {
+    try {
+      const response = await generate()
+      if (response.length !== 0) {
+        setTokens(response)
+        setGeneratedCount((prev) => prev + response.length)
+      } else {
+        onWarn('Failed to generate QR code')
+      }
+    } catch (error) {
+      onWarn('Failed to generate QR code')
+    }
+  }, [generate])
+
   return {
+    tokens,
+    generateQRCode,
+    selectedCard,
+    handleSelectCard,
     group,
     batch,
     series,

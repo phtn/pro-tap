@@ -197,7 +197,7 @@ export default function BioDataPage() {
             </div>
           </div>
         </div>
-        <div className='md:bg-foreground rounded-3xl col-span-5 flex items-center justify-between w-full p-2 md:px-4 h-full'>
+        <div className='hidden md:bg-foreground rounded-3xl col-span-5 md:flex items-center justify-between w-full p-2 md:px-4 h-full'>
           <ValidationSummary />
           <Submit />
         </div>

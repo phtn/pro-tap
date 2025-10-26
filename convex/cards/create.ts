@@ -1,60 +1,24 @@
 import {v} from 'convex/values'
 import {mutation, query} from '../_generated/server'
+import {cardSchema} from './d'
 
 // --- Mutations ---
 
 // Create a new card
 export const create = mutation({
-  args: {
-    userId: v.id('users'),
-    subscriptionId: v.id('subscriptions'),
-    state: v.union(
-      v.literal('pending'),
-      v.literal('activated'),
-      v.literal('expired'),
-      v.literal('suspended'),
-      v.literal('revoked'),
-    ),
-    activationToken: v.union(v.string(), v.null()),
-    activatedAt: v.union(v.string(), v.null()),
-    nfcSerialNumber: v.union(v.string(), v.null()),
-    cardType: v.union(v.literal('nfc'), v.literal('qr'), v.literal('virtual')),
-    issuedAt: v.string(),
-    expiresAt: v.string(),
-    revokedAt: v.union(v.string(), v.null()),
-    createdAt: v.string(),
-    updatedAt: v.string(),
-
-    visible: v.boolean(),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db.insert('cards', args)
+  args: {cards: v.array(cardSchema)},
+  handler: async (ctx, {cards}) => {
+    for (const card of cards) {
+      await ctx.db.insert('cards', card)
+    }
   },
 })
 
 // Update an existing card
 export const update = mutation({
-  args: {
-    id: v.id('cards'),
-    state: v.optional(
-      v.union(
-        v.literal('pending'),
-        v.literal('activated'),
-        v.literal('expired'),
-        v.literal('suspended'),
-        v.literal('revoked'),
-      ),
-    ),
-    activationToken: v.optional(v.union(v.string(), v.null())),
-    activatedAt: v.optional(v.union(v.string(), v.null())),
-    nfcSerialNumber: v.optional(v.union(v.string(), v.null())),
-    expiresAt: v.optional(v.string()),
-    revokedAt: v.optional(v.union(v.string(), v.null())),
-    updatedAt: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const {id, ...rest} = args
-    await ctx.db.patch(id, rest)
+  args: {id: v.id('cards'), payload: cardSchema},
+  handler: async (ctx, {id, payload}) => {
+    await ctx.db.patch(id, payload)
   },
 })
 
@@ -62,13 +26,12 @@ export const update = mutation({
 export const activate = mutation({
   args: {
     id: v.id('cards'),
-    activatedAt: v.string(),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
       state: 'activated',
-      activatedAt: args.activatedAt,
-      updatedAt: args.activatedAt,
+      activatedAt: Date.now(),
+      updatedAt: Date.now(),
     })
   },
 })
@@ -77,13 +40,12 @@ export const activate = mutation({
 export const revoke = mutation({
   args: {
     id: v.id('cards'),
-    revokedAt: v.string(),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
       state: 'revoked',
-      revokedAt: args.revokedAt,
-      updatedAt: args.revokedAt,
+      revokedAt: Date.now(),
+      updatedAt: Date.now(),
     })
   },
 })

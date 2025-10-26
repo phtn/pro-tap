@@ -22,6 +22,7 @@ import {
   writeBatch,
 } from 'firebase/firestore'
 import {db} from '.'
+import {CardSeries} from '../../../convex/cards/d'
 
 //
 // Define Firestore service interface
@@ -169,7 +170,7 @@ export async function createQR(
 export async function createBulkQRCodes(
   coll: string,
   count: number,
-  series: string,
+  series: CardSeries,
   group: string,
   batch: string,
   user: User,

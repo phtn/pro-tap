@@ -192,7 +192,7 @@ export const PortraitCropper = ({
         variant='dark'>
         Crop preview
       </SexyButton>
-      <div className='h-110 relative flex w-full flex-col gap-4'>
+      <div className='h-100 md:h-110 relative flex w-full flex-col gap-4'>
         <Cropper
           aspectRatio={4 / 5}
           className='border-2 border-dysto/30 rounded-xl h-full bg-greyed py-0'
@@ -240,7 +240,7 @@ export const PortraitCropper = ({
         />
         <SexyButton
           fullWidth
-          className='px-8'
+          className='md:px-8'
           onClick={(e) => {
             e.preventDefault()
           }}>
@@ -249,7 +249,7 @@ export const PortraitCropper = ({
         <SexyButton
           fullWidth
           variant='dark'
-          className='px-8'
+          className='md:px-8'
           onClick={(e) => {
             e.preventDefault()
             handleCrop()

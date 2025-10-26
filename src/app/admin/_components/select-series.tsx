@@ -8,16 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {CardSeries} from '../../../../convex/cards/d'
 
 interface Props {
   disabled: boolean
-  setSeries: Dispatch<SetStateAction<string>>
+  setSeries: Dispatch<SetStateAction<CardSeries>>
 }
 
 export function SeriesSelect({setSeries, disabled}: Props) {
   const id = useId()
   const handleSeriesChange = useCallback(
-    (value: string) => {
+    (value: CardSeries) => {
       setSeries(value)
     },
     [setSeries],

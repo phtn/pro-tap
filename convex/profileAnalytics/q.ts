@@ -11,7 +11,7 @@ interface ProfileAnalytics {
   }
   scansByCard: Array<{
     cardId: Id<'cards'> // Use Convex Id type
-    cardType: Doc<'cards'>['cardType']
+    cardType: Doc<'cards'>['type']
     scanCount: number
     lastScanned: string | null // Dates stored as strings
   }>
@@ -70,7 +70,7 @@ export const getProfileAnalytics = query({
       .collect()
     const userCardIds = new Set(userCards.map((card) => card._id))
     const userCardIdToType = new Map(
-      userCards.map((card) => [card._id, card.cardType]),
+      userCards.map((card) => [card._id, card.type]),
     )
 
     // Fetch card scans that belong to the user's cards and fall within the date range

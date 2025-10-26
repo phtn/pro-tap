@@ -11,6 +11,7 @@ import {secureRef} from '@/utils/crypto'
 import {macStr} from '@/utils/macstr'
 import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useMemo, useState} from 'react'
+import {CardSeries} from '../../../../convex/cards/d'
 import {AdminDock, DockItems} from '../_components/dock'
 
 export const ScanCheckContent = () => {
@@ -100,7 +101,12 @@ export const ScanCheckContent = () => {
   }, [scanDetails])
 
   const {on: toolOpen, toggle: toggleTool} = useToggle()
-  const seriesList = ['individual', 'fleet', 'limited-edition']
+  const seriesList: CardSeries[] = [
+    'individual',
+    'fleet',
+    'limited-edition',
+    'other',
+  ]
 
   const handleRandom = useCallback(() => {
     const random = Math.floor(Math.random() * 3)

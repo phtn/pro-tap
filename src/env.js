@@ -18,6 +18,7 @@ export const env = createEnv({
     UPSTASH_REDIS_REST_TOKEN: z.string(),
 
     CONVEX_DEPLOYMENT: z.string(),
+    RE_UP_ACTIVATION_SECRET: z.string(),
   },
 
   client: {
@@ -73,6 +74,8 @@ export const env = createEnv({
 
     CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
     NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
+
+    RE_UP_ACTIVATION_SECRET: process.env.RE_UP_ACTIVATION_SECRET,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

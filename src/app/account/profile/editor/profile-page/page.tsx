@@ -183,6 +183,10 @@ export default function ProfilePageEditor() {
                 />
               ))}
             </ScrollArea>
+            <div className='md:hidden flex items-center justify-between w-full px-4'>
+              <div />
+              <Submit />
+            </div>
           </div>
         </div>
         <div className='md:bg-terminal/90 md:dark:bg-greyed/20 rounded-3xl col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24 hidden'>

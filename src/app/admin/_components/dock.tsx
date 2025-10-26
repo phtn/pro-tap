@@ -62,7 +62,7 @@ export const AdminDock = ({dockItems}: AdminDockProps) => {
   return (
     <div className=''>
       <TooltipProvider>
-        <Dock direction='middle'>
+        <Dock direction='middle' className='dark:bg-background'>
           {dockItems?.nav.map((item) => (
             <DockIcon key={item.label}>
               <Tooltip>

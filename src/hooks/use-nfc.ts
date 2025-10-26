@@ -1,4 +1,5 @@
 import {Dispatch, SetStateAction, useState} from 'react'
+import {CardSeries} from '../../convex/cards/d'
 import {
   useNFCReader,
   UseNFCReaderOptions,
@@ -20,16 +21,16 @@ export interface UseNFCOptions
 }
 
 export interface UseNFCReturn extends UseNFCReaderReturn, UseNFCWriterReturn {
-  setSeries: Dispatch<SetStateAction<string>>
+  setSeries: Dispatch<SetStateAction<CardSeries>>
   setGroup: Dispatch<SetStateAction<string>>
   setBatch: Dispatch<SetStateAction<string>>
-  series: string
+  series: CardSeries
   group: string
   batch: string
 }
 
 export const useNFC = (options: UseNFCOptions = {}): UseNFCReturn => {
-  const [series, setSeries] = useState<string>('individual')
+  const [series, setSeries] = useState<CardSeries>('individual')
   const [group, setGroup] = useState('indv')
   const [batch, setBatch] = useState(Date.now().toString())
 

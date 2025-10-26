@@ -1,25 +1,32 @@
 'use client'
 
-import {SexyButton} from '@/components/experimental/sexy-button-variants'
-import {Icon} from '@/lib/icons'
-import {useRouter} from 'next/navigation'
-import {useCallback} from 'react'
+import {useUUID} from '@/hooks/use-uuid'
+import {TokenMetadata} from '@/lib/jwt/tok.types'
+import {useCallback, useEffect, useState} from 'react'
+import {NewCard} from './jwt-card'
 
-export const Content = () => {
-  const router = useRouter()
-  const handleRouteAdmin = useCallback(() => {
-    router.push('/admin')
-  }, [router])
+interface Props {
+  meta: TokenMetadata
+}
+
+export const SettingsContent = ({meta}: Props) => {
+  const [id, setId] = useState<string | null>(null)
+  const {generateUUID} = useUUID()
+
+  const handleCreateId = useCallback(async () => {
+    const uuid = await generateUUID()
+    setId(uuid)
+  }, [generateUUID])
+
+  useEffect(() => {
+    if (meta) {
+      handleCreateId()
+    }
+  }, [])
 
   return (
-    <main>
-      <SexyButton
-        size='sq'
-        variant='primary'
-        className='mr-4 rounded-full'
-        onClick={handleRouteAdmin}>
-        <Icon name='re-up.ph' className='size-4' />
-      </SexyButton>
+    <main className='size-96 flex items-center justify-center flex-wrap'>
+      <NewCard token={meta.token} payload={meta.payload} signature='' id={id} />
     </main>
   )
 }

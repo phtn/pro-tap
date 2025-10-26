@@ -1,5 +1,5 @@
-// // app/i/[id]/route.ts
-// // import {CardService} from '@/lib/services/card.service'
+// // app/c/[cardId]/route.ts
+// import {CardService} from '@/lib/services/card.service'
 // import {getClientIp, getUserAgent} from '@/lib/utils/validation'
 // import {NextRequest, NextResponse} from 'next/server'
 
@@ -11,7 +11,7 @@
 
 //   try {
 //     // Fetch card with all relations
-//     // const card = await CardService.getCardWithRelations(cardId)
+//     const card = await CardService.getCardWithRelations(cardId)
 
 //     // Card not found
 //     if (!card) {

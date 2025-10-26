@@ -1,5 +1,4 @@
 import type {MetadataRoute} from 'next'
-
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: 'ph.protap.insurance',
@@ -9,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     categories: ['insurance', 'social', 'professional', 'club', 'network hub'],
     background_color: '#1C1F2A',
-    theme_color: '#000000',
+    theme_color: '#090909',
     icons: [
       {
         src: '/p.ico/apple-icon-180x180.png',

@@ -34,7 +34,7 @@ export const CardList = ({title, list}: CardListProps) => {
       <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-60'>
         {title}
       </h2>
-      <div className='flex space-x-4 md:space-x-8'>
+      <div className='md:flex space-y-6 md:space-y-0 md:space-x-8'>
         {list.map((item) => (
           <ListItem key={item.name} item={item} />
         ))}
@@ -54,7 +54,7 @@ const ListItem = ({item}: ListItemProps) => (
       'transition-transform duration-300 ease-in-out active:scale-90',
       'border-[0.33px] border-origin bg-white dark:bg-greyed',
     )}>
-    <div className='flex items-center space-x-6 mb-4 relative'>
+    <div className='flex items-center md:space-x-6 space-x-2 mb-4 relative'>
       <div
         className={cn(
           'flex items-center justify-center size-8 md:size-12 rounded-xl transition-colors',
@@ -63,18 +63,6 @@ const ListItem = ({item}: ListItemProps) => (
         <Icon name={item.icon} className={'size-4 md:size-6'} />
       </div>
       <h3 className='md:text-lg font-semibold tracking-tight'>{item.label}</h3>
-      <p
-        className={cn(
-          'absolute -right-2 -top-2 text-xs font-mono rounded-md dark:bg-white px-2 py-1',
-          {
-            ' text-black dark:text-mac-teal': item.type === 'product',
-            ' text-red-700 dark:text-primary': item.type === 'data',
-          },
-        )}>
-        <span className='capitalize'>
-          {item.type === 'product' ? 'P' : 'D'}
-        </span>
-      </p>
     </div>
 
     <p className='font-figtree opacity-70 text-sm'>{item.description}</p>

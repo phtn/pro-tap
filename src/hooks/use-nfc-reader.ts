@@ -1,15 +1,11 @@
-import { VoidPromise } from '@/app/types'
-import { onInfo, onSuccess, onWarn } from '@/ctx/toast'
-import { ServerTime } from '@/lib/firebase/types/user'
-import { moses, secureRef } from '@/utils/crypto'
-import { ParsedRecord, parseRecord } from '@/utils/ndef'
-import { serverTimestamp } from 'firebase/firestore'
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import {VoidPromise} from '@/app/types'
+import {onInfo, onSuccess, onWarn} from '@/ctx/toast'
+import {ServerTime} from '@/lib/firebase/types/user'
+import {moses, secureRef} from '@/utils/crypto'
+import {ParsedRecord, parseRecord} from '@/utils/ndef'
+import {serverTimestamp} from 'firebase/firestore'
+import {useCallback, useEffect, useRef, useState} from 'react'
+import {CardSeries} from '../../convex/cards/d'
 
 // NFC Web API TypeScript definitions for reading
 export interface NDEFRecordRead {
@@ -30,11 +26,11 @@ export interface NDEFRecordInit {
   mediaType: string | null
   id: string
   data?:
-  | string
-  | BufferSource
-  | DataView
-  | { records: NDEFRecordInit[] }
-  | unknown
+    | string
+    | BufferSource
+    | DataView
+    | {records: NDEFRecordInit[]}
+    | unknown
   encoding?: string
   lang?: string
 }
@@ -46,10 +42,10 @@ export interface NDEFMessageInit {
 export type NDEFMessageSource = string | BufferSource | NDEFMessageInit
 
 export interface NDEFReader extends EventTarget {
-  scan(options?: { signal?: AbortSignal }): Promise<void>
+  scan(options?: {signal?: AbortSignal}): Promise<void>
   write(
     message: NDEFMessageSource,
-    options?: { overwrite?: boolean; signal?: AbortSignal },
+    options?: {overwrite?: boolean; signal?: AbortSignal},
   ): Promise<void>
   addEventListener(
     type: 'reading',
@@ -75,7 +71,7 @@ export interface NDEFReadingEvent extends Event {
 declare global {
   interface Window {
     NDEFReader: {
-      new(): NDEFReader
+      new (): NDEFReader
     }
   }
 }
@@ -105,7 +101,7 @@ export interface UseNFCReaderOptions {
   autoStop?: boolean
   withWrite?: boolean
   baseUrl?: string
-  series?: string
+  series?: CardSeries
   group?: string
   batch?: string
   secmos?: string
@@ -125,7 +121,9 @@ export interface UseNFCReaderReturn {
   payload: NFCRecord | null
 }
 
-export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderReturn => {
+export const useNFCReader = (
+  options: UseNFCReaderOptions = {},
+): UseNFCReaderReturn => {
   const {
     onScan,
     onError,
@@ -204,7 +202,7 @@ export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderRet
 
   const handleNFCReading = useCallback(
     (event: NDEFReadingEvent): void => {
-      const { serialNumber, message } = event
+      const {serialNumber, message} = event
 
       const recordId = `nfc-${moses(secureRef(16))}`
       const records = message.records.map((record) => {
@@ -264,7 +262,7 @@ export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderRet
 
       // If withWrite is enabled, write the data back to the tag
       if (withWrite && payloadRecord) {
-        ; (async () => {
+        ;(async () => {
           try {
             const ndef = new window.NDEFReader()
             await ndef.write({
@@ -275,10 +273,7 @@ export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderRet
                 id: r.id,
               })),
             })
-            await ndef.write(
-              { records: [payloadRecord] },
-              { overwrite: true },
-            )
+            await ndef.write({records: [payloadRecord]}, {overwrite: true})
             setPayload(payloadRecord)
             onSuccess('Write Successful')
           } catch (error: unknown) {
@@ -309,7 +304,18 @@ export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderRet
         setIsScanning(false)
       }
     },
-    [onScan, maxHistorySize, handleNFCError, autoStop, withWrite, baseUrl, series, group, batch, secmos],
+    [
+      onScan,
+      maxHistorySize,
+      handleNFCError,
+      autoStop,
+      withWrite,
+      baseUrl,
+      series,
+      group,
+      batch,
+      secmos,
+    ],
   )
 
   const startScanning = useCallback(async (): Promise<void> => {
@@ -354,7 +360,7 @@ export const useNFCReader = (options: UseNFCReaderOptions = {}): UseNFCReaderRet
       reader.addEventListener('reading', handleNFCReading)
       reader.addEventListener('readingerror', handleNFCError)
 
-      await reader.scan({ signal: controller.signal })
+      await reader.scan({signal: controller.signal})
     } catch (error: unknown) {
       let errorMessage = 'Failed to start NFC scanning: Unknown error'
 
