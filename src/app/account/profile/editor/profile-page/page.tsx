@@ -10,7 +10,13 @@ import {useProfileService} from '@/hooks/use-profile-service'
 import {useToggle} from '@/hooks/use-toggle'
 import {ProfileFormData} from '@/lib/firebase/types/user'
 import {cn} from '@/lib/utils'
-import {useActionState, useCallback, useState, useTransition} from 'react'
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+  useTransition,
+} from 'react'
 import ProfileView from '../../_components/profile-preview'
 import {FormHeader} from '../_components/form-header'
 import {PortraitCropper} from '../_components/portrait-cropper'
@@ -38,31 +44,48 @@ export default function ProfilePageEditor() {
     },
   })
 
+  const [, action, pending] = useActionState(handleSave, profileInitial)
+  const [isPending, startTransition] = useTransition()
+
+  // const [currentPhoto] = useState<string | null>(null)
+  const [croppedAvatar, setCroppedAvatar] = useState<File | null>(null)
+  const [croppedAvatarUrl, setCroppedAvatarUrl] = useState<string | null>(null)
+
   const previewProfile = profile
     ? {
         ...profile,
         ...formData,
-        avatar: typeof formData.avatar === 'string' ? formData.avatar : null,
+        avatar:
+          croppedAvatarUrl ||
+          (typeof formData.avatar === 'string' ? formData.avatar : null),
       }
     : {
         username: 'preview',
         displayName: formData.displayName,
         bio: formData.bio,
-        avatar: typeof formData.avatar === 'string' ? formData.avatar : null,
+        avatar:
+          croppedAvatarUrl ||
+          (typeof formData.avatar === 'string' ? formData.avatar : null),
         socialLinks: formData.socialLinks,
         theme: formData.theme,
         isPublished: formData.isPublished,
       }
 
-  const [, action, pending] = useActionState(handleSave, profileInitial)
-  const [isPending, startTransition] = useTransition()
-
-  const [currentPhoto] = useState<string | null>(null)
-  const [croppedAvatar, setCroppedAvatar] = useState<File | null>(null)
-
   const handleCrop = useCallback((file: File) => {
     setCroppedAvatar(file)
+    // Create blob URL for preview
+    const url = URL.createObjectURL(file)
+    setCroppedAvatarUrl(url)
   }, [])
+
+  // Cleanup blob URL on unmount or when croppedAvatar changes
+  useEffect(() => {
+    return () => {
+      if (croppedAvatarUrl) {
+        URL.revokeObjectURL(croppedAvatarUrl)
+      }
+    }
+  }, [croppedAvatarUrl])
 
   const handleFormSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -140,8 +163,8 @@ export default function ProfilePageEditor() {
 
   if (isPreview) {
     return (
-      <div>
-        <div className='fixed top-20 right-4 z-50 flex gap-2'>
+      <div className='max-w-6xl relative'>
+        <div className='absolute md:top-20 right-4 z-50 flex gap-2'>
           <SexyButton onClick={togglePreview} className=''>
             Exit Preview
           </SexyButton>
@@ -153,20 +176,23 @@ export default function ProfilePageEditor() {
 
   return (
     <form onSubmit={handleFormSubmit} className='w-full'>
-      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-16 md:py-8 max-w-6xl'>
-        <div className='rounded-4xl border border-dysto/30 bg-origin dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
+      <div className='h-fit w-full grid grid-cols-1 md:grid-cols-6 gap-0 md:gap-16 md:py-8 max-w-6xl'>
+        <div className='rounded-none md:rounded-4xl border border-dysto/30 bg-origin dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
           <ScrollArea className='w-full h-fit px-6 py-4 md:pt-8'>
-            <FormHeader title='Profile Picture' icon='user'></FormHeader>
+            <FormHeader title='Photo Editor' icon='user-frame'></FormHeader>
             <PortraitCropper
               togglePreview={togglePreview}
-              defaultValue={currentPhoto}
+              defaultValue={
+                croppedAvatarUrl ||
+                (typeof profile?.avatar === 'string' ? profile.avatar : null)
+              }
               onCrop={handleCrop}
             />
 
             <div className='flex items-center justify-between w-full'></div>
           </ScrollArea>
         </div>
-        <div className='rounded-4xl border border-origin bg-white dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
+        <div className='rounded-none md:rounded-4xl border border-origin bg-white dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
           <div className='mb-4 md:mb-6'>
             <ScrollArea className='w-full h-fit px-4 md:px-6 py-4 md:pt-8 md:pb-4'>
               <FormHeader title='Profile Info' icon='sign-pen'>
@@ -183,27 +209,24 @@ export default function ProfilePageEditor() {
                 />
               ))}
             </ScrollArea>
-            <div className='md:hidden flex items-center justify-between w-full px-4'>
-              <div />
-              <Submit />
+            <div className='flex items-center justify-between w-full px-4'>
+              <div className='flex w-full' />
+              <div className='flex flex-1 items-center space-x-4 w-full'>
+                <SexyButton
+                  leftIcon='eye'
+                  variant='ghost'
+                  className={cn(
+                    'md:px-6 bg-transparent hover:bg-primary dark:hover:bg-dysto shadow-none hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
+                  )}
+                  onClick={togglePreview}>
+                  <span className='font-semibold text-lg'>Preview</span>
+                </SexyButton>
+                <Submit />
+              </div>
             </div>
           </div>
         </div>
-        <div className='md:bg-terminal/90 md:dark:bg-greyed/20 rounded-3xl col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24 hidden'>
-          <div className='flex w-full' />
-          <div className='flex flex-1 items-center space-x-4 w-full'>
-            <SexyButton
-              leftIcon='eye'
-              variant='ghost'
-              className={cn(
-                'md:px-6 bg-white/5 hover:bg-primary hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
-              )}
-              onClick={togglePreview}>
-              <span className='font-semibold text-lg'>Preview</span>
-            </SexyButton>
-            <Submit />
-          </div>
-        </div>
+        <div className='md:bg-terminal/90 md:dark:bg-greyed/20 rounded-3xl col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24 hidden'></div>
       </div>
     </form>
   )

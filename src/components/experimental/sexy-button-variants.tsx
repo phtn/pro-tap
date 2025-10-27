@@ -31,9 +31,10 @@ interface SexyButtonProps extends HTMLMotionProps<'button'> {
 const base =
   'relative inline-flex items-center justify-center font-figtree font-semibold tracking-tighter rounded-[11.5px] border-[0.5px] overflow-visible whitespace-nowrap cursor-pointer ' +
   'ring-offset-blue-300 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-300' +
-  'backdrop-blur-xs shadow-sm hover:shadow-sm transition-all duration-300 active:scale-96 active:shadow-xs ' +
+  'backdrop-blur-xs shadow-sm hover:shadow-sm transition-all duration-300 active:shadow-xs ' +
   'inset-shadow-[0_1px_rgb(237_237_237)] dark:inset-shadow-[0_1px_rgb(100_100_100)]' +
-  '[&_svg]:pointer-events-none [&_svg]:shrink-0 group m-1'
+  '[&_svg]:pointer-events-none [&_svg]:shrink-0 group m-1' +
+  ' active:scale-96 disabled:active:scale-100 '
 
 const variantClasses: Record<SexyButtonVariant, string> = {
   default: cn(
@@ -77,7 +78,7 @@ const variantClasses: Record<SexyButtonVariant, string> = {
   ghost: cn(
     'bg-transparent',
     'text-foreground/80 hover:text-foreground',
-    'border-transparent hover:border-zinc-600/60',
+    'border-transparent disabled:border-transparent hover:border-zinc-600/60',
     'hover:bg-zinc-100/50 dark:hover:bg-zinc-600/50',
     'inset-shadow-[0_1px_rgb(237_237_237)]/50',
     'dark:inset-shadow-[0_1px_rgb(100_100_100)]/40',

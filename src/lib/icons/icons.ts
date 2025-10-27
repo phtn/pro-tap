@@ -1038,6 +1038,18 @@ export const icons = {
     viewBox: '0 0 24 24',
     set: 'lets-icons',
   },
+  'arrow-undo': {
+    symbol:
+      '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.25 12L5.957 8.707A1 1 0 0 1 5.664 8M9.25 4L5.957 7.293A1 1 0 0 0 5.664 8M7.25 19.5h6.25a5.75 5.75 0 0 0 0-11.5H5.664"/>',
+    viewBox: '0 0 24 24',
+    set: 'proicons',
+  },
+  'user-frame': {
+    symbol:
+      '<g fill="none" stroke="currentColor"><path d="M17.933 21.257c-.216-1.2-.948-2.293-2.06-3.076c-1.111-.783-2.527-1.202-3.982-1.18s-2.852.484-3.929 1.3s-1.76 1.932-1.924 3.137"/><circle cx="12" cy="10" r="3" stroke-linecap="round"/><rect width="19" height="19" x="2.5" y="2.5" rx="3.5"/></g>',
+    viewBox: '0 0 24 24',
+    set: 'lets-icons',
+  },
 }
 
 /*

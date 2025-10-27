@@ -12,10 +12,10 @@ interface FormHeaderProps {
 export const FormHeader = ({title, icon, children}: FormHeaderProps) => {
   return (
     <div className='mb-8 flex items-center justify-between'>
-      <h2 className='flex whitespace-nowrap items-center text-lg md:text-xl font-bold tracking-tight px-2'>
+      <h2 className=' text-greyed dark:text-foreground flex whitespace-nowrap items-center text-lg md:text-xl font-semibold font-space tracking-tight px-2'>
         <Icon
           name={icon || 'user'}
-          className={cn('size-5 md:size-6 shrink-0 mr-1 md:mr-1', {
+          className={cn('hidden size-5 md:size-6 shrink-0 mr-1 md:mr-1', {
             hidden: !icon,
           })}
         />

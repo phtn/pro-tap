@@ -86,6 +86,12 @@ export const PortraitCropper = ({
   const [zoom, setZoom] = useState(1.4)
   const [imageSrc, setImageSrc] = useState<string | null>(defaultValue)
 
+  // Update imageSrc when defaultValue changes
+  useEffect(() => {
+    setImageSrc(defaultValue)
+    setCroppedImageUrl(null) // Reset cropped preview when default image changes
+  }, [defaultValue])
+
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -108,6 +114,13 @@ export const PortraitCropper = ({
     },
     [],
   )
+
+  // useEffect(() => {
+  //   if (!defaultImage) return
+  //   const url = URL.createObjectURL(defaultImage)
+  //   setImageSrc(url)
+  //   setCroppedImageUrl(null) // Reset cropped preview
+  // }, [defaultImage])
 
   // const checkParams = useCallback(() => {
   //   if (fileInputRef.current) {
@@ -184,7 +197,7 @@ export const PortraitCropper = ({
   }, [croppedImageUrl, imageSrc])
 
   return (
-    <div className='flex flex-col items-center gap-4'>
+    <div className='flex flex-col items-center'>
       <SexyButton
         onClick={handleCrop}
         disabled={!croppedAreaPixels}
@@ -192,7 +205,7 @@ export const PortraitCropper = ({
         variant='dark'>
         Crop preview
       </SexyButton>
-      <div className='h-100 md:h-110 relative flex w-full flex-col gap-4'>
+      <div className='h-100 md:h-110 relative flex w-full flex-col gap-4 px-4'>
         <Cropper
           aspectRatio={4 / 5}
           className='border-2 border-dysto/30 rounded-xl h-full bg-greyed py-0'
@@ -215,13 +228,13 @@ export const PortraitCropper = ({
             aria-label='Zoom slider'
             className=''
           />
-          <output className='block w-10 shrink-0 text-right text-sm font-medium tabular-nums'>
+          <output className='block w-10 shrink-0 text-greyed dark:text-foreground text-right text-sm font-medium tabular-nums'>
             {parseFloat(zoom.toFixed(1))}x
           </output>
         </div>
       </div>
 
-      <div className='py-4 relative flex items-center justify-between w-full'>
+      <div className='py-12 md:py-0 md:mt-8 relative gap-2 flex items-center justify-between w-full'>
         <input
           type='file'
           accept='image/*'
@@ -231,25 +244,29 @@ export const PortraitCropper = ({
         />
 
         <Icon
+          id='select-image'
           onClick={(e) => {
             e.preventDefault()
             fileInputRef.current?.click()
           }}
           name='photo-add'
-          className='size-8 mx-2'
+          className='size-10 mx-2 cursor-pointer text-greyed dark:text-foreground dark:hover:text-catnip rounded-xl hover:bg-greyed/80 p-1 transition-colors duration-150 ease-in-out'
         />
         <SexyButton
-          fullWidth
-          className='md:px-8'
+          name='undo'
+          disabled={!croppedAreaPixels}
+          variant='ghost'
+          className=' dark:disabled:inset-shadow-[0_1px_rgb(100_100_100)]/10 dark:disabled:text-foreground/20 dark:disabled:shadow-none dark:disabled:hover:bg-transparent text-greyed dark:text-foreground'
           onClick={(e) => {
             e.preventDefault()
           }}>
-          Crop
+          <Icon name='arrow-undo' className='size-6 text-' />
         </SexyButton>
         <SexyButton
+          name='preview'
           fullWidth
-          variant='dark'
-          className='md:px-8'
+          variant='ghost'
+          className='md:px-8 text-lg text-greyed dark:text-foreground'
           onClick={(e) => {
             e.preventDefault()
             handleCrop()
@@ -257,9 +274,10 @@ export const PortraitCropper = ({
           Preview
         </SexyButton>
         <SexyButton
+          name='save'
           fullWidth
-          variant='secondary'
-          className=''
+          variant='ghost'
+          className=' text-lg text-greyed dark:text-foreground'
           onClick={(e) => {
             e.preventDefault()
           }}>

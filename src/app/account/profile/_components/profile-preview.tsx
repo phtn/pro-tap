@@ -1,7 +1,7 @@
 'use client'
 
 import {UserProfile} from '@/lib/firebase/types/user'
-import Image from 'next/image'
+import {GlistenCard} from '../preview/glisten-card'
 
 interface ProfileViewProps {
   profile: UserProfile
@@ -10,25 +10,33 @@ interface ProfileViewProps {
 export default function ProfileView({profile}: ProfileViewProps) {
   return (
     <div
-      className={`min-h-screen ${profile.theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      className={`min-h-screen ${profile.theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-background text-gray-900'}`}>
       <div className='max-w-3xl mx-auto px-4 py-12'>
         {/* Avatar */}
         {profile.avatar && (
           <div className='flex justify-center mb-6'>
-            <div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200'>
-              <Image
-                src={`/images/sam-editor.png`}
+            <div className='relative h-auto aspect-auto overflow-hidden'>
+              <GlistenCard
+                name={profile?.displayName!}
+                bio={''}
+                followers={0}
+                posts={0}
+                imageUrl={(profile?.avatar as string) ?? null}
+              />
+              <img
+                src={profile.avatar}
                 alt={profile.displayName ?? 'display-name'}
-                fill
-                className='object-cover'
+                className='hidden w-full h-full object-cover'
               />
             </div>
           </div>
         )}
 
         {/* Name & Username */}
-        <div className='text-center mb-4'>
-          <h1 className='text-4xl font-bold mb-2'>{profile.displayName}</h1>
+        <div className='text-center mb-4 hidden'>
+          <h1 className='text-4xl text-foreground tracking-tight font-space font-bold mb-2'>
+            {profile.displayName}
+          </h1>
           <p className='text-xl text-gray-500'>@{profile.username}</p>
         </div>
 

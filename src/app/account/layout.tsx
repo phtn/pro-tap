@@ -40,7 +40,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
   return (
     <div className='bg-background/10 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
-      <div className='md:h-20 w-full py-7'>
+      <div className='md:h-20 w-full md:py-7'>
         <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
       </div>
       <main className='max-w-6xl mx-auto'>

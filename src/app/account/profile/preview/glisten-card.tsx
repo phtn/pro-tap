@@ -19,9 +19,9 @@ export function GlistenCard({
   isVerified = false,
 }: GlistenCardProps) {
   return (
-    <div className='relative w-full md:max-w-md overflow-hidden rounded-[2.5rem] bg-gradient-to-b from-gray-200 to-gray-100'>
+    <div className='mt-4 relative w-full md:max-w-md overflow-hidden rounded-[2.5rem] bg-gradient-to-b from-gray-200 to-gray-100'>
       {/* Glisten Image */}
-      <div className='aspect-[3/4] w-full'>
+      <div className='aspect-[4/5] w-full'>
         <img
           src={imageUrl ?? '/images/sega.png'}
           alt={name}
@@ -32,10 +32,8 @@ export function GlistenCard({
       {/* Content Overlay */}
       <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-white/95 via-white/90 to-transparent px-8 pb-8 pt-32'>
         {/* Name with Verification Badge */}
-        <div className='mb-3 flex items-center gap-2'>
-          <h2 className='text-4xl font-bold tracking-tight text-gray-900'>
-            {name}
-          </h2>
+        <div className='mb-1 flex items-center gap-2'>
+          <h2 className='text-3xl font-semibold tracking-tighter'>{name}</h2>
           {isVerified && (
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-600'>
               <svg
@@ -60,25 +58,25 @@ export function GlistenCard({
           {/* Stats */}
           <div className='flex items-center gap-6'>
             <div className='flex items-center gap-2'>
-              <Icon name='user' className='h-6 w-6 text-gray-500' />
-              <span className='text-2xl font-semibold text-gray-900'>
-                {followers}
+              <Icon name='eye' className='h-6 w-6 text-gray-500' />
+              <span className='text-lg tracking-tighter font-space font-medium'>
+                {followers + 145}
               </span>
             </div>
             <div className='flex items-center gap-2'>
-              <Icon name='chat' className='h-6 w-6 text-gray-500' />
-              <span className='text-2xl font-semibold text-gray-900'>
-                {posts}
+              <Icon name='thumbs-up' className='h-6 w-6 text-gray-500' />
+              <span className='text-lg tracking-tighter font-space font-medium'>
+                {posts + 36}
               </span>
             </div>
           </div>
 
           {/* Follow Button */}
           <Button
-            size='lg'
-            className='rounded-full bg-white px-4 py-6 text-xl font-semibold text-gray-900 tracking-tight shadow-lg hover:bg-gray-50'>
-            Connect
-            <Icon name='connect' className='ml-2 size-8 text-teal-500' />
+            variant='ghost'
+            className='bg-transparent shadow-none px-4 py-6 text-lg font-medium font-space tracking-tight hover:bg-gray-50'>
+            <span>follow</span>
+            <Icon name='add' className='size-5 text-gray-500' />
           </Button>
         </div>
       </div>
