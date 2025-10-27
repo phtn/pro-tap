@@ -48,6 +48,6 @@ export interface TokenGenerationOptions {
 export interface TokenMetadata {
   token: string
   payload: ActivationTokenPayload
-  expiresAt: Date
-  createdAt: Date
+  expiresAt: string
+  createdAt: string
 }

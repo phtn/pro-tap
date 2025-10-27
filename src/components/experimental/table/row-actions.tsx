@@ -17,7 +17,9 @@ import {useCopy} from '@/hooks/use-copy'
 import {Icon, IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {Row} from '@tanstack/react-table'
-import {useCallback, useMemo} from 'react'
+import {useMutation} from 'convex/react'
+import {useCallback, useMemo, useState} from 'react'
+import {api} from '../../../../convex/_generated/api'
 
 interface ISubMenuItem {
   label: string
@@ -49,6 +51,7 @@ export const RowActions = <T,>({
   customActions = [],
 }: Props<T>) => {
   const {copy} = useCopy({timeout: 2000})
+  const [loading, setLoading] = useState(false)
 
   const handleView = useCallback(() => {
     viewFn && viewFn()
@@ -79,6 +82,13 @@ export const RowActions = <T,>({
     [copy],
   )
 
+  const rowItem = useMutation(api.cards.m.purgeOne)
+  const handleDeleteRow = useCallback(() => {
+    const cardId = row.getValue('cardId') as string
+    setLoading(true)
+    rowItem({cardId})
+  }, [rowItem, row])
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -89,8 +99,10 @@ export const RowActions = <T,>({
           aria-label='More'>
           <Icon
             solid
-            name='text-align-right'
-            className='text-muted-foreground size-4'
+            name={loading ? 'spinners-ring' : 'text-align-right'}
+            className={cn('text-muted-foreground size-4', {
+              'dark:text-amber-400': loading,
+            })}
           />
         </Button>
       </DropdownMenuTrigger>
@@ -131,9 +143,11 @@ export const RowActions = <T,>({
               <span>View</span>
             </button>
           </DropdownMenuItem>
-          <DropdownMenuItem className='h-12 rounded-2xl px-4'>
-            <Icon name='pencil' className='size-4 mr-2' />
-            <span>Edit Row</span>
+          <DropdownMenuItem
+            onClick={handleDeleteRow}
+            className='h-12 rounded-2xl px-4'>
+            <Icon name='close' className='size-4 mr-2' />
+            <span>Delete Row</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 

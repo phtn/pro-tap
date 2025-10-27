@@ -1,5 +1,5 @@
 'use client'
-import {ProductsTable} from '../../_components/products-table'
+import {IndividualConvexDataContent} from '../../individual/convex'
 
 interface Props {
   slug: string
@@ -8,7 +8,7 @@ interface Props {
 export const Content = ({slug}: Props) => {
   return (
     <div className=''>
-      <ProductsTable query={slug} />
+      <IndividualConvexDataContent query={slug} />
     </div>
   )
 }

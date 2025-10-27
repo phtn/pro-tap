@@ -39,35 +39,9 @@ export const DataContent = () => {
     },
   ]
 
-  const users: DataRouteItem[] = [
-    {
-      name: 'active-users',
-      label: 'Active Users',
-      href: '/admin/data/active-users',
-      icon: 'verified-outline',
-      type: 'users',
-      color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'Scan NFC Cards to add to your products',
-      disabled: true,
-    },
-    {
-      name: 'all-users',
-      label: 'All Users',
-      href: '/admin/data/all-users',
-      icon: 'person-multiple',
-      type: 'users',
-      color:
-        'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
-      description: 'Scan NFC Cards to add to your products',
-      disabled: true,
-    },
-  ]
-
   return (
-    <div className='h-screen w-full overflow-y-scroll pt-8 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
-      <CardList title='Products' list={products as DataRouteItem[]} />
-      <CardList title='Users' list={users} />
+    <div className='md:flex w-full overflow-y-scroll pt-8 pb-28 md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+      <CardList title='Series' list={products as DataRouteItem[]} />
     </div>
   )
 }

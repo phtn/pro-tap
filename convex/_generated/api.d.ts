@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as cardScans_m from "../cardScans/m.js";
 import type * as cards_create from "../cards/create.js";
 import type * as cards_d from "../cards/d.js";
 import type * as cards_m from "../cards/m.js";
@@ -43,6 +44,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "cardScans/m": typeof cardScans_m;
   "cards/create": typeof cards_create;
   "cards/d": typeof cards_d;
   "cards/m": typeof cards_m;

@@ -8,7 +8,7 @@ import {createBulkQRCodes, ProtapActivationInfo} from '@/lib/firebase/cards'
 import {TokenMetadata} from '@/lib/jwt/tok.types'
 import {User} from 'firebase/auth'
 import {Timestamp} from 'firebase/firestore'
-import {Dispatch, SetStateAction, useCallback, useMemo, useState} from 'react'
+import {Dispatch, SetStateAction, useCallback, useState} from 'react'
 import {CardSeries} from '../../convex/cards/d'
 import {useCardGen} from './use-card-gen'
 
@@ -146,26 +146,22 @@ export const useQrGen = (): UseQRGen => {
 
   New function to generate QR code
   */
-  const body = useMemo(
-    () =>
-      ({
-        type: 'qr',
-        body: {
-          series,
-          group,
-          batch,
-        },
-        userId: series,
-        count: selectedQuantity,
-      }) satisfies CardRequest,
-    [selectedQuantity, series, group, batch],
-  )
 
-  const {generate} = useCardGen(body)
+  const {generate} = useCardGen()
   const [tokens, setTokens] = useState<TokenMetadata[]>([])
   const generateQRCode = useCallback(async () => {
+    const body: CardRequest = {
+      type: 'qr',
+      body: {
+        series,
+        group,
+        batch,
+      },
+      userId: series,
+      count: selectedQuantity,
+    }
     try {
-      const response = await generate()
+      const response = await generate(body)
       if (response.length !== 0) {
         setTokens(response)
         setGeneratedCount((prev) => prev + response.length)
@@ -175,7 +171,7 @@ export const useQrGen = (): UseQRGen => {
     } catch (error) {
       onWarn('Failed to generate QR code')
     }
-  }, [generate])
+  }, [generate, selectedQuantity, series, batch, group])
 
   return {
     tokens,

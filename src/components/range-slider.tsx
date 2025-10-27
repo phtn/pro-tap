@@ -14,15 +14,10 @@ export const RangeSliderWithInput = ({
 }: RangeSliderWithInputProps) => {
   const minValue = 1
   const maxValue = 1000
-  const initialValue = [100]
+  const initialValue = [5]
 
-  const {
-    sliderValue,
-    inputValues,
-    validateAndUpdateValue,
-    handleInputChange,
-    handleSliderChange,
-  } = useSliderWithInput({minValue, maxValue, initialValue})
+  const {sliderValue, inputValues, validateAndUpdateValue, handleSliderChange} =
+    useSliderWithInput({minValue, maxValue, initialValue})
 
   useEffect(() => {
     if (inputValues[0]) {
@@ -36,9 +31,9 @@ export const RangeSliderWithInput = ({
         <Input
           type='text'
           inputMode='numeric'
-          className='hidden h-9 w-full p-2 text-right text-base font-space border-none bg-zinc-100'
+          className='h-9 w-full p-2 text-right text-base font-space border-none bg-zinc-100'
           value={inputValues[0]}
-          onChange={(e) => handleInputChange(e, 0)}
+          onChange={() => validateAndUpdateValue(inputValues[0], 0)}
           onBlur={() => validateAndUpdateValue(inputValues[0], 0)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {

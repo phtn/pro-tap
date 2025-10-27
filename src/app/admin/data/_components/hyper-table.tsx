@@ -1,8 +1,5 @@
 import {DataTable} from '@/components/experimental/table'
 import {ColumnConfig} from '@/components/experimental/table/create-columns'
-import {useMobile} from '@/hooks/use-mobile'
-import {useRouter} from 'next/navigation'
-import {AdminDock, DockItems} from '../../_components/dock'
 
 interface Props<T> {
   data: T[]
@@ -19,31 +16,6 @@ export const HyperTable = <T,>({
   loading,
   viewer,
 }: Props<T>) => {
-  const isMobile = useMobile()
-  const router = useRouter()
-
-  const dockItems: DockItems = {
-    nav: [{id: 'back', icon: 'back', fn: router.back, label: 'Dashboard'}],
-    toolbar: [
-      {
-        name: 'clear list',
-        fn: loading ? () => {} : () => console.log('Clearing list...'),
-        icon: 'split-vertical',
-        style: loading
-          ? 'text-zinc-800 opacity-20'
-          : ' opacity-20 text-zinc-500',
-      },
-    ],
-    options: [
-      {
-        name: 'next',
-        fn: () => {},
-        icon: 'chevron-right',
-        style: 'text-slate-300 dark:text-slate-600',
-      },
-    ],
-  }
-
   return (
     <>
       <DataTable
@@ -53,11 +25,11 @@ export const HyperTable = <T,>({
         editingRowId={null}
         columnConfigs={columns}
       />
-      {isMobile && (
+      {/*{isMobile && (
         <div className='fixed md:bottom-20 bottom-8 w-full'>
           <AdminDock dockItems={dockItems} />
         </div>
-      )}
+      )}*/}
     </>
   )
 }

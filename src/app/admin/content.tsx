@@ -4,7 +4,7 @@ import {usePathname, useRouter} from 'next/navigation'
 import {useEffect, useState} from 'react'
 import {CardList} from './_components/card-list'
 import {Header} from './_components/header'
-import {tools} from './static'
+import {dataList, tools, utils} from './static'
 
 export const AdminPageContent = () => {
   const pathname = usePathname()
@@ -38,10 +38,10 @@ export const AdminPageContent = () => {
         <div className='h-full'>
           <Header title='Admin' back={router.back} subtext='Dashboard' />
 
-          <div className='py-8 md:h-[calc(92lvh)] md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
+          <div className='md:flex overflow-y-scroll py-8 gap-8 h-[calc(94lvh)] md:space-y-12 space-y-8 px-4 sm:px-6 lg:px-8'>
             <CardList title='Tools' list={tools} />
-            {/*<CardList title='Data' list={dataList} />*/}
-            {/*<CardList title='Utils' list={utils} />*/}
+            <CardList title='Data' list={dataList} />
+            <CardList title='Utils' list={utils} />
           </div>
         </div>
       </div>

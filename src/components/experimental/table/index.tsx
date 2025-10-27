@@ -75,7 +75,7 @@ export const DataTable = <T,>({
 
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: 'serialNumber',
+      id: 'createdAt',
       desc: false,
     },
   ])
@@ -262,7 +262,7 @@ const renderRow = <T,>(
       key={row.id}
       data-state={row.getIsSelected() && 'selected'}
       className={cn(
-        'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-card-origin group/row dark:hover:bg-background/40 border-b-origin/40',
+        'h-14 md:h-16 text-foreground md:text-base text-xs overflow-hidden dark:border-greyed group/row dark:hover:bg-background/40 border-b-origin/40',
         'peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-primary-hover/5',
         'transition-colors duration-75',
         {
@@ -297,7 +297,7 @@ const renderCell = <TData, TValue>(
 )
 
 const TableContainer = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-transparent h-[calc(100vh-200px)] md:h-[calc(100vh-124px)] overflow-auto'>
+  <div className='bg-transparent h-[calc(100vh-100px)] md:h-[calc(100vh-124px)] overflow-auto'>
     {children}
   </div>
 )

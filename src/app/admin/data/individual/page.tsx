@@ -1,3 +1,3 @@
-import {Content} from './content'
-const Page = async () => <Content />
+import {IndividualConvexDataContent} from './convex'
+const Page = async () => <IndividualConvexDataContent />
 export default Page

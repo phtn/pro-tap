@@ -68,8 +68,8 @@ export class TokenService {
         subscriptionId,
         tokenType: 'activation',
         channel,
-        issuedAt: new Date(now * 1000),
-        expiresAt: new Date(exp * 1000),
+        issuedAt: new Date(now * 1000).toDateString(),
+        expiresAt: new Date(exp * 1000).toDateString(),
         isUsed: false,
       },
     }
@@ -78,10 +78,9 @@ export class TokenService {
     const returnValue = {
       token,
       payload,
-      expiresAt: new Date(exp * 1000),
-      createdAt: new Date(now * 1000),
+      expiresAt: new Date(exp * 1000).toDateString(),
+      createdAt: new Date(now * 1000).toDateString(),
     }
-    console.log(returnValue)
     return returnValue
   }
 

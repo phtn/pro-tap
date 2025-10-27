@@ -23,7 +23,7 @@ export const BatchName = ({setBatch, batch, disabled}: BatchNameProps) => {
         id='batch-name'
         defaultValue={batch}
         onChange={handleBatchChange}
-        className='text-xs md:text-sm border-transparent dark:border-transparent font-space dark:bg-origin md:w-fit w-26 pl-1 pr-1 md:h-10 h-7 bg-muted'
+        className='text-xs md:text-sm border-transparent dark:border-transparent font-space dark:bg-origin md:w-fit w-26 pl-1 pr-1 md:pl-3 md:h-10 h-7 bg-muted'
         disabled={disabled}
       />
     </div>

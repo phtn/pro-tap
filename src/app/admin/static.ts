@@ -1,4 +1,4 @@
-import {RouteItem} from './_components/card-list'
+import {DataRouteItem, RouteItem} from './_components/card-list'
 
 const tools: RouteItem[] = [
   {
@@ -26,7 +26,7 @@ const tools: RouteItem[] = [
 const dataList: RouteItem[] = [
   {
     name: 'data',
-    label: 'Products',
+    label: 'Cards',
     href: '/admin/data',
     icon: 'bullet-list-square',
     type: 'data',
@@ -34,13 +34,24 @@ const dataList: RouteItem[] = [
       'bg-dark-origin dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
     description: 'View and manage all products in a table',
   },
+  {
+    name: 'all-users',
+    label: 'Users',
+    href: '/admin/data/all-users',
+    icon: 'person-multiple',
+    type: 'users',
+    color:
+      'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
+    description: 'Scan NFC Cards to add to your products',
+    disabled: true,
+  },
 ]
 
 const utils: RouteItem[] = [
   {
     name: 'scan-check',
     label: 'Scan Check',
-    href: '/admin/utils',
+    href: '/admin/scan-check',
     icon: 'code-square',
     type: 'monitor',
     color:
@@ -49,4 +60,29 @@ const utils: RouteItem[] = [
   },
 ]
 
-export {dataList, tools, utils}
+const users: DataRouteItem[] = [
+  {
+    name: 'active-users',
+    label: 'Active Users',
+    href: '/admin/data/active-users',
+    icon: 'verified-outline',
+    type: 'users',
+    color:
+      'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
+    description: 'Scan NFC Cards to add to your products',
+    disabled: true,
+  },
+  {
+    name: 'all-users',
+    label: 'All Users',
+    href: '/admin/data/all-users',
+    icon: 'person-multiple',
+    type: 'users',
+    color:
+      'bg-origin/40 dark:bg-dark-origin/40 group-hover:bg-origin/80 dark:group-hover:bg-dark-origin/80',
+    description: 'Scan NFC Cards to add to your products',
+    disabled: true,
+  },
+]
+
+export {dataList, tools, users, utils}

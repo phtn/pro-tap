@@ -1,14 +1,33 @@
 import {v} from 'convex/values'
 import {mutation, query} from '../_generated/server'
-import {cardSchema} from './d'
+import {cardSchema, createCardSchema, ICard} from './d'
 
 // --- Mutations ---
 
 // Create a new card
 export const create = mutation({
-  args: {cards: v.array(cardSchema)},
-  handler: async (ctx, {cards}) => {
-    for (const card of cards) {
+  args: createCardSchema,
+  handler: async (ctx, {tokens, batch, createdBy}) => {
+    for (const token of tokens) {
+      const card: ICard = {
+        visible: true,
+        updatedAt: Date.now(),
+        createdAt: Date.now(),
+        type: token.payload.channel,
+        userId: null,
+        cardId: token.payload.uid,
+        series: token.payload.series,
+        state: 'unused',
+        group: token.payload.group,
+        batch,
+        token: token.token,
+        activatedAt: null,
+        serialNumber: null,
+        issuedAt: token.payload.iat,
+        expiresAt: token.payload.exp,
+        revokedAt: null,
+        createdBy,
+      }
       await ctx.db.insert('cards', card)
     }
   },

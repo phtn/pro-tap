@@ -31,7 +31,7 @@ export const cardSchema = v.object({
   activatedAt: v.union(v.number(), v.null()),
   serialNumber: v.union(v.string(), v.null()),
   issuedAt: v.number(),
-  expiresAt: v.string(),
+  expiresAt: v.number(),
   revokedAt: v.union(v.number(), v.null()),
   createdAt: v.number(),
   createdBy: v.string(),
@@ -39,8 +39,37 @@ export const cardSchema = v.object({
   visible: v.boolean(),
 })
 
-type Card = Infer<typeof cardSchema>
+export const activationTokenPayloadSchema = v.object({
+  sub: v.string(), // subscriptionId
+  uid: v.string(), // userId
+  series,
+  channel: type,
+  iat: v.number(), // issued at
+  purpose: v.string(),
+  exp: v.number(), // expires at
+  typ: v.string(), // token type
+  jti: v.string(), // unique token ID (prevents replay)
+  alg: v.string(), // algorithm
+  group: v.string(),
+})
+
+export const tokenMetadataSchema = v.object({
+  token: v.string(),
+  payload: activationTokenPayloadSchema,
+  expiresAt: v.string(),
+  createdAt: v.string(),
+})
+
+export const createCardSchema = v.object({
+  tokens: v.array(tokenMetadataSchema),
+  createdBy: v.string(),
+  batch: v.string(),
+})
+
+export type Tokens = Infer<typeof tokenMetadataSchema>
+
+type ICard = Infer<typeof cardSchema>
 type CardType = Infer<typeof type>
 type CardSeries = Infer<typeof series>
 type CardState = Infer<typeof state>
-export type {Card, CardSeries, CardState, CardType}
+export type {CardSeries, CardState, CardType, ICard}

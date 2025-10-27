@@ -17,10 +17,18 @@ export interface RouteItem {
   name: string
   label: string
   href: string
-  type: 'product' | 'order' | 'user' | 'settings' | 'debug' | 'data' | 'monitor'
+  type:
+    | 'product'
+    | 'order'
+    | 'users'
+    | 'settings'
+    | 'debug'
+    | 'data'
+    | 'monitor'
   icon: IconName
   color: ClassName
   description?: string
+  disabled?: boolean
 }
 
 interface CardListProps {
@@ -30,11 +38,11 @@ interface CardListProps {
 
 export const CardList = ({title, list}: CardListProps) => {
   return (
-    <div className=' max-w-6xl'>
-      <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-60'>
+    <div className=' bg-origin/60 dark:bg-vim h-fit p-4 rounded-4xl'>
+      <h2 className='pl-2 mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-60'>
         {title}
       </h2>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-8 w-full  md:space-y-0 md:space-x-8'>
+      <div className='grid grid-rows-2 md:grid-rows-2 gap-8 w-full  md:space-y-0 md:space-x-8'>
         {list.map((item) => (
           <ListItem key={item.name} item={item} />
         ))}
@@ -50,7 +58,7 @@ const ListItem = ({item}: ListItemProps) => (
   <Link
     href={item.href}
     className={cn(
-      'px-5 py-6 md:p-6 h-40 rounded-3xl font-figtree',
+      'px-5 py-6 md:p-6 h-40 w-full rounded-3xl font-figtree',
       'transition-transform duration-300 ease-in-out active:scale-90',
       'border-[0.33px] border-origin bg-white dark:bg-greyed',
     )}>

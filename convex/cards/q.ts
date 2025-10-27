@@ -13,6 +13,12 @@ export const get = query({
   },
 })
 
+export const getAll = query({
+  handler: async ({db}) => {
+    return (await db.query('cards').collect()).reverse()
+  },
+})
+
 // List cards for a specific user
 export const listForUser = query({
   args: {

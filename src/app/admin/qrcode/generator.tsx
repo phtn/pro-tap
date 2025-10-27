@@ -3,13 +3,17 @@
 import {HyperCard} from '@/components/experimental/card/hyper-card'
 import {HyperList} from '@/components/list'
 import {CardContent} from '@/components/ui/card'
-import {Note, useTone} from '@/ctx/tone'
+import {useAuthCtx} from '@/ctx/auth'
+import {useTone} from '@/ctx/tone'
 import {useMobile} from '@/hooks/use-mobile'
 import {useQrGen} from '@/hooks/use-qr-gen'
 import {Icon} from '@/lib/icons'
 import {TokenMetadata} from '@/lib/jwt/tok.types'
+import {useMutation} from 'convex/react'
 import {useRouter} from 'next/navigation'
-import {ReactNode, useEffect, useMemo, useState} from 'react'
+import {ReactNode, useEffect, useMemo} from 'react'
+import {api} from '../../../../convex/_generated/api'
+import {Tokens} from '../../../../convex/cards/d'
 import {BatchName} from '../_components/batch-name'
 import {CardCounter} from '../_components/card-counter'
 import {CardItemSheet} from '../_components/card-selected'
@@ -19,6 +23,7 @@ import {GroupName} from '../_components/group-name'
 import {SeriesSelect} from '../_components/select-series'
 
 export const QRCodeGenerator = () => {
+  const {user} = useAuthCtx()
   const back = useRouter().back
   const isMobile = useMobile()
   const {
@@ -30,9 +35,10 @@ export const QRCodeGenerator = () => {
     setSelectedQuantity,
     setSeries,
     batch,
-    setBatch,
     group,
+    series,
     setGroup,
+    setBatch,
     handleClearGens,
     selectedCard,
     openCardItem,
@@ -41,20 +47,12 @@ export const QRCodeGenerator = () => {
   } = useQrGen()
 
   const {playNote, isStarted, startAudio, stopAudio} = useTone()
-  const [noteIdx, setNoteIdx] = useState<number>(0)
-
-  const notes: Note[] = ['E4', 'G4', 'C5']
 
   useEffect(() => {
     if (tokens.length > 0) {
-      console.log(tokens[0])
-      playNote(notes[noteIdx], '16n')
+      playNote('E4', '16n')
     }
-  }, [tokens.length, noteIdx])
-
-  useEffect(() => {
-    setNoteIdx((prev) => (prev + 1) % notes.length)
-  }, [notes.length])
+  }, [tokens.length])
 
   const dockItems = useMemo(
     () =>
@@ -96,9 +94,22 @@ export const QRCodeGenerator = () => {
           },
         ],
       }) as DockItems,
-    [isStarted, stopAudio, startAudio, isGenerating, handleClearGens],
+    [isStarted, stopAudio, startAudio, isGenerating, handleClearGens, tokens],
   )
 
+  const batchDetails: Array<IDetailItem> = [
+    {label: 'Series', value: series},
+    {label: 'Group', value: group},
+    {label: 'Status', value: 'saved'},
+  ]
+
+  const saveTokens = useMutation(api.cards.create.create)
+  useEffect(() => {
+    if (!user) return
+    if (tokens.length > 0) {
+      saveTokens({createdBy: user.uid, batch, tokens: tokens as Tokens[]})
+    }
+  }, [tokens])
   return (
     <div className='flex flex-col h-screen w-full overflow-hidden'>
       {/* Header */}
@@ -143,7 +154,6 @@ export const QRCodeGenerator = () => {
         <div className='h-full w-full'>
           <div className='h-screen overflow-scroll pb-64'>
             <div>
-              {/**/}
               {tokens.length > 0 && (
                 <HyperList
                   data={tokens.map((t, i) => ({
@@ -152,10 +162,19 @@ export const QRCodeGenerator = () => {
                     viewFn: () => handleSelectCard(t),
                   }))}
                   component={CardItem}
-                  container='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 lg:gap-4 md:gap-6 gap-4 pt-24 md:pt-36 px-3 md:px-4'
+                  container='relative grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 lg:gap-4 md:gap-6 gap-4 pt-28 md:pt-48 px-3 md:px-4'
                   itemStyle='col-span-6 sm:col-span-3 md:col-span-2 lg:col-span-2 xl:col-span-2 2xl:col-span-1'
-                  max={tokens.length}
-                />
+                  max={tokens.length}>
+                  {tokens.length > 0 && (
+                    <div
+                      key={series}
+                      className='flex items-center h-16 gap-8 absolute top-32 font-figtree px-8 w-full text-foreground '>
+                      {batchDetails.map((props, i) => (
+                        <DetailItem key={series + i} {...props} />
+                      ))}
+                    </div>
+                  )}
+                </HyperList>
               )}
             </div>
           </div>
@@ -186,23 +205,21 @@ const CardItem = (
         label: 'token',
         value: (
           <div className='flex items-center w-full'>
-            <span className='whitespace-nowrap tracking-wide 2xl:hidden xl:w-20'>
+            <span className='whitespace-nowrap tracking-wide '>
               {card.token ? card.token.substring(0, 8) : 'N/A'}
             </span>
             <Icon
               name='line-node'
-              className='size-4 rotate-45 mx-4 opacity-60'
+              className='size-4 rotate-45 mx-2 opacity-60'
             />
-            <span className='whitespace-nowrap tracking-wide  2xl:w-28 text-right'>
-              {card.token
-                ? card.token.substring(card.token.length - 12)
-                : 'N/A'}
+            <span className='whitespace-nowrap tracking-wide 2xl:w-14 text-right'>
+              {card.token ? card.token.substring(card.token.length - 8) : 'N/A'}
             </span>
           </div>
         ),
       },
-      {label: 'series', value: card.payload?.series},
-      {label: 'group', value: card.payload?.group},
+      // {label: 'series', value: card.payload?.series},
+      // {label: 'group', value: card.payload?.group},
     ],
     [card.payload, card.token],
   )
@@ -242,7 +259,7 @@ const CardHeader = ({id, count, loading, viewFn}: CardHeaderProps) => {
             {count}
           </span>
           <label className='text-xs font-space tracking-wider opacity-80'>
-            {id}
+            {id.split('-').pop()}
           </label>
         </div>
       ) : (
@@ -272,5 +289,19 @@ const RowItem = ({label, value, children}: RowItemProps) => (
       {value}
       {children}
     </div>
+  </div>
+)
+
+interface IDetailItem {
+  label?: string
+  value?: ReactNode
+  children?: ReactNode
+}
+
+const DetailItem = ({label, value, children}: IDetailItem) => (
+  <div className='space-x-2'>
+    <span className='font-semibold tracking-tighter'>{label}:</span>
+    <span>{value}</span>
+    {children}
   </div>
 )
