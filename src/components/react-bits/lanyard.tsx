@@ -10,7 +10,11 @@ import {
   useRopeJoint,
   useSphericalJoint,
 } from '@react-three/rapier'
-import {MeshLineGeometry, MeshLineMaterial} from 'meshline'
+import {
+  MeshLineGeometry,
+  MeshLineMaterial,
+  MeshLineMaterialParameters,
+} from 'meshline'
 import {useEffect, useRef, useState} from 'react'
 import * as THREE from 'three'
 
@@ -124,6 +128,17 @@ function Band({maxSpeed = 50, minSpeed = 0}: BandProps) {
   const [dragged, drag] = useState<false | THREE.Vector3>(false)
   const [hovered, hover] = useState(false)
 
+  const [bandGeometry] = useState(() => new MeshLineGeometry())
+  const [bandMaterial] = useState(
+    () =>
+      new MeshLineMaterial({
+        color: 'white',
+        useMap: 1,
+        repeat: new THREE.Vector2(-4, 1),
+        lineWidth: 1,
+      } as MeshLineMaterialParameters),
+  )
+
   const [isSmall, setIsSmall] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth < 1024
@@ -139,6 +154,14 @@ function Band({maxSpeed = 50, minSpeed = 0}: BandProps) {
     window.addEventListener('resize', handleResize)
     return (): void => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    bandMaterial.resolution = new THREE.Vector2(
+      isSmall ? 1000 : 1000,
+      isSmall ? 2000 : 1000,
+    )
+    bandMaterial.map = texture
+  }, [isSmall, texture, bandMaterial])
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
@@ -190,7 +213,7 @@ function Band({maxSpeed = 50, minSpeed = 0}: BandProps) {
       curve.points[1].copy(j2.current.lerped)
       curve.points[2].copy(j1.current.lerped)
       curve.points[3].copy(fixed.current.translation())
-      band.current.geometry.setPoints(curve.getPoints(32))
+      bandGeometry.setPoints(curve.getPoints(32))
       ang.copy(card.current.angvel())
       rot.copy(card.current.rotation())
       card.current.setAngvel({x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z})
@@ -275,26 +298,7 @@ function Band({maxSpeed = 50, minSpeed = 0}: BandProps) {
           </group>
         </RigidBody>
       </group>
-      <mesh
-        ref={band}
-        geometry={(() => {
-          const geometry = new MeshLineGeometry()
-          return geometry
-        })()}
-        material={
-          new MeshLineMaterial({
-            color: 'white',
-            resolution: new THREE.Vector2(
-              isSmall ? 1000 : 1000,
-              isSmall ? 2000 : 1000,
-            ),
-            useMap: 1,
-            map: texture,
-            repeat: new THREE.Vector2(-4, 1),
-            lineWidth: 1,
-          })
-        }
-      />
+      <mesh ref={band} geometry={bandGeometry} material={bandMaterial} />
     </>
   )
 }

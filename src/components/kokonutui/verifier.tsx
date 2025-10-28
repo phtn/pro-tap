@@ -317,7 +317,7 @@ const V = ({isCompleted}: CompletedProps) => {
             filter: 'blur(0.25px)',
           }}
           animate={{
-            rotate: 960,
+            rotate: 4000,
             scale: [1.04, 1.09, 1.05],
           }}
           transition={{
@@ -337,7 +337,7 @@ const V = ({isCompleted}: CompletedProps) => {
           initial={{scale: 1.2, rotate: 90}}
           animate={{scale: 0.2, rotate: -90}}
           transition={{type: 'spring', visualDuration: 6, bounce: 0.6}}
-          className='relative z-10 bg-white dark:bg-zinc-950 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]'>
+          className='relative z-10 bg-zinc-950/10 rounded-full p-5 shadow-[0_0_15px_rgba(16,185,129,0.1)]'>
           <Icon
             name='hexagon'
             className={cn('size-10 text-primary', {
@@ -367,9 +367,9 @@ const Y = () => {
         ease: 'easeInOut',
       }}
       className='w-[100px] h-[100px] flex items-center justify-center'>
-      <div className='relative z-10 rounded-full p-3 bg-emerald-400/15 backdrop-blur-lg'>
+      <div className='relative z-10 rounded-full p-3 bg-emerald-400/25 backdrop-blur-lg'>
         <Checkmark
-          className='size-14 md:size-20  text-emerald-500 bg-white dark:bg-background rounded-full'
+          className='size-14 md:size-20  text-emerald-500 bg-white/10 drop-shadow-md dark:bg-background/20 rounded-full'
           strokeWidth={3.5}
         />
       </div>

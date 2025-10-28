@@ -49,9 +49,7 @@ export const IndividualConvexDataContent = ({query = 'individual'}) => {
 
   useEffect(() => {
     setData(cards)
-    if (data && data.length > 0) {
-      setLoading(false)
-    }
+    setLoading(false)
   }, [cards])
 
   const columns = useMemo(

@@ -1,5 +1,5 @@
 'use client'
-import { QRCodeSVG } from '@/components/experimental/qr-viewer'
+import {QRCodeSVG} from '@/components/experimental/qr-viewer'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -14,11 +14,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { useCopy } from '@/hooks/use-copy'
-import { Icon } from '@/lib/icons'
-import { cn } from '@/lib/utils'
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import { ICard } from '../../../../convex/cards/d'
+import {useCopy} from '@/hooks/use-copy'
+import {Icon} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react'
+import {ICard} from '../../../../convex/cards/d'
 
 interface CardItemSheetProps {
   open: boolean
@@ -35,11 +35,13 @@ export const CardDataItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
-  const debug = false
-  const baseUrl = useMemo(
-    () => (debug ? '192.168.1.2:3000' : 'protap.ph'),
-    [debug],
-  )
+  const baseUrls = {
+    external: '192.168.1.2:3000',
+    live: 'protap.ph',
+    localhost: 'localhost:3000',
+    localhost2: 'localhost:3001',
+  }
+
   useEffect(() => {
     if (open) {
       console.log(side)
@@ -48,29 +50,29 @@ export const CardDataItemSheet = ({
 
   const details = useMemo(
     () => [
-      { label: 'id', value: item?.cardId ?? '' },
-      { label: 'series', value: item?.series ?? '' },
-      { label: 'group', value: item?.group ?? '' },
-      { label: 'batch', value: item?.batch ?? '' },
-      { label: 'token', value: item?.token ?? '' },
+      {label: 'id', value: item?.cardId ?? ''},
+      {label: 'series', value: item?.series ?? ''},
+      {label: 'group', value: item?.group ?? ''},
+      {label: 'batch', value: item?.batch ?? ''},
+      {label: 'token', value: item?.token ?? ''},
       {
         label: 'url',
-        value: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/i/activate?token=${item?.token}&id=${item?.cardId}`,
+        value: `https://${baseUrls.localhost}/i/activate?token=${item?.token}&id=${item?.cardId}`,
       },
     ],
     [item],
   )
 
-  const { copy } = useCopy({ timeout: 2000 })
+  const {copy} = useCopy({timeout: 2000})
 
   const qrOptions = useMemo(() => {
     if (!item) return null
     return {
-      content: `https://${baseUrl}/i/activate?token=${item.token}&id=${item.cardId}`,
+      content: `https://${baseUrls.localhost}/i/activate?token=${item.token}&id=${item.cardId}`,
       width: isMobile ? 240 : 400,
       height: isMobile ? 240 : 400,
     }
-  }, [baseUrl, item, isMobile])
+  }, [baseUrls, item, isMobile])
 
   const [svgData, setSvgData] = useState('')
 
@@ -104,7 +106,7 @@ export const CardDataItemSheet = ({
   }, [qrOptions])
 
   const handleCopyValue = useCallback(
-    (detail: { label: string; value: string }) => () => {
+    (detail: {label: string; value: string}) => () => {
       copy(detail.label, detail.value ?? '')
     },
     [copy],
@@ -133,7 +135,7 @@ export const CardDataItemSheet = ({
         <div
           className={cn(
             'flex flex-col w-full md:flex-row md:gap-6 gap-2 h-full',
-            { 'md:flex-col items-start': side === 'right' },
+            {'md:flex-col items-start': side === 'right'},
           )}>
           {item ? (
             <>
@@ -217,8 +219,8 @@ interface IContextMenuProps {
   children?: ReactNode
 }
 
-const ImageContextMenu = ({ image, qrUrl, children }: IContextMenuProps) => {
-  const { copy } = useCopy({ timeout: 2000 })
+const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
+  const {copy} = useCopy({timeout: 2000})
 
   const handleCopyUrl = useCallback(() => {
     copy('QR Code URL', qrUrl)

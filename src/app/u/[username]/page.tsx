@@ -5,6 +5,6 @@ interface PageProps {
 }
 
 export default async function PublicProfilePage({params}: PageProps) {
-  const {username} = await params
+  const username = (await params).username
   return <Content username={username} />
 }

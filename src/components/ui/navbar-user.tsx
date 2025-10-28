@@ -3,7 +3,7 @@ import {NavbarCtxProvider} from '@/ctx/navbar'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import Link from 'next/link'
-import {useRouter} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import {memo, type ReactNode, useCallback, useId, useMemo} from 'react'
 import {Button} from '../animate-ui/primitives/buttons/button'
 import {ProfileDropdown} from '../kokonutui/profile-dropdown'
@@ -22,6 +22,7 @@ interface EssentialButton {
 const Nav = ({children, extra}: NavProps) => {
   const {user} = useAuthCtx()
   const router = useRouter()
+  const proId = usePathname().split('/').pop()
 
   const essentialButtons = useMemo(
     () =>
@@ -32,8 +33,8 @@ const Nav = ({children, extra}: NavProps) => {
           onClick: () => {},
         },
         {
-          href: '/alpha',
-          icon: 'bell',
+          href: `/u/${proId}`,
+          icon: 'user-frame',
           onClick: () => {},
         },
       ] as EssentialButton[],
@@ -76,7 +77,7 @@ const Nav = ({children, extra}: NavProps) => {
               'space-x-3': user.isActivated,
             })}>
             <Link
-              href='/account'
+              href={`/u/${proId}`}
               className='hidden md:flex items-center gap-8 lg:px-0'>
               <TextAnimate
                 text={`${user.displayName}`}

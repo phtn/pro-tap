@@ -41,11 +41,12 @@ const variantClasses: Record<SexyButtonVariant, string> = {
     'bg-gradient-to-r from-white/50 via-white/70 to-white',
     'hover:from-slate-200/90 hover:via-slate-300 hover:to-slate-300',
     'dark:from-zinc-900/90 dark:via-zinc-900/80 dark:to-zinc-800',
-    'dark:hover:from-zinc-800/20 dark:hover:via-zinc-700/50 dark:hover:to-zinc-700',
+    'dark:hover:from-zinc-800/80 dark:hover:via-zinc-700/70 dark:hover:to-zinc-700',
     'border-zinc-400 dark:border-zinc-800/80 hover:border-zinc-500 dark:hover:border-zinc-800/90',
     'text-secondary-foreground/80 hover:text-foreground md:dark:hover:text-zinc-100',
     'dark:inset-shadow-[0_1px_rgb(237_237_237)]/20',
     'inset-shadow-[0_1px_rgb(237_237_237)]/30',
+    'transition-colors duration-300',
   ),
   invert: cn(
     'bg-gradient-to-r from-foreground via-foreground/90 to-foreground/90',

@@ -2,6 +2,14 @@ import createMDX from '@next/mdx'
 import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
+  rewrites: async () => {
+    return [
+      {
+        source: '/:id',
+        destination: '/u/:id',
+      },
+    ]
+  },
   // Page extensions
   pageExtensions: ['js', 'jsx', 'mdx', 'md', 'ts', 'tsx'],
   // Production optimizations

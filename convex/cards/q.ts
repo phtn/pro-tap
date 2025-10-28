@@ -6,10 +6,13 @@ import {query} from '../_generated/server'
 // Get a single card by ID
 export const get = query({
   args: {
-    id: v.id('cards'),
+    cardId: v.string(),
   },
-  handler: async (ctx, args) => {
-    return await ctx.db.get(args.id)
+  handler: async ({db}, {cardId}) => {
+    return await db
+      .query('cards')
+      .withIndex('by_cardId', (q) => q.eq('cardId', cardId))
+      .first()
   },
 })
 
