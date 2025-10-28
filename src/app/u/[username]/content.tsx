@@ -5,6 +5,7 @@ import {MiniVerifier} from '@/components/kokonutui/verifier'
 import {HyperId} from '@/components/react-bits/hyper-id'
 import {Navbar} from '@/components/ui/navbar'
 import TextAnimate from '@/components/ui/text-animate'
+import {useActivation} from '@/hooks/use-activation'
 import {useSearchParams} from 'next/navigation'
 import {useEffect, useState} from 'react'
 
@@ -16,16 +17,22 @@ export const Content = ({username}: ContentProps) => {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
 
+  const {validateToken} = useActivation(String(token), username)
   const [isGood, setIsGood] = useState(false)
-  useEffect(() => {
-    if (!token || !username) return
-    const timer = setTimeout(() => {
-      setIsGood(true)
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [token, username])
 
-  console.log(token, username)
+  useEffect(() => {
+    if (token) {
+      validateToken().then(setIsGood).catch(console.error)
+    }
+  }, [validateToken])
+
+  // useEffect(() => {
+  //   if (!token || !username) return
+  //   const timer = setTimeout(() => {
+  //     setIsGood(true)
+  //   }, 2000)
+  //   return () => clearTimeout(timer)
+  // }, [token, username])
 
   return (
     <main className='max-w-6xl mx-auto'>

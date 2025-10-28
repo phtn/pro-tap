@@ -36,8 +36,8 @@ export const CardDataItemSheet = ({
   side = 'bottom',
 }: CardItemSheetProps) => {
   const baseUrls = {
-    external: '192.168.1.2:3000',
     live: 'protap.ph',
+    external: '192.168.1.2:3000',
     localhost: 'localhost:3000',
     localhost2: 'localhost:3001',
   }
