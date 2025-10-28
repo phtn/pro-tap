@@ -57,7 +57,7 @@ export const CardDataItemSheet = ({
       {label: 'token', value: item?.token ?? ''},
       {
         label: 'url',
-        value: `https://${baseUrls.localhost}/i/activate?token=${item?.token}&id=${item?.cardId}`,
+        value: `https://${baseUrls.live}/u/${item?.cardId}?token=${item?.token}`,
       },
     ],
     [item],
@@ -68,7 +68,7 @@ export const CardDataItemSheet = ({
   const qrOptions = useMemo(() => {
     if (!item) return null
     return {
-      content: `https://${baseUrls.localhost}/i/activate?token=${item.token}&id=${item.cardId}`,
+      content: `https://${baseUrls.live}/u/${item?.cardId}?token=${item?.token}`,
       width: isMobile ? 240 : 400,
       height: isMobile ? 240 : 400,
     }
