@@ -1,47 +1,39 @@
 import {type GenericDatabaseWriter} from 'convex/server'
-import {Infer, v} from 'convex/values'
 import {type DataModel} from '../_generated/dataModel'
 import {mutation} from '../_generated/server'
+import {userSchema} from './d'
 
 // -- Create a New User
-export const userValidator = v.object({
-  proId: v.string(),
-  visible: v.boolean(), // Visivility
-  email: v.string(), // Store dates as ISO strings
-  updatedAt: v.optional(v.string()), // Store dates as ISO strings
-  createdAt: v.optional(v.string()), // Store dates as ISO strings
-})
-export type IUser = Infer<typeof userValidator>
-
 const create = mutation({
-  args: userValidator,
+  args: userSchema,
   handler: async ({db}, args) => {
     const user = await checkUser(db, args.proId)
     if (user !== null) {
       await db.patch(user._id, {
-        updatedAt: new Date().toString(),
+        ...args,
+        updatedAt: Date.now(),
       })
       return null
     }
 
     const newUser = await db.insert('users', {
-      proId: args.proId,
-      visible: args.visible,
-      email: args.email,
-      updatedAt: new Date().toString(),
-      createdAt: new Date().toString(),
+      ...args,
+      updatedAt: Date.now(),
+      createdAt: Date.now(),
     })
 
     await db.insert('userProfiles', {
       userId: newUser,
+      proId: args.proId,
+      cardId: null,
       visible: args.visible,
       email: args.email,
-      updatedAt: new Date().toString(),
-      createdAt: new Date().toString(),
+      updatedAt: Date.now(),
+      createdAt: Date.now(),
       username: null,
-      displayName: null,
+      displayName: args.displayName,
+      avatarUrl: args.avatarUrl,
       bio: null,
-      avatarUrl: null,
       phone: null,
       website: null,
       socialLinks: {},

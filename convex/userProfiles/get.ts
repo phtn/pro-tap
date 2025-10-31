@@ -1,18 +1,17 @@
 import {v} from 'convex/values'
 import {query} from '../_generated/server'
 
-// Get a user by email (using the 'by_email' index)
-// export const getByEmail = query({
-//   args: {
-//     email: v.string(),
-//   },
-//   handler: async (ctx, args) => {
-//     return await ctx.db
-//       .query('users')
-//       .withIndex('by_email', (q) => q.eq('email', email))
-//       .first()
-//   },
-// })
+export const getByCardId = query({
+  args: {
+    cardId: v.string(),
+  },
+  handler: async ({db}, {cardId}) => {
+    return await db
+      .query('userProfiles')
+      .withIndex('by_cardId', (q) => q.eq('cardId', cardId))
+      .first()
+  },
+})
 
 // Get a single user profile by ID
 export const get = query({

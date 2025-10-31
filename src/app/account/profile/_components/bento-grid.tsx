@@ -52,6 +52,7 @@ export const BentoGridStats = () => {
           className:
             'md:col-span-2 border-none dark:bg-transparent px-0 hover:shadow-none',
           icon: 'link',
+          href: '/account/profile/subscriptions',
         },
         {
           title: 'Profile Editor',

@@ -2,41 +2,29 @@ import {defineSchema, defineTable} from 'convex/server'
 import {v} from 'convex/values'
 import {cardSchema} from './cards/d'
 import {fileSchema} from './files/upload'
+import {subscriptionSchema} from './subscriptions/d'
 import {tokenSchema} from './tokens/d'
-import {userProfileValidator} from './userProfiles/create'
-import {userValidator} from './users/create'
+import {userProfileSchema} from './userProfiles/d'
+import {userSchema} from './users/d'
 
 export default defineSchema({
-  users: defineTable(userValidator).index('by_proId', ['proId']),
+  users: defineTable(userSchema).index('by_proId', ['proId']),
 
-  userProfiles: defineTable(userProfileValidator)
+  userProfiles: defineTable(userProfileSchema)
     .index('by_userId', ['userId'])
-    .index('by_username', ['username']),
+    .index('by_proId', ['proId'])
+    .index('by_username', ['username'])
+    .index('by_cardId', ['cardId']),
 
   cards: defineTable(cardSchema)
     .index('by_userId', ['userId'])
     .index('by_cardId', ['cardId'])
     .index('by_serialNumber', ['serialNumber']),
 
-  subscriptions: defineTable({
-    userId: v.id('users'),
-    state: v.union(
-      v.literal('pending'),
-      v.literal('active'),
-      v.literal('expired'),
-      v.literal('cancelled'),
-    ),
-    planType: v.union(
-      v.literal('monthly'),
-      v.literal('annual'),
-      v.literal('lifetime'),
-    ),
-    startDate: v.string(),
-    endDate: v.union(v.string(), v.null()),
-    createdAt: v.string(),
-    updatedAt: v.string(),
-    visible: v.boolean(), // Visivility
-  }).index('by_userId', ['userId']),
+  subscriptions: defineTable(subscriptionSchema)
+    .index('by_userId', ['userId'])
+    .index('by_proId', ['proId'])
+    .index('by_cardId', ['cardId']),
 
   cardScans: defineTable({
     cardId: v.id('cards'),

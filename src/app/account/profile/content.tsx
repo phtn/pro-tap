@@ -21,9 +21,11 @@ export const Content = () => {
   useEffect(() => {
     if (user?.email) {
       upsert({
+        visible: true,
         proId: user.uid,
         email: user.email,
-        visible: true,
+        avatarUrl: user.photoURL,
+        displayName: user.displayName,
       })
     }
   }, [user, upsert])

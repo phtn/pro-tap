@@ -5,11 +5,13 @@ export const update = mutation({
   args: {
     id: v.id('users'),
     email: v.optional(v.string()),
-    updatedAt: v.string(),
+    visible: v.boolean(),
+    avatarUrl: v.union(v.string(), v.null()),
+    displayName: v.union(v.string(), v.null()),
   },
   handler: async (ctx, args) => {
     const {id, ...rest} = args
-    await ctx.db.patch(id, rest)
+    await ctx.db.patch(id, {...rest, updatedAt: Date.now()})
   },
 })
 

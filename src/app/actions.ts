@@ -25,6 +25,7 @@ type CookieType =
   | 'nfcData'
   | 'qrcData'
   | 'protapScanResult'
+  | 'protapActivation'
 
 export interface CachedScanResult {
   success: boolean
@@ -66,6 +67,9 @@ export type ValuesMap = {
   nfcData?: string
   qrcData?: string
   protapScanResult: CachedScanResult
+  protapActivation?: {
+    cardId: string
+  }
 }
 
 interface Expiry {
@@ -87,6 +91,7 @@ const cookieNameMap: Record<CookieType, string> = {
   nfcData: 'nfc-data',
   qrcData: 'qrc-data',
   protapScanResult: 'protap-scan-result',
+  protapActivation: 'protap-activation',
 }
 
 const defaults: CookieOptions = {

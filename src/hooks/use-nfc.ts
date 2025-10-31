@@ -1,5 +1,5 @@
-import {Dispatch, SetStateAction, useState} from 'react'
-import {CardSeries} from '../../convex/cards/d'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { CardSeries } from '../../convex/cards/d'
 import {
   useNFCReader,
   UseNFCReaderOptions,
@@ -12,11 +12,11 @@ import {
 } from './use-nfc-writer'
 
 // Re-export NFCData for backward compatibility
-export type {NFCData} from './use-nfc-reader'
+export type { NFCData } from './use-nfc-reader'
 
 export interface UseNFCOptions
   extends UseNFCReaderOptions,
-    UseNFCWriterOptions {
+  UseNFCWriterOptions {
   // Additional options if needed
 }
 

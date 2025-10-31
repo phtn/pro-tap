@@ -1,6 +1,6 @@
 'use client'
 
-import {CachedScanResult, getCookie} from '@/app/actions'
+import {getCookie} from '@/app/actions'
 import TextAnimate from '@/components/ui/text-animate'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
@@ -33,16 +33,22 @@ export function FullSignIn() {
     [],
   )
 
-  const [scanResult, setScanResult] = useState<CachedScanResult>()
+  // const [scanResult, setScanResult] = useState<CachedScanResult>()
+  const [activation, setActivation] = useState<{cardId: string}>()
 
   const checkActivationStatus = useCallback(async () => {
     return await getCookie('protapScanResult')
   }, [])
 
+  const checkActivation = useCallback(async () => {
+    return await getCookie('protapActivation')
+  }, [])
+
   useEffect(() => {
-    checkActivationStatus()
-      .then((res) => setScanResult(res))
-      .catch(console.error)
+    // checkActivationStatus()
+    //   .then((res) => setScanResult(res))
+    //   .catch(console.error)
+    checkActivation().then(setActivation).catch(console.error)
   }, [checkActivationStatus])
 
   return (
@@ -50,7 +56,7 @@ export function FullSignIn() {
       <div className='bg-white dark:bg-background  w-full md:rounded-4xl md:shadow-2xl overflow-hidden'>
         <div className='flex flex-col lg:flex-row md:min-h-[70lvh]'>
           <AnimatePresence mode='wait'>
-            {!user && scanResult && <ActivationMessage />}
+            {!user && activation && <ActivationMessage />}
           </AnimatePresence>
           <LeftPanel />
           <RightPanel

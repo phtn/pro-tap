@@ -35,16 +35,12 @@ export const CardItemSheet = ({
   isMobile,
   side = 'bottom',
 }: CardItemSheetProps) => {
-  const debug = false
-  const baseUrl = useMemo(
-    () => (debug ? '192.168.1.2:3000' : 'protap.ph'),
-    [debug],
-  )
-  useEffect(() => {
-    if (open) {
-      console.log(side)
-    }
-  }, [open, side])
+  const baseUrls = {
+    live: 'protap.ph',
+    external: '192.168.1.2:3000',
+    localhost: 'localhost:3000',
+    localhost2: 'localhost:3001',
+  }
 
   const details = useMemo(
     () => [
@@ -55,7 +51,7 @@ export const CardItemSheet = ({
       {label: 'token', value: item?.token},
       {
         label: 'url',
-        value: `https://${debug ? '192.168.1.2:3000' : 'protap.ph'}/i/activate?token=${item?.token}&id=${item?.payload.uid}`,
+        value: `https://${baseUrls.live}/u/${item?.payload.uid}?token=${item?.token}`,
       },
     ],
     [item],
@@ -66,11 +62,11 @@ export const CardItemSheet = ({
   const qrOptions = useMemo(() => {
     if (!item) return null
     return {
-      content: `https://${baseUrl}/i/activate?token=${item.token}&id=${item.payload.uid}`,
+      content: `https://${baseUrls.live}/u/${item?.payload.uid}?token=${item?.token}`,
       width: isMobile ? 240 : 400,
       height: isMobile ? 240 : 400,
     }
-  }, [baseUrl, item, isMobile])
+  }, [baseUrls, item, isMobile])
 
   const [svgData, setSvgData] = useState('')
 
