@@ -22,7 +22,7 @@ const create = mutation({
       createdAt: Date.now(),
     })
 
-    await db.insert('userProfiles', {
+    return await db.insert('userProfiles', {
       userId: newUser,
       proId: args.proId,
       cardId: null,
@@ -42,14 +42,12 @@ const create = mutation({
       theme: {
         primaryColor: '#fff',
         backgroundColor: '#000',
-        layoutStyle: 'cards',
+        layoutStyle: 'card',
       },
       metaTitle: null,
       metaDescription: null,
       gallery: [],
     })
-
-    return newUser
   },
 })
 

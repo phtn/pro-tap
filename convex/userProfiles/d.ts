@@ -1,13 +1,13 @@
 import {v} from 'convex/values'
 
-const nullable = v.union(v.string(), v.null())
+export const nullable = v.union(v.string(), v.null())
 
-const userProfileTheme = v.object({
+export const userProfileTheme = v.object({
   primaryColor: v.string(),
   backgroundColor: v.string(),
   layoutStyle: v.union(
     v.literal('minimal'),
-    v.literal('cards'),
+    v.literal('card'),
     v.literal('list'),
   ),
 })

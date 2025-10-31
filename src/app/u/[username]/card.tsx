@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {ReactNode} from 'react'
 
 interface DetailItem {
+  id?: string
   label: string
   value: string
 }
@@ -54,7 +55,9 @@ export function NeobrutalistCard({
           {/* Details Grid */}
           <div className='grid grid-cols-3 gap-3 border-4 border-black p-4 bg-gray-50'>
             {details.map((detail, idx) => (
-              <div key={idx} className='text-center'>
+              <div
+                key={detail.id ?? `${detail.label}-${idx}`}
+                className='text-center'>
                 <div className='dark:text-background uppercase text-xs font-bold mb-1 opacity-60'>
                   {detail.label}
                 </div>

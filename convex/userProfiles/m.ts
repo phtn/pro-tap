@@ -4,8 +4,6 @@ import {userProfileSchema} from './d'
 
 // --- Mutations ---
 
-const nullable = v.union(v.string(), v.null())
-
 // Create a new user profile
 export const create = mutation({
   args: userProfileSchema,
@@ -19,40 +17,76 @@ export const update = mutation({
   args: {
     id: v.id('userProfiles'),
     // Only include fields that can be updated, make them optional
-    username: v.optional(v.string()),
-    displayName: v.optional(v.string()),
-    bio: v.optional(nullable),
-    avatarUrl: nullable,
-    phone: v.optional(nullable),
-    website: v.optional(nullable),
-    socialLinks: v.optional(
-      v.object({
-        linkedin: v.optional(v.string()),
-        twitter: v.optional(v.string()),
-        instagram: v.optional(v.string()),
-        github: v.optional(v.string()),
-      }),
-    ),
-    isPublic: v.optional(v.boolean()),
-    showAnalytics: v.optional(v.boolean()),
-    theme: v.optional(
-      v.object({
-        primaryColor: v.string(),
-        backgroundColor: v.string(),
-        fontFamily: v.string(),
-        layoutStyle: v.union(
-          v.literal('minimal'),
-          v.literal('cards'),
-          v.literal('list'),
-        ),
-      }),
-    ),
-    metaTitle: v.optional(nullable),
-    metaDescription: v.optional(nullable),
+    fields: userProfileSchema,
   },
   handler: async (ctx, args) => {
-    const {id, ...rest} = args
-    await ctx.db.patch(id, rest)
+    const {id, fields} = args
+    await ctx.db.patch(id, fields)
+  },
+})
+
+export const updateGallery = mutation({
+  args: {
+    id: v.id('userProfiles'),
+    file: v.optional(v.id('files')),
+    storageId: v.optional(v.id('_storage')),
+    author: v.optional(v.string()),
+    contentType: v.optional(v.string()),
+    setAsAvatar: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const {id, file, storageId, author, contentType, setAsAvatar} = args
+
+    const profile = await ctx.db.get(id)
+    if (!profile) {
+      return null
+    }
+
+    let galleryFileId = file ?? null
+    let assetStorageId = storageId ?? null
+
+    if (!galleryFileId && assetStorageId) {
+      galleryFileId = await ctx.db.insert('files', {
+        body: assetStorageId,
+        author: author ?? profile.proId ?? 'system',
+        format: contentType ?? 'image',
+        uploadedAt: Date.now(),
+      })
+    }
+
+    if (!galleryFileId) {
+      return null
+    }
+
+    if (!assetStorageId) {
+      const fileDoc = await ctx.db.get(galleryFileId)
+      assetStorageId = fileDoc?.body ?? null
+    }
+
+    const gallery = profile.gallery ?? []
+    if (!gallery.includes(galleryFileId)) {
+      gallery.push(galleryFileId)
+    }
+
+    const patch: Record<string, unknown> = {
+      gallery,
+      updatedAt: Date.now(),
+    }
+
+    let avatarUrl: string | null = null
+    if (setAsAvatar && assetStorageId) {
+      avatarUrl = (await ctx.storage.getUrl(assetStorageId)) ?? null
+      patch.avatarUrl = avatarUrl
+    }
+
+    await ctx.db.patch(profile._id, patch)
+
+    return {
+      profileId: profile._id,
+      fileId: galleryFileId,
+      avatarUrl,
+      galleryLength: gallery.length,
+    }
   },
 })
 

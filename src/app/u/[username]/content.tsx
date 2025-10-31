@@ -100,6 +100,15 @@ export const Content = ({username}: ContentProps) => {
     return '☑️'
   }, [isUuidUsername, userProfile])
 
+  const detailItems = useMemo(
+    () => [
+      {id: 'validation', label: 'Validation', value: isValid ? '☑️' : 'INVALID'},
+      {id: 'auth', label: 'Auth', value: user?.uid ? '☑️' : 'NO'},
+      {id: 'profile', label: 'Profile', value: profileStatus},
+    ],
+    [isValid, profileStatus, user?.uid],
+  )
+
   return (
     <main className='max-w-6xl mx-auto'>
       {/*<ProfileView profile={profile} />*/}
@@ -114,11 +123,7 @@ export const Content = ({username}: ContentProps) => {
           tag='activation'
           title={<Icon name='protap' className='h-10 w-32' />}
           description='Status'
-          details={[
-            {label: 'Validation', value: isValid ? '☑️' : 'INVALID'},
-            {label: 'Auth', value: user?.uid ? '☑️' : 'NO'},
-            {label: 'Profile', value: profileStatus},
-          ]}
+          details={detailItems}
           action='Activate'>
           {profileError ? (
             <p className='mt-4 text-sm text-red-500'>{profileError}</p>

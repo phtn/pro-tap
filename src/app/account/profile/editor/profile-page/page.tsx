@@ -11,6 +11,7 @@ import {useToggle} from '@/hooks/use-toggle'
 import {ProfileFormData} from '@/lib/firebase/types/user'
 import {cn} from '@/lib/utils'
 import {
+  FormEvent,
   useActionState,
   useCallback,
   useEffect,
@@ -88,7 +89,7 @@ export default function ProfilePageEditor() {
   }, [croppedAvatarUrl])
 
   const handleFormSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const formData = new FormData(e.currentTarget)
       if (croppedAvatar) {
@@ -183,8 +184,9 @@ export default function ProfilePageEditor() {
             <PortraitCropper
               togglePreview={togglePreview}
               defaultValue={
-                croppedAvatarUrl ||
-                (typeof profile?.avatar === 'string' ? profile.avatar : null)
+                typeof profile?.avatar === 'string'
+                  ? profile.avatar
+                  : croppedAvatarUrl
               }
               onCrop={handleCrop}
             />

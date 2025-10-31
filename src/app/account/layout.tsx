@@ -6,42 +6,50 @@ import {cn} from '@/lib/utils'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
-import {opts} from '@/utils/helpers'
 import {usePathname} from 'next/navigation'
-import {useCallback} from 'react'
+import {useMemo} from 'react'
 import {FullActivation} from './_components/full-activation'
 
-export default function Layout({children}: {children: React.ReactNode}) {
+export default function AccountLayout({children}: {children: React.ReactNode}) {
   const {user} = useAuthCtx()
   const {on, toggle} = useToggle()
   const pathname = usePathname()
   const isActivated = pathname.split('/').pop() === 'activated'
 
-  const ActiveStatus = useCallback(() => {
-    const options = opts(
-      <div className='size-auto aspect-square hidden md:flex items-center justify-center relative'>
+  const activationNavItems = useMemo(() => {
+    if (!isActivated) return []
+
+    const activatedBadge = (
+      <div
+        key='activated-status'
+        className='size-auto aspect-square hidden md:flex items-center justify-center relative'>
         <div className='absolute bg-white size-4 aspect-square rounded-full' />
         <Icon
           name='badge-verified-solid'
           className='size-[28px] text-primary dark:text-primary-hover relative z-2 drop-shadow'
         />
-      </div>,
+      </div>
+    )
+
+    const activateButton = (
       <SexyButton
+        key='activate-protap'
         onClick={toggle}
         variant='ghost'
         className='md:bg-mac-blue/85 md:hover:bg-mac-blue md:dark:bg-mac-teal/60 md:dark:hover:bg-mac-teal/40 rounded-full inset-shadow-[0_1px_rgb(237_237_237)]/30'>
         <span className='md:px-2 md:text-lg text-white dark:text-white'>
           Activate Protap
         </span>
-      </SexyButton>,
+      </SexyButton>
     )
-    return <>{options.get(!!user?.isActivated)}</>
-  }, [user])
+
+    return user?.isActivated ? [activatedBadge] : [activateButton]
+  }, [isActivated, toggle, user?.isActivated])
 
   return (
     <div className='bg-background/10 bg-blend-multiply min-h-screen h-full overflow-auto no-scrollbar '>
       <div className='md:h-20 w-full md:py-7'>
-        <UserNavbar>{isActivated ? <ActiveStatus /> : null}</UserNavbar>
+        <UserNavbar>{activationNavItems}</UserNavbar>
       </div>
       <main className='max-w-6xl mx-auto'>
         <div

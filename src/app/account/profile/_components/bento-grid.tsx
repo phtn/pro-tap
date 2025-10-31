@@ -10,6 +10,7 @@ import {BentoGrid, BentoGridItem} from '../../../../components/ui/bento-grid'
 import {DitherPhoto, ImageDither} from './dither-photo'
 
 interface BentoHeader {
+  id: string
   title: string
   description: ReactNode
   href?: string
@@ -46,6 +47,7 @@ export const BentoGridStats = () => {
     () =>
       [
         {
+          id: 'stats-overview',
           title: '',
           description: <span className='text-sm'></span>,
           header: <SkeletonFour />,
@@ -55,6 +57,7 @@ export const BentoGridStats = () => {
           href: '/account/profile/subscriptions',
         },
         {
+          id: 'profile-editor',
           title: 'Profile Editor',
           description: <span className='text-sm'></span>,
           header: (
@@ -73,6 +76,7 @@ export const BentoGridStats = () => {
           href: '/account/profile/editor',
         },
         {
+          id: 'connections',
           title: 'Connections',
           description: (
             <span className='text-sm'>
@@ -85,6 +89,7 @@ export const BentoGridStats = () => {
           pro: true,
         },
         {
+          id: 'affiliate-account',
           title: 'Affiliate Account',
           description: (
             <span className='text-sm'>Manage your affiliate account.</span>
@@ -95,6 +100,7 @@ export const BentoGridStats = () => {
           pro: true,
         },
         {
+          id: 'merchant-account',
           title: 'Merchant Account',
           description: (
             <span className='text-sm'>
@@ -113,7 +119,7 @@ export const BentoGridStats = () => {
     <BentoGrid className='relative max-w-6xl mx-auto md:auto-rows-[20rem]'>
       {items.map((item, i) => (
         <BentoGridItem
-          key={i}
+          key={item.id + i}
           href={item.href}
           title={item.title}
           description={item.description}

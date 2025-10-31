@@ -11,12 +11,13 @@ import {
 } from '@/components/ui/cropper'
 import {Slider} from '@/components/ui/slider'
 import {Icon} from '@/lib/icons'
+import NextImage from 'next/image'
 
 // Define type for pixel crop area
 type Area = {x: number; y: number; width: number; height: number}
 
 const ORIGINAL_IMAGE_URL =
-  'https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/cropper-08_wneftq.jpg'
+  'https://res.cloudinary.com/dx0heqhhe/image/upload/v1761941950/cosmo_cyq7jy.jpg'
 
 // --- Start: Copied Helper Functions ---
 const createImage = (url: string): Promise<HTMLImageElement> =>
@@ -94,6 +95,7 @@ export const PortraitCropper = ({
 
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null)
+  const [newImageLoaded, setNewImageLoaded] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Callback to update crop area state
@@ -107,6 +109,7 @@ export const PortraitCropper = ({
       event.preventDefault()
       const file = event.target.files?.[0]
       if (file) {
+        setNewImageLoaded(true)
         const url = URL.createObjectURL(file)
         setImageSrc(url)
         setCroppedImageUrl(null) // Reset cropped preview
@@ -205,34 +208,45 @@ export const PortraitCropper = ({
         variant='dark'>
         Crop preview
       </SexyButton>
-      <div className='h-100 md:h-110 relative flex w-full flex-col gap-4 px-4'>
-        <Cropper
-          aspectRatio={4 / 5}
-          className='border-2 border-dysto/30 rounded-xl h-full bg-greyed py-0'
-          image={imageSrc ?? ORIGINAL_IMAGE_URL}
-          zoom={zoom}
-          onCropChange={handleCropChange}
-          onZoomChange={setZoom}>
-          <CropperDescription />
-          <CropperImage className='rounded-md' />
-          <CropperCropArea className='h-full border-teal-100/80 dark:border-origin rounded-md' />
-        </Cropper>
-        <div className='mx-auto flex w-full max-w-80 items-center gap-1'>
-          <Slider
-            max={3}
-            min={0.6}
-            step={0.1}
-            value={[zoom]}
-            defaultValue={[1.2]}
-            onValueChange={(value) => setZoom(value[0])}
-            aria-label='Zoom slider'
-            className=''
-          />
-          <output className='block w-10 shrink-0 text-greyed dark:text-foreground text-right text-sm font-medium tabular-nums'>
-            {parseFloat(zoom.toFixed(1))}x
-          </output>
+      {newImageLoaded ? (
+        <div className='h-100 md:h-110 relative flex w-full flex-col gap-4 px-4'>
+          <Cropper
+            aspectRatio={4 / 5}
+            className='border-2 border-dysto/30 rounded-xl h-full bg-greyed py-0'
+            image={imageSrc ?? ORIGINAL_IMAGE_URL}
+            zoom={zoom}
+            onCropChange={handleCropChange}
+            onZoomChange={setZoom}>
+            <CropperDescription />
+            <CropperImage className='rounded-md' />
+            <CropperCropArea className='h-full border-teal-100/80 dark:border-origin rounded-md' />
+          </Cropper>
+
+          <div className='mx-auto flex w-full max-w-80 items-center gap-1'>
+            <Slider
+              max={3}
+              min={0.6}
+              step={0.1}
+              value={[zoom]}
+              defaultValue={[1.2]}
+              onValueChange={(value) => setZoom(value[0])}
+              aria-label='Zoom slider'
+              className=''
+            />
+            <output className='block w-10 shrink-0 text-greyed dark:text-foreground text-right text-sm font-medium tabular-nums'>
+              {parseFloat(zoom.toFixed(1))}x
+            </output>
+          </div>
         </div>
-      </div>
+      ) : (
+        <NextImage
+          src={(imageSrc as string) ?? ORIGINAL_IMAGE_URL}
+          alt='Profile Image'
+          width={220}
+          height={400}
+          className='aspect-auto rounded-2xl'
+        />
+      )}
 
       <div className='py-12 md:py-0 md:mt-8 relative gap-2 flex items-center justify-between w-full'>
         <input
@@ -250,7 +264,7 @@ export const PortraitCropper = ({
             fileInputRef.current?.click()
           }}
           name='photo-add'
-          className='size-10 mx-2 cursor-pointer text-greyed dark:text-foreground dark:hover:text-catnip rounded-xl hover:bg-greyed/80 p-1 transition-colors duration-150 ease-in-out'
+          className='size-10 mx-2 cursor-pointer text-greyed dark:text-foreground hover:text-background dark:hover:text-catnip rounded-xl hover:bg-greyed/80 p-1 transition-colors duration-150 ease-in-out'
         />
         <SexyButton
           name='undo'
