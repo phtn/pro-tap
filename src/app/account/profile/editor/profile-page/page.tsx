@@ -15,6 +15,7 @@ import {
   type UsernameAvailability,
 } from '@/lib/username/service'
 import {cn} from '@/lib/utils'
+import {useQuery} from 'convex/react'
 import type {ChangeEvent, MouseEvent} from 'react'
 import {
   FormEvent,
@@ -25,7 +26,9 @@ import {
   useState,
   useTransition,
 } from 'react'
+import {api} from '../../../../../../convex/_generated/api'
 import ProfileView from '../../_components/profile-preview'
+import {SocialLinksSheet} from '../../_components/social-links-sheet'
 import {FormHeader} from '../_components/form-header'
 import {PortraitCropper} from '../_components/portrait-cropper'
 import {
@@ -340,13 +343,19 @@ export default function ProfilePageEditor() {
     [form, pending, isPending],
   )
 
+  const {on: open, toggle} = useToggle()
   const handleAddSocialMedia = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
+      toggle()
       // toggle open social media form sheet
     },
     [],
   )
+
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
 
   if (isPreview) {
     return (
@@ -433,14 +442,20 @@ export default function ProfilePageEditor() {
                 />
               ))}
               <div className='flex items-center justify-center my-10'>
-                <SexyButton
-                  size='lg'
-                  leftIcon='add'
-                  variant='dark'
-                  onClick={handleAddSocialMedia}
-                  className='w-full text-lg'>
-                  Social Media Links
-                </SexyButton>
+                <SocialLinksSheet
+                  proId={user?.uid}
+                  initialLinks={userProfile?.socialLinks}
+                  isOpen={open}
+                  setOpen={toggle}>
+                  <SexyButton
+                    size='lg'
+                    variant='dark'
+                    leftIcon='add'
+                    onClick={handleAddSocialMedia}
+                    className='w-full text-lg'>
+                    Social Media Links
+                  </SexyButton>
+                </SocialLinksSheet>
               </div>
             </ScrollArea>
             <div className='flex items-center justify-between w-full px-4 py-2.5'>

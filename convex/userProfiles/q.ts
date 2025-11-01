@@ -57,6 +57,17 @@ export const getByUsername = query({
       .first(),
 })
 
+export const getByProId = query({
+  args: {
+    proId: v.string(),
+  },
+  handler: async (ctx, args) =>
+    await ctx.db
+      .query('userProfiles')
+      .withIndex('by_proId', (q) => q.eq('proId', args.proId))
+      .first(),
+})
+
 // List user profiles (consider pagination)
 export const list = query({
   args: {},

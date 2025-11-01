@@ -11,6 +11,15 @@ export const userProfileTheme = v.object({
     v.literal('list'),
   ),
 })
+
+export const socialLinkSchema = v.object({
+  facebook: v.optional(v.string()),
+  twitter: v.optional(v.string()),
+  instagram: v.optional(v.string()),
+  tiktok: v.optional(v.string()),
+  linkedin: v.optional(v.string()),
+})
+
 export const userProfileSchema = v.object({
   userId: v.id('users'),
   proId: v.string(),
@@ -22,12 +31,7 @@ export const userProfileSchema = v.object({
   email: nullable,
   phone: nullable,
   website: nullable,
-  socialLinks: v.object({
-    linkedin: v.optional(v.string()),
-    twitter: v.optional(v.string()),
-    instagram: v.optional(v.string()),
-    github: v.optional(v.string()),
-  }),
+  socialLinks: socialLinkSchema,
   isPublic: v.boolean(),
   showAnalytics: v.boolean(),
   theme: userProfileTheme,

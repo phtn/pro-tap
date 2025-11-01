@@ -1,6 +1,6 @@
 import {v} from 'convex/values'
 import {mutation} from '../_generated/server'
-import {userProfileSchema} from './d'
+import {socialLinkSchema, userProfileSchema} from './d'
 
 // --- Mutations ---
 
@@ -22,6 +22,23 @@ export const update = mutation({
   handler: async (ctx, args) => {
     const {id, fields} = args
     await ctx.db.patch(id, fields)
+  },
+})
+export const updateSocialLinks = mutation({
+  args: {
+    proId: v.string(),
+    socialLinks: socialLinkSchema,
+  },
+  handler: async (ctx, {proId, socialLinks}) => {
+    const profile = await ctx.db
+      .query('userProfiles')
+      .withIndex('by_proId', (q) => q.eq('proId', proId))
+      .first()
+    if (!profile) {
+      return null
+    }
+    await ctx.db.patch(profile._id, {socialLinks})
+    return profile._id.substring(-4)
   },
 })
 
