@@ -26,7 +26,7 @@ export default function ProfileView({profile}: ProfileViewProps) {
   )
 
   const convexProfile = useQuery(
-    api.userProfiles.get.getByUserId,
+    api.userProfiles.q.getByUserId,
     convexUser?._id ? {userId: convexUser._id} : 'skip',
   )
 

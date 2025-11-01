@@ -1,7 +1,7 @@
 import {ClassName} from '@/app/types'
 import {ServerTime} from '@/lib/firebase/types/user'
 import {IconName} from '@/lib/icons'
-import {HTMLInputTypeAttribute} from 'react'
+import {ChangeEvent, FocusEvent, HTMLInputTypeAttribute, ReactNode} from 'react'
 import z from 'zod'
 
 // Define option type for selects and checkbox groups
@@ -31,12 +31,14 @@ export interface BaseFieldConfig<T> {
   required?: boolean
   autoComplete?: string
   placeholder?: string
-  helperText?: string
+  helperText?: ReactNode
   validators?: Record<string, FieldValidator>
   className?: string
   disabled?: boolean
   type?: HTMLInputTypeAttribute
   inputMode?: InputMode
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void
 }
 
 // Text field config

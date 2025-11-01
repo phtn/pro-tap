@@ -44,6 +44,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'effervescent-civet-245.convex.cloud',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 

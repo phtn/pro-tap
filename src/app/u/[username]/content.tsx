@@ -34,7 +34,7 @@ export const Content = ({username}: ContentProps) => {
 
   const isUuidUsername = useMemo(() => isUuid(username), [username])
 
-  const userProfile = useQuery(api.userProfiles.get.getByCardId, {
+  const userProfile = useQuery(api.userProfiles.q.getByCardId, {
     cardId: username,
   })
 
@@ -102,7 +102,11 @@ export const Content = ({username}: ContentProps) => {
 
   const detailItems = useMemo(
     () => [
-      {id: 'validation', label: 'Validation', value: isValid ? '☑️' : 'INVALID'},
+      {
+        id: 'validation',
+        label: 'Validation',
+        value: isValid ? '☑️' : 'INVALID',
+      },
       {id: 'auth', label: 'Auth', value: user?.uid ? '☑️' : 'NO'},
       {id: 'profile', label: 'Profile', value: profileStatus},
     ],

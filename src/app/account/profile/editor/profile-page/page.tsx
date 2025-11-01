@@ -1,5 +1,6 @@
 'use client'
 
+import {TextField} from '@/components/experimental/form/fields'
 import {FieldConfig} from '@/components/experimental/form/schema'
 import {useAppForm} from '@/components/experimental/form/utils'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
@@ -9,12 +10,18 @@ import {useAuthCtx} from '@/ctx/auth'
 import {useProfileService} from '@/hooks/use-profile-service'
 import {useToggle} from '@/hooks/use-toggle'
 import {ProfileFormData} from '@/lib/firebase/types/user'
+import {
+  useUsernameService,
+  type UsernameAvailability,
+} from '@/lib/username/service'
 import {cn} from '@/lib/utils'
+import type {ChangeEvent, MouseEvent} from 'react'
 import {
   FormEvent,
   useActionState,
   useCallback,
   useEffect,
+  useRef,
   useState,
   useTransition,
 } from 'react'
@@ -35,6 +42,22 @@ export default function ProfilePageEditor() {
   const {profile, formData, formMessage, handleSave} = useProfileService(
     user?.uid,
   )
+
+  const usernameService = useUsernameService()
+  const [usernameDraft, setUsernameDraft] = useState(formData.username ?? '')
+  const [usernameStatus, setUsernameStatus] = useState<{
+    state: 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
+    message: string
+    suggestions: string[]
+  }>({
+    state: 'idle',
+    message: 'Check availability',
+    suggestions: [],
+  })
+  const usernameCheckTimeout = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  )
+  const latestUsernameRef = useRef(usernameDraft)
 
   const {on: isPreview, toggle: togglePreview} = useToggle(false)
 
@@ -88,6 +111,121 @@ export default function ProfilePageEditor() {
     }
   }, [croppedAvatarUrl])
 
+  useEffect(() => {
+    const nextValue = formData.username ?? ''
+    setUsernameDraft(nextValue)
+    latestUsernameRef.current = nextValue
+  }, [formData.username])
+
+  useEffect(() => {
+    return () => {
+      if (usernameCheckTimeout.current) {
+        clearTimeout(usernameCheckTimeout.current)
+      }
+    }
+  }, [])
+
+  const formatAvailabilityMessage = useCallback(
+    (availability: UsernameAvailability): string => {
+      if (availability.available) {
+        return 'Username is available.'
+      }
+
+      switch (availability.reason) {
+        case 'too_short':
+          return 'Username is too short.'
+        case 'too_long':
+          return 'Username is too long.'
+        case 'invalid_format':
+          return 'Username contains invalid characters.'
+        case 'reserved':
+          return 'Username is reserved.'
+        case 'unavailable':
+        default:
+          return 'Username is already taken.'
+      }
+    },
+    [],
+  )
+
+  const handleUsernameChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
+      setUsernameDraft(value)
+      latestUsernameRef.current = value
+
+      if (usernameCheckTimeout.current) {
+        clearTimeout(usernameCheckTimeout.current)
+      }
+
+      const trimmed = value.trim()
+      if (!trimmed) {
+        setUsernameStatus({
+          state: 'idle',
+          message: 'Enter a username to check availability.',
+          suggestions: [],
+        })
+        return
+      }
+
+      const normalized = usernameService.normalizeUsername(trimmed)
+      const originalNormalized = profile?.username
+        ? usernameService.normalizeUsername(profile.username)
+        : null
+
+      if (originalNormalized && normalized === originalNormalized) {
+        setUsernameStatus({
+          state: 'available',
+          message: 'This is your current username.',
+          suggestions: [],
+        })
+        return
+      }
+
+      setUsernameStatus({
+        state: 'checking',
+        message: 'Checking availability…',
+        suggestions: [],
+      })
+
+      usernameCheckTimeout.current = setTimeout(async () => {
+        try {
+          const availability = await usernameService.checkAvailability(trimmed)
+
+          if (latestUsernameRef.current !== value) {
+            return
+          }
+
+          if (availability.available) {
+            setUsernameStatus({
+              state: 'available',
+              message: formatAvailabilityMessage(availability),
+              suggestions: [],
+            })
+            return
+          }
+
+          setUsernameStatus({
+            state: 'unavailable',
+            message: formatAvailabilityMessage(availability),
+            suggestions: availability.suggestions,
+          })
+        } catch (error) {
+          if (latestUsernameRef.current !== value) {
+            return
+          }
+
+          setUsernameStatus({
+            state: 'error',
+            message: 'Unable to check availability. Please try again.',
+            suggestions: [],
+          })
+        }
+      }, 500)
+    },
+    [formatAvailabilityMessage, profile?.username, usernameService],
+  )
+
   const handleFormSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -112,6 +250,7 @@ export default function ProfilePageEditor() {
           {(fieldApi) => {
             const errors = fieldApi.state.meta.errors
             const invalid = !fieldApi.state.meta.isValid
+            const isUsernameField = field.name === 'username'
             // Determine what type of field to render
             switch (field.type) {
               case 'select':
@@ -135,22 +274,61 @@ export default function ProfilePageEditor() {
               default:
                 // Text, email, number, etc.
                 return (
-                  <fieldApi.TextField
-                    {...fieldApi}
-                    {...field}
-                    defaultValue={
-                      formData[field.name as keyof ProfileFormData] as string
-                    }
-                    error={invalid && errors.join(', ')}
-                    type={field.type}
-                  />
+                  <div className='space-y-1'>
+                    <fieldApi.TextField
+                      {...fieldApi}
+                      {...field}
+                      helperText={
+                        isUsernameField ? (
+                          <span
+                            className={cn(
+                              'text-xs font-medium',
+                              usernameStatus.state === 'available'
+                                ? 'text-emerald-600 dark:text-emerald-400'
+                                : usernameStatus.state === 'unavailable'
+                                  ? 'text-red-500'
+                                  : usernameStatus.state === 'error'
+                                    ? 'text-red-500'
+                                    : 'text-muted-foreground',
+                            )}>
+                            {usernameStatus.message}
+                          </span>
+                        ) : (
+                          field.helperText
+                        )
+                      }
+                      value={isUsernameField ? usernameDraft : undefined}
+                      defaultValue={
+                        isUsernameField
+                          ? undefined
+                          : (formData[
+                              field.name as keyof ProfileFormData
+                            ] as string)
+                      }
+                      error={invalid && errors.join(', ')}
+                      type={field.type}
+                      onChange={(event) => {
+                        fieldApi.handleChange(event.target.value)
+                        if (isUsernameField) {
+                          handleUsernameChange(event)
+                        }
+                      }}
+                    />
+                    {isUsernameField &&
+                      usernameStatus.suggestions.length > 0 && (
+                        <p className='text-xs text-muted-foreground/80'>
+                          Try:{' '}
+                          {usernameStatus.suggestions.slice(0, 3).join(', ')}
+                        </p>
+                      )}
+                  </div>
                 )
             }
           }}
         </form.AppField>
       )
     },
-    [formData],
+    [formData, handleUsernameChange, usernameDraft, usernameStatus],
   )
 
   const Submit = useCallback(
@@ -160,6 +338,14 @@ export default function ProfilePageEditor() {
       </form.AppForm>
     ),
     [form, pending, isPending],
+  )
+
+  const handleAddSocialMedia = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      // toggle open social media form sheet
+    },
+    [],
   )
 
   if (isPreview) {
@@ -200,25 +386,71 @@ export default function ProfilePageEditor() {
               <FormHeader title='Profile Info' icon='sign-pen'>
                 <SubmitStatus status={formMessage} />
               </FormHeader>
-
+              {profileFieldGroups.map((g) => (
+                <div className='px-1 mb-8'>
+                  <TextField
+                    className=''
+                    key={'username-field'}
+                    {...g.fields[0]}
+                    defaultValue={
+                      formData[
+                        g.fields[0].name as keyof ProfileFormData
+                      ] as string
+                    }
+                    helperText={
+                      usernameStatus.message ? (
+                        <span
+                          className={cn(
+                            'text-xs font-medium',
+                            usernameStatus.state === 'available'
+                              ? 'text-emerald-600 dark:text-emerald-400'
+                              : usernameStatus.state === 'unavailable'
+                                ? 'text-red-500'
+                                : usernameStatus.state === 'error'
+                                  ? 'text-red-500'
+                                  : 'text-muted-foreground',
+                          )}>
+                          {usernameStatus.message}
+                        </span>
+                      ) : (
+                        g.fields[0].helperText
+                      )
+                    }
+                    onChange={handleUsernameChange}
+                    type='text'
+                  />
+                </div>
+              ))}
               {profileFieldGroups.map((group) => (
                 <HyperList
                   key={group.title}
-                  data={group.fields.slice(1, 5)}
+                  data={group.fields.slice(1, 3)}
+                  keyId={'name'}
                   component={renderField}
                   container='space-y-4 md:space-y-8'
                   itemStyle='px-1'
+                  disableAnimation
                 />
               ))}
+              <div className='flex items-center justify-center my-10'>
+                <SexyButton
+                  size='lg'
+                  leftIcon='add'
+                  variant='dark'
+                  onClick={handleAddSocialMedia}
+                  className='w-full text-lg'>
+                  Social Media Links
+                </SexyButton>
+              </div>
             </ScrollArea>
-            <div className='flex items-center justify-between w-full px-4'>
+            <div className='flex items-center justify-between w-full px-4 py-2.5'>
               <div className='flex w-full' />
               <div className='flex flex-1 items-center space-x-4 w-full'>
                 <SexyButton
                   leftIcon='eye'
                   variant='ghost'
                   className={cn(
-                    'md:px-6 bg-transparent hover:bg-primary dark:hover:bg-dysto shadow-none hover:text-white dark:text-foreground text-background dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
+                    'md:px-6 bg-transparent hover:bg-primary dark:hover:bg-dysto shadow-none hover:text-white text-foreground dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
                   )}
                   onClick={togglePreview}>
                   <span className='font-semibold text-lg'>Preview</span>

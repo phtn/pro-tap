@@ -9,43 +9,61 @@ import {
 } from '@/components/ui/select'
 import {Icon} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {ChangeEvent} from 'react'
 import {FieldOption, SelectFieldConfig, TextFieldConfig} from './schema'
 
-export const TextField = <T,>(item: TextFieldConfig<T>) => (
-  <div className='relative'>
-    <div className='flex items-center'>
-      <div className='ps-1 mb-2 font-figtree flex items-center text-xs md:text-sm'>
-        <label className='block font-medium tracking-tight whitespace-nowrap'>
-          {item.label}
-        </label>
-        {item.helperText && (
-          <div className='flex items-center'>
-            <Icon
-              name={item.required ? 'asterisk' : 'circle-small'}
-              className={cn('size-2 md:size-4 ml-2 opacity-60', {
-                'text-red-500 md:size-4 ml-0 -rotate-6 opacity-100':
-                  item.required,
-              })}
-            />
-            <span className='ml-2 opacity-80'>{item.helperText}</span>
-          </div>
-        )}
-        {item.error && (
-          <span className='text-right text-xs text-mac-red'> {item.error}</span>
-        )}
+export const TextField = <T,>(item: TextFieldConfig<T>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    item.onChange?.(event)
+    const value =
+      item.type === 'number' ? Number(event.target.value) : event.target.value
+    item.validators?.onChange?.(value)
+  }
+
+  return (
+    <div className='relative'>
+      <div className='flex items-center'>
+        <div className='ps-1 mb-2 font-figtree flex items-center text-xs md:text-sm'>
+          <label className='block font-medium tracking-tight whitespace-nowrap'>
+            {item.label}
+          </label>
+          {item.helperText && (
+            <div className='flex items-center gap-2'>
+              <Icon
+                name={item.required ? 'asterisk' : 'play-solid'}
+                className={cn('size-2 md:size-3 ml-2 -mb-[1.33px] opacity-20', {
+                  'text-red-500 md:size-3 dark:text-red-400 ml-0 -rotate-6 opacity-100 mb-0':
+                    item.required,
+                })}
+              />
+              <div className='opacity-80 text-xs md:text-sm leading-tight'>
+                {item.helperText}
+              </div>
+            </div>
+          )}
+          {item.error && (
+            <span className='text-right text-xs text-mac-red'>
+              {' '}
+              {item.error}
+            </span>
+          )}
+        </div>
       </div>
+      <ModernInput
+        type={item.type}
+        inputMode={item.inputMode}
+        name={item.name as string}
+        spellCheck={item.inputMode === 'search'}
+        defaultValue={item.defaultValue}
+        placeholder={item.placeholder}
+        onChange={handleChange}
+        onBlur={item.onBlur}
+        value={item.value}
+        className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none md:placeholded:font-normal'
+      />
     </div>
-    <ModernInput
-      type={item.type}
-      inputMode={item.inputMode}
-      name={item.name as string}
-      spellCheck={item.inputMode === 'search'}
-      defaultValue={item.defaultValue}
-      placeholder={item.placeholder}
-      className='w-full text-sm tracking-tight font-semibold md:text-base min-h-14 px-5 py-4.5 md:py-7 h-fit rounded-2xl border-[0.33px] dark:border-gray-500/50 outline-none md:placeholded:font-normal'
-    />
-  </div>
-)
+  )
+}
 
 export const SelectField = <T,>(item: SelectFieldConfig<T>) => {
   return (

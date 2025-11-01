@@ -162,13 +162,13 @@ export const QRCodeGenerator = () => {
                     viewFn: () => handleSelectCard(t),
                   }))}
                   component={CardItem}
-                  container='relative grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 lg:gap-4 md:gap-6 gap-4 pt-28 md:pt-48 px-3 md:px-4'
+                  container='relative grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 lg:gap-4 md:gap-6 gap-4 pt-24 md:pt-28 md:pt-48 px-3 md:px-4'
                   itemStyle='col-span-6 sm:col-span-3 md:col-span-2 lg:col-span-2 xl:col-span-2 2xl:col-span-1'
                   max={tokens.length}>
                   {tokens.length > 0 && (
                     <div
                       key={series}
-                      className='flex items-center h-16 gap-8 absolute top-32 font-figtree px-8 w-full text-foreground '>
+                      className='hidden md:flex items-center h-16 gap-8 absolute top-32 font-figtree px-8 w-full text-foreground '>
                       {batchDetails.map((props, i) => (
                         <DetailItem key={series + i} {...props} />
                       ))}
