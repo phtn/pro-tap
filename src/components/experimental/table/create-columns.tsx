@@ -1,14 +1,20 @@
 import {Icon, IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
 import {Checkbox} from '@headlessui/react'
-import {CellContext, ColumnDef, FilterFn, Row} from '@tanstack/react-table'
+import {
+  CellContext,
+  ColumnDef,
+  FilterFn,
+  Row,
+  Table,
+} from '@tanstack/react-table'
 import {AnimatePresence, motion} from 'motion/react'
 import {ReactNode, useEffect, useMemo, useRef, useState} from 'react'
 import {RowActions} from './row-actions'
 
 // Generic filter function for text-based columns
-export const filterFn = (
-  row: any,
+export const filterFn = <T,>(
+  row: Row<T>,
   columnId: string,
   filterValue: unknown,
 ): boolean => {
@@ -159,11 +165,11 @@ export const createColumns = <T,>(
 }
 
 // Select all checkbox component for table header
-const SelectAllCheckbox = ({
+const SelectAllCheckbox = <T,>({
   table,
   isVisible,
 }: {
-  table: any
+  table: Table<T>
   isVisible: boolean
 }) => {
   const checkboxRef = useRef<HTMLInputElement>(null)
@@ -173,7 +179,7 @@ const SelectAllCheckbox = ({
     if (checkboxRef.current) {
       checkboxRef.current.indeterminate = table.getIsSomePageRowsSelected()
       if (table.getIsSomePageRowsSelected()) {
-        setIsChecked(undefined)
+        setIsChecked(false)
       }
       if (table.getIsAllPageRowsSelected()) {
         setIsChecked(true)

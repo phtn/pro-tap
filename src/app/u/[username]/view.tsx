@@ -30,7 +30,7 @@ export default function ProfileView({profile}: ProfileViewProps) {
   }, [profile.avatarUrl])
 
   return (
-    <div className={`min-h-screen `}>
+    <div className={`min-h-screen`}>
       <div className='max-w-3xl mx-auto px-4 py-12'>
         {/* Avatar */}
         {displayAvatarUrl && (

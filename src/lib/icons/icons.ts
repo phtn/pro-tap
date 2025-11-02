@@ -1070,7 +1070,7 @@ export const icons = {
 
 
 
-
+play-solid
 
 
  */
