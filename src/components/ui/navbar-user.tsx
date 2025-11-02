@@ -27,14 +27,14 @@ const Nav = ({children, extra}: NavProps) => {
   const essentialButtons = useMemo(
     () =>
       [
-        {
-          href: '/account',
-          icon: 'feedline',
-          onClick: () => {},
-        },
+        // {
+        //   href: '/account',
+        //   icon: 'feedline',
+        //   onClick: () => {},
+        // },
         {
           href: `/u/${proId}`,
-          icon: 'user-frame',
+          icon: 'bell',
           onClick: () => {},
         },
       ] as EssentialButton[],

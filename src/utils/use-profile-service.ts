@@ -1,122 +1,38 @@
-import {
-  UserProfile,
-  UserProfileSchema,
-} from '@/app/account/profile/editor/_components/profile-schema'
-import {ProfileService} from '@/lib/firebase/profile'
-import {useEffect, useState} from 'react'
+import {useMemo} from 'react'
 
-export const useProfileService = (uid?: string) => {
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [formData, setFormData] = useState<UserProfile>({
-    username: null,
-    displayName: null,
-    bio: null,
-    avatar: null,
-    theme: 'auto',
-    isPublished: false,
-  })
-  const [isSaving, setIsSaving] = useState(false)
-  const [formMessage, setFormMessage] = useState('')
+type LegacyProfileForm = {
+  username: string | null
+  displayName: string | null
+  bio: string | null
+  avatarUrl: string | null
+  socialLinks: Record<string, string>
+  theme: 'light' | 'dark' | 'auto'
+  isPublished: boolean
+}
 
-  const loadProfile = async () => {
-    if (!uid) return
+const defaultProfile: LegacyProfileForm = {
+  username: null,
+  displayName: null,
+  bio: null,
+  avatarUrl: null,
+  socialLinks: {},
+  theme: 'auto',
+  isPublished: false,
+}
 
-    try {
-      const data = await ProfileService.getProfileByUid(uid)
-      if (data) {
-        setProfile(data)
-        setFormData({
-          username: data.username,
-          displayName: data.displayName,
-          bio: data.bio,
-          avatar: data.photoURL,
-          socialLinks: {},
-          theme: data.theme,
-          isPublished: data.isPublished,
-        })
-      }
-    } catch (error) {
-      console.error('Error loading profile:', error)
-    }
-  }
+export const useProfileService = (_uid?: string) => {
+  const memoizedDefault = useMemo(() => defaultProfile, [])
 
-  useEffect(() => {
-    if (uid) {
-      loadProfile()
-    }
-  }, [uid])
-
-  const handleSave = async (
-    initialState: UserProfile | undefined,
-    fd: FormData,
-  ) => {
-    if (!uid) return
-    setIsSaving(true)
-    setFormMessage('')
-
-    // Extract all form data
-    const formValues = {
-      displayName: (fd.get('displayName') as string) || null,
-      username: (fd.get('username') as string) || null,
-      bio: (fd.get('bio') as string) || null,
-      avatar: (fd.get('avatar') as string) || null,
-      theme: (fd.get('theme') as 'light' | 'dark' | 'auto') || 'auto',
-      isPublished: (fd.get('isPublished') as string) || false,
-    }
-
-    const validated = UserProfileSchema.safeParse({
-      ...initialState,
-      ...profile,
-      ...formValues,
-    })
-
-    console.log('[!]', JSON.stringify(validated.data, null, 2))
-
-    if (!validated.success) {
-      setFormMessage('Invalid profile data')
-      setIsSaving(false)
-      return validated.data
-    }
-
-    try {
-      await ProfileService.updateProfile(uid, validated.data)
-      setFormMessage('Profile saved successfully!')
-      await loadProfile()
-    } catch (error) {
-      setFormMessage('Error saving profile: ' + (error as Error).message)
-    } finally {
-      setIsSaving(false)
-    }
-
-    return validated.data
-  }
-
-  const handlePublish = async () => {
-    if (!uid || !profile) return
-
-    setIsSaving(true)
-    setFormMessage('')
-
-    try {
-      const newPublishState = !profile.isPublished
-      await ProfileService.publishProfile(uid, newPublishState)
-      setFormMessage(
-        newPublishState ? 'Profile published!' : 'Profile unpublished',
-      )
-      await loadProfile()
-    } catch (error) {
-      setFormMessage('Error publishing profile: ' + (error as Error).message)
-    } finally {
-      setIsSaving(false)
-    }
-  }
+  const noop = async () => memoizedDefault
 
   return {
-    profile,
-    formData,
-    isSaving,
-    formMessage,
-    handleSave,
-    handlePublish,
+    profile: null,
+    formData: memoizedDefault,
+    isSaving: false,
+    formMessage: 'This legacy profile service is deprecated.',
+    handleSave: noop,
+    handlePublish: async () => {
+      /* noop */
+    },
   }
 }

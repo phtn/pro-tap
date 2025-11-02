@@ -1,121 +1,99 @@
 'use client'
 
-import {PublicProfile} from '@/lib/firebase/public/u'
-import Image from 'next/image'
-import Link from 'next/link'
+import {GlistenCard} from '@/app/account/profile/preview/glisten-card'
+import {useEffect, useState} from 'react'
+import {UserProfileProps} from '../../../../convex/userProfiles/d'
 
-interface Props {
-  profile: PublicProfile | null
+interface ProfileViewProps {
+  profile: UserProfileProps
 }
-export default function ProfileView({profile}: Props) {
+
+export default function ProfileView({profile}: ProfileViewProps) {
+  const [displayAvatarUrl, setDisplayAvatarUrl] = useState<string | null>(() =>
+    typeof profile.avatarUrl === 'string' ? profile.avatarUrl : null,
+  )
+
+  useEffect(() => {
+    if ((profile.avatarUrl as unknown) instanceof File) {
+      const objectUrl = URL.createObjectURL(
+        profile.avatarUrl as unknown as Blob,
+      )
+      setDisplayAvatarUrl(objectUrl)
+      return () => URL.revokeObjectURL(objectUrl)
+    }
+
+    if (typeof profile.avatarUrl === 'string') {
+      setDisplayAvatarUrl(profile.avatarUrl)
+    } else if (profile.avatarUrl === null) {
+      setDisplayAvatarUrl(null)
+    }
+  }, [profile.avatarUrl])
+
   return (
-    profile && (
-      <div className='min-h-screen bg-gray-50'>
-        <div className='max-w-4xl mx-auto px-4 py-12'>
-          {/* Header */}
-          <div className='bg-white rounded-lg shadow-lg p-8 mb-6'>
-            <div className='flex items-start gap-6'>
-              {profile.displayName && (
-                <Image
-                  src={'/images/streamer.png'}
-                  alt={profile.displayName}
-                  width={120}
-                  height={120}
-                  className='rounded-full'
-                />
-              )}
-
-              <div className='flex-1'>
-                <h1 className='text-3xl font-bold text-gray-900 mb-2'>
-                  {profile.displayName}
-                </h1>
-                <p className='text-gray-600 mb-4'>@{profile.email}</p>
-
-                {profile.id && (
-                  <p className='text-gray-700 mb-6'>{profile.id}</p>
-                )}
-
-                {/* Contact Links */}
-                <div className='flex flex-wrap gap-4'>
-                  {profile.email && (
-                    <Link
-                      href={`mailto:${profile.email}`}
-                      className='text-blue-600 hover:text-blue-700'>
-                      Email
-                    </Link>
-                  )}
-                  {profile.id && (
-                    <Link
-                      href={`tel:${profile.id}`}
-                      className='text-blue-600 hover:text-blue-700'>
-                      Phone
-                    </Link>
-                  )}
-                  {profile.displayName && (
-                    <Link
-                      href={profile.displayName}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='text-blue-600 hover:text-blue-700'>
-                      Website
-                    </Link>
-                  )}
-                </div>
-              </div>
+    <div className={`min-h-screen `}>
+      <div className='max-w-3xl mx-auto px-4 py-12'>
+        {/* Avatar */}
+        {displayAvatarUrl && (
+          <div className='flex flex-col items-center justify-center mb-6 gap-4'>
+            <div className='relative h-auto aspect-auto overflow-hidden'>
+              <GlistenCard
+                name={profile?.displayName!}
+                bio={profile?.username!}
+                followers={0}
+                posts={0}
+                imageUrl={displayAvatarUrl}
+              />
+              <img
+                src={displayAvatarUrl}
+                alt={profile.displayName ?? 'display-name'}
+                className='hidden w-full h-full object-cover'
+              />
             </div>
           </div>
+        )}
 
-          {/* Social Links */}
-          {/*{Object.keys(profile.displayName).length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Connect</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {Object.entries(profile.socialLinks).map(([platform, url]) => {
-                if (!url) return null;
-                return (
-                  <Link
-                    key={platform}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
-                  >
-                    {platform.charAt(0).toUpperCase() + platform.slice(1)}
-                  </Link>
-                );
-              })}
-            </div>
+        {/* Social Links */}
+        {profile.socialLinks && Object.keys(profile.socialLinks).length > 0 && (
+          <div className='flex justify-center gap-4 flex-wrap'>
+            {profile.website && (
+              <a
+                href={profile.website}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition'>
+                Website
+              </a>
+            )}
+            {profile.socialLinks.twitter && (
+              <a
+                href={`https://twitter.com/${profile.socialLinks.twitter}`}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='px-6 py-3 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition'>
+                Twitter
+              </a>
+            )}
+            {profile.socialLinks.tiktok && (
+              <a
+                href={`https://github.com/${profile.socialLinks.tiktok}`}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition'>
+                GitHub
+              </a>
+            )}
+            {profile.socialLinks.linkedin && (
+              <a
+                href={`https://linkedin.com/in/${profile.socialLinks.linkedin}`}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition'>
+                LinkedIn
+              </a>
+            )}
           </div>
-        )}*/}
-
-          {/* Analytics (Owner Only) */}
-          {/*{isOwner && analytics && (
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-xl font-semibold mb-4">Analytics</h2>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">
-                  {analytics.overview.totalScans}
-                </div>
-                <div className="text-sm text-gray-600">Card Scans</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">
-                  {analytics.overview.totalViews}
-                </div>
-                <div className="text-sm text-gray-600">Profile Views</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">
-                  {analytics.overview.uniqueVisitors}
-                </div>
-                <div className="text-sm text-gray-600">Unique Visitors</div>
-              </div>
-            </div>
-          </div>
-        )}*/}
-        </div>
+        )}
       </div>
-    )
+    </div>
   )
 }

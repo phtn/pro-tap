@@ -1,6 +1,6 @@
 'use client'
 
-import { type ClassName } from '@/app/types'
+import {type ClassName} from '@/app/types'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,15 +8,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAuthCtx } from '@/ctx/auth'
-import { Icon, type IconName } from '@/lib/icons'
-import { cn } from '@/lib/utils'
-import { useTheme } from 'next-themes'
+import {useAuthCtx} from '@/ctx/auth'
+import {Icon, type IconName} from '@/lib/icons'
+import {cn} from '@/lib/utils'
+import {useTheme} from 'next-themes'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { type ReactNode, useCallback, useMemo, useState, memo } from 'react'
-import { getNextTheme } from '../animate-ui/components/buttons/theme-toggler'
-import { ThemeSelection } from '../animate-ui/primitives/effects/theme-toggler'
+import {usePathname} from 'next/navigation'
+import {memo, type ReactNode, useCallback, useMemo, useState} from 'react'
+import {getNextTheme} from '../animate-ui/components/buttons/theme-toggler'
+import {ThemeSelection} from '../animate-ui/primitives/effects/theme-toggler'
 
 interface Profile {
   name: string
@@ -55,9 +55,9 @@ export function ProfileDropdown({
   children,
   ...props
 }: ProfileDropdownProps) {
-  const { theme, setTheme } = useTheme()
+  const {theme, setTheme} = useTheme()
   const [isOpen, setIsOpen] = useState(false)
-  const { onSignOut, user } = useAuthCtx()
+  const {onSignOut, user} = useAuthCtx()
   const pathname = usePathname()
   const inProfile = useMemo(
     () => pathname.split('/').pop() === 'profile',
@@ -74,36 +74,34 @@ export function ProfileDropdown({
     () =>
       [
         {
-          label: inProfile ? 'View Profile' : 'Account',
+          label: inProfile ? 'My Profile Page' : 'Account',
           href: inProfile ? '/account/profile/preview' : '/account/profile',
           icon: user?.role === 'user' ? 'user-profile' : 'crown',
           type: 'link',
           disabled: false,
         },
-        {
-          label: 'Chats',
-          value: data.subscription,
-          href: '#',
-          icon: 'chat',
-          type: 'link',
-          disabled: false,
-        },
-        {
-          label: 'Affiliate',
-          href: '#',
-          icon: 'play',
-          type: 'link',
-          disabled: false,
-        },
-
-        {
-          label: 'Settings',
-          href: '/account/settings',
-          icon: 'settings',
-          type: 'link',
-          disabled: false,
-        },
-
+        // {
+        //   label: 'Chats',
+        //   value: data.subscription,
+        //   href: '#',
+        //   icon: 'chat',
+        //   type: 'link',
+        //   disabled: false,
+        // },
+        // {
+        //   label: 'Affiliate',
+        //   href: '#',
+        //   icon: 'play',
+        //   type: 'link',
+        //   disabled: false,
+        // },
+        // {
+        //   label: 'Settings',
+        //   href: '/account/settings',
+        //   icon: 'settings',
+        //   type: 'link',
+        //   disabled: false,
+        // },
         {
           label: isDark ? 'Light mode' : 'Dark mode',
           href: '#',
@@ -120,15 +118,15 @@ export function ProfileDropdown({
           external: true,
           type: 'link',
           className:
-            'bg-gradient-to-r from-orange-200 via-indigo-300 to-indigo-400 dark:from-orange-300/30 via-indigo-400/50 to-indigo-400/40',
+            'bg-gradient-to-r from-orange-100 via-indigo-100 to-indigo-200 dark:from-orange-100/30 dark:via-indigo-200/50 dark:to-indigo-300/40',
           disabled: user?.role === 'user',
         },
       ] as MenuItem[],
     [data, isDark, user?.role, inProfile],
   )
 
-  const MenuItemList = memo(({ menuItems }: { menuItems: MenuItem[] }) => (
-    <div className='space-y-1.5'>
+  const MenuItemList = memo(({menuItems}: {menuItems: MenuItem[]}) => (
+    <div className='space-y-2'>
       {menuItems
         .filter((item) => !item.disabled)
         .map((item) =>
@@ -149,7 +147,7 @@ export function ProfileDropdown({
             <button
               type='button'
               className='rounded-full outline-0 cursor-pointer'
-            // className="flex items-center gap-16 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 hover:shadow-sm transition-all duration-200 focus:outline-none"
+              // className="flex items-center gap-16 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 hover:shadow-sm transition-all duration-200 focus:outline-none"
             >
               {children}
             </button>
@@ -173,7 +171,7 @@ export function ProfileDropdown({
                 onClick={onSignOut}
                 className='flex items-center justify-between bg-zinc-500/10 w-full h-11 hover:bg-zinc-100/80 dark:hover:bg-zinc-600/60 rounded-xl transition-all duration-200 cursor-pointer group'>
                 <span className='text-sm font-medium px-2'>Sign out</span>
-                <Icon name='chevron-right' className='text-foreground/60' />
+                <Icon name='sign-out' className='text-foreground/60 mr-2' />
               </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -230,7 +228,7 @@ interface IconLabelProps {
   label: string
 }
 
-const IconLabel = memo(({ icon, label }: IconLabelProps) => {
+const IconLabel = memo(({icon, label}: IconLabelProps) => {
   return (
     <div className='flex items-center gap-5 px-1 flex-1'>
       <Icon
@@ -248,7 +246,7 @@ interface ExtraValueProps {
   label: string
   value?: string
 }
-const ExtraValueItem = memo(({ label, value }: ExtraValueProps) => {
+const ExtraValueItem = memo(({label, value}: ExtraValueProps) => {
   return (
     <div className='flex-shrink-0 ml-auto'>
       {value && (

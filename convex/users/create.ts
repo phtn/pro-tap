@@ -37,6 +37,7 @@ const create = mutation({
       phone: null,
       website: null,
       socialLinks: {},
+      customLinks: [],
       isPublic: false,
       showAnalytics: false,
       theme: {

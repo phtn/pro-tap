@@ -91,6 +91,7 @@ interface Props {
   initialCustomLinks?: CustomLinkInput[]
   onSave?: (result: SocialLinksSheetResult) => void
   proId?: string | null
+  isMobile?: boolean
 }
 
 const createEmptyLinks = (): SocialLinksMap => {
@@ -179,6 +180,7 @@ export const SocialLinksSheet = ({
   initialCustomLinks,
   onSave,
   proId,
+  isMobile,
 }: Props) => {
   const [links, setLinks] = useState<SocialLinksMap>(() =>
     normalizeLinks(initialLinks),
@@ -255,17 +257,23 @@ export const SocialLinksSheet = ({
     await updateSocialLinks({
       proId,
       socialLinks,
+      customLinks: custom,
     })
 
     setOpen(false)
-  }, [customLinks, links, onSave, setOpen])
+  }, [customLinks, links, onSave, proId, setOpen, updateSocialLinks])
 
   const hasCustomLinks = customLinks.length > 0
 
   return (
     <Sheet open={isOpen} onOpenChange={handleSheetChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent className='z-100 flex flex-col gap-6 md:max-w-[420px] md:rounded-s-3xl'>
+      <SheetContent
+        side={isMobile ? 'bottom' : 'right'}
+        className={cn(
+          'z-100 flex flex-col py-8 gap-6 md:max-w-[420px] md:rounded-s-3xl md:rounded-e-none',
+          'rounded-t-3xl',
+        )}>
         <SheetHeader className='-space-y-1'>
           <SheetTitle className='tracking-tight text-2xl font-bold'>
             Manage Social Links
@@ -275,7 +283,7 @@ export const SocialLinksSheet = ({
           </SheetDescription>
         </SheetHeader>
 
-        <div className='flex-1 space-y-6 overflow-y-auto px-8'>
+        <div className='flex-1 max-h-[60lvh] space-y-6 overflow-y-auto px-8'>
           <section className='space-y-4'>
             <div>
               <h3 className='text-base font-semibold tracking-tight'>

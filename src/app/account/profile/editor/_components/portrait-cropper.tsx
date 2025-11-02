@@ -233,10 +233,9 @@ export const PortraitCropper = ({
     }
 
     try {
-      const croppedBlob = await getCroppedImg(
-        sourceImage,
-        cropArea,
-      ).catch(console.error)
+      const croppedBlob = await getCroppedImg(sourceImage, cropArea).catch(
+        console.error,
+      )
       if (!croppedBlob) {
         throw new Error('Failed to generate cropped image blob.')
       }
@@ -332,8 +331,8 @@ export const PortraitCropper = ({
           </div>
         </div>
       ) : (
-        <div className='flex gap-8'>
-          <div className='w-24 h-[360px] flex flex-col items-center py-2 space-y-4 overflow-y-scroll bg-foreground/5 rounded-3xl'>
+        <div className='flex gap-4 md:gap-8'>
+          <div className='w-24 h-[360px] flex flex-col items-center px-3 py-2 space-y-4 overflow-y-scroll bg-foreground/5 rounded-2xl'>
             {/*list of portraits from the gallery*/}
             {galleryItems.map((item, index) => {
               const isSelected = index === selectedGalleryIndex
@@ -347,7 +346,7 @@ export const PortraitCropper = ({
                     setSelectedGalleryIndex(index)
                     setNewImageLoaded(false)
                   }}
-                  className={`group relative w-20 h-18 flex items-center justify-center rounded-xl border-2 transition-colors duration-200 overflow-hidden ${
+                  className={`group relative w-18 md:w-20 h-18 flex items-center justify-center rounded-xl border-2 transition-colors duration-200 overflow-hidden ${
                     isSelected
                       ? 'border-primary-hover ring-2 ring-primary/40'
                       : 'border-transparent hover:border-primary-hover'
@@ -369,7 +368,7 @@ export const PortraitCropper = ({
                 e.preventDefault()
                 fileInputRef.current?.click()
               }}
-              className='w-20 h-18 group flex items-center justify-center bg-background/40 hover:bg-background border-2 border-transparent hover:border-primary-hover rounded-xl transition-colors duration-200'>
+              className='hidden w-20 h-18 group _flex items-center justify-center bg-background/40 hover:bg-background border-2 border-transparent hover:border-primary-hover rounded-xl transition-colors duration-200'>
               <Icon
                 name='add'
                 className='opacity-40 size-6 group-hover:opacity-100 group-hover:size-7 group-hover:text-primary transition-all duration-100'

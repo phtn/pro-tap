@@ -1,17 +1,17 @@
 'use client'
 
 import {setCookie} from '@/app/actions'
-import {MiniVerifier} from '@/components/kokonutui/verifier'
+import {KLoader} from '@/components/kokonutui/loader'
 import {Navbar} from '@/components/ui/navbar'
 import TextAnimate from '@/components/ui/text-animate'
 import {useAuthCtx} from '@/ctx/auth'
 import {useActivation} from '@/hooks/use-activation'
-import {Icon} from '@/lib/icons'
 import {useQuery} from 'convex/react'
 import {useRouter, useSearchParams} from 'next/navigation'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {api} from '../../../../convex/_generated/api'
-import {NeobrutalistCard} from './card'
+import {UserProfileProps} from '../../../../convex/userProfiles/d'
+import ProfileView from './view'
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -31,11 +31,15 @@ export const Content = ({username}: ContentProps) => {
   const [isValid, setIsValid] = useState(false)
   const [isGood, setIsGood] = useState(false)
   const [profileError, setProfileError] = useState<string | null>(null)
+  const [profileFound, setProfileFound] = useState(false)
 
   const isUuidUsername = useMemo(() => isUuid(username), [username])
 
   const userProfile = useQuery(api.userProfiles.q.getByCardId, {
     cardId: username,
+  })
+  const userProfileByUsername = useQuery(api.userProfiles.q.getByUsername, {
+    username,
   })
 
   const setProtapActivation = useCallback(
@@ -44,6 +48,11 @@ export const Content = ({username}: ContentProps) => {
   )
 
   useEffect(() => {
+    if (userProfileByUsername) {
+      console.log(userProfileByUsername)
+      setProfileFound(true)
+    }
+
     if (!isUuidUsername) {
       setProfileError(null)
       return
@@ -51,6 +60,10 @@ export const Content = ({username}: ContentProps) => {
 
     if (typeof userProfile === 'undefined') {
       return
+    }
+
+    if (userProfile) {
+      console.log(userProfile)
     }
 
     if (userProfile !== null) {
@@ -121,20 +134,42 @@ export const Content = ({username}: ContentProps) => {
           {username.split('-').pop()}
         </TextAnimate>
       </Navbar>
-      <div className='relative flex justify-center border'>
-        <NeobrutalistCard
-          actionLink={activationLink}
-          tag='activation'
-          title={<Icon name='protap' className='h-10 w-32' />}
-          description='Status'
-          details={detailItems}
-          action='Activate'>
-          {profileError ? (
-            <p className='mt-4 text-sm text-red-500'>{profileError}</p>
-          ) : null}
-          <MiniVerifier isGood={isGood} />
-        </NeobrutalistCard>
-      </div>
+      {profileFound ? (
+        <ProfileView profile={userProfileByUsername as UserProfileProps} />
+      ) : (
+        <div>
+          <KLoader subtitle={'Please wait a moment.'} />
+        </div>
+      )}
+      {isUuidUsername && !profileFound && (
+        <div>
+          <KLoader
+            title={isGood ? 'Validated' : 'Invalid Token'}
+            subtitle={
+              isGood
+                ? detailItems[0].label + activationLink
+                : (profileError ?? '')
+            }
+          />
+        </div>
+      )}
     </main>
   )
 }
+
+/*
+<div className='relative flex justify-center border'>
+          <NeobrutalistCard
+            actionLink={activationLink}
+            action={isGood ? 'Activate' : 'Validating'}
+            title={<Icon name='protap' className='h-10 w-32' />}
+            description='Status'
+            details={detailItems}
+            tag='Activation'>
+            {profileError ? (
+              <p className='mt-4 text-sm text-red-500'>{profileError}</p>
+            ) : null}
+            <MiniVerifier isGood={isGood} />
+          </NeobrutalistCard>
+        </div>
+*/

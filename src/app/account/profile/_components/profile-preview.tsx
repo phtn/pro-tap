@@ -2,14 +2,14 @@
 
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {useAuthCtx} from '@/ctx/auth'
-import {UserProfile} from '@/lib/firebase/types/user'
 import {useMutation, useQuery} from 'convex/react'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {api} from '../../../../../convex/_generated/api'
+import {UserProfileProps} from '../../../../../convex/userProfiles/d'
 import {GlistenCard} from '../preview/glisten-card'
 
 interface ProfileViewProps {
-  profile: UserProfile
+  profile: UserProfileProps
 }
 
 export default function ProfileView({profile}: ProfileViewProps) {
@@ -34,31 +34,34 @@ export default function ProfileView({profile}: ProfileViewProps) {
   const updateGallery = useMutation(api.userProfiles.m.updateGallery)
 
   const [displayAvatarUrl, setDisplayAvatarUrl] = useState<string | null>(() =>
-    typeof profile.avatar === 'string' ? profile.avatar : null,
+    typeof profile.avatarUrl === 'string' ? profile.avatarUrl : null,
   )
 
   useEffect(() => {
-    if (profile.avatar instanceof File) {
-      const objectUrl = URL.createObjectURL(profile.avatar)
+    if ((profile.avatarUrl as unknown) instanceof File) {
+      const objectUrl = URL.createObjectURL(
+        profile.avatarUrl as unknown as Blob,
+      )
       setDisplayAvatarUrl(objectUrl)
       return () => URL.revokeObjectURL(objectUrl)
     }
 
-    if (typeof profile.avatar === 'string') {
-      setDisplayAvatarUrl(profile.avatar)
-    } else if (profile.avatar === null) {
+    if (typeof profile.avatarUrl === 'string') {
+      setDisplayAvatarUrl(profile.avatarUrl)
+    } else if (profile.avatarUrl === null) {
       setDisplayAvatarUrl(null)
     }
-  }, [profile.avatar])
+  }, [profile.avatarUrl])
 
   const profileId = convexProfile?._id ?? null
   const profileOwner = (convexProfile as {proId?: string} | null)?.proId
 
   const canSavePhoto = useMemo(() => {
     return Boolean(
-      (profile.avatar instanceof File || displayAvatarUrl) && profileId,
+      ((profile.avatarUrl as unknown) instanceof File || displayAvatarUrl) &&
+        profileId,
     )
-  }, [displayAvatarUrl, profile.avatar, profileId])
+  }, [displayAvatarUrl, profile.avatarUrl, profileId])
 
   const handleSaveProfilePhoto = useCallback(async () => {
     if (!canSavePhoto || isSaving) {
@@ -76,12 +79,9 @@ export default function ProfileView({profile}: ProfileViewProps) {
       let blob: Blob
       let contentType = 'image/png'
 
-      if (profile.avatar instanceof File) {
-        blob = profile.avatar
-        contentType =
-          (profile.avatar.type && profile.avatar.type.length > 0
-            ? profile.avatar.type
-            : 'image/png') ?? 'image/png'
+      if ((profile.avatarUrl as unknown) instanceof File) {
+        blob = profile.avatarUrl as unknown as Blob
+        contentType = blob.type ?? 'image/png'
       } else if (displayAvatarUrl) {
         const response = await fetch(displayAvatarUrl)
         if (!response.ok) {
@@ -151,7 +151,7 @@ export default function ProfileView({profile}: ProfileViewProps) {
     displayAvatarUrl,
     getUploadUrl,
     isSaving,
-    profile.avatar,
+    profile.avatarUrl,
     profileId,
     profileOwner,
     updateGallery,
@@ -160,7 +160,7 @@ export default function ProfileView({profile}: ProfileViewProps) {
 
   return (
     <div
-      className={`min-h-screen ${profile.theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-background text-gray-900'}`}>
+      className={`min-h-screen ${profile.theme?.backgroundColor === 'dark' ? 'bg-gray-900 text-white' : 'bg-background text-gray-900'}`}>
       <div className='max-w-3xl mx-auto px-4 py-12'>
         {/* Avatar */}
         {displayAvatarUrl && (
@@ -220,9 +220,9 @@ export default function ProfileView({profile}: ProfileViewProps) {
         {/* Social Links */}
         {profile.socialLinks && Object.keys(profile.socialLinks).length > 0 && (
           <div className='flex justify-center gap-4 flex-wrap'>
-            {profile.socialLinks.website && (
+            {profile.website && (
               <a
-                href={profile.socialLinks.website}
+                href={profile.website}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition'>
@@ -238,9 +238,9 @@ export default function ProfileView({profile}: ProfileViewProps) {
                 Twitter
               </a>
             )}
-            {profile.socialLinks.github && (
+            {profile.socialLinks.tiktok && (
               <a
-                href={`https://github.com/${profile.socialLinks.github}`}
+                href={`https://github.com/${profile.socialLinks.tiktok}`}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition'>

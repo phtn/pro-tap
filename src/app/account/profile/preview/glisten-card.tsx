@@ -19,13 +19,13 @@ export function GlistenCard({
   isVerified = false,
 }: GlistenCardProps) {
   return (
-    <div className='mt-4 relative w-full md:max-w-md overflow-hidden rounded-[2.5rem] bg-gradient-to-b from-gray-200 to-gray-100'>
+    <div className='mt-4 border-4 border-white relative w-full md:max-w-md overflow-hidden rounded-[2.5rem] bg-gradient-to-b from-gray-200 to-gray-100'>
       {/* Glisten Image */}
       <div className='aspect-[4/5] w-full'>
         <img
           src={imageUrl ?? '/images/sega.png'}
           alt={name}
-          className='h-full w-full object-cover'
+          className='h-full w-full object-cover rounded-[2.26rem] border'
         />
       </div>
 

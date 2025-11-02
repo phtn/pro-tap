@@ -3,6 +3,8 @@ import {
   ISelectFieldItem,
 } from '@/components/experimental/form/schema'
 import {z} from 'zod'
+import type {Id} from '../../../../../../convex/_generated/dataModel'
+import {UserProfileProps} from '../../../../../../convex/userProfiles/d'
 
 export const themeOptions: ISelectFieldItem[] = [
   {
@@ -30,35 +32,81 @@ export const themeOptions: ISelectFieldItem[] = [
     description: '',
   },
 ]
+const convexFileId = z.custom<Id<'files'>>(
+  (value) => typeof value === 'string',
+  {
+    message: 'Invalid Convex id',
+  },
+)
+
 export const UserProfileSchema = z.object({
   bio: z.string().nullable(),
-  avatar: z.string().nullable().or(z.instanceof(File)),
   socialLinks: z
     .object({
+      facebook: z.string().optional(),
       twitter: z.string().optional(),
-      github: z.string().optional(),
+      instagram: z.string().optional(),
+      tiktok: z.string().optional(),
       linkedin: z.string().optional(),
-      website: z.string().optional(),
     })
-    .optional(),
+    .partial()
+    .default({}),
   username: z.string().nullable(),
   displayName: z.string().nullable(),
-  theme: z.union([z.literal('light'), z.literal('dark'), z.literal('auto')]),
-  isPublished: z.boolean(),
+  proId: z.string(),
+  customLinks: z
+    .array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        url: z.string(),
+      }),
+    )
+    .optional(),
+  isPublic: z.boolean(),
+  showAnalytics: z.boolean(),
+  phone: z.string().nullable(),
+  cardId: z.string().nullable(),
+  email: z.string().nullable(),
+  visible: z.boolean(),
+  avatarUrl: z.string().nullable(),
+  metaTitle: z.string().nullable(),
+  metaDescription: z.string().nullable(),
+  gallery: z.array(convexFileId).optional(),
+  website: z.string().nullable(),
+  createdAt: z.number().optional(),
+  updatedAt: z.number().optional(),
+  theme: z
+    .object({
+      primaryColor: z.string(),
+      backgroundColor: z.string(),
+      layoutStyle: z.enum(['minimal', 'card', 'list']),
+    })
+    .optional(),
 })
 
 export type UserProfile = z.infer<typeof UserProfileSchema>
 
-export const profileInitial: UserProfile = {
+export const profileInitial: UserProfileProps = {
   username: null,
   displayName: null,
   bio: null,
-  isPublished: false,
   socialLinks: {},
-  theme: 'auto',
-  avatar: null,
+  proId: '',
+  customLinks: [],
+  visible: false,
+  email: null,
+  avatarUrl: null,
+  cardId: null,
+  phone: null,
+  website: null,
+  isPublic: false,
+  showAnalytics: false,
+  metaTitle: null,
+  metaDescription: null,
+  gallery: [] as Id<'files'>[],
 }
-export const profileFieldGroups: FieldGroup<UserProfile>[] = [
+export const profileFieldGroups: FieldGroup<UserProfileProps>[] = [
   {
     title: 'UserProfile',
     fields: [

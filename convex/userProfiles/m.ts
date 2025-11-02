@@ -1,6 +1,10 @@
 import {v} from 'convex/values'
 import {mutation} from '../_generated/server'
-import {socialLinkSchema, userProfileSchema} from './d'
+import {
+  customLinksSchema,
+  socialLinkSchema,
+  userProfileSchema,
+} from './d'
 
 // --- Mutations ---
 
@@ -28,8 +32,9 @@ export const updateSocialLinks = mutation({
   args: {
     proId: v.string(),
     socialLinks: socialLinkSchema,
+    customLinks: v.optional(customLinksSchema),
   },
-  handler: async (ctx, {proId, socialLinks}) => {
+  handler: async (ctx, {proId, socialLinks, customLinks}) => {
     const profile = await ctx.db
       .query('userProfiles')
       .withIndex('by_proId', (q) => q.eq('proId', proId))
@@ -37,10 +42,66 @@ export const updateSocialLinks = mutation({
     if (!profile) {
       return null
     }
-    await ctx.db.patch(profile._id, {socialLinks})
-    return profile._id.substring(-4)
+
+    const patch: Record<string, unknown> = {
+      socialLinks,
+      updatedAt: Date.now(),
+    }
+
+    if (typeof customLinks !== 'undefined') {
+      patch.customLinks = customLinks
+    }
+
+    await ctx.db.patch(profile._id, patch)
+    return profile._id
   },
 })
+
+export const updateBasics = mutation({
+  args: {
+    proId: v.string(),
+    username: v.optional(v.union(v.string(), v.null())),
+    displayName: v.optional(v.union(v.string(), v.null())),
+    bio: v.optional(v.union(v.string(), v.null())),
+  },
+  handler: async (ctx, {proId, username, displayName, bio}) => {
+    const profile = await ctx.db
+      .query('userProfiles')
+      .withIndex('by_proId', (q) => q.eq('proId', proId))
+      .first()
+
+    if (!profile) {
+      return null
+    }
+
+    const patch: Record<string, unknown> = {
+      updatedAt: Date.now(),
+    }
+
+    if (typeof username !== 'undefined') {
+      patch.username = normalizeNullableString(username)
+    }
+
+    if (typeof displayName !== 'undefined') {
+      patch.displayName = normalizeNullableString(displayName)
+    }
+
+    if (typeof bio !== 'undefined') {
+      patch.bio = normalizeNullableString(bio)
+    }
+
+    await ctx.db.patch(profile._id, patch)
+    return profile._id
+  },
+})
+
+const normalizeNullableString = (value: string | null) => {
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    return trimmed.length > 0 ? trimmed : null
+  }
+  return value
+}
 
 export const updateGallery = mutation({
   args: {

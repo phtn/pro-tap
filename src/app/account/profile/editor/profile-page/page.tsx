@@ -7,15 +7,14 @@ import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {HyperList} from '@/components/list'
 import {ScrollArea} from '@/components/ui/scroll-area'
 import {useAuthCtx} from '@/ctx/auth'
-import {useProfileService} from '@/hooks/use-profile-service'
+import {useMobile} from '@/hooks/use-mobile'
 import {useToggle} from '@/hooks/use-toggle'
-import {ProfileFormData} from '@/lib/firebase/types/user'
 import {
   useUsernameService,
   type UsernameAvailability,
 } from '@/lib/username/service'
 import {cn} from '@/lib/utils'
-import {useQuery} from 'convex/react'
+import {useMutation, useQuery} from 'convex/react'
 import type {ChangeEvent, MouseEvent} from 'react'
 import {
   FormEvent,
@@ -27,6 +26,11 @@ import {
   useTransition,
 } from 'react'
 import {api} from '../../../../../../convex/_generated/api'
+import {
+  UserProfile,
+  UserProfileBasics,
+  UserProfileProps,
+} from '../../../../../../convex/userProfiles/d'
 import ProfileView from '../../_components/profile-preview'
 import {SocialLinksSheet} from '../../_components/social-links-sheet'
 import {FormHeader} from '../_components/form-header'
@@ -34,20 +38,20 @@ import {PortraitCropper} from '../_components/portrait-cropper'
 import {
   profileFieldGroups,
   profileInitial,
-  UserProfile,
   UserProfileSchema,
 } from '../_components/profile-schema'
 import {SubmitStatus} from '../_components/submit-status'
 
 export default function ProfilePageEditor() {
+  const isMobile = useMobile()
   const {user} = useAuthCtx()
-
-  const {profile, formData, formMessage, handleSave} = useProfileService(
-    user?.uid,
-  )
-
-  const usernameService = useUsernameService()
-  const [usernameDraft, setUsernameDraft] = useState(formData.username ?? '')
+  //
+  // const {profile, formData, formMessage, handleSave} = useProfileService(
+  //   user?.uid,
+  // )
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
   const [usernameStatus, setUsernameStatus] = useState<{
     state: 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
     message: string
@@ -60,43 +64,123 @@ export default function ProfilePageEditor() {
   const usernameCheckTimeout = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   )
+  const [usernameDraft, setUsernameDraft] = useState(
+    userProfile?.username ?? '',
+  )
+
   const latestUsernameRef = useRef(usernameDraft)
 
-  const {on: isPreview, toggle: togglePreview} = useToggle(false)
+  const [formData, setFormData] = useState<UserProfileProps>(profileInitial)
+  const [formMessage, setFormMessage] = useState('')
 
   const form = useAppForm({
-    defaultValues: formData ?? profileInitial,
-    validators: {
-      onChange: UserProfileSchema,
-    },
+    defaultValues: userProfile ?? profileInitial,
   })
+  const {on: isPreview, toggle: togglePreview} = useToggle(false)
+
+  const updateUserProfile = useMutation(api.userProfiles.m.updateBasics)
+
+  const handleSave = useCallback(
+    async (initialValues: UserProfileBasics | undefined, fd: FormData) => {
+      if (!user?.uid) {
+        setFormMessage('You must be signed in to update the profile.')
+        return initialValues
+      }
+
+      const payload = {
+        proId: user.uid,
+        displayName: (fd.get('displayName') as string | null) ?? null,
+        username: (fd.get('username') as string | null) ?? null,
+        bio: (fd.get('bio') as string | null) ?? null,
+      }
+
+      const validationSchema = UserProfileSchema.pick({
+        displayName: true,
+        username: true,
+        bio: true,
+      })
+
+      const validated = validationSchema.safeParse(payload)
+
+      if (!validated.success) {
+        setFormMessage('Invalid profile data')
+        return initialValues
+      }
+
+      try {
+        await updateUserProfile(payload)
+        setFormData((previous) => ({
+          ...previous,
+          displayName: payload.displayName,
+          username: payload.username,
+          bio: payload.bio,
+        }))
+        setFormMessage('Profile saved successfully!')
+      } catch (error) {
+        console.error('Failed to update profile basics', error)
+        setFormMessage('Unable to save profile. Please try again.')
+      }
+
+      return initialValues
+    },
+    [updateUserProfile, user?.uid],
+  )
+
+  const usernameService = useUsernameService()
 
   const [, action, pending] = useActionState(handleSave, profileInitial)
   const [isPending, startTransition] = useTransition()
 
-  // const [currentPhoto] = useState<string | null>(null)
   const [croppedAvatar, setCroppedAvatar] = useState<File | null>(null)
   const [croppedAvatarUrl, setCroppedAvatarUrl] = useState<string | null>(null)
 
-  const previewProfile = profile
+  useEffect(() => {
+    if (userProfile) {
+      setFormData({
+        ...profileInitial,
+        ...userProfile,
+        socialLinks: userProfile.socialLinks ?? {},
+        customLinks: userProfile.customLinks ?? [],
+      })
+      return
+    }
+
+    setFormData((previous) => ({
+      ...previous,
+      proId: user?.uid ?? previous.proId ?? '',
+      socialLinks: previous.socialLinks ?? {},
+      customLinks: previous.customLinks ?? [],
+    }))
+  }, [user?.uid, userProfile])
+
+  const resolvedAvatarUrl =
+    croppedAvatarUrl ??
+    (typeof formData.avatarUrl === 'string' ? formData.avatarUrl : null)
+
+  const previewSource: UserProfileProps = userProfile
     ? {
-        ...profile,
-        ...formData,
-        avatar:
-          croppedAvatarUrl ||
-          (typeof formData.avatar === 'string' ? formData.avatar : null),
+        ...profileInitial,
+        ...userProfile,
+        socialLinks: userProfile.socialLinks ?? {},
+        customLinks: userProfile.customLinks ?? [],
       }
     : {
-        username: 'preview',
-        displayName: formData.displayName,
-        bio: formData.bio,
-        avatar:
-          croppedAvatarUrl ||
-          (typeof formData.avatar === 'string' ? formData.avatar : null),
-        socialLinks: formData.socialLinks,
-        theme: formData.theme,
-        isPublished: formData.isPublished,
+        ...profileInitial,
+        proId: user?.uid ?? profileInitial.proId,
       }
+
+  const previewProfile: UserProfileProps = {
+    ...previewSource,
+    ...formData,
+    proId: user?.uid ?? formData.proId ?? previewSource.proId,
+    avatarUrl: resolvedAvatarUrl,
+    socialLinks: formData.socialLinks ?? {},
+    customLinks: formData.customLinks ?? [],
+  }
+
+  if (!previewProfile.username) {
+    previewProfile.username = 'preview'
+  }
 
   const handleCrop = useCallback((file: File) => {
     setCroppedAvatar(file)
@@ -172,8 +256,8 @@ export default function ProfilePageEditor() {
       }
 
       const normalized = usernameService.normalizeUsername(trimmed)
-      const originalNormalized = profile?.username
-        ? usernameService.normalizeUsername(profile.username)
+      const originalNormalized = userProfile?.username
+        ? usernameService.normalizeUsername(userProfile?.username)
         : null
 
       if (originalNormalized && normalized === originalNormalized) {
@@ -226,7 +310,7 @@ export default function ProfilePageEditor() {
         }
       }, 500)
     },
-    [formatAvailabilityMessage, profile?.username, usernameService],
+    [formatAvailabilityMessage, userProfile?.username, usernameService],
   )
 
   const handleFormSubmit = useCallback(
@@ -248,7 +332,7 @@ export default function ProfilePageEditor() {
       return (
         <form.AppField
           key={field.name.toString()}
-          name={field.name as keyof ProfileFormData}
+          name={field.name as keyof UserProfileProps}
           validators={field.validators}>
           {(fieldApi) => {
             const errors = fieldApi.state.meta.errors
@@ -265,7 +349,7 @@ export default function ProfilePageEditor() {
                     helperText={field.helperText}
                     required={field.required}
                     defaultValue={
-                      formData[field.name as keyof ProfileFormData] as string
+                      formData?.[field.name as keyof UserProfileProps] as string
                     }
                     error={invalid && errors.join(', ')}
                   />
@@ -304,8 +388,8 @@ export default function ProfilePageEditor() {
                       defaultValue={
                         isUsernameField
                           ? undefined
-                          : (formData[
-                              field.name as keyof ProfileFormData
+                          : (formData?.[
+                              field.name as keyof UserProfileProps
                             ] as string)
                       }
                       error={invalid && errors.join(', ')}
@@ -353,10 +437,6 @@ export default function ProfilePageEditor() {
     [],
   )
 
-  const userProfile = useQuery(api.userProfiles.q.getByProId, {
-    proId: user?.uid ?? '',
-  })
-
   if (isPreview) {
     return (
       <div className='max-w-6xl relative'>
@@ -373,14 +453,14 @@ export default function ProfilePageEditor() {
   return (
     <form onSubmit={handleFormSubmit} className='w-full'>
       <div className='h-fit w-full grid grid-cols-1 md:grid-cols-6 gap-0 md:gap-16 md:py-8 max-w-6xl'>
-        <div className='rounded-none md:rounded-4xl border border-dysto/30 bg-origin dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
+        <div className='rounded-none md:rounded-4xl border border-dysto/10 bg-dark-origin dark:bg-greyed col-span-6 md:col-span-3 h-fit'>
           <ScrollArea className='w-full h-fit px-6 py-4 md:pt-8'>
             <FormHeader title='Photo Editor' icon='user-frame'></FormHeader>
             <PortraitCropper
               togglePreview={togglePreview}
               defaultValue={
-                typeof profile?.avatar === 'string'
-                  ? profile.avatar
+                typeof userProfile?.avatarUrl === 'string'
+                  ? userProfile.avatarUrl
                   : croppedAvatarUrl
               }
               onCrop={handleCrop}
@@ -396,14 +476,14 @@ export default function ProfilePageEditor() {
                 <SubmitStatus status={formMessage} />
               </FormHeader>
               {profileFieldGroups.map((g) => (
-                <div className='px-1 mb-8'>
+                <div key={g.fields[0].name} className='px-1 mb-8'>
                   <TextField
                     className=''
                     key={'username-field'}
                     {...g.fields[0]}
                     defaultValue={
-                      formData[
-                        g.fields[0].name as keyof ProfileFormData
+                      formData?.[
+                        g.fields[0].name as keyof UserProfileProps
                       ] as string
                     }
                     helperText={
@@ -436,16 +516,17 @@ export default function ProfilePageEditor() {
                   data={group.fields.slice(1, 3)}
                   keyId={'name'}
                   component={renderField}
-                  container='space-y-4 md:space-y-8'
+                  container='space-y-4 md:space-y-8 pb-3'
                   itemStyle='px-1'
                   disableAnimation
                 />
               ))}
-              <div className='flex items-center justify-center my-10'>
+              <div className='flex items-center justify-center my-8'>
                 <SocialLinksSheet
                   proId={user?.uid}
                   initialLinks={userProfile?.socialLinks}
                   isOpen={open}
+                  isMobile={isMobile}
                   setOpen={toggle}>
                   <SexyButton
                     size='lg'
@@ -461,21 +542,12 @@ export default function ProfilePageEditor() {
             <div className='flex items-center justify-between w-full px-4 py-2.5'>
               <div className='flex w-full' />
               <div className='flex flex-1 items-center space-x-4 w-full'>
-                <SexyButton
-                  leftIcon='eye'
-                  variant='ghost'
-                  className={cn(
-                    'md:px-6 bg-transparent hover:bg-primary dark:hover:bg-dysto shadow-none hover:text-white text-foreground dark:inset-shadow-[0_1px_rgb(160_160_160)]/0 inset-shadow-[0_1px_rgb(160_160_160)]/0',
-                  )}
-                  onClick={togglePreview}>
-                  <span className='font-semibold text-lg'>Preview</span>
-                </SexyButton>
                 <Submit />
               </div>
             </div>
           </div>
         </div>
-        <div className='md:bg-terminal/90 md:dark:bg-greyed/20 rounded-3xl col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24 hidden'></div>
+        <div className='md:bg-terminal/5 md:dark:bg-greyed/20 col-span-6 md:flex items-center justify-between w-full p-2 md:px-4 h-24'></div>
       </div>
     </form>
   )
