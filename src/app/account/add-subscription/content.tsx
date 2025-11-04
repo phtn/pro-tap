@@ -1,6 +1,6 @@
 'use client'
 
-import {CachedScanResult, getCookie} from '@/app/actions'
+import {deleteCookie, getCookie} from '@/app/actions'
 import {ProtapCard} from '@/components/experimental/protap-card'
 import {SexyButton} from '@/components/experimental/sexy-button-variants'
 import {HyperList} from '@/components/list'
@@ -9,68 +9,75 @@ import {CardDescription, CardTitle} from '@/components/ui/card'
 import TextAnimate from '@/components/ui/text-animate'
 import {GridLayer} from '@/components/ui/visual-1'
 import {Widget, WidgetHeader} from '@/components/ui/widget'
-import {useToggle} from '@/hooks/use-toggle'
+import {useAuthCtx} from '@/ctx/auth'
+import {useMobile} from '@/hooks/use-mobile'
 import {Icon, IconName} from '@/lib/icons'
-import {serverTimestamp} from 'firebase/firestore'
+import {useMutation, useQuery} from 'convex/react'
 import Link from 'next/link'
+import {useRouter} from 'next/navigation'
 import {useCallback, useEffect, useMemo, useState} from 'react'
-import {ActivationProgress} from '../_components/progress'
+import {api} from '../../../../convex/_generated/api'
 import {ElectricCard} from './electric-card'
 
 export function AddServiceContent() {
-  const {on, toggle} = useToggle()
-  const [data, setData] = useState<CachedScanResult>()
-  const getScanResults = useCallback(
-    async () => await getCookie('protapScanResult'),
+  const isMobile = useMobile()
+  const router = useRouter()
+  const {user} = useAuthCtx()
+  const [loading, setLoading] = useState(false)
+  const [protapActivation, setProtapActivation] = useState<{cardId: string}>()
+
+  const u = useQuery(api.users.q.getByProId, {proId: user?.uid ?? ''})
+  const subscribe = useMutation(api.subscriptions.m.create)
+
+  const getActivationCookie = useCallback(
+    async () => await getCookie('protapActivation'),
     [],
   )
-  const nfcData = useMemo(
-    () =>
-      data
-        ? {
-            serialNumber: data.id,
-            records: [
-              {
-                recordType: 'url',
-                data: `https://protap.ph/u/${data.id}`,
-                id: data.id,
-                mediaType: null,
-              },
-              {
-                recordType: 'text',
-                data: String(data.id.split('-').shift()),
-                id: 'type',
-                mediaType: null,
-              },
-            ],
-            timestamp: serverTimestamp(),
-          }
-        : null,
-    [data],
-  )
-
   useEffect(() => {
-    getScanResults()
-      .then((r) => setData(r))
-      .catch(console.error)
-  }, [])
+    getActivationCookie().then(setProtapActivation)
+  }, [getActivationCookie])
+
+  const handleSubscription = useCallback(async () => {
+    setLoading(true)
+    if (!user || !u || !protapActivation) return
+    const subscriptionId = await subscribe({
+      proId: user.uid,
+      visible: true,
+      updatedAt: Date.now(),
+      createdAt: Date.now(),
+      userId: u._id,
+      cardId: protapActivation.cardId,
+      state: 'active',
+      planType: 'annual',
+      startDate: new Date().toDateString(),
+      endDate: null,
+    })
+
+    if (subscriptionId) {
+      console.log(subscriptionId)
+      await deleteCookie('protapActivation')
+      router.replace('/account/activated')
+    }
+  }, [u, user])
+
   return (
     <div className='min-h-screen bg-background flex flex-col'>
       <div className='grid grid-cols-1 md:grid-cols-9 md:gap-4 gap-4'>
-        <FeaturesPanel />
-        <ActivationPanel activateFn={toggle} />
+        {isMobile ? null : <FeaturesPanel />}
+        <ActivationPanel activateFn={handleSubscription} loading={loading} />
+        {isMobile ? <FeaturesPanel /> : null}
       </div>
-      <ActivationProgress open={on} onOpenChange={toggle} nfcData={nfcData} />
     </div>
   )
 }
 
 interface ActivationPanelProps {
   activateFn: VoidFunction
+  loading: boolean
 }
 
-const ActivationPanel = ({activateFn}: ActivationPanelProps) => (
-  <div className='h-full w-full col-span-1 md:col-span-4 relative mt-12'>
+const ActivationPanel = ({activateFn, loading}: ActivationPanelProps) => (
+  <div className='md:h-full h-[80lvh] w-full col-span-12 md:col-span-4 relative md:mt-12'>
     <Widget className='h-full space-y-0 md:h-[65lvh] w-full overflow-hidden p-0'>
       <GridLayer color='#fffff0' className='opacity-5 bg-[size:20px_10px]' />
     </Widget>
@@ -79,7 +86,7 @@ const ActivationPanel = ({activateFn}: ActivationPanelProps) => (
         <div className='relative rounded-4xl -p-2 border-3 border-[#bec4a9]/0'>
           <div className='absolute w-126 h-82 border-2 rounded-4xl border-[#dec4af]/90 blur-[1px] -translate-y-1 -translate-x-1' />
           <div className='absolute w-126 h-82 border-4 rounded-4xl border-[#becfcf]/80 blur-[4px] -translate-y-1 -translate-x-1' />
-          <ProtapCard className='p-1' />
+          <ProtapCard className='p-1 scale-101' />
           <div className='absolute z-10 h-10 w-50 bg-yellow-100/30 top-14 -left-4 blur-3xl -rotate-40' />
         </div>
       </ElectricCard>
@@ -118,7 +125,7 @@ const ActivationPanel = ({activateFn}: ActivationPanelProps) => (
         className=''
         variant='tertiary'
         onClick={activateFn}
-        rightIcon='flag-finish'>
+        rightIcon={loading ? 'spinners-ring' : 'flag-finish'}>
         <span className='text-xl'>Complete Activation</span>
       </SexyButton>
     </div>

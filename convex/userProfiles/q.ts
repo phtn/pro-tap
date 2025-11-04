@@ -14,12 +14,11 @@ export const getByCardId = query({
   args: {
     cardId: v.string(),
   },
-  handler: async ({db}, {cardId}) => {
-    return await db
+  handler: async ({db}, {cardId}) =>
+    await db
       .query('userProfiles')
       .withIndex('by_cardId', (q) => q.eq('cardId', cardId))
-      .first()
-  },
+      .first(),
 })
 
 // Get a single user profile by ID

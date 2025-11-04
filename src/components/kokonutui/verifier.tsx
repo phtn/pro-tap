@@ -369,7 +369,7 @@ const Y = () => {
       className='w-[100px] h-[100px] flex items-center justify-center'>
       <div className='relative z-10 rounded-full p-3 bg-emerald-400/5 backdrop-blur-lg'>
         <Checkmark
-          className='size-14 md:size-20  text-emerald-500 bg-foreground/10 drop-shadow-md dark:bg-background/20 rounded-full'
+          className='size-14 md:size-20  text-emerald-500 bg-background/10 drop-shadow-md dark:bg-background/20 rounded-full'
           strokeWidth={3.5}
         />
       </div>

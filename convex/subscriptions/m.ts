@@ -11,7 +11,7 @@ export const create = mutation({
       .withIndex('by_cardId', (q) => q.eq('cardId', args.cardId))
       .unique()
     if (!card) {
-      console.log('CARD', args.cardId)
+      console.log('CARD ID NOT FOUND', args.cardId)
       return null
     }
 
@@ -30,6 +30,7 @@ export const create = mutation({
         state: 'activated',
         activatedAt: Date.now(),
         updatedAt: Date.now(),
+        userId: profile.proId,
       })
       ctx.db.patch(profile._id, {cardId: args.cardId, updatedAt: Date.now()})
       const sub = await ctx.db.insert('subscriptions', args)

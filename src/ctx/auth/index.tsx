@@ -129,11 +129,11 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         console.error('No firebase user found after authentication')
       }
 
-      const scanResult = await getCookie('protapScanResult')
+      const activationCookie = await getCookie('protapActivation')
 
-      if (scanResult) {
+      if (activationCookie) {
         // Process the scan result
-        router.push('/account/add-service')
+        router.push('/account/add-subscription')
       } else {
         // Handle the case when the cookie is not found
         router.push('/account/profile')

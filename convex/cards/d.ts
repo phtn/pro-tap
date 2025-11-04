@@ -21,7 +21,7 @@ const type = v.union(
 )
 export const cardSchema = v.object({
   cardId: v.string(),
-  userId: v.union(v.id('users'), v.null()),
+  userId: v.union(v.string(), v.null()),
   series,
   state,
   type,

@@ -12,7 +12,7 @@ export const ElectricCard = ({children}: ElectricCardProps) => {
       chaos={0.5}
       thickness={3.8}
       className='w-full rounded-[18px] scale-84'
-      style={{borderRadius: 24}}>
+      style={{borderRadius: 28}}>
       {children}
     </ElectricBorder>
   )
