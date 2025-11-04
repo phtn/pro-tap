@@ -1,23 +1,24 @@
 'use client'
 
-import {Icon} from '@/lib/icons'
 import {useCardId} from '@/hooks/use-card-id'
-import {useSearchParams} from 'next/navigation'
-import {useParams} from 'next/navigation'
+import {Icon} from '@/lib/icons'
+import {useParams, useSearchParams} from 'next/navigation'
 
 interface PrivateProfileViewProps {
   cardId?: string | null
 }
 
-export default function PrivateProfileView({cardId: propCardId}: PrivateProfileViewProps = {}) {
+export default function PrivateProfileView({
+  cardId: propCardId,
+}: PrivateProfileViewProps = {}) {
   const params = useParams()
   const searchParams = useSearchParams()
   const username = params?.username as string | undefined
   const token = searchParams.get('token')
-  
+
   // Use cardId from props if provided, otherwise use username from params
   const cardId = propCardId ?? username ?? null
-  
+
   const {userProfile} = useCardId(cardId, token)
 
   // If profile is loading, show loading state
@@ -60,7 +61,7 @@ export default function PrivateProfileView({cardId: propCardId}: PrivateProfileV
             <h1 className='text-2xl md:text-3xl font-bold'>
               This profile is private
             </h1>
-            <p className='text-muted-foreground text-sm md:text-base max-w-md mx-auto'>
+            <p className='text-muted-foreground text-sm md:text-base max-w-[38ch] mx-auto'>
               The owner of this profile has chosen to keep it private. You need
               permission to view this profile.
             </p>
@@ -70,7 +71,8 @@ export default function PrivateProfileView({cardId: propCardId}: PrivateProfileV
           {userProfile.displayName && (
             <div className='mt-4 pt-4 border-t'>
               <p className='text-sm text-muted-foreground'>
-                Profile for: <span className='font-medium'>{userProfile.displayName}</span>
+                Profile for:{' '}
+                <span className='font-medium'>{userProfile.displayName}</span>
               </p>
             </div>
           )}
@@ -79,4 +81,3 @@ export default function PrivateProfileView({cardId: propCardId}: PrivateProfileV
     </div>
   )
 }
-

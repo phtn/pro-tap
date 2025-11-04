@@ -13,20 +13,12 @@ import {Slider} from '@/components/ui/slider'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
 import {useQuery} from 'convex/react'
-import NextImage from 'next/image'
+
 import {api} from '../../../../../../convex/_generated/api'
-import type {Id} from '../../../../../../convex/_generated/dataModel'
+import {GalleryItem, GalleryViewer} from './gallery-viewer'
 
 // Define type for pixel crop area
 type Area = {x: number; y: number; width: number; height: number}
-
-type GalleryItem = {
-  fileId: Id<'files'>
-  storageId: Id<'_storage'>
-  url: string
-  author: string | null
-  format: string | null
-}
 
 const ORIGINAL_IMAGE_URL =
   'https://res.cloudinary.com/dx0heqhhe/image/upload/v1761941950/cosmo_cyq7jy.jpg'
@@ -291,6 +283,11 @@ export const PortraitCropper = ({
     }
   }, [croppedImageUrl, imageSrc])
 
+  const handleSelectThumbnail = useCallback((index: number) => {
+    setSelectedGalleryIndex(index)
+    setNewImageLoaded(false)
+  }, [])
+
   return (
     <div className='flex flex-col items-center'>
       <SexyButton
@@ -331,59 +328,13 @@ export const PortraitCropper = ({
           </div>
         </div>
       ) : (
-        <div className='flex gap-4 md:gap-8'>
-          <div className='w-24 h-[360px] flex flex-col items-center px-3 py-2 space-y-4 overflow-y-scroll bg-foreground/5 rounded-2xl'>
-            {/*list of portraits from the gallery*/}
-            {galleryItems.map((item, index) => {
-              const isSelected = index === selectedGalleryIndex
-
-              return (
-                <button
-                  key={item.fileId}
-                  type='button'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setSelectedGalleryIndex(index)
-                    setNewImageLoaded(false)
-                  }}
-                  className={`group relative w-18 md:w-20 h-18 flex items-center justify-center rounded-xl border-2 transition-colors duration-200 overflow-hidden ${
-                    isSelected
-                      ? 'border-primary-hover ring-2 ring-primary/40'
-                      : 'border-transparent hover:border-primary-hover'
-                  }`}>
-                  <NextImage
-                    src={item.url}
-                    alt='Gallery portrait'
-                    width={400}
-                    height={500}
-                    className='rounded-xl w-full h-auto aspect-auto'
-                  />
-                </button>
-              )
-            })}
-
-            <button
-              type='button'
-              onClick={(e) => {
-                e.preventDefault()
-                fileInputRef.current?.click()
-              }}
-              className='hidden w-20 h-18 group _flex items-center justify-center bg-background/40 hover:bg-background border-2 border-transparent hover:border-primary-hover rounded-xl transition-colors duration-200'>
-              <Icon
-                name='add'
-                className='opacity-40 size-6 group-hover:opacity-100 group-hover:size-7 group-hover:text-primary transition-all duration-100'
-              />
-            </button>
-          </div>
-          <NextImage
-            id='default-viewer'
-            src={defaultViewerSrc}
-            alt='Profile Image'
-            width={240}
-            height={400}
-            className='aspect-auto rounded-2xl'
-          />
-        </div>
+        <GalleryViewer
+          galleryItems={galleryItems}
+          selectedGalleryIndex={selectedGalleryIndex}
+          onThumbnailSelect={handleSelectThumbnail}
+          setNewImageLoaded={setNewImageLoaded}
+          defaultSrc={defaultViewerSrc ?? ORIGINAL_IMAGE_URL}
+        />
       )}
 
       <div className='py-12 md:py-0 md:mt-8 relative gap-2 flex items-center justify-between w-full'>
