@@ -1,10 +1,14 @@
 'use client'
 import {type ClassName} from '@/app/types'
+import {HyperList} from '@/components/list'
+import {useAuthCtx} from '@/ctx/auth'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {useQuery} from 'convex/react'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
-import {ReactNode, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
+import {api} from '../../../../../convex/_generated/api'
 
 interface RouteItem {
   name: string
@@ -18,6 +22,12 @@ interface RouteItem {
 export const EditorOverview = () => {
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
+
+  const user = useAuthCtx().user
+
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
 
   useEffect(() => {
     setMounted(true)
@@ -42,7 +52,7 @@ export const EditorOverview = () => {
 
   const privateInfo: RouteItem[] = [
     {
-      name: 'biodata',
+      name: 'basic',
       label: 'User Info',
       href: '/account/profile/editor/biodata',
       icon: 'text-edit',
@@ -62,55 +72,34 @@ export const EditorOverview = () => {
         'bg-indigo-200 dark:bg-indigo-500/80 group-hover:bg-indigo-300 dark:group-hover:bg-indigo-500',
       description: 'Add photos and themes to your profile page.',
     },
+  ]
+
+  const notActivated: RouteItem[] = [
     {
-      name: 'social-links',
-      label: 'Social Media Links',
-      href: '/account/profile/editor/social-links',
-      icon: 'highlighter',
+      name: 'profile-page',
+      label: 'Edit Profile Page',
+      href: '/account/profile/editor/profile-page',
+      icon: 'sign-pen',
       color:
-        'bg-red-200 dark:bg-red-400/80 group-hover:bg-red-300 dark:group-hover:bg-mac-red',
-      description: 'Add Social Media Links.',
+        'opacity-40 bg-indigo-200 dark:bg-indigo-500/80 group-hover:bg-indigo-300 dark:group-hover:bg-indigo-500',
+      description: 'Activate your Protap Account to edit your profile page.',
     },
   ]
 
-  const renderCardItem = (item: RouteItem, index: number) => (
-    <Link
-      key={`${item.name}_${index}`}
-      href={item.href}
-      className='active:scale-90 transition-all duration-300 group bg-dark-origin dark:bg-dim-origin relative p-4 md:p-6 rounded-2xl shadow-xs shadow-origin border border-origin'>
-      <div className='flex items-center space-x-3 md:space-x-6 mb-4'>
-        <div
-          className={cn(
-            'flex items-center justify-center size-8 md:size-12 rounded-lg  transition-colors',
-            item.color,
-          )}>
-          <Icon name={item.icon} className={'size-4 md:size-6'} />
-        </div>
-        <h3 className='md:text-lg font-semibold tracking-tight'>
-          {item.label}
-        </h3>
-      </div>
-
-      <p className='font-figtree opacity-70 text-sm'>{item.description}</p>
-    </Link>
-  )
-
   return (
-    <div className='border-t md:border-t-0 border-zinc-300 dark:border-dark-origin rounded-t-3xl'>
+    <div className='border-t md:border-t-0 border-zinc-300 dark:border-dark-origin md:rounded-t-3xl'>
       <div className='max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-6 xl:px-0'>
         <div className='md:py-6'>
           <Header title='Profile' subtext='Editor' />
           <div className='space-y-8 md:space-y-12 px-2 md:px-0'>
-            <CardList
-              title='Private Info'
-              list={privateInfo}
-              renderFn={renderCardItem}
-            />
-            <CardList
-              title='Public Info'
-              list={publicInfo}
-              renderFn={renderCardItem}
-            />
+            <CardList title='Basic' list={privateInfo} />
+            {userProfile?.cardId ? (
+              <CardList title='Pro' list={publicInfo} />
+            ) : (
+              <div className='opacity-50 pointer-events-none select-none'>
+                <CardList title='Pro' list={notActivated} />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -127,31 +116,59 @@ const Header = ({title, subtext}: HeaderProps) => {
   return (
     <div className='flex items-center space-x-1.5 md:space-x-3 h-14 md:h-20 mb-2 md:mb-4 px-1 md:px-0'>
       <Icon
-        name='draw'
-        className='size-6 md:size-8 dark:text-orange-200 text-orange-300 drop-shadow-xs'
+        name='chevron-right'
+        className='size-6 md:size-6 dark:text-orange-200 text-orange-500 drop-shadow-xs'
       />
       <h1 className='text-xl md:text-2xl font-bold text-gray-900 dark:text-white tracking-tighter font-figtree space-x-1'>
-        <span className=''>{title}</span>
+        <span className='select-none'>{title}</span>
         <span className='space-x-1.5 md:space-x-2 font-light'>{subtext}</span>
       </h1>
     </div>
   )
 }
 
+const CardListItem = (item: RouteItem) => (
+  <Link
+    key={`${item.name}_`}
+    href={item.href}
+    className='active:scale-90 transition-all duration-300 group bg-dark-origin dark:bg-greyed relative p-4 md:p-6 rounded-3xl shadow-xs shadow-origin border border-origin'>
+    <div className='flex items-center space-x-3 md:space-x-6 mb-4'>
+      <div
+        className={cn(
+          'flex items-center justify-center size-8 md:size-12 rounded-lg  transition-colors',
+          item.color,
+        )}>
+        <Icon name={item.icon} className={'size-4 md:size-6'} />
+      </div>
+      <h3 className='md:text-lg font-semibold tracking-tight select-none'>
+        {item.label}
+      </h3>
+    </div>
+
+    <p className='font-figtree opacity-70 text-sm'>{item.description}</p>
+  </Link>
+)
+
 interface CardListProps {
   title: string
   list: RouteItem[]
-  renderFn: (item: RouteItem, index: number) => ReactNode
+  // renderFn: (item: RouteItem, index: number) => ReactNode
 }
 
-const CardList = ({title, list, renderFn}: CardListProps) => {
+const CardList = ({title, list}: CardListProps) => {
   return (
     <div>
       <h2 className='mb-4 font-figtree font-medium uppercase text-xs md:text-sm opacity-50'>
         {title}
       </h2>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 max-w-5xl'>
-        {list.map(renderFn)}
+      <div className='max-w-5xl'>
+        <HyperList
+          data={list}
+          component={CardListItem}
+          container='grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-10 list-none p-0'
+          itemStyle='flex w-full md:col-span-2'
+        />
+        {/*{list.map(renderFn)}*/}
       </div>
     </div>
   )

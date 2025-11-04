@@ -33,10 +33,11 @@ export const HyperList = <T extends object>(props: HyperListProps<T>) => {
     disableAnimation = false,
   } = props
 
-  const baseContainerStyle = useMemo(
-    () => `${container} overflow-y-auto`,
-    [container]
-  )
+  const baseContainerStyle = useMemo(() => {
+    // Don't add overflow-y-auto if container has grid classes (grid layouts shouldn't have forced overflow)
+    const hasGrid = container.includes('grid')
+    return hasGrid ? container : `${container} overflow-y-auto`
+  }, [container])
 
   const baseItemStyle = useMemo(() => `${itemStyle} group/list`, [itemStyle])
 

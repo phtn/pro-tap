@@ -11,10 +11,12 @@ import {
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {useQuery} from 'convex/react'
 import {useTheme} from 'next-themes'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {memo, type ReactNode, useCallback, useMemo, useState} from 'react'
+import {api} from '../../../convex/_generated/api'
 import {getNextTheme} from '../animate-ui/components/buttons/theme-toggler'
 import {ThemeSelection} from '../animate-ui/primitives/effects/theme-toggler'
 
@@ -64,6 +66,15 @@ export function ProfileDropdown({
     [pathname],
   )
 
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
+
+  const isUserActivated = useMemo(
+    () => userProfile && userProfile.cardId && inProfile,
+    [userProfile, inProfile],
+  )
+
   const isDark = useMemo(() => theme === 'dark', [theme])
 
   const toggler = useCallback(() => {
@@ -74,8 +85,10 @@ export function ProfileDropdown({
     () =>
       [
         {
-          label: inProfile ? 'My Profile Page' : 'Account',
-          href: inProfile ? '/account/profile/preview' : '/account/profile',
+          label: isUserActivated ? 'My Profile Page' : 'Account',
+          href: isUserActivated
+            ? `/u/${userProfile?.username ?? userProfile?.cardId}`
+            : '/account/profile',
           icon: user?.role === 'user' ? 'user-profile' : 'crown',
           type: 'link',
           disabled: false,
