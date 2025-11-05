@@ -3,18 +3,18 @@ import {Icon} from '@/lib/icons'
 
 interface GlistenCardProps {
   name: string
-  bio: string
+  handle: string | null
   followers: number
-  posts: number
+  views: number
   imageUrl: string | null
   isVerified?: boolean
 }
 
 export function GlistenCard({
   name,
-  bio,
+  handle,
   followers,
-  posts,
+  views,
   imageUrl,
   isVerified = false,
 }: GlistenCardProps) {
@@ -23,14 +23,17 @@ export function GlistenCard({
       {/* Glisten Image */}
       <div className='aspect-[4/5] w-full'>
         <img
-          src={imageUrl ?? '/images/sega.png'}
+          src={
+            imageUrl ??
+            'https://res.cloudinary.com/dx0heqhhe/image/upload/v1761941950/cosmo_cyq7jy.jpg'
+          }
           alt={name}
           className='h-full w-full object-cover rounded-[2.26rem] border'
         />
       </div>
 
       {/* Content Overlay */}
-      <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-white/95 via-white/90 to-transparent px-8 pb-8 pt-32'>
+      <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/70 to-transparent px-8 pb-8 pt-32'>
         {/* Name with Verification Badge */}
         <div className='mb-1 flex items-center gap-2'>
           <h2 className='text-3xl font-semibold tracking-tighter'>{name}</h2>
@@ -51,7 +54,9 @@ export function GlistenCard({
         </div>
 
         {/* Bio */}
-        <p className='mb-6 text-xl leading-relaxed text-gray-900'>{bio}</p>
+        {handle && (
+          <p className='mb-6 text-xl leading-relaxed font-figtree'>@{handle}</p>
+        )}
 
         {/* Stats and Follow Button */}
         <div className='flex items-center justify-between'>
@@ -66,7 +71,7 @@ export function GlistenCard({
             <div className='flex items-center gap-2'>
               <Icon name='thumbs-up' className='h-6 w-6 text-gray-500' />
               <span className='text-lg tracking-tighter font-space font-medium'>
-                {posts + 36}
+                {views + 36}
               </span>
             </div>
           </div>

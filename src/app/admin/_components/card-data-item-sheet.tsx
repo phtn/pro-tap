@@ -213,13 +213,17 @@ export const CardDataItemSheet = ({
   )
 }
 
-interface IContextMenuProps {
+export interface IContextMenuProps {
   image: string
   qrUrl: string
   children?: ReactNode
 }
 
-const ImageContextMenu = ({image, qrUrl, children}: IContextMenuProps) => {
+export const ImageContextMenu = ({
+  image,
+  qrUrl,
+  children,
+}: IContextMenuProps) => {
   const {copy} = useCopy({timeout: 2000})
 
   const handleCopyUrl = useCallback(() => {

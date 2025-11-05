@@ -134,7 +134,7 @@ export function SubscriptionTab({
     <div className='flex flex-col h-full w-full'>
       {/* Card Content Area */}
       <div className='flex-1 mb-4 relative'>
-        <div className='bg-white dark:bg-dark-origin rounded-3xl overflow-hidden min-h-[200px] h-[280px] w-full relative'>
+        <div className='bg-white dark:bg-dark-origin rounded-3xl overflow-hidden min-h-[200px] h-[420px] md:h-[480px] w-full relative'>
           <div className='absolute inset-0'>
             <AnimatePresence
               initial={false}

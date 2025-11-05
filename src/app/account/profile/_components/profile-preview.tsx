@@ -168,9 +168,9 @@ export default function ProfileView({profile}: ProfileViewProps) {
             <div className='relative h-auto aspect-auto overflow-hidden'>
               <GlistenCard
                 name={profile?.displayName!}
-                bio={''}
+                handle={profile?.username ?? ''}
                 followers={0}
-                posts={0}
+                views={0}
                 imageUrl={displayAvatarUrl}
               />
               <img

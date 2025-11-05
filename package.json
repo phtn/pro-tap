@@ -60,6 +60,8 @@
     "firebaseui": "^6.1.0",
     "google-one-tap": "^1.0.6",
     "gsap": "^3.13.0",
+    "html2canvas": "^1.4.1",
+    "html2canvas-pro": "^1.5.12",
     "html5-qrcode": "^2.3.8",
     "jsonwebtoken": "^9.0.2",
     "marked": "^16.4.1",

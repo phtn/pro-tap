@@ -10,10 +10,10 @@ export const Content = () => {
   return (
     <main className='flex items-center justify-center size-full md:rounded-[4rem]'>
       <GlistenCard
-        name={user?.displayName!}
-        bio={''}
+        views={0}
+        handle={''}
         followers={0}
-        posts={0}
+        name={user?.displayName!}
         imageUrl={user?.photoURL ?? null}
       />
     </main>

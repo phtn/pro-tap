@@ -1,81 +1,78 @@
 'use client'
 
-import {deleteCookie, getCookie} from '@/app/actions'
 import {Button} from '@/components/ui/button'
 import {useAuthCtx} from '@/ctx/auth'
 import {Icon} from '@/lib/icons'
-import {useMutation, useQuery} from 'convex/react'
+import {useQuery} from 'convex/react'
+import Image from 'next/image'
 import {useRouter} from 'next/navigation'
-import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react'
+import {ReactNode, useCallback, useMemo, useState} from 'react'
 import {api} from '../../../../../convex/_generated/api'
 import {SubscriptionTab} from '../_components/tabs'
+import {UserInsurance} from './insurance'
+import {UserProfileQRCode} from './qr-code'
 
 export const Content = () => {
   const router = useRouter()
   const {user} = useAuthCtx()
   const [loading, setLoading] = useState(false)
-  const [withActivation, setWithActivation] = useState<{cardId: string}>()
-  const checkActivation = useCallback(
-    async () => await getCookie('protapActivation'),
-    [],
-  )
-  useEffect(() => {
-    checkActivation().then(setWithActivation)
-  }, [checkActivation])
 
-  const u = useQuery(api.users.q.getByProId, {proId: user?.uid ?? ''})
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
 
-  const subscription = useMutation(api.subscriptions.m.create)
-
-  const handleSubscription = useCallback(async () => {
+  const handleGetProtap = useCallback(() => {
     setLoading(true)
-    if (!user || !u || !withActivation) return
-    const subId = await subscription({
-      proId: user.uid ?? '',
-      visible: true,
-      updatedAt: Date.now(),
-      createdAt: Date.now(),
-      userId: u._id,
-      cardId: withActivation?.cardId,
-      state: 'active',
-      planType: 'annual',
-      startDate: new Date().toDateString(),
-      endDate: null,
-    })
+    router.push('/pricing')
+  }, [router])
 
-    if (subId) {
-      console.log(subId)
-      await deleteCookie('protapActivation')
-      router.replace('/account/activated')
-    }
-  }, [u, user])
-
-  const tabs = useMemo(() => {
-    const defaultTabs = [
+  const tabs = useMemo(
+    () => [
       {
         id: 'cards',
         title: 'Cards',
         color: 'bg-blue-500 hover:bg-blue-600',
         cardContent: (
-          <CardTabContent title='Cards' description='Manage your cards' />
+          <CardTabContent title='Cards' description='Manage your cards'>
+            <Image
+              alt='protap-nfc-card'
+              src={
+                'https://res.cloudinary.com/dx0heqhhe/image/upload/v1762297043/card_udalht.png'
+              }
+              width={442}
+              height={442}
+              className='w-80 md:w-120 h-auth aspect-auto'
+            />
+          </CardTabContent>
         ),
       },
-    ]
-    if (withActivation) {
-      defaultTabs.push({
-        id: 'activation',
-        title: 'Activation',
-        color: 'bg-teal-500 hover:bg-teal-600 animate-pulse',
+      {
+        id: 'qr',
+        title: 'QR Codes',
+        color: 'bg-orange-500 hover:bg-orange-600',
         cardContent: (
           <CardTabContent
-            title='activation'
-            description='Activate your account'
-          />
+            title='My QR Codes'
+            description='Share your QR codes with others.'>
+            <UserProfileQRCode userProfile={userProfile} />
+          </CardTabContent>
         ),
-      })
-    }
-    return defaultTabs
-  }, [withActivation])
+      },
+      {
+        id: 'pa',
+        title: 'Insurance',
+        color: 'bg-teal-500 hover:bg-teal-600',
+        cardContent: (
+          <CardTabContent
+            title='Insurance'
+            description='Personal Accident Insurance'>
+            <UserInsurance />
+          </CardTabContent>
+        ),
+      },
+    ],
+    [userProfile],
+  )
 
   return (
     <main className='px-2'>
@@ -83,18 +80,20 @@ export const Content = () => {
         <div className='max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-6 xl:px-0'>
           <div className='md:py-6'>
             <Header title='My' subtext='Subscriptions' />
-            {withActivation && (
+            {userProfile && userProfile.cardId ? (
+              <SubscriptionTab defaultTabId={tabs[0].id} items={tabs} />
+            ) : (
               <div className='h-40 bg-teal-500 rounded-3xl mb-4'>
-                <div className='h-16 border-b border-white flex items-center px-6 font-bold font-figtree text-white text-xl tracking-tighter'>
-                  Activate Protap
+                <div className='h-16 border-b border-white/20 flex items-center px-6 font-bold font-figtree text-white text-xl tracking-tighter'>
+                  Get Protap Today!
                 </div>
                 <div className='p-6 w-full flex justify-end'>
                   <Button
                     size='lg'
-                    onClick={handleSubscription}
-                    className='h-12 rounded-2xl px-8 bg-white dark:text-teal-500 text-lg'
+                    onClick={handleGetProtap}
+                    className='h-12 rounded-2xl px-8 bg-white dark:text-teal-500 text-lg font-figtree tracking-tight'
                     variant='ghost'>
-                    <span>Complete Activation</span>
+                    <span>Activate Protap</span>
                     <Icon
                       name={loading ? 'spinners-ring' : 'arrow-right'}
                       className='ml-2'
@@ -103,10 +102,6 @@ export const Content = () => {
                 </div>
               </div>
             )}
-            <SubscriptionTab
-              defaultTabId={withActivation ? 'activation' : undefined}
-              items={tabs}
-            />
           </div>
         </div>
       </div>
@@ -128,7 +123,7 @@ const CardTabContent = ({
 }: CardTabContentProps) => (
   <div className='relative h-full'>
     <div className='p-6 h-full relative flex flex-col'>
-      <div className='mb-4'>
+      <div className='mb-12 md:mb-4'>
         <h3 className='text-2xl capitalize font-semibold tracking-tight'>
           {title}
         </h3>
@@ -136,13 +131,7 @@ const CardTabContent = ({
           {description}
         </p>
       </div>
-      {children}
-      {/*<div className='flex flex-col w-full items-center border overflow-hidden rounded-2xl'>
-                            <div className='flex px-4 bg-dark-origin items-center w-full py-2 border-b'>
-                              Card
-                            </div>
-                            <Icon name='card-scan' className='w-64 h-auto' />
-                          </div>*/}
+      <div className='flex justify-center w-full'>{children}</div>
     </div>
   </div>
 )
