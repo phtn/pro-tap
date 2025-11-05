@@ -1,16 +1,23 @@
 import {NFCData} from '@/hooks/use-nfc'
+import {NFCDataV2} from '@/hooks/use-nfc-reader-v2'
 import {create} from 'zustand'
 
 export interface NFCDataWithDuplicate extends NFCData {
   isDuplicate: boolean
   isOnlist: boolean
 }
+export interface NFCDataWithDuplicateV2 extends NFCDataV2 {
+  isDuplicate: boolean
+  isOnlist: boolean
+}
 
 interface NFCStore {
   nfcScans: (NFCDataWithDuplicate | null)[]
+  nfcScansV2: (NFCDataWithDuplicateV2 | null)[]
   firestoreReceipt: string | null
   scannedSerials: Set<string>
   addScan: (scan: NFCData) => void
+  addScanV2: (scan: NFCDataV2) => void
   clearList: () => void
   setFirestoreReceipt: (receipt: string | null) => void
   markAsOnList: (serialNumber: string) => void
@@ -18,6 +25,7 @@ interface NFCStore {
 
 export const useNFCStore = create<NFCStore>((set, get) => ({
   nfcScans: [],
+  nfcScansV2: [],
   firestoreReceipt: null,
   scannedSerials: new Set(),
 
@@ -38,6 +46,25 @@ export const useNFCStore = create<NFCStore>((set, get) => ({
 
     set((state) => ({
       nfcScans: [...state.nfcScans, newScan],
+    }))
+  },
+  addScanV2: (scan: NFCDataV2) => {
+    const {scannedSerials} = get()
+    const serialNumber = scan.serialNumber
+    const isLocalDuplicate = scannedSerials.has(serialNumber)
+
+    // Add to scanned serials
+    scannedSerials.add(serialNumber)
+
+    // Add to list
+    const newScan: NFCDataWithDuplicateV2 = {
+      ...scan,
+      isDuplicate: isLocalDuplicate,
+      isOnlist: false,
+    }
+
+    set((state) => ({
+      nfcScansV2: [...state.nfcScans, newScan],
     }))
   },
 

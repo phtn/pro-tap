@@ -7,7 +7,7 @@ import {cardSchema, createCardSchema, ICard} from './d'
 // Create a new card
 export const create = mutation({
   args: createCardSchema,
-  handler: async (ctx, {tokens, batch, createdBy}) => {
+  handler: async (ctx, {tokens, batch, createdBy, serialNumber}) => {
     for (const token of tokens) {
       const card: ICard = {
         visible: true,
@@ -22,7 +22,7 @@ export const create = mutation({
         batch,
         token: token.token,
         activatedAt: null,
-        serialNumber: null,
+        serialNumber: serialNumber ?? null,
         issuedAt: token.payload.iat,
         expiresAt: token.payload.exp,
         revokedAt: null,

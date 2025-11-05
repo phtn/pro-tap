@@ -64,6 +64,7 @@ export const createCardSchema = v.object({
   tokens: v.array(tokenMetadataSchema),
   createdBy: v.string(),
   batch: v.string(),
+  serialNumber: v.optional(v.string()),
 })
 
 export type Tokens = Infer<typeof tokenMetadataSchema>

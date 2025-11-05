@@ -1,11 +1,12 @@
+import {CardRequest} from '@/app/api/card/generate/route'
 import {VoidPromise} from '@/app/types'
 import {onInfo, onSuccess, onWarn} from '@/ctx/toast'
-import {ServerTime} from '@/lib/firebase/types/user'
 import {moses, secureRef} from '@/utils/crypto'
 import {ParsedRecord, parseRecord} from '@/utils/ndef'
-import {serverTimestamp} from 'firebase/firestore'
 import {useCallback, useEffect, useRef, useState} from 'react'
-import {CardSeries} from '../../convex/cards/d'
+import {v7 as uuidV7} from 'uuid'
+import {CardSeries, Tokens} from '../../convex/cards/d'
+import {useCardGen} from './use-card-gen'
 import {useNodeEnv} from './use-node-env'
 
 // NFC Web API TypeScript definitions for reading
@@ -84,7 +85,7 @@ interface NFCRecord {
   mediaType: string | null
 }
 
-export interface NFCData {
+export interface NFCDataV2 {
   serialNumber: string
   records: Array<{
     id: string
@@ -92,11 +93,10 @@ export interface NFCData {
     recordType: string
     mediaType: string | null
   }>
-  timestamp: ServerTime
 }
 
 export interface UseNFCReaderOptions {
-  onScan?: (data: NFCData) => void
+  onScan?: (data: NFCDataV2) => void
   onError?: (error: string) => void
   maxHistorySize?: number
   autoStop?: boolean
@@ -111,22 +111,24 @@ export interface UseNFCReaderOptions {
 export interface UseNFCReaderReturn {
   isScanning: boolean
   isSupported: boolean
-  lastScan: NFCData | null
-  scanDetails: NFCData | null
-  scanHistory: NFCData[]
+  lastScan: NFCDataV2 | null
+  scanDetails: NFCDataV2 | null
+  scanHistory: NFCDataV2[]
   startScanning: VoidPromise
   stopScanning: VoidFunction
   clearHistory: VoidFunction
+  generatedCount: number
+  isGenerating: boolean
   isLoading: boolean
+  token: Tokens | null
   parsed: ParsedRecord | null
   payload: NFCRecord | null
 }
 
-export const useNFCReader = (
+export const useNFCReaderV2 = (
   options: UseNFCReaderOptions = {},
 ): UseNFCReaderReturn => {
   const {baseUrl} = useNodeEnv()
-
   const {
     onScan,
     onError,
@@ -142,14 +144,48 @@ export const useNFCReader = (
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isScanning, setIsScanning] = useState<boolean>(false)
   const [isSupported, setIsSupported] = useState<boolean>(false)
-  const [lastScan, setLastScan] = useState<NFCData | null>(null)
-  const [scanDetails, setScanDetails] = useState<NFCData | null>(null)
-  const [scanHistory, setScanHistory] = useState<NFCData[]>([])
+  const [lastScan, setLastScan] = useState<NFCDataV2 | null>(null)
+  const [scanDetails, setScanDetails] = useState<NFCDataV2 | null>(null)
+  const [scanHistory, setScanHistory] = useState<NFCDataV2[]>([])
   const nfcReaderRef = useRef<NDEFReader | null>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
   const autoStoppedRef = useRef<boolean>(false)
   const [parsed, setParsed] = useState<ParsedRecord | null>(null)
   const [payload, setPayload] = useState<NFCRecord | null>(null)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [token, setToken] = useState<Tokens | null>(null)
+  const [generatedCount, setGeneratedCount] = useState(0)
+
+  const cardId = uuidV7()
+  const {generate} = useCardGen()
+
+  const generateQRCode = useCallback(async () => {
+    setIsGenerating(true)
+    const body: CardRequest = {
+      type: 'qr',
+      body: {
+        series,
+        group,
+        batch,
+      },
+      userId: series,
+      count: 1,
+    }
+    try {
+      const response = await generate(body)
+      if (response.length !== 0) {
+        setToken(response[0] as Tokens)
+        setGeneratedCount((prev) => prev + response.length)
+      } else {
+        onWarn('Failed to generate QR code')
+      }
+
+      setIsGenerating(false)
+    } catch (error) {
+      setIsGenerating(false)
+      onWarn('Failed to generate QR code')
+    }
+  }, [generate, series, batch, group])
 
   useEffect(() => {
     if (secmos) {
@@ -203,10 +239,10 @@ export const useNFCReader = (
   )
 
   const handleNFCReading = useCallback(
-    (event: NDEFReadingEvent): void => {
+    async (event: NDEFReadingEvent) => {
       const {serialNumber, message} = event
 
-      const recordId = `nfc-${moses(secureRef(16))}`
+      const recordId = `${moses(secureRef(16))}`
       const records = message.records.map((record) => {
         let data = ''
 
@@ -241,10 +277,11 @@ export const useNFCReader = (
         }
       })
 
-      const nfcData: NFCData = {
+      await generateQRCode()
+
+      const nfcData: NFCDataV2 = {
         records,
         serialNumber,
-        timestamp: serverTimestamp(),
       }
 
       setLastScan(nfcData)
@@ -256,7 +293,7 @@ export const useNFCReader = (
       }
 
       const payloadRecord: NFCRecord = {
-        data: `${baseUrl}/u/${''}&token=`,
+        data: `${baseUrl}/u/${cardId}&token=${token?.token}`,
         mediaType: null,
         recordType: 'url',
         id: recordId,
@@ -444,7 +481,10 @@ export const useNFCReader = (
     stopScanning,
     clearHistory,
     startScanning,
+    generatedCount,
+    isGenerating,
     parsed,
     payload,
+    token,
   }
 }

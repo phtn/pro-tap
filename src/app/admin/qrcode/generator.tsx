@@ -29,10 +29,10 @@ export const QRCodeGenerator = () => {
   const {
     tokens,
     generateQRCode,
-    isGenerating,
     generatedCount,
     selectedQuantity,
     setSelectedQuantity,
+    isGenerating,
     setSeries,
     batch,
     group,
