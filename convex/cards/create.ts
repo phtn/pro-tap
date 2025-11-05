@@ -8,6 +8,27 @@ import {cardSchema, createCardSchema, ICard} from './d'
 export const create = mutation({
   args: createCardSchema,
   handler: async (ctx, {tokens, batch, createdBy, serialNumber}) => {
+    // Check if a card with this serialNumber already exists
+    if (serialNumber) {
+      const existingCard = await ctx.db
+        .query('cards')
+        .withIndex('by_serialNumber', (q) =>
+          q.eq('serialNumber', serialNumber),
+        )
+        .first()
+
+      if (existingCard) {
+        // Card with this serialNumber already exists, skip creation
+        return {
+          success: false,
+          message: `Card with serialNumber ${serialNumber} already exists`,
+          existingCardId: existingCard._id,
+        }
+      }
+    }
+
+    // No duplicate found, proceed with card creation
+    const createdCards = []
     for (const token of tokens) {
       const card: ICard = {
         visible: true,
@@ -28,7 +49,14 @@ export const create = mutation({
         revokedAt: null,
         createdBy,
       }
-      await ctx.db.insert('cards', card)
+      const cardId = await ctx.db.insert('cards', card)
+      createdCards.push(cardId)
+    }
+
+    return {
+      success: true,
+      message: `Created ${createdCards.length} card(s)`,
+      cardIds: createdCards,
     }
   },
 })

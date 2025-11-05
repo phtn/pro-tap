@@ -64,12 +64,17 @@ export const useNFCStore = create<NFCStore>((set, get) => ({
     }
 
     set((state) => ({
-      nfcScansV2: [...state.nfcScans, newScan],
+      nfcScansV2: [...state.nfcScansV2, newScan],
     }))
   },
 
   clearList: () => {
-    set({nfcScans: [], firestoreReceipt: null, scannedSerials: new Set()})
+    set({
+      nfcScans: [],
+      nfcScansV2: [],
+      firestoreReceipt: null,
+      scannedSerials: new Set(),
+    })
   },
 
   setFirestoreReceipt: (receipt: string | null) => {
@@ -79,6 +84,11 @@ export const useNFCStore = create<NFCStore>((set, get) => ({
   markAsOnList: (serialNumber: string) => {
     set((state) => ({
       nfcScans: state.nfcScans.map((item) =>
+        item && item.serialNumber === serialNumber
+          ? {...item, isOnlist: true}
+          : item,
+      ),
+      nfcScansV2: state.nfcScansV2.map((item) =>
         item && item.serialNumber === serialNumber
           ? {...item, isOnlist: true}
           : item,

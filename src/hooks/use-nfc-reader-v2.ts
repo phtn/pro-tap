@@ -278,7 +278,7 @@ export const useNFCReaderV2 = (
           data,
           id: record.id ?? null,
           recordType: record.recordType ?? 'empty',
-          mediaType: record.mediaType ?? null,
+          mediaType: null,
         }
       })
 
@@ -301,21 +301,29 @@ export const useNFCReaderV2 = (
       if (withWrite && generatedToken) {
         ;(async () => {
           try {
-            const payloadRecord: NFCRecord = {
+            // For URL records, don't include mediaType - it's only for mime records
+            const payloadRecord = {
+              recordType: 'url' as const,
               data: `${baseUrl}/u/${cardId}&token=${generatedToken.token}`,
-              mediaType: null,
-              recordType: 'url',
               id: recordId,
+              mediaType: null,
             }
 
             // Create a new NDEFReader instance for writing
             // The tag must still be in range for this to work
             const ndefWriter = new window.NDEFReader()
-            
+
             // Write the payload record (this will overwrite existing data)
-            await ndefWriter.write({records: [payloadRecord]}, {overwrite: true})
-            
-            setPayload(payloadRecord)
+            await ndefWriter.write(
+              {records: [payloadRecord]},
+              {overwrite: true},
+            )
+
+            // Store payload with mediaType for internal state (null for URL records)
+            setPayload({
+              ...payloadRecord,
+              mediaType: null,
+            })
             onSuccess('Write Successful')
           } catch (error: unknown) {
             if (error instanceof Error) {

@@ -39,7 +39,7 @@ export const NFCScannerPage = () => {
     autoStop: false,
     withWrite: true,
   })
-  const {nfcScans, addScanV2, clearList, setFirestoreReceipt, markAsOnList} =
+  const {nfcScansV2, addScanV2, clearList, setFirestoreReceipt, markAsOnList} =
     useNFCStore()
   const coll = 'general'
 
@@ -153,8 +153,8 @@ export const NFCScannerPage = () => {
   )
 
   const trueCount = useMemo(
-    () => nfcScans.filter((scan) => !scan?.isDuplicate).length,
-    [nfcScans],
+    () => nfcScansV2.filter((scan) => !scan?.isDuplicate).length,
+    [nfcScansV2],
   )
 
   return (
@@ -186,7 +186,7 @@ export const NFCScannerPage = () => {
           </div>
         </div>
       </div>
-      {!nfcScans.length && (
+      {!nfcScansV2.length && (
         <div className=' flex items-center justify-center mt-22 h-40 md:h-80 w-full'>
           <div className='flex w-fit bg-dark-origin/60 p-3 rounded-full italic items-center space-x-1 text-sm md:text-base font-figtree tracking-tight opacity-60'>
             <span>Press</span>

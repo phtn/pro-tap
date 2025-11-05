@@ -3,15 +3,15 @@ import {useNFCStore} from '@/stores/nfc-store'
 import {macStr} from '@/utils/macstr'
 
 export const NFCScanList = () => {
-  const {nfcScans, firestoreReceipt} = useNFCStore()
+  const {nfcScansV2, firestoreReceipt} = useNFCStore()
   return (
     <div className='relative h-10'>
-      {nfcScans
+      {nfcScansV2
         .slice()
         .reverse()
         .map((history, index) => (
           <div
-            key={`scan-${nfcScans[index]?.records[index]?.id}`}
+            key={`scan-${history?.serialNumber}-${index}`}
             className='h-12 flex items-center justify-between border-b'>
             <p
               className={cn(
