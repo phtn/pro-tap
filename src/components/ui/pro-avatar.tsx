@@ -5,16 +5,16 @@ import {Avatar, AvatarFallback, AvatarImage} from './avatar'
 
 interface Props {
   photoURL: string | null
-  isActivated: boolean
+  isActivated?: boolean
   className?: ClassName
   tiny?: boolean
 }
 
 export const ProAvatar = ({
   photoURL,
-  isActivated,
-  className,
   tiny = false,
+  isActivated = false,
+  className,
 }: Props) => {
   return photoURL ? (
     <Avatar

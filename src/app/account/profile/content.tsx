@@ -33,10 +33,7 @@ export const Content = () => {
   return (
     <div className='relative block md:mt-8'>
       <ProfileBackground />
-      <CoverSection
-        imageSource={user?.photoURL ?? '/sam-editor.png'}
-        isActivated={true}
-      />
+      <CoverSection imageSource={user?.photoURL ?? '/sam-editor.png'} />
       <Spacer />
       <HeaderTitle title='Overview' className='md:flex hidden' />
       <BentoGridStats />
@@ -48,10 +45,9 @@ export const Content = () => {
 
 interface CoverSectionProps {
   imageSource: string | null
-  isActivated: boolean
 }
 
-const CoverSection = ({imageSource, isActivated}: CoverSectionProps) => {
+const CoverSection = ({imageSource}: CoverSectionProps) => {
   return (
     <div className='relative'>
       <div className='h-36 md:h-64 lg:h-72 rounded-b-4xl rounded-t-4xl overflow-hidden'>
@@ -68,11 +64,7 @@ const CoverSection = ({imageSource, isActivated}: CoverSectionProps) => {
       <div className='relative'>
         {imageSource && (
           <div className='absolute border-2 bg-white border-white aspect-square size-20 md:size-28 flex items-center justify-center left-1/8 -translate-x-1/4 -bottom-12 rounded-full shadow-2xl'>
-            <ProAvatar
-              photoURL={imageSource}
-              isActivated={isActivated}
-              className='size-full shrink-0'
-            />
+            <ProAvatar photoURL={imageSource} className='size-full shrink-0' />
           </div>
         )}
       </div>
