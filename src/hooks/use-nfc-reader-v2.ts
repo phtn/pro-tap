@@ -156,10 +156,9 @@ export const useNFCReaderV2 = (
   const [token, setToken] = useState<Tokens | null>(null)
   const [generatedCount, setGeneratedCount] = useState(0)
 
-  const cardId = uuidV7()
   const {generate} = useCardGen()
 
-  const generateQRCode = useCallback(async () => {
+  const generateQRCode = useCallback(async (): Promise<Tokens | null> => {
     setIsGenerating(true)
     const body: CardRequest = {
       type: 'nfc',
@@ -174,16 +173,20 @@ export const useNFCReaderV2 = (
     try {
       const response = await generate(body)
       if (response.length !== 0) {
-        setToken(response[0] as Tokens)
+        const generatedToken = response[0] as Tokens
+        setToken(generatedToken)
         setGeneratedCount((prev) => prev + response.length)
+        setIsGenerating(false)
+        return generatedToken
       } else {
         onWarn('Failed to generate QR code')
+        setIsGenerating(false)
+        return null
       }
-
-      setIsGenerating(false)
     } catch (error) {
       setIsGenerating(false)
       onWarn('Failed to generate QR code')
+      return null
     }
   }, [generate, series, batch, group])
 
@@ -242,6 +245,8 @@ export const useNFCReaderV2 = (
     async (event: NDEFReadingEvent) => {
       const {serialNumber, message} = event
 
+      // Generate a unique cardId for each scan
+      const cardId = uuidV7()
       const recordId = `${moses(secureRef(16))}`
       const records = message.records.map((record) => {
         let data = ''
@@ -277,7 +282,7 @@ export const useNFCReaderV2 = (
         }
       })
 
-      await generateQRCode()
+      const generatedToken = await generateQRCode()
 
       const nfcData: NFCDataV2 = {
         records,
@@ -292,34 +297,33 @@ export const useNFCReaderV2 = (
         onScan(nfcData)
       }
 
-      const payloadRecord: NFCRecord = {
-        data: `${baseUrl}/u/${cardId}&token=${token?.token}`,
-        mediaType: null,
-        recordType: 'url',
-        id: recordId,
-      }
-
       // If withWrite is enabled, write the data back to the tag
-      if (withWrite && payloadRecord) {
+      if (withWrite && generatedToken) {
         ;(async () => {
           try {
-            const ndef = new window.NDEFReader()
-            await ndef.write({
-              records: nfcData.records.map((r) => ({
-                recordType: r.recordType,
-                data: r.data,
-                mediaType: r.mediaType ?? null,
-                id: r.id,
-              })),
-            })
-            await ndef.write({records: [payloadRecord]}, {overwrite: true})
+            const payloadRecord: NFCRecord = {
+              data: `${baseUrl}/u/${cardId}&token=${generatedToken.token}`,
+              mediaType: null,
+              recordType: 'url',
+              id: recordId,
+            }
+
+            // Create a new NDEFReader instance for writing
+            // The tag must still be in range for this to work
+            const ndefWriter = new window.NDEFReader()
+            
+            // Write the payload record (this will overwrite existing data)
+            await ndefWriter.write({records: [payloadRecord]}, {overwrite: true})
+            
             setPayload(payloadRecord)
             onSuccess('Write Successful')
           } catch (error: unknown) {
             if (error instanceof Error) {
               console.error(`Write back error: ${error.message}`)
+              onWarn(`Failed to write to NFC tag: ${error.message}`)
             } else {
               console.error('Unknown write back error')
+              onWarn('Failed to write to NFC tag: Unknown error')
             }
           }
         })()
@@ -350,10 +354,9 @@ export const useNFCReaderV2 = (
       autoStop,
       withWrite,
       baseUrl,
-      series,
-      group,
-      batch,
-      secmos,
+      generateQRCode,
+      onSuccess,
+      onWarn,
     ],
   )
 
