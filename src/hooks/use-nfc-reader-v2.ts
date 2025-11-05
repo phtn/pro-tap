@@ -162,7 +162,7 @@ export const useNFCReaderV2 = (
   const generateQRCode = useCallback(async () => {
     setIsGenerating(true)
     const body: CardRequest = {
-      type: 'qr',
+      type: 'nfc',
       body: {
         series,
         group,
