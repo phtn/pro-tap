@@ -107,7 +107,7 @@ export const NFCScannerPage = () => {
             fn: startScanning,
             icon: isScanning ? 'nfc' : 'play-solid',
             style: isScanning
-              ? 'animate-pulse text-zinc-600 dark:text-slate-700'
+              ? 'animate-pulse text-zinc-600 dark:text-lime'
               : 'text-zinc-600 dark:text-slate-300',
           },
           {
@@ -116,7 +116,7 @@ export const NFCScannerPage = () => {
             icon: 'pause-solid',
             style: isScanning
               ? 'text-amber-500'
-              : 'text-zinc-400/80 dark:text-slate-400',
+              : 'text-zinc-400/80 dark:text-zinc-700',
           },
           {
             name: isStarted ? 'mute' : 'sound',
