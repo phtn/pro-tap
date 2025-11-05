@@ -1,11 +1,15 @@
 import {useAuthCtx} from '@/ctx/auth'
 import {NavbarCtxProvider} from '@/ctx/navbar'
+import {useToggle} from '@/hooks/use-toggle'
 import {Icon, type IconName} from '@/lib/icons'
 import {cn} from '@/lib/utils'
+import {useQuery} from 'convex/react'
 import Link from 'next/link'
-import {usePathname, useRouter} from 'next/navigation'
+import {useRouter} from 'next/navigation'
 import {memo, type ReactNode, useCallback, useId, useMemo} from 'react'
+import {api} from '../../../convex/_generated/api'
 import {Button} from '../animate-ui/primitives/buttons/button'
+import {Notifications} from '../kokonutui/notifications'
 import {ProfileDropdown} from '../kokonutui/profile-dropdown'
 import {ProAvatar} from './pro-avatar'
 import TextAnimate from './text-animate'
@@ -22,7 +26,11 @@ interface EssentialButton {
 const Nav = ({children, extra}: NavProps) => {
   const {user} = useAuthCtx()
   const router = useRouter()
-  const proId = usePathname().split('/').pop()
+  const {on: open, toggle} = useToggle()
+
+  const userProfile = useQuery(api.userProfiles.q.getByProId, {
+    proId: user?.uid ?? '',
+  })
 
   const essentialButtons = useMemo(
     () =>
@@ -33,9 +41,9 @@ const Nav = ({children, extra}: NavProps) => {
         //   onClick: () => {},
         // },
         {
-          href: `/u/${proId}`,
+          href: '#',
           icon: 'bell',
-          onClick: () => {},
+          onClick: toggle,
         },
       ] as EssentialButton[],
     [],
@@ -74,13 +82,13 @@ const Nav = ({children, extra}: NavProps) => {
           </div>
           <div
             className={cn('flex items-center space-x-5', {
-              'space-x-3': user.isActivated,
+              'space-x-1': userProfile?.cardId,
             })}>
             <Link
-              href={`/u/${proId}`}
+              href={`/u/${userProfile?.username ?? userProfile?.cardId}`}
               className='hidden md:flex items-center gap-8 lg:px-0'>
               <TextAnimate
-                text={`${user.displayName}`}
+                text={`${user.displayName?.split(' ').shift()}`}
                 type='whipInUp'
                 className='tracking-tighter font-figtree font-medium text-xl md:text-3xl'
               />
@@ -90,10 +98,11 @@ const Nav = ({children, extra}: NavProps) => {
           <div className='relative h-12 flex items-center justify-between space-x-2 md:space-x-6'>
             {extra}
             <EssentialButtons />
+            <Notifications open={open} onOpenChange={toggle} />
             <ProfileDropdown>
               <ProAvatar
                 photoURL={user.photoURL}
-                isActivated={user.isActivated}
+                isActivated={!!userProfile?.cardId}
                 className=' hover:border-primary border-[1.5px]'
                 tiny
               />

@@ -43,7 +43,7 @@ const VerifiedBadge = ({isActivated}: {isActivated: boolean}) => {
   return isActivated ? (
     <div
       className={cn(
-        'size-auto md:hidden -right-1.5 -bottom-0.5 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
+        'size-auto md:hidden -right-1.5 -bottom-1 z-100 pointer-events-none aspect-square flex items-center justify-center absolute',
       )}>
       <div className='absolute bg-white size-3 aspect-square rounded-full' />
       <Icon

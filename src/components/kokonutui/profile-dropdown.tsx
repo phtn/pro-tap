@@ -241,7 +241,7 @@ interface IconLabelProps {
   label: string
 }
 
-const IconLabel = memo(({icon, label}: IconLabelProps) => {
+export const IconLabel = memo(({icon, label}: IconLabelProps) => {
   return (
     <div className='flex items-center gap-5 px-1 flex-1'>
       <Icon
@@ -259,7 +259,7 @@ interface ExtraValueProps {
   label: string
   value?: string
 }
-const ExtraValueItem = memo(({label, value}: ExtraValueProps) => {
+export const ExtraValueItem = memo(({label, value}: ExtraValueProps) => {
   return (
     <div className='flex-shrink-0 ml-auto'>
       {value && (
